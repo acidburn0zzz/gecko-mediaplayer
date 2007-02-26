@@ -39,7 +39,7 @@ AC_SUBST(GLIB_LIBS)
 PKG_CHECK_MODULES(GECKO, [mozilla-plugin],[GECKO_HOME=`$PKG_CONFIG --variable=libdir mozilla-plugin`],[AC_MSG_WARN([mozilla-plugin not found, trying another])])
 
 if test "$GECKO_CFLAGS" = ""; then
-PKG_CHECK_MODULES(GECKO, [firefox-plugin],[GECKO_HOME=`$PKG_CONFIG --variable=libdir firefox-plugin`],[AC_MSG_WARN([firefox-plugin not found, trying another])])
+PKG_CHECK_MODULES(GECKO, [firefox-plugin firefox-xpcom],[GECKO_HOME=`$PKG_CONFIG --variable=libdir firefox-plugin`],[AC_MSG_WARN([firefox-plugin not found, trying another])])
 fi
 
 if test "$GECKO_CFLAGS" = ""; then
