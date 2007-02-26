@@ -1,0 +1,10 @@
+Development
+0.0.2
+    Cleanup some of the chattyness
+    Implement signal handlers for signals: RequestById, Next
+    Add wrappers for dbus signals, makes calling things simpler
+    Implement qt reference file parseing, makes non-HD Apple trailers work
+    Make Apple HD Trailer work (caching still a problem)
+    Make HREF links work, when coming back to same player
+0.0.1   Feb 19,2007
+    Initial release
