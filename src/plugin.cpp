@@ -464,6 +464,16 @@ void nsPluginInstance::Stop()
     send_signal(this,"Stop");
 }
 
+void nsPluginInstance::SetShowControls(PRBool value)
+{
+    send_signal_with_boolean(this,"SetShowControls",value);
+}
+
+void nsPluginInstance::SetFullScreen(PRBool value)
+{
+    send_signal_with_boolean(this,"SetFullScreen",value);
+}
+
 // ==============================
 // ! Scriptability related code !
 // ==============================
