@@ -397,7 +397,7 @@ NS_IMETHODIMP nsScriptablePeer::GetShowControls(PRBool * aShowControls)
 NS_IMETHODIMP nsScriptablePeer::SetShowControls(PRBool aShowControls)
 {
     printf("JS SetShowControls issued\n");
-    // mPlugin->SetShowControls(aShowControls);
+    mPlugin->SetShowControls(aShowControls);
     return NS_OK;
 }
 
@@ -411,7 +411,7 @@ NS_IMETHODIMP nsScriptablePeer::GetFullscreen(PRBool * aFullscreen)
 NS_IMETHODIMP nsScriptablePeer::SetFullscreen(PRBool aFullscreen)
 {
     printf("JS SetFullscreen issued\n");
-    // mPlugin->SetFullscreen(aFullscreen);
+    mPlugin->SetFullScreen(aFullscreen);
     return NS_OK;
 }
 

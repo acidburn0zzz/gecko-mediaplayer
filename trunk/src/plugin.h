@@ -73,6 +73,8 @@ class nsPluginInstance:public nsPluginInstanceBase {
     void Play();
     void Pause();
     void Stop();
+    void SetShowControls(PRBool value);    
+    void SetFullScreen(PRBool value);
     
   private:
     NPBool mInitialized;
