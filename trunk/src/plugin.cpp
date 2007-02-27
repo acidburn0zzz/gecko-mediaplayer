@@ -464,6 +464,21 @@ void nsPluginInstance::Stop()
     send_signal(this,"Stop");
 }
 
+void nsPluginInstance::FastForward()
+{
+    send_signal(this,"FastForward");
+}
+
+void nsPluginInstance::FastReverse()
+{
+    send_signal(this,"FastReverse");
+}
+
+void nsPluginInstance::Seek(double counter)
+{
+    send_signal_with_double(this,"Seek",counter);
+}
+
 void nsPluginInstance::SetShowControls(PRBool value)
 {
     send_signal_with_boolean(this,"SetShowControls",value);
