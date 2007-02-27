@@ -1,5 +1,10 @@
 Development
-    Add javascript method "SetShowControls", "SetFullScreen"
+    Add javascript methods
+        ShowControls
+        Fullscreen
+        Seek
+        FF/FastForward
+        Rew/Rewind/FastReverse
     Fix firefox-xpcom not being included with firefox 2.0.0.2
 0.0.2
     Cleanup some of the chattyness

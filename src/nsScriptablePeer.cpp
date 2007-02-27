@@ -177,42 +177,42 @@ NS_IMETHODIMP nsScriptablePeer::DoPause(void)
 NS_IMETHODIMP nsScriptablePeer::FastForward(void)
 {
     printf("JS FastForward issued\n");
-    // mPlugin->FastForward();
+    mPlugin->FastForward();
     return NS_OK;
 }
 
 NS_IMETHODIMP nsScriptablePeer::FastReverse(void)
 {
     printf("JS FastReverse issued\n");
-    // mPlugin->FastReverse();
+    mPlugin->FastReverse();
     return NS_OK;
 }
 
 NS_IMETHODIMP nsScriptablePeer::Ff(void)
 {
     printf("JS ff issued\n");
-    // mPlugin->FastForward();
+    mPlugin->FastForward();
     return NS_OK;
 }
 
 NS_IMETHODIMP nsScriptablePeer::Rew(void)
 {
     printf("JS rew issued\n");
-    // mPlugin->FastReverse();
+    mPlugin->FastReverse();
     return NS_OK;
 }
 
 NS_IMETHODIMP nsScriptablePeer::Rewind(void)
 {
     printf("JS Quit issued\n");
-    // mPlugin->FastReverse();
+    mPlugin->FastReverse();
     return NS_OK;
 }
 
 NS_IMETHODIMP nsScriptablePeer::Seek(double counter)
 {
     printf("JS Seek issued\n");
-    // mPlugin->Seek(counter);
+    mPlugin->Seek(counter);
     return NS_OK;
 }
 
