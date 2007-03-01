@@ -78,6 +78,7 @@ class nsPluginInstance:public nsPluginInstanceBase {
     void Seek(double counter);
     void SetShowControls(PRBool value);    
     void SetFullScreen(PRBool value);
+    void GetVolume(double *_retval);    
     
   private:
     NPBool mInitialized;

@@ -296,3 +296,49 @@ void send_signal_with_boolean(nsPluginInstance *instance, gchar *signal, gboolea
     }
     
 }
+
+gboolean request_boolean_value(nsPluginInstance *instance, gchar *member) {
+    DBusMessage *message;
+    DBusMessage *replymessage;
+    const gchar *localmember;
+    DBusError error;
+    gboolean result = FALSE;    
+    
+    if (instance->playerready) {
+        localmember = g_strdup(member);
+        message = dbus_message_new_method_call("com.gnome.mplayer", instance->path, "com.gnome.mplayer", localmember);
+        dbus_error_init(&error);
+        replymessage = dbus_connection_send_with_reply_and_block(instance->connection,message, -1 ,&error);
+        if (dbus_error_is_set(&error)) {
+            printf("Error message = %s\n",error.message);
+        }
+        dbus_message_get_args(replymessage, &error, DBUS_TYPE_BOOLEAN, &result, DBUS_TYPE_INVALID);        
+        dbus_message_unref(message);
+        dbus_message_unref(replymessage);
+    }
+    
+    return result;
+}
+
+gdouble request_double_value(nsPluginInstance *instance, gchar *member) {
+    DBusMessage *message;
+    DBusMessage *replymessage;
+    const gchar *localmember;
+    DBusError error;
+    gdouble result = 0.0;    
+    
+    if (instance->playerready) {
+        localmember = g_strdup(member);
+        message = dbus_message_new_method_call("com.gnome.mplayer", instance->path, "com.gnome.mplayer", localmember);
+        dbus_error_init(&error);
+        replymessage = dbus_connection_send_with_reply_and_block(instance->connection,message, -1 ,&error);
+        if (dbus_error_is_set(&error)) {
+            printf("Error message = %s\n",error.message);
+        }
+        dbus_message_get_args(replymessage, &error, DBUS_TYPE_DOUBLE, &result, DBUS_TYPE_INVALID);
+        dbus_message_unref(message);
+        dbus_message_unref(replymessage);
+    }
+    
+    return result;
+}

@@ -489,6 +489,11 @@ void nsPluginInstance::SetFullScreen(PRBool value)
     send_signal_with_boolean(this,"SetFullScreen",value);
 }
 
+void nsPluginInstance::GetVolume(double *_retval)
+{
+    *_retval = request_double_value(this,"GetVolume");
+}
+
 // ==============================
 // ! Scriptability related code !
 // ==============================
