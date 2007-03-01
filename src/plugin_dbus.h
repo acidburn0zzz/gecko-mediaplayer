@@ -54,5 +54,7 @@ void send_signal_when_ready(nsPluginInstance *instance, gchar *signal);
 void send_signal_with_string(nsPluginInstance *instance, gchar *signal, gchar *str);
 void send_signal_with_double(nsPluginInstance *instance, gchar *signal, gdouble dbl);
 void send_signal_with_boolean(nsPluginInstance *instance, gchar *signal, gboolean boolean);
+gboolean request_boolean_value(nsPluginInstance *instance, gchar *member);
+gdouble request_double_value(nsPluginInstance *instance, gchar *member);
         
 #endif // _PLUGIN_DBUS_H

@@ -278,7 +278,7 @@ NS_IMETHODIMP nsScriptablePeer::SetVolume(double value)
 NS_IMETHODIMP nsScriptablePeer::GetVolume(double *_retval)
 {
     printf("JS GetVolume issued\n");
-    // mPlugin->GetVolume(_retval);
+    mPlugin->GetVolume(_retval);
     return NS_OK;
 }
 
