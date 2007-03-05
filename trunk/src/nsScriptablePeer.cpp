@@ -390,7 +390,7 @@ NS_IMETHODIMP nsScriptablePeer::GetMIMEType(char **_retval)
 NS_IMETHODIMP nsScriptablePeer::GetShowControls(PRBool * aShowControls)
 {
     printf("JS GetShowControls issued\n");
-    // mPlugin->GetShowControls(aShowControls);
+    mPlugin->GetShowControls(aShowControls);
     return NS_OK;
 }
 
@@ -404,7 +404,7 @@ NS_IMETHODIMP nsScriptablePeer::SetShowControls(PRBool aShowControls)
 NS_IMETHODIMP nsScriptablePeer::GetFullscreen(PRBool * aFullscreen)
 {
     printf("JS GetFullscreen issued\n");
-    // mPlugin->GetFullscreen(aFullscreen);
+    mPlugin->GetFullScreen(aFullscreen);
     return NS_OK;
 }
 

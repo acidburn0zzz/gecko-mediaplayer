@@ -494,6 +494,16 @@ void nsPluginInstance::GetVolume(double *_retval)
     *_retval = request_double_value(this,"GetVolume");
 }
 
+void nsPluginInstance::GetFullScreen(PRBool *_retval)
+{
+    *_retval = request_boolean_value(this,"GetFullScreen");
+}
+
+void nsPluginInstance::GetShowControls(PRBool *_retval)
+{
+    *_retval = request_boolean_value(this,"GetShowControls");
+}
+
 // ==============================
 // ! Scriptability related code !
 // ==============================

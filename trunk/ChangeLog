@@ -6,6 +6,8 @@ Development
         FF/FastForward
         Rew/Rewind/FastReverse
         GetVolume
+        GetFullScreen
+        GetShowControls
     Fix firefox-xpcom not being included with firefox 2.0.0.2
 0.0.2
     Cleanup some of the chattyness
