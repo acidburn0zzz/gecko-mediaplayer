@@ -289,6 +289,7 @@ NPError nsPluginInstance::DestroyStream(NPStream * stream, NPError reason)
         if (!item->opened) {
             playlist = list_parse_qt(playlist,item);
             if (item->play) {
+                printf("Opening %s\n",item->local);
                 open_location(this,item, TRUE);
             } else {
                 item = list_find_next_playable(playlist);

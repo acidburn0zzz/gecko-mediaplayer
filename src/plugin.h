@@ -91,7 +91,6 @@ class nsPluginInstance:public nsPluginInstanceBase {
         
     gint mX, mY;
     gint mWidth, mHeight;
-    gboolean player_launched;
     
     nsScriptablePeer *mScriptablePeer;
     nsControlsScriptablePeer *mControlsScriptablePeer;
@@ -105,6 +104,7 @@ class nsPluginInstance:public nsPluginInstanceBase {
     GList *playlist;
     gboolean acceptdata;
     gchar *path;
+    gboolean player_launched;
     gboolean playerready;
     DBusConnection *connection;
     ListItem *lastopened;

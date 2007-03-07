@@ -79,7 +79,7 @@ ListItem *list_find_next_playable(GList* list) {
         item = (ListItem *)iter->data;
         if (item != NULL) {
             if (item->played == FALSE && item->play == TRUE) {
-                //printf("next playable is %s\n",item->src);
+                printf("next playable is %s\n",item->src);
                 return item;
             }
         }
@@ -152,6 +152,7 @@ GList *list_parse_qt(GList *list, ListItem *item) {
             p = (gchar *)memmem(data,datalen,"rmda", 4);
             if ( p == NULL) {
                 printf("unable to find rmda in %s\n", item->local);
+                return list;
             } else {
                 if (datalen > 4) {
                     p += 4;     // skip the rmda tag we just found
@@ -228,7 +229,7 @@ GList *list_parse_qt(GList *list, ListItem *item) {
         //printf("file not parsed > 16K actual size is %i\n",item->localsize);
     }
     //list_dump(list);
-    //printf("Exiting list_parse_qt\n");
+    printf("Exiting list_parse_qt\n");
     return list;
     
 }
