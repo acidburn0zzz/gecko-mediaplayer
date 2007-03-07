@@ -167,10 +167,40 @@ void open_location(nsPluginInstance *instance, ListItem *item, gboolean uselocal
     const char *file;
     const char *id;
     char *path;
+    GError *error = NULL;
+    gchar *argvn[255];
+    gint arg = 0;
+    gint ok;
     
+    if (!(instance->player_launched)) {
+        if (!item->opened) {
+            if (uselocal) {
+                file = g_strdup(item->local);
+            } else {
+                file = g_strdup(item->src);
+            }
+            
+            argvn[arg++] = g_strdup_printf("gnome-mplayer");
+            argvn[arg++] = g_strdup_printf("%s",file);
+            argvn[arg] = g_strdup("");
+            argvn[arg + 1] = NULL;
+            instance->playerready = FALSE;
+            ok = g_spawn_async(NULL, argvn, NULL,
+                            G_SPAWN_SEARCH_PATH,
+                            NULL, NULL, NULL, &error);
     
-    while (!(instance->playerready)) {
-        g_main_context_iteration(NULL,FALSE);   
+            if (ok)	instance->player_launched = TRUE;
+            item->opened = TRUE;
+            instance->lastopened = item;    
+        }        
+        
+        return;     
+           
+    } else {
+    
+        while (!(instance->playerready)) {
+            g_main_context_iteration(NULL,FALSE);   
+        }
     }
     
     if (!item->opened) {
