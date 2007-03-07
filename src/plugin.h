@@ -78,10 +78,14 @@ class nsPluginInstance:public nsPluginInstanceBase {
     void Seek(double counter);
     void SetShowControls(PRBool value);    
     void SetFullScreen(PRBool value);
+    void SetVolume(double value);
     void GetVolume(double *_retval);    
     void GetFullScreen(PRBool *_retval);    
     void GetShowControls(PRBool *_retval);    
-    
+    void GetTime(double *_retval);    
+    void GetDuration(double *_retval);    
+    void GetPercent(double *_retval);    
+    void GetFilename(char **filename);
   private:
     NPBool mInitialized;
         

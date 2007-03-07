@@ -489,6 +489,11 @@ void nsPluginInstance::SetFullScreen(PRBool value)
     send_signal_with_boolean(this,"SetFullScreen",value);
 }
 
+void nsPluginInstance::SetVolume(double value)
+{
+    send_signal_with_double(this,"Volume", value);
+}
+
 void nsPluginInstance::GetVolume(double *_retval)
 {
     *_retval = request_double_value(this,"GetVolume");
@@ -504,6 +509,29 @@ void nsPluginInstance::GetShowControls(PRBool *_retval)
     *_retval = request_boolean_value(this,"GetShowControls");
 }
 
+void nsPluginInstance::GetTime(double *_retval)
+{
+    *_retval = request_double_value(this,"GetTime");
+}
+
+void nsPluginInstance::GetDuration(double *_retval)
+{
+    *_retval = request_double_value(this,"GetDuration");
+}
+
+void nsPluginInstance::GetPercent(double *_retval)
+{
+    *_retval = request_double_value(this,"GetPercent");
+}
+
+void nsPluginInstance::GetFilename(char **filename)
+{
+    if (this->lastopened != NULL) {
+        *filename = g_strdup(this->lastopened->src); 
+    } else {
+        *filename = NULL;
+    }
+}
 // ==============================
 // ! Scriptability related code !
 // ==============================

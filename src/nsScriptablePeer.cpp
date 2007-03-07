@@ -226,28 +226,28 @@ NS_IMETHODIMP nsScriptablePeer::GetPlayState(PRInt32 * aPlayState)
 NS_IMETHODIMP nsScriptablePeer::GetTime(double *_retval)
 {
     printf("JS getTime issued\n");
-    // mPlugin->GetTime(_retval);
+    mPlugin->GetTime(_retval);
     return NS_OK;
 }
 
 NS_IMETHODIMP nsScriptablePeer::GetDuration(double *_retval)
 {
     printf("JS getDuration issued\n");
-    // mPlugin->GetDuration(_retval);
+    mPlugin->GetDuration(_retval);
     return NS_OK;
 }
 
 NS_IMETHODIMP nsScriptablePeer::GetPercent(double *_retval)
 {
     printf("JS getPercent issued\n");
-    // mPlugin->GetPercent(_retval);
+    mPlugin->GetPercent(_retval);
     return NS_OK;
 }
 
 NS_IMETHODIMP nsScriptablePeer::GetFilename(char **aFilename)
 {
     printf("JS filename issued\n");
-    // mPlugin->GetFilename(aFilename);
+    mPlugin->GetFilename(aFilename);
     return NS_OK;
 }
 
@@ -269,9 +269,8 @@ NS_IMETHODIMP nsScriptablePeer::Open(const char *filename)
 NS_IMETHODIMP nsScriptablePeer::SetVolume(double value)
 {
     printf("JS SetVolume issued\n");
-    // mPlugin->SetVolume(value);
+    mPlugin->SetVolume(value);
     return NS_OK;
-    return NS_ERROR_NOT_IMPLEMENTED;
 }
 
 /* double GetVolume (); */
@@ -359,7 +358,7 @@ NS_IMETHODIMP nsScriptablePeer::SetHREF(const char *url)
 NS_IMETHODIMP nsScriptablePeer::GetHREF(char **_retval)
 {
     printf("JS filename issued\n");
-    // mPlugin->GetFilename(_retval);
+    mPlugin->GetFilename(_retval);
     return NS_OK;
 }
 
@@ -375,7 +374,7 @@ NS_IMETHODIMP nsScriptablePeer::SetURL(const char *url)
 NS_IMETHODIMP nsScriptablePeer::GetURL(char **_retval)
 {
     printf("JS filename issued\n");
-    // mPlugin->GetFilename(_retval);
+    mPlugin->GetFilename(_retval);
     return NS_OK;
 }
 
