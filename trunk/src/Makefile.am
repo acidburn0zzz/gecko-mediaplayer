@@ -45,7 +45,7 @@ libexec_PROGRAMS = \
 	gecko-mediaplayer-rm.so \
 	gecko-mediaplayer-dvx.so
 
-install_libexecdir = $(GECKO_HOME)/plugins
+install_libexecdir = $(libdir)/mozilla/plugins
 install_libexec_PROGRAMS = $(libexec_PROGRAMS)
 
 gecko_mediaplayer_so_SOURCES = \

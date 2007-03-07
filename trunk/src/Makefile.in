@@ -278,7 +278,7 @@ COMMONCODE = \
 	nsIScriptableGeckoMediaPlayer.h \
 	npplat.h
 
-install_libexecdir = $(GECKO_HOME)/plugins
+install_libexecdir = $(libdir)/mozilla/plugins
 gecko_mediaplayer_so_SOURCES = \
 	plugin_types_std.cpp \
 	$(COMMONCODE)
