@@ -1,4 +1,6 @@
 Development
+    Set cache percent value
+    Start playing when cache percent is > 20% and amount cached is > 2000K
     Fixed a bug when the player is not launched and open is called, plugin would spin forever
     Add javascript methods
         ShowControls
