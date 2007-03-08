@@ -1,4 +1,4 @@
-Development X
+Development
     Fixed a bug when the player is not launched and open is called, plugin would spin forever
     Add javascript methods
         ShowControls
