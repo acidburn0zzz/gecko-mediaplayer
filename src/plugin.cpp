@@ -403,7 +403,7 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len,
     ListItem *item;
     int32 wrotebytes;
     gchar *text;
-    gdouble percent;
+    gdouble percent = 0.0;
     
     if (!acceptdata)
         return -1;
@@ -428,14 +428,33 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len,
     
     if (playerready) {
         if (item->mediasize > 0) {
-            percent = (gdouble)item->localsize / (gdouble)item->mediasize;
-            send_signal_with_double(this,"SetPercent",percent);
             
-            text = g_strdup_printf(_("Cache fill: %2.2f%%"), percent * 100.0);
-            send_signal_with_string(this,"SetProgressText",text);
+            if (item->opened) {
+                
+                percent = (gdouble)item->localsize / (gdouble)item->mediasize;
+                send_signal_with_double(this,"SetCachePercent",percent);
+                
+            } else {
+                percent = (gdouble)item->localsize / (gdouble)item->mediasize;
+                send_signal_with_double(this,"SetPercent",percent);
+                send_signal_with_double(this,"SetCachePercent",percent);
+                
+                text = g_strdup_printf(_("Cache fill: %2.2f%%"), percent * 100.0);
+                send_signal_with_string(this,"SetProgressText",text);
+            }
         }
     }
         
+    if ((!item->opened) && (percent > 0.2) && (item->localsize > (2000 * 1024))) {
+        playlist = list_parse_qt(playlist,item);
+        if (item->play) {
+            open_location(this,item, TRUE);
+        } else {
+            item = list_find_next_playable(playlist);
+            if (item != NULL)
+                NPN_GetURLNotify(mInstance,item->src, NULL, item);
+        }
+    }
     return wrotebytes;
 }
 // These are the javascript method callbacks
