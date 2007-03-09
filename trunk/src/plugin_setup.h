@@ -38,6 +38,8 @@
 #ifndef _PLUGIN_SETUP_H
 #define _PLUGIN_SETUP_H
         
+#include "plugin_dbus.h"
+
 void new_instance(nsPluginInstance *instance, nsPluginCreateData *parameters);
 gint streaming(gchar *url);
 

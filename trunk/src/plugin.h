@@ -108,6 +108,8 @@ class nsPluginInstance:public nsPluginInstanceBase {
     gboolean playerready;
     DBusConnection *connection;
     ListItem *lastopened;
+    gint cache_size;
+    gboolean hidden;
     
 };
 

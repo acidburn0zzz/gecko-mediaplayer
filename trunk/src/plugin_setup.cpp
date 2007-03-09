@@ -94,6 +94,18 @@ void new_instance(nsPluginInstance *instance, nsPluginCreateData *parameters) {
                     newwindow = TRUE;
                 }
             }
+            
+            if (g_ascii_strcasecmp(parameters->argn[i],"hidden") == 0) {
+                if (strstr(parameters->argv[i], "true")
+                    || strstr(parameters->argv[i], "yes")
+                    || strstr(parameters->argv[i], "1")) {
+                    instance->hidden = TRUE;
+                } else {
+                    instance->hidden = FALSE;
+                }
+                
+            }
+            
         };
     } else {
         
@@ -109,6 +121,18 @@ void new_instance(nsPluginInstance *instance, nsPluginCreateData *parameters) {
         href->newwindow = newwindow;
     }
     list_dump(instance->playlist);
+    
+    if (instance->hidden == TRUE) {
+        
+        if (item->streaming) {
+            open_location(instance,item,FALSE);
+            item->requested = 1;
+        } else {
+            item->requested = 1;
+            NPN_GetURLNotify(instance->mInstance,item->src, NULL, item);
+        }
+    }        
+    
 }
 
 gint streaming(gchar *url) {
