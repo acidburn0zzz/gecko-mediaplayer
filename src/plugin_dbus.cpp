@@ -72,6 +72,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
 			
             if (g_ascii_strcasecmp(dbus_message_get_member(message),"Ready") == 0) {
                 instance->playerready = TRUE;
+                instance->cache_size = request_int_value(instance,"GetCacheSize");
                 return DBUS_HANDLER_RESULT_HANDLED;
             }
 
@@ -270,17 +271,18 @@ void send_signal_when_ready(nsPluginInstance *instance, gchar *signal) {
     DBusMessage *message;
     const char *localsignal;
     
-    while (!(instance->playerready)) {
-        g_main_context_iteration(NULL,FALSE);   
-    }
-        
-    if (instance->playerready) {
-        localsignal = g_strdup(signal);
-        message = dbus_message_new_signal(instance->path,"com.gnome.mplayer", localsignal);
-        dbus_connection_send(instance->connection,message,NULL);
-        dbus_message_unref(message);
-    }
-    
+    if (instance->player_launched && instance->mWindow != 0) {
+        while (!(instance->playerready)) {
+            g_main_context_iteration(NULL,FALSE);   
+        }
+            
+        if (instance->playerready) {
+            localsignal = g_strdup(signal);
+            message = dbus_message_new_signal(instance->path,"com.gnome.mplayer", localsignal);
+            dbus_connection_send(instance->connection,message,NULL);
+            dbus_message_unref(message);
+        }
+    } 
 }
 
 void send_signal_with_string(nsPluginInstance *instance, gchar *signal, gchar *str) {

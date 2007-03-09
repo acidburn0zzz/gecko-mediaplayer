@@ -128,7 +128,9 @@ nsPluginInstance::nsPluginInstance(NPP aInstance):nsPluginInstanceBase(),
     acceptdata(TRUE),
     playerready(FALSE),
     nextid(1),
-    lastopened(NULL)
+    lastopened(NULL),
+    cache_size(2048),
+    hidden(FALSE)
 {
     mScriptablePeer = getScriptablePeer();
     mScriptablePeer->SetInstance(this);
@@ -248,7 +250,9 @@ void nsPluginInstance::shut()
     
     send_signal_when_ready(this,"Terminate");
     
-    connection = dbus_unhook(connection, this);
+    if (connection != NULL)
+        connection = dbus_unhook(connection, this);
+    
     playlist = list_clear(playlist);
 
     // flush the glib context 
@@ -270,7 +274,7 @@ NPError nsPluginInstance::DestroyStream(NPStream * stream, NPError reason)
     DBusMessage *message;
     const char *file;
     
-    //printf("Entering destroy stream %s\n", stream->url);
+    printf("Entering destroy stream %s\n", stream->url);
     if (reason == NPRES_DONE) {
         item = (ListItem *)stream->notifyData;
         // item = list_find(playlist, (gchar*)stream->url);
@@ -443,16 +447,16 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len,
                 send_signal_with_string(this,"SetProgressText",text);
             }
         }
-    }
         
-    if ((!item->opened) && (percent > 0.2) && (item->localsize > (2000 * 1024))) {
-        playlist = list_parse_qt(playlist,item);
-        if (item->play) {
-            open_location(this,item, TRUE);
-        } else {
-            item = list_find_next_playable(playlist);
-            if (item != NULL)
-                NPN_GetURLNotify(mInstance,item->src, NULL, item);
+        if ((!item->opened) && (percent > 0.2) && (item->localsize > (cache_size * 1024))) {
+            playlist = list_parse_qt(playlist,item);
+            if (item->play) {
+                open_location(this,item, TRUE);
+            } else {
+                item = list_find_next_playable(playlist);
+                if (item != NULL)
+                    NPN_GetURLNotify(mInstance,item->src, NULL, item);
+            }
         }
     }
     return wrotebytes;
