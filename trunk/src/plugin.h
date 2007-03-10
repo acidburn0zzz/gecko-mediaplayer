@@ -110,6 +110,7 @@ class nsPluginInstance:public nsPluginInstanceBase {
     ListItem *lastopened;
     gint cache_size;
     gboolean hidden;
+    gint controlid;
     
 };
 

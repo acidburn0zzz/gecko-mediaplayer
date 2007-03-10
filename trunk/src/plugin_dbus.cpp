@@ -93,7 +93,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                     } else {
                         i = 0;
                         arg[i++] = g_strdup("gnome-mplayer");
-                        arg[i++] = g_strdup_printf("--controlid=%i",instance->mWindow);
+                        arg[i++] = g_strdup_printf("--controlid=%i",instance->controlid);
                         arg[i++] = g_strdup(item->src);
                         arg[i] = NULL;
                         g_spawn_async(NULL, arg, NULL,
@@ -120,6 +120,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                     } else {
                         i = 0;
                         arg[i++] = g_strdup("gnome-mplayer");
+                        arg[i++] = g_strdup_printf("--controlid=%i",instance->controlid);
                         arg[i++] = g_strdup(item->src);
                         arg[i] = NULL;
                         g_spawn_async(NULL, arg, NULL,
@@ -182,6 +183,7 @@ void open_location(nsPluginInstance *instance, ListItem *item, gboolean uselocal
             }
             
             argvn[arg++] = g_strdup_printf("gnome-mplayer");
+            argvn[arg++] = g_strdup_printf("--controlid=%i",instance->controlid);
             argvn[arg++] = g_strdup_printf("%s",file);
             argvn[arg] = g_strdup("");
             argvn[arg + 1] = NULL;
@@ -271,7 +273,7 @@ void send_signal_when_ready(nsPluginInstance *instance, gchar *signal) {
     DBusMessage *message;
     const char *localsignal;
     
-    if (instance->player_launched && instance->mWindow != 0) {
+    if (instance->player_launched) {
         while (!(instance->playerready)) {
             g_main_context_iteration(NULL,FALSE);   
         }
