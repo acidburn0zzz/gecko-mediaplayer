@@ -132,12 +132,28 @@ nsPluginInstance::nsPluginInstance(NPP aInstance):nsPluginInstanceBase(),
     cache_size(2048),
     hidden(FALSE)
 {
+    GRand *rand;
+    
+    // generate a random controlid
+    rand = g_rand_new();
+    controlid = g_rand_int_range(rand,0,65535);
+    g_rand_free(rand);
+    
+    if (path == NULL) {
+        path = g_strdup_printf("/control/%i",controlid);
+        // printf("using path %s\n",path);
+    }
+    
     mScriptablePeer = getScriptablePeer();
     mScriptablePeer->SetInstance(this);
     mControlsScriptablePeer = getControlsScriptablePeer();
     mScriptablePeer->InitControls(mControlsScriptablePeer);
     mControlsScriptablePeer->AddRef();
     
+    if (connection == NULL) {
+        connection = dbus_hookup(this);
+    }
+
 }
 
 nsPluginInstance::~nsPluginInstance()
@@ -193,18 +209,6 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
         mWindow = (Window) aWindow->window;
         NPSetWindowCallbackStruct *ws_info = (NPSetWindowCallbackStruct *) aWindow->ws_info;
     }
-
-    if (path == NULL) {
-        path = g_strdup_printf("/window/%i",mWindow);
-        //printf("Using path of %s\n",path);
-    }
-    
-    if (connection == NULL) {
-        connection = dbus_hookup(this);
-    }
-    
-    //printf("window id = %i\n",mWindow);
-    //printf("playlist %p\n",playlist);
     
     if (player_launched && mWidth > 0 && mHeight > 0) {
         resize_window(this, mWidth, mHeight);
@@ -213,6 +217,7 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
     if (!player_launched && mWidth > 0 && mHeight > 0) {
         argvn[arg++] = g_strdup_printf("gnome-mplayer");
         argvn[arg++] = g_strdup_printf("--window=%i",mWindow);
+        argvn[arg++] = g_strdup_printf("--controlid=%i",controlid);
         argvn[arg++] = g_strdup_printf("--width=%i", mWidth);
         argvn[arg++] = g_strdup_printf("--height=%i", mHeight);
         argvn[arg] = g_strdup("");
