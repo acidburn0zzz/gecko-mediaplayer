@@ -43,6 +43,7 @@ void new_instance(nsPluginInstance *instance, nsPluginCreateData *parameters) {
     
     gint i;
     gint newwindow = 0;
+    gint loop;
     ListItem *item = NULL;
     ListItem *src = NULL;
     ListItem *href = NULL;
@@ -106,9 +107,33 @@ void new_instance(nsPluginInstance *instance, nsPluginCreateData *parameters) {
                 
             }
             
+            if ((g_ascii_strcasecmp(parameters->argn[i], "loop") == 0)
+                 || (g_ascii_strcasecmp(parameters->argn[i], "autorewind") == 0)
+                 || (g_ascii_strcasecmp(parameters->argn[i], "repeat") == 0)) {
+
+                if (strstr(parameters->argv[i], "true")
+                    || strstr(parameters->argv[i], "yes")
+                    || strstr(parameters->argv[i], "infinite")) {
+                    loop = -1;	
+                } else if (g_ascii_isdigit((int) *(parameters->argv[i]))) {
+                    sscanf(parameters->argv[i], "%i", &loop);
+                } else {
+                    loop = 0;	// loop disabled
+                }
+            }
+            
         };
     } else {
         
+    }
+    
+    if (src != NULL) {
+        if (loop != 0) {
+            src->loop = TRUE;
+            src->loopcount = loop;
+        } else {
+            loop = FALSE;
+        }
     }
     
     // link up src to href objects by id

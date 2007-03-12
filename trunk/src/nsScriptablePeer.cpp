@@ -293,7 +293,7 @@ NS_IMETHODIMP nsScriptablePeer::SetFileName(const char *filename)
 NS_IMETHODIMP nsScriptablePeer::SetIsLooping(PRBool loop)
 {
     printf("JS SetIsLooping issued\n");
-    // mPlugin->SetLoop(loop);
+    mPlugin->SetLoop(loop);
     return NS_OK;
 }
 
@@ -301,7 +301,7 @@ NS_IMETHODIMP nsScriptablePeer::SetIsLooping(PRBool loop)
 NS_IMETHODIMP nsScriptablePeer::GetIsLooping(PRBool * _retval)
 {
     printf("JS GetIsLooping issued\n");
-    // mPlugin->GetLoop(_retval);
+    mPlugin->GetLoop(_retval);
     return NS_OK;
 }
 
@@ -382,7 +382,7 @@ NS_IMETHODIMP nsScriptablePeer::GetURL(char **_retval)
 NS_IMETHODIMP nsScriptablePeer::GetMIMEType(char **_retval)
 {
     printf("JS GetMIMEType issued\n");
-    // mPlugin->GetMIMEType(_retval);
+    mPlugin->GetMIMEType(_retval);
     return NS_OK;
 }
 

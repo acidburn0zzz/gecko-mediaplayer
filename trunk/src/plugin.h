@@ -50,6 +50,22 @@
 #else
 # define _(x) (x)
 #endif
+
+// JavaScript Playstates
+#define STATE_UNDEFINED     0
+#define STATE_STOPPED       1
+#define STATE_PAUSED        2
+#define STATE_PLAYING       3
+#define STATE_SCANFORWARD   4
+#define STATE_SCANREVERSE   5
+#define STATE_BUFFERING	    6
+#define STATE_WAITING       7
+#define STATE_MEDIAENDED    8
+#define STATE_TRANSITIONING 9
+#define STATE_READY	    10
+#define STATE_RECONNECTING  11
+
+
 class nsPluginInstance:public nsPluginInstanceBase {
   public:
     nsPluginInstance(NPP aInstance);
@@ -86,6 +102,10 @@ class nsPluginInstance:public nsPluginInstanceBase {
     void GetDuration(double *_retval);    
     void GetPercent(double *_retval);    
     void GetFilename(char **filename);
+    void GetMIMEType(char **_retval);
+    void GetLoop(PRBool * _retval);
+    void SetLoop(PRBool value);
+        
   private:
     NPBool mInitialized;
         
@@ -111,6 +131,7 @@ class nsPluginInstance:public nsPluginInstanceBase {
     gint cache_size;
     gboolean hidden;
     gint controlid;
+    gint state;
     
 };
 

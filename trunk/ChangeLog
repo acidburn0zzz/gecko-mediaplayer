@@ -1,4 +1,6 @@
 Development
+    Implement GetLoop, SetLoop and loop embed tag methods
+    Implement GetMIMEType JS Method
     Fix problem when starting an hrefid and over cache
 0.0.3   Mar 12, 2007
     Fix up install issues

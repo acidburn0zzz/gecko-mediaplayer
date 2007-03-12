@@ -562,6 +562,30 @@ void nsPluginInstance::GetFilename(char **filename)
         *filename = NULL;
     }
 }
+
+void nsPluginInstance::GetMIMEType(char **_retval)
+{
+    *_retval = g_strdup(mimetype);
+}
+
+void nsPluginInstance::GetLoop(PRBool * _retval)
+{
+    if (lastopened != NULL) {
+        *_retval = (PRBool) lastopened->loop;
+    } else {
+        *_retval = FALSE;
+    }
+
+}
+
+void nsPluginInstance::SetLoop(PRBool value)
+{
+    if (lastopened != NULL) {
+        lastopened->loop = (int) value;
+        lastopened->loopcount = -1;
+    }
+}
+
 // ==============================
 // ! Scriptability related code !
 // ==============================
