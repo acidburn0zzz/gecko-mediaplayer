@@ -68,6 +68,17 @@ void new_instance(nsPluginInstance *instance, nsPluginCreateData *parameters) {
                 src = item;
             }
             
+            if (g_ascii_strcasecmp(parameters->argn[i],"filename") == 0) {
+                item = g_new0(ListItem,1);
+                g_strlcpy(item->src,parameters->argv[i],1024);
+                // printf("Item src = %s\n",item->src);
+                item->streaming = streaming(item->src);
+                item->play = TRUE;
+                item->id = instance->nextid++;
+                instance->playlist = g_list_append(instance->playlist,item);
+                src = item;
+            }
+            
             if (g_ascii_strcasecmp(parameters->argn[i],"href") == 0) {
                 item = g_new0(ListItem,1);
                 g_strlcpy(item->src,parameters->argv[i],1024);
