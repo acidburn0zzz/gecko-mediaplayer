@@ -36,27 +36,55 @@ PKG_CHECK_MODULES(GLIB, [glib-2.0 ])
 AC_SUBST(GLIB_CFLAGS)
 AC_SUBST(GLIB_LIBS)
 
-PKG_CHECK_MODULES(GECKO, [mozilla-plugin],[GECKO_HOME=`$PKG_CONFIG --variable=libdir mozilla-plugin`],[AC_MSG_WARN([mozilla-plugin not found, trying another])])
+PKG_CHECK_MODULES(GECKO, [mozilla-plugin mozilla-xpcom],[
+    GECKO_HOME=`$PKG_CONFIG --variable=libdir mozilla-plugin`
+    GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir mozilla-xpcom`
+    ],[AC_MSG_WARN([mozilla-plugin not found, trying another])])
 
 if test "$GECKO_CFLAGS" = ""; then
-PKG_CHECK_MODULES(GECKO, [firefox-plugin firefox-xpcom],[GECKO_HOME=`$PKG_CONFIG --variable=libdir firefox-plugin`],[AC_MSG_WARN([firefox-plugin not found, trying another])])
+PKG_CHECK_MODULES(GECKO, [firefox-plugin firefox-xpcom],[
+    GECKO_HOME=`$PKG_CONFIG --variable=libdir firefox-plugin`
+    GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir firefox-xpcom`
+    ],[AC_MSG_WARN([firefox-plugin not found, trying another])])
 fi
 
 if test "$GECKO_CFLAGS" = ""; then
-PKG_CHECK_MODULES(GECKO, [seamonkey-plugin],[GECKO_HOME=`$PKG_CONFIG --variable=libdir seamonkey-plugin`],[AC_MSG_WARN([seamokey-plugin not found, trying another])])
+PKG_CHECK_MODULES(GECKO, [seamonkey-plugin seamonkey-xpcom],[
+    GECKO_HOME=`$PKG_CONFIG --variable=libdir seamonkey-plugin`
+    GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir seamonkey-xpcom`
+    ],[AC_MSG_WARN([seamokey-plugin not found, trying another])])
 fi
 
 if test "$GECKO_CFLAGS" = ""; then
-PKG_CHECK_MODULES(GECKO, [xulrunner-plugin],[GECKO_HOME=`$PKG_CONFIG --variable=libdir xulrunner-plugin`],[AC_MSG_WARN([xulrunner-plugin not found, trying another])])
+PKG_CHECK_MODULES(GECKO, [xulrunner-plugin xulrunner-xpcom],[
+    GECKO_HOME=`$PKG_CONFIG --variable=libdir xulrunner-plugin`
+    GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir xulrunner-xpcom`
+    ],[AC_MSG_WARN([xulrunner-plugin not found, trying another])])
 fi
 
 if test "$GECKO_CFLAGS" = ""; then
-PKG_CHECK_MODULES(GECKO, [iceape-plugin],[GECKO_HOME=`$PKG_CONFIG --variable=libdir iceape-plugin`],[AC_MSG_WARN([iceape-plugin not found, trying another])])
+PKG_CHECK_MODULES(GECKO, [iceape-plugin iceape-xpcom],[
+    GECKO_HOME=`$PKG_CONFIG --variable=libdir iceape-plugin`
+    GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir iceape-xpcom`
+    ],[AC_MSG_WARN([iceape-plugin not found, trying another])])
 fi
 
 AC_SUBST(GECKO_CFLAGS)
 AC_SUBST(GECKO_LIBS)
 AC_SUBST(GECKO_HOME)
+
+AC_PATH_PROG([GECKO_XPIDL], [xpidl], [no], [$GECKO_HOME:$PATH])
+if test "x$GECKO_XPIDL" = "xno"; then
+	AC_MSG_ERROR([xpidl compiler not found])
+fi
+
+if test "x$GECKO_IDLDIR" = "x"; then
+    GECKO_IDLDIR="`echo $GECKO_HOME | sed -e s!lib!share/idl!`"
+fi
+
+AC_SUBST(GECKO_XPIDL)
+AC_SUBST(GECKO_IDLDIR)
+
 
 
 PKG_CHECK_MODULES(DBUS, [dbus-1 >= 0.95 dbus-glib-1 >= 0.70 ])

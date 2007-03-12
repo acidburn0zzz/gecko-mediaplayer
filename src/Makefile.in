@@ -14,6 +14,7 @@
 
 @SET_MAKE@
 
+
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
 VPATH = @srcdir@
@@ -36,12 +37,11 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-libexec_PROGRAMS = gecko-mediaplayer.so$(EXEEXT) \
+install_libexec_PROGRAMS = gecko-mediaplayer.so$(EXEEXT) \
 	gecko-mediaplayer-qt.so$(EXEEXT) \
 	gecko-mediaplayer-wmp.so$(EXEEXT) \
 	gecko-mediaplayer-rm.so$(EXEEXT) \
 	gecko-mediaplayer-dvx.so$(EXEEXT)
-install_libexec_PROGRAMS = $(am__EXEEXT_1)
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -51,16 +51,10 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
-am__EXEEXT_1 = gecko-mediaplayer.so$(EXEEXT) \
-	gecko-mediaplayer-qt.so$(EXEEXT) \
-	gecko-mediaplayer-wmp.so$(EXEEXT) \
-	gecko-mediaplayer-rm.so$(EXEEXT) \
-	gecko-mediaplayer-dvx.so$(EXEEXT)
 am__installdirs = "$(DESTDIR)$(install_libexecdir)" \
-	"$(DESTDIR)$(libexecdir)"
+	"$(DESTDIR)$(xptdir)"
 install_libexecPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
-libexecPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
-PROGRAMS = $(install_libexec_PROGRAMS) $(libexec_PROGRAMS)
+PROGRAMS = $(install_libexec_PROGRAMS)
 am__objects_1 = plugin.$(OBJEXT) plugin_list.$(OBJEXT) \
 	plugin_setup.$(OBJEXT) plugin_dbus.$(OBJEXT) \
 	np_entry.$(OBJEXT) npn_gate.$(OBJEXT) npp_gate.$(OBJEXT) \
@@ -118,6 +112,14 @@ DIST_SOURCES = $(gecko_mediaplayer_dvx_so_SOURCES) \
 	$(gecko_mediaplayer_rm_so_SOURCES) \
 	$(gecko_mediaplayer_wmp_so_SOURCES) \
 	$(gecko_mediaplayer_so_SOURCES)
+am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
+am__vpath_adj = case $$p in \
+    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
+    *) f=$$p;; \
+  esac;
+am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
+xptDATA_INSTALL = $(INSTALL_DATA)
+DATA = $(noinst_DATA) $(xpt_DATA)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -157,7 +159,9 @@ F77 = @F77@
 FFLAGS = @FFLAGS@
 GECKO_CFLAGS = @GECKO_CFLAGS@
 GECKO_HOME = @GECKO_HOME@
+GECKO_IDLDIR = @GECKO_IDLDIR@
 GECKO_LIBS = @GECKO_LIBS@
+GECKO_XPIDL = @GECKO_XPIDL@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GLIB_CFLAGS = @GLIB_CFLAGS@
 GLIB_LIBS = @GLIB_LIBS@
@@ -246,6 +250,8 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
+noinst_DATA = nsIScriptableGeckoMediaPlayer.idl
+EXTRA_DIST = $(noinst_DATA)
 INCLUDES = \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
 	-DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
@@ -259,6 +265,14 @@ AM_CFLAGS = \
 	 -g
 
 DEFINES = -DMOZILLA_STRICT_API -DXP_UNIX
+xpt_DATA = \
+	gecko-mediaplayer-dvx.xpt \
+	gecko-mediaplayer-qt.xpt \
+	gecko-mediaplayer-rm.xpt \
+	gecko-mediaplayer.xpt \
+	gecko-mediaplayer-wmp.xpt
+
+xptdir = $(DESTDIR)$(libdir)/mozilla/components
 COMMONCODE = \
 	plugin.cpp \
 	plugin.h \
@@ -278,7 +292,7 @@ COMMONCODE = \
 	nsIScriptableGeckoMediaPlayer.h \
 	npplat.h
 
-install_libexecdir = $(libdir)/mozilla/plugins
+install_libexecdir = $(DESTDIR)$(libdir)/mozilla/plugins
 gecko_mediaplayer_so_SOURCES = \
 	plugin_types_std.cpp \
 	$(COMMONCODE)
@@ -365,34 +379,6 @@ clean-install_libexecPROGRAMS:
 	  echo " rm -f $$p $$f"; \
 	  rm -f $$p $$f ; \
 	done
-install-libexecPROGRAMS: $(libexec_PROGRAMS)
-	@$(NORMAL_INSTALL)
-	test -z "$(libexecdir)" || $(mkdir_p) "$(DESTDIR)$(libexecdir)"
-	@list='$(libexec_PROGRAMS)'; for p in $$list; do \
-	  p1=`echo $$p|sed 's/$(EXEEXT)$$//'`; \
-	  if test -f $$p \
-	     || test -f $$p1 \
-	  ; then \
-	    f=`echo "$$p1" | sed 's,^.*/,,;$(transform);s/$$/$(EXEEXT)/'`; \
-	   echo " $(INSTALL_PROGRAM_ENV) $(LIBTOOL) --mode=install $(libexecPROGRAMS_INSTALL) '$$p' '$(DESTDIR)$(libexecdir)/$$f'"; \
-	   $(INSTALL_PROGRAM_ENV) $(LIBTOOL) --mode=install $(libexecPROGRAMS_INSTALL) "$$p" "$(DESTDIR)$(libexecdir)/$$f" || exit 1; \
-	  else :; fi; \
-	done
-
-uninstall-libexecPROGRAMS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libexec_PROGRAMS)'; for p in $$list; do \
-	  f=`echo "$$p" | sed 's,^.*/,,;s/$(EXEEXT)$$//;$(transform);s/$$/$(EXEEXT)/'`; \
-	  echo " rm -f '$(DESTDIR)$(libexecdir)/$$f'"; \
-	  rm -f "$(DESTDIR)$(libexecdir)/$$f"; \
-	done
-
-clean-libexecPROGRAMS:
-	@list='$(libexec_PROGRAMS)'; for p in $$list; do \
-	  f=`echo $$p|sed 's/$(EXEEXT)$$//'`; \
-	  echo " rm -f $$p $$f"; \
-	  rm -f $$p $$f ; \
-	done
 gecko-mediaplayer-dvx.so$(EXEEXT): $(gecko_mediaplayer_dvx_so_OBJECTS) $(gecko_mediaplayer_dvx_so_DEPENDENCIES) 
 	@rm -f gecko-mediaplayer-dvx.so$(EXEEXT)
 	$(CXXLINK) $(gecko_mediaplayer_dvx_so_LDFLAGS) $(gecko_mediaplayer_dvx_so_OBJECTS) $(gecko_mediaplayer_dvx_so_LDADD) $(LIBS)
@@ -459,6 +445,23 @@ clean-libtool:
 distclean-libtool:
 	-rm -f libtool
 uninstall-info-am:
+install-xptDATA: $(xpt_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(xptdir)" || $(mkdir_p) "$(DESTDIR)$(xptdir)"
+	@list='$(xpt_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(xptDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(xptdir)/$$f'"; \
+	  $(xptDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(xptdir)/$$f"; \
+	done
+
+uninstall-xptDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(xpt_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(xptdir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(xptdir)/$$f"; \
+	done
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
@@ -537,9 +540,9 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(PROGRAMS)
+all-am: Makefile $(PROGRAMS) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(install_libexecdir)" "$(DESTDIR)$(libexecdir)"; do \
+	for dir in "$(DESTDIR)$(install_libexecdir)" "$(DESTDIR)$(xptdir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
 install: install-am
@@ -568,8 +571,8 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic clean-install_libexecPROGRAMS \
-	clean-libexecPROGRAMS clean-libtool mostlyclean-am
+clean-am: clean-generic clean-install_libexecPROGRAMS clean-libtool \
+	mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -587,10 +590,9 @@ info: info-am
 
 info-am:
 
-install-data-am:
+install-data-am: install-xptDATA
 
-install-exec-am: install-install_libexecPROGRAMS \
-	install-libexecPROGRAMS
+install-exec-am: install-install_libexecPROGRAMS
 
 install-info: install-info-am
 
@@ -617,22 +619,28 @@ ps: ps-am
 ps-am:
 
 uninstall-am: uninstall-info-am uninstall-install_libexecPROGRAMS \
-	uninstall-libexecPROGRAMS
+	uninstall-xptDATA
 
 .PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
-	clean-install_libexecPROGRAMS clean-libexecPROGRAMS \
-	clean-libtool ctags distclean distclean-compile \
-	distclean-generic distclean-libtool distclean-tags distdir dvi \
-	dvi-am html html-am info info-am install install-am \
-	install-data install-data-am install-exec install-exec-am \
-	install-info install-info-am install-install_libexecPROGRAMS \
-	install-libexecPROGRAMS install-man install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags uninstall uninstall-am uninstall-info-am \
-	uninstall-install_libexecPROGRAMS uninstall-libexecPROGRAMS
+	clean-install_libexecPROGRAMS clean-libtool ctags distclean \
+	distclean-compile distclean-generic distclean-libtool \
+	distclean-tags distdir dvi dvi-am html html-am info info-am \
+	install install-am install-data install-data-am install-exec \
+	install-exec-am install-info install-info-am \
+	install-install_libexecPROGRAMS install-man install-strip \
+	install-xptDATA installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
+	pdf pdf-am ps ps-am tags uninstall uninstall-am \
+	uninstall-info-am uninstall-install_libexecPROGRAMS \
+	uninstall-xptDATA
 
+
+nsIScriptableGeckoMediaPlayer.h: nsIScriptableGeckoMediaPlayer.idl
+	$(GECKO_XPIDL) -w -m header -I $(GECKO_IDLDIR) -I $(srcdir) -e $@ $<
+
+%.xpt: nsIScriptableGeckoMediaPlayer.idl
+	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(srcdir) -e $@ $<
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
