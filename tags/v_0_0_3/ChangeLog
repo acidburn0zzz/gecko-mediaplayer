@@ -1,0 +1,34 @@
+Development
+0.0.3   Mar 12, 2007
+    Fix up install issues
+    Switch to using controlid when using GNOME MPlayer allows control of hidden windows
+    Fix infinite loop problem when hidden=true
+    Fix problem where streaming media not started when hidden
+    Fix problem with non-streaming media not playing when hidden
+    Use cache setting from GNOME MPlayer so now play amount cached > cache_size * 1024
+    Set cache percent value
+    Start playing when cache percent is > 20% and amount cached is > 2000K
+    Fixed a bug when the player is not launched and open is called, plugin would spin forever
+    Add javascript methods
+        ShowControls
+        Fullscreen
+        Seek
+        FF/FastForward
+        Rew/Rewind/FastReverse
+        GetVolume
+        GetFullScreen
+        GetShowControls
+        SetVolume
+        GetTime
+        GetDuration
+        GetPercent
+    Fix firefox-xpcom not being included with firefox 2.0.0.2
+0.0.2
+    Cleanup some of the chattyness
+    Implement signal handlers for signals: RequestById, Next
+    Add wrappers for dbus signals, makes calling things simpler
+    Implement qt reference file parseing, makes non-HD Apple trailers work
+    Make Apple HD Trailer work (caching still a problem)
+    Make HREF links work, when coming back to same player
+0.0.1   Feb 19,2007
+    Initial release
