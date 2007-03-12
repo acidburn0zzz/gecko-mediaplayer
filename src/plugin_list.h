@@ -58,6 +58,8 @@ typedef struct _ListItem {
     gint mediasize;
     gint localsize;
     FILE *localfp;
+    gboolean loop;  // TRUE if we should loop
+    gint loopcount; // 0 - loop done, -1 loop forever
 } ListItem;
         
 ListItem *list_find(GList *list, gchar *url);
