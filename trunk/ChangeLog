@@ -1,4 +1,5 @@
 Development
+    Fix up install issues
     Switch to using controlid when using GNOME MPlayer allows control of hidden windows
     Fix infinite loop problem when hidden=true
     Fix problem where streaming media not started when hidden

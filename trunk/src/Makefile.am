@@ -2,7 +2,9 @@
 
 ## Created by Anjuta
 
-## noinst_DATA = nsIScriptableGeckoMediaPlayer.idl
+noinst_DATA = nsIScriptableGeckoMediaPlayer.idl
+
+EXTRA_DIST = $(noinst_DATA)
 
 INCLUDES = \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
@@ -17,6 +19,15 @@ AM_CFLAGS =\
 	 -g
 
 DEFINES = -DMOZILLA_STRICT_API -DXP_UNIX
+
+xpt_DATA = \
+	gecko-mediaplayer-dvx.xpt \
+	gecko-mediaplayer-qt.xpt \
+	gecko-mediaplayer-rm.xpt \
+	gecko-mediaplayer.xpt \
+	gecko-mediaplayer-wmp.xpt
+	
+xptdir = $(DESTDIR)$(libdir)/mozilla/components
 
 COMMONCODE = \
 	plugin.cpp \
@@ -37,17 +48,14 @@ COMMONCODE = \
 	nsIScriptableGeckoMediaPlayer.h \
 	npplat.h
 
-
-libexec_PROGRAMS = \
+install_libexecdir = $(DESTDIR)$(libdir)/mozilla/plugins
+install_libexec_PROGRAMS = \
 	gecko-mediaplayer.so \
 	gecko-mediaplayer-qt.so \
 	gecko-mediaplayer-wmp.so \
 	gecko-mediaplayer-rm.so \
 	gecko-mediaplayer-dvx.so
-
-install_libexecdir = $(libdir)/mozilla/plugins
-install_libexec_PROGRAMS = $(libexec_PROGRAMS)
-
+	
 gecko_mediaplayer_so_SOURCES = \
 	plugin_types_std.cpp \
 	$(COMMONCODE)
@@ -83,3 +91,8 @@ gecko_mediaplayer_rm_so_SOURCES = \
 	
 gecko_mediaplayer_rm_so_LDFLAGS = -shared $(GLIB_LIBS) $(DBUS_LIBS)
 
+nsIScriptableGeckoMediaPlayer.h: nsIScriptableGeckoMediaPlayer.idl
+	$(GECKO_XPIDL) -w -m header -I $(GECKO_IDLDIR) -I $(srcdir) -e $@ $<
+
+%.xpt: nsIScriptableGeckoMediaPlayer.idl
+	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(srcdir) -e $@ $<
