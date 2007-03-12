@@ -81,6 +81,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                 if (dbus_message_get_args(message, &error, DBUS_TYPE_STRING, &s, DBUS_TYPE_INVALID)) {
                     printf("Got id %s\n",s);
                     item = list_find_by_id(instance->playlist,(gint)g_strtod(s,NULL));
+                    item->play = TRUE;
                     printf("id %s has url of %s\n",s,item->src);
                     printf("id %s has newwindow = %i\n",s,item->newwindow);
                     if(item->newwindow == 0) {
@@ -102,7 +103,6 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                     }
                     instance->lastopened->played = TRUE;
                     item->requested = TRUE;
-                    item->play = TRUE;
                     instance->lastopened = item;
                 } else {
                     dbus_error_free(&error);
