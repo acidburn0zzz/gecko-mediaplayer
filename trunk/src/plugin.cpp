@@ -453,7 +453,8 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len,
             }
         }
         
-        if ((!item->opened) && (percent > 0.2) && (item->localsize > (cache_size * 1024))) {
+        // if not opened, over cache level and not an href target then try and open it
+        if ((!item->opened) && (percent > 0.2) && (item->localsize > (cache_size * 1024)) && item->id == 0) {
             playlist = list_parse_qt(playlist,item);
             if (item->play) {
                 open_location(this,item, TRUE);
