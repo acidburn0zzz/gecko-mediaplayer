@@ -1,4 +1,5 @@
 Development
+    Handle "filename" embed tag
     Implement GetLoop, SetLoop and loop embed tag methods
     Implement GetMIMEType JS Method
     Fix problem when starting an hrefid and over cache
