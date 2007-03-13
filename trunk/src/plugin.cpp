@@ -186,9 +186,8 @@ NPBool nsPluginInstance::init(NPWindow * aWindow)
 {
     if (aWindow == NULL)
         return FALSE;
-
-    //if (SetWindow(aWindow))
-        mInitialized = TRUE;
+    
+    mInitialized = TRUE;
 
     return mInitialized;
 }
@@ -201,7 +200,6 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
     gint ok;
     ListItem *item;
 
-    printf("in setwindow\n");
     if (!acceptdata) return TRUE;
     
     if (aWindow == NULL)
@@ -269,19 +267,12 @@ void nsPluginInstance::shut()
     acceptdata = FALSE;
     mInitialized = FALSE;
     
-    //list_dump(playlist);
-    
-    //printf("shut called\n");
-    
     if (player_launched) {
         while (!(playerready)) {
             g_main_context_iteration(NULL,FALSE);   
         }
     }
 
-    //printf("player is ready\n");
-    
-    // printf("clearing list\n");
     if (playlist != NULL) {
         for (iter = playlist; iter !=NULL; iter = g_list_next(iter)) {
             item = (ListItem *)iter->data;
@@ -294,20 +285,16 @@ void nsPluginInstance::shut()
     }
     send_signal_when_ready(this, NULL, "Terminate");
     playerready = FALSE;
-    //printf("sent terminate\n");
     playlist = list_clear(playlist);
-    //printf("cleared playlist\n");
     
     // flush the glib context 
     while (g_main_context_pending(NULL)) {
         g_main_context_iteration(NULL,FALSE);   
     }    
-    //printf("events flushed\n");
     
     if (connection != NULL) {
         connection = dbus_unhook(connection, this);
     }
-    //printf("dbus unhooked\n");
     
 }
 
@@ -325,7 +312,7 @@ NPError nsPluginInstance::DestroyStream(NPStream * stream, NPError reason)
     gchar *path;
     gboolean ready;
     
-    printf("Entering destroy stream reason = %i for %s\n", reason,stream->url);
+    // printf("Entering destroy stream reason = %i for %s\n", reason,stream->url);
     if (reason == NPRES_DONE) {
         item = (ListItem *)stream->notifyData;
         // item = list_find(playlist, (gchar*)stream->url);
@@ -347,20 +334,18 @@ NPError nsPluginInstance::DestroyStream(NPStream * stream, NPError reason)
             ready = item->playerready;
             playlist = list_parse_qt(playlist,item);
             if (item->play) {
-                printf("Opening %s\n",item->local);
                 open_location(this,item, TRUE);
             } else {
                 item = list_find_next_playable(playlist);
                 item->controlid = id;
                 g_strlcpy(item->path,path,1024);
                 item->playerready = ready;
-                printf("Requesting %s\n",item->src);
                 if (item != NULL)
                     NPN_GetURLNotify(mInstance,item->src, NULL, item);
             }
             g_free(path);
         }
-        printf("Leaving destroy stream src = %s\n", item->src);
+        //printf("Leaving destroy stream src = %s\n", item->src);
     }
     
     // list_dump(playlist);
@@ -523,20 +508,10 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len,
 
     return wrotebytes;
 }
-// These are the javascript method callbacks
 
-// this will force to draw a version string in the plugin window
-/*
-void nsPluginInstance::showVersion()
-{
-    const char *ua = NPN_UserAgent(mInstance);
-    strcpy(mString, ua);
-}
-*/
 
 void nsPluginInstance::Play()
 {
-    //printf("Play inside plugin\nThis = %p\n", this);
     send_signal(this, this->lastopened, "Play");
 }
 
