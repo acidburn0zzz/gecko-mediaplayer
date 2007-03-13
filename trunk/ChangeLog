@@ -1,4 +1,5 @@
 Development
+    Change request calls to use unique (based on controlid) object names
     Remove unnecessary glib flushes
     Trap several instance = NULL cases
     Fix problem where window is destroyed immediately

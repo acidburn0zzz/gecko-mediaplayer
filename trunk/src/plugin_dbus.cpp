@@ -447,6 +447,7 @@ gboolean request_boolean_value(nsPluginInstance *instance, ListItem *item, gchar
     DBusError error;
     gboolean result = FALSE;    
     gchar *path;
+    gchar *dest;
     
     //printf("Requesting %s to connection %p\n", member, instance->connection);
     if (instance == NULL) return result;
@@ -457,9 +458,11 @@ gboolean request_boolean_value(nsPluginInstance *instance, ListItem *item, gchar
         path = instance->path;
     }
     
+    dest = g_strdup_printf("com.gnome.mplayer.cid%i",instance->controlid);
+    
     if (instance->playerready && instance->connection != NULL) {
         localmember = g_strdup(member);
-        message = dbus_message_new_method_call("com.gnome.mplayer", path, "com.gnome.mplayer", localmember);
+        message = dbus_message_new_method_call(dest, path, "com.gnome.mplayer", localmember);
         dbus_error_init(&error);
         replymessage = dbus_connection_send_with_reply_and_block(instance->connection,message, -1 ,&error);
         if (dbus_error_is_set(&error)) {
@@ -469,6 +472,7 @@ gboolean request_boolean_value(nsPluginInstance *instance, ListItem *item, gchar
         dbus_message_unref(message);
         dbus_message_unref(replymessage);
     }
+    g_free(dest);
     
     return result;
 }
@@ -480,6 +484,7 @@ gdouble request_double_value(nsPluginInstance *instance, ListItem *item, gchar *
     DBusError error;
     gdouble result = 0.0;    
     gchar *path;
+    gchar *dest;
     
     //printf("Requesting %s to connection %p\n", member, instance->connection);
     if (instance == NULL) return result;
@@ -490,9 +495,11 @@ gdouble request_double_value(nsPluginInstance *instance, ListItem *item, gchar *
         path = instance->path;
     }
     
+    dest = g_strdup_printf("com.gnome.mplayer.cid%i",instance->controlid);
+    
     if (instance->playerready && instance->connection != NULL) {
         localmember = g_strdup(member);
-        message = dbus_message_new_method_call("com.gnome.mplayer", path, "com.gnome.mplayer", localmember);
+        message = dbus_message_new_method_call(dest, path, "com.gnome.mplayer", localmember);
         dbus_error_init(&error);
         replymessage = dbus_connection_send_with_reply_and_block(instance->connection,message, -1 ,&error);
         if (dbus_error_is_set(&error)) {
@@ -502,6 +509,7 @@ gdouble request_double_value(nsPluginInstance *instance, ListItem *item, gchar *
         dbus_message_unref(message);
         dbus_message_unref(replymessage);
     }
+    g_free(dest);
     
     return result;
 }
@@ -513,6 +521,7 @@ gint request_int_value(nsPluginInstance *instance, ListItem *item, gchar *member
     DBusError error;
     gint result = 0;    
     gchar *path;
+    gchar *dest;
     
     //printf("Requesting %s to connection %p\n", member, instance->connection);
     if (instance == NULL) return result;
@@ -523,9 +532,11 @@ gint request_int_value(nsPluginInstance *instance, ListItem *item, gchar *member
         path = instance->path;
     }
     
+    dest = g_strdup_printf("com.gnome.mplayer.cid%i",instance->controlid);
+    
     if (instance->playerready && instance->connection != NULL) {
         localmember = g_strdup(member);
-        message = dbus_message_new_method_call("com.gnome.mplayer", path, "com.gnome.mplayer", localmember);
+        message = dbus_message_new_method_call(dest, path, "com.gnome.mplayer", localmember);
         dbus_error_init(&error);
         replymessage = dbus_connection_send_with_reply_and_block(instance->connection,message, -1 ,&error);
         if (dbus_error_is_set(&error)) {
@@ -535,6 +546,7 @@ gint request_int_value(nsPluginInstance *instance, ListItem *item, gchar *member
         dbus_message_unref(message);
         dbus_message_unref(replymessage);
     }
+    g_free(dest);
     
     return result;
 }
