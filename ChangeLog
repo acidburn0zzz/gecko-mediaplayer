@@ -1,4 +1,5 @@
 Development
+    Trap several instance = NULL cases
     Fix problem where window is destroyed immediately
     Fix NULL pointer problem in several places
     Put xpt files in place that browser can find them
