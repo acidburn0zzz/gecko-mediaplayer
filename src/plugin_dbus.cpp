@@ -310,7 +310,7 @@ void send_signal(nsPluginInstance *instance, ListItem *item, gchar *signal) {
     const char *localsignal;
     gchar *path;
     
-    if (strlen(item->path) > 0) {
+    if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
     } else {
         path = instance->path;
@@ -356,7 +356,7 @@ void send_signal_with_string(nsPluginInstance *instance, ListItem *item, gchar *
     const char *localstr;
     gchar *path;
     
-    if (strlen(item->path) > 0) {
+    if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
     } else {
         path = instance->path;
@@ -378,7 +378,7 @@ void send_signal_with_double(nsPluginInstance *instance, ListItem *item, gchar *
     const char *localsignal;
     gchar *path;
     
-    if (strlen(item->path) > 0) {
+    if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
     } else {
         path = instance->path;
@@ -399,7 +399,7 @@ void send_signal_with_boolean(nsPluginInstance *instance, ListItem *item, gchar 
     const char *localsignal;
     gchar *path;
     
-    if (strlen(item->path) > 0) {
+    if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
     } else {
         path = instance->path;
@@ -423,7 +423,7 @@ gboolean request_boolean_value(nsPluginInstance *instance, ListItem *item, gchar
     gboolean result = FALSE;    
     gchar *path;
     
-    if (strlen(item->path) > 0) {
+    if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
     } else {
         path = instance->path;
@@ -453,7 +453,7 @@ gdouble request_double_value(nsPluginInstance *instance, ListItem *item, gchar *
     gdouble result = 0.0;    
     gchar *path;
     
-    if (strlen(item->path) > 0) {
+    if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
     } else {
         path = instance->path;
@@ -483,7 +483,7 @@ gint request_int_value(nsPluginInstance *instance, ListItem *item, gchar *member
     gint result = 0;    
     gchar *path;
     
-    if (strlen(item->path) > 0) {
+    if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
     } else {
         path = instance->path;

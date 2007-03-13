@@ -27,7 +27,7 @@ xpt_DATA = \
 	gecko-mediaplayer.xpt \
 	gecko-mediaplayer-wmp.xpt
 	
-xptdir = $(DESTDIR)$(libdir)/mozilla/components
+xptdir = $(DESTDIR)$(libdir)/mozilla/plugins
 
 COMMONCODE = \
 	plugin.cpp \
