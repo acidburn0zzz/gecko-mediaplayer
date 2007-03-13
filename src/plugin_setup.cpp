@@ -156,7 +156,7 @@ void new_instance(nsPluginInstance *instance, nsPluginCreateData *parameters) {
     if (href != NULL) {
         href->newwindow = newwindow;
     }
-    list_dump(instance->playlist);
+    // list_dump(instance->playlist);
     
     if (instance->hidden == TRUE) {
         

@@ -164,6 +164,9 @@ nsPluginInstance::~nsPluginInstance()
     // and zero its mPlugin member
     // mScriptablePeer->SetInstance(NULL);
     // NS_IF_RELEASE(mScriptablePeer);
+    
+    mInstance = NULL;
+    
     if (mControlsScriptablePeer != NULL) {
         mControlsScriptablePeer->SetInstance(NULL);
         mControlsScriptablePeer->Release();
@@ -184,7 +187,7 @@ NPBool nsPluginInstance::init(NPWindow * aWindow)
     if (aWindow == NULL)
         return FALSE;
 
-    if (SetWindow(aWindow))
+    //if (SetWindow(aWindow))
         mInitialized = TRUE;
 
     return mInitialized;
@@ -198,6 +201,9 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
     gint ok;
     ListItem *item;
 
+    printf("in setwindow\n");
+    if (!acceptdata) return TRUE;
+    
     if (aWindow == NULL)
         return FALSE;
 
@@ -209,6 +215,7 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
         mWindow = (Window) aWindow->window;
         NPSetWindowCallbackStruct *ws_info = (NPSetWindowCallbackStruct *) aWindow->ws_info;
     }
+    
     
     if (player_launched && mWidth > 0 && mHeight > 0) {
         resize_window(this, NULL, mWidth, mHeight);
@@ -227,10 +234,12 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
                             G_SPAWN_SEARCH_PATH,
                             NULL, NULL, NULL, &error);
 
-        if (ok)	player_launched = TRUE;
+        if (ok) {
+            player_launched = TRUE;
+        }
     }
     
-    
+        
     if (playlist != NULL) {
         item = (ListItem*) playlist->data;
         if (!item->requested) {
@@ -243,6 +252,10 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
             }
         }
     }
+    // flush the glib context 
+    while (g_main_context_pending(NULL)) {
+        g_main_context_iteration(NULL,FALSE);   
+    }    
 
     return TRUE;
 }
@@ -254,8 +267,19 @@ void nsPluginInstance::shut()
     GList *iter;   
     
     acceptdata = FALSE;
+    mInitialized = FALSE;
     
-    list_dump(playlist);
+    //list_dump(playlist);
+    
+    //printf("shut called\n");
+    
+    if (player_launched) {
+        while (!(playerready)) {
+            g_main_context_iteration(NULL,FALSE);   
+        }
+    }
+
+    //printf("player is ready\n");
     
     // printf("clearing list\n");
     if (playlist != NULL) {
@@ -269,19 +293,22 @@ void nsPluginInstance::shut()
         }
     }
     send_signal_when_ready(this, NULL, "Terminate");
-    
-    if (connection != NULL)
-        connection = dbus_unhook(connection, this);
-    
-    
+    playerready = FALSE;
+    //printf("sent terminate\n");
     playlist = list_clear(playlist);
-
+    //printf("cleared playlist\n");
+    
     // flush the glib context 
     while (g_main_context_pending(NULL)) {
         g_main_context_iteration(NULL,FALSE);   
     }    
+    //printf("events flushed\n");
     
-    mInitialized = FALSE;
+    if (connection != NULL) {
+        connection = dbus_unhook(connection, this);
+    }
+    //printf("dbus unhooked\n");
+    
 }
 
 NPBool nsPluginInstance::isInitialized()
@@ -298,7 +325,7 @@ NPError nsPluginInstance::DestroyStream(NPStream * stream, NPError reason)
     gchar *path;
     gboolean ready;
     
-    printf("Entering destroy stream %s\n", stream->url);
+    printf("Entering destroy stream reason = %i for %s\n", reason,stream->url);
     if (reason == NPRES_DONE) {
         item = (ListItem *)stream->notifyData;
         // item = list_find(playlist, (gchar*)stream->url);
@@ -320,21 +347,23 @@ NPError nsPluginInstance::DestroyStream(NPStream * stream, NPError reason)
             ready = item->playerready;
             playlist = list_parse_qt(playlist,item);
             if (item->play) {
-                // printf("Opening %s\n",item->local);
+                printf("Opening %s\n",item->local);
                 open_location(this,item, TRUE);
             } else {
                 item = list_find_next_playable(playlist);
                 item->controlid = id;
                 g_strlcpy(item->path,path,1024);
                 item->playerready = ready;
+                printf("Requesting %s\n",item->src);
                 if (item != NULL)
                     NPN_GetURLNotify(mInstance,item->src, NULL, item);
             }
             g_free(path);
         }
+        printf("Leaving destroy stream src = %s\n", item->src);
     }
     
-    //printf("Leaving destroy stream\n");
+    // list_dump(playlist);
     return NPERR_NO_ERROR;
 }
 
