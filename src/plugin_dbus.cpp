@@ -52,6 +52,8 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
     ListItem *item;
     gchar *arg[10];
     gint i;
+    GRand *rand;
+    gchar *tmp;
          	
     message_type = dbus_message_get_type(message);
     sender = dbus_message_get_sender(message);
@@ -65,14 +67,24 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
     path = instance->path;
     // printf("userdata = %s\n",path);
     	
-    if (dbus_message_get_path(message) != NULL && g_ascii_strcasecmp(dbus_message_get_path(message),path) == 0) {
+//    if (dbus_message_get_path(message) != NULL && g_ascii_strcasecmp(dbus_message_get_path(message),path) == 0) {
+    if (dbus_message_get_path(message) != NULL && is_valid_path(instance, dbus_message_get_path(message))) {
 	
 	// printf("Path matched %s\n", dbus_message_get_path(message));
         if (message_type == DBUS_MESSAGE_TYPE_SIGNAL) {
 			
             if (g_ascii_strcasecmp(dbus_message_get_member(message),"Ready") == 0) {
+                dbus_error_init(&error);
+                if (dbus_message_get_args(message, &error, DBUS_TYPE_INT32, &i, DBUS_TYPE_INVALID)) {
+                    item = list_find_by_controlid(instance->playlist,i);
+                    if (item != NULL) {
+                        list_mark_controlid_ready(instance->playlist,i);
+                        instance->cache_size = request_int_value(instance, item, "GetCacheSize");
+                    } 
+                } else {
+                    dbus_error_free(&error);
+                }
                 instance->playerready = TRUE;
-                instance->cache_size = request_int_value(instance,"GetCacheSize");
                 return DBUS_HANDLER_RESULT_HANDLED;
             }
 
@@ -85,21 +97,29 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                     printf("id %s has url of %s\n",s,item->src);
                     printf("id %s has newwindow = %i\n",s,item->newwindow);
                     if(item->newwindow == 0) {
-                        send_signal_with_boolean(instance,"SetShowControls",TRUE);
+                        send_signal_with_boolean(instance,item, "SetShowControls",TRUE);
                         if (item->streaming) {
-                            send_signal_with_string(instance,"Open",item->src);
+                            send_signal_with_string(instance, item, "Open",item->src);
                         } else {
                             NPN_GetURLNotify(instance->mInstance,item->src, NULL, item);
                         }
                     } else {
                         i = 0;
+                        // generate a random controlid
+                        rand = g_rand_new();
+                        item->controlid = g_rand_int_range(rand,0,65535);
+                        g_rand_free(rand);
+                        tmp = g_strdup_printf("/control/%i",item->controlid);
+                        g_strlcpy(item->path,tmp,1024);
+                        g_free(tmp);
+                        
                         arg[i++] = g_strdup("gnome-mplayer");
-                        arg[i++] = g_strdup_printf("--controlid=%i",instance->controlid);
-                        arg[i++] = g_strdup(item->src);
+                        arg[i++] = g_strdup_printf("--controlid=%i",item->controlid);
                         arg[i] = NULL;
                         g_spawn_async(NULL, arg, NULL,
                                            G_SPAWN_SEARCH_PATH,
                                            NULL, NULL, NULL, NULL);
+                        NPN_GetURLNotify(instance->mInstance,item->src, NULL, item);                        
                     }
                     instance->lastopened->played = TRUE;
                     item->requested = TRUE;
@@ -188,6 +208,8 @@ void open_location(nsPluginInstance *instance, ListItem *item, gboolean uselocal
     gint arg = 0;
     gint ok;
     
+    list_dump(instance->playlist);
+    
     if (!(instance->player_launched)) {
         if (!item->opened) {
             if (uselocal) {
@@ -217,6 +239,12 @@ void open_location(nsPluginInstance *instance, ListItem *item, gboolean uselocal
     
         while (!(instance->playerready)) {
             g_main_context_iteration(NULL,FALSE);   
+        }
+        
+        if (item->controlid != 0) {
+            while (!(item->playerready)) {
+                g_main_context_iteration(NULL,FALSE);   
+            }
         }
     }
     
@@ -253,15 +281,22 @@ void open_location(nsPluginInstance *instance, ListItem *item, gboolean uselocal
     }    
 }
 
-void resize_window(nsPluginInstance *instance, gint x, gint y) {
+void resize_window(nsPluginInstance *instance, ListItem *item, gint x, gint y) {
     DBusMessage *message;
+    gchar *path;
     
+    if (item != NULL && strlen(item->path) > 0) {
+        path = item->path;
+    } else {
+        path = instance->path;
+    }
+   
     while (!(instance->playerready)) {
         g_main_context_iteration(NULL,FALSE);   
     }
         
     if (instance->playerready) {
-        message = dbus_message_new_signal(instance->path,"com.gnome.mplayer", "ResizeWindow");
+        message = dbus_message_new_signal(path,"com.gnome.mplayer", "ResizeWindow");
         dbus_message_append_args(message, DBUS_TYPE_INT32, &x, DBUS_TYPE_INT32, &y, DBUS_TYPE_INVALID);
         dbus_connection_send(instance->connection,message,NULL);
         dbus_message_unref(message);
@@ -270,22 +305,36 @@ void resize_window(nsPluginInstance *instance, gint x, gint y) {
 }
 
 
-void send_signal(nsPluginInstance *instance, gchar *signal) {
+void send_signal(nsPluginInstance *instance, ListItem *item, gchar *signal) {
     DBusMessage *message;
     const char *localsignal;
+    gchar *path;
+    
+    if (strlen(item->path) > 0) {
+        path = item->path;
+    } else {
+        path = instance->path;
+    }
     
     if (instance->playerready) {
         localsignal = g_strdup(signal);
-        message = dbus_message_new_signal(instance->path,"com.gnome.mplayer", localsignal);
+        message = dbus_message_new_signal(path,"com.gnome.mplayer", localsignal);
         dbus_connection_send(instance->connection,message,NULL);
         dbus_message_unref(message);
     }
     
 }
 
-void send_signal_when_ready(nsPluginInstance *instance, gchar *signal) {
+void send_signal_when_ready(nsPluginInstance *instance, ListItem *item, gchar *signal) {
     DBusMessage *message;
     const char *localsignal;
+    gchar *path;
+    
+    if (item != NULL && strlen(item->path) > 0) {
+        path = item->path;
+    } else {
+        path = instance->path;
+    }
     
     if (instance->player_launched) {
         while (!(instance->playerready)) {
@@ -294,22 +343,29 @@ void send_signal_when_ready(nsPluginInstance *instance, gchar *signal) {
             
         if (instance->playerready) {
             localsignal = g_strdup(signal);
-            message = dbus_message_new_signal(instance->path,"com.gnome.mplayer", localsignal);
+            message = dbus_message_new_signal(path,"com.gnome.mplayer", localsignal);
             dbus_connection_send(instance->connection,message,NULL);
             dbus_message_unref(message);
         }
     } 
 }
 
-void send_signal_with_string(nsPluginInstance *instance, gchar *signal, gchar *str) {
+void send_signal_with_string(nsPluginInstance *instance, ListItem *item, gchar *signal, gchar *str) {
     DBusMessage *message;
     const char *localsignal;
     const char *localstr;
+    gchar *path;
+    
+    if (strlen(item->path) > 0) {
+        path = item->path;
+    } else {
+        path = instance->path;
+    }
     
     if (instance->playerready) {
         localsignal = g_strdup(signal);
         localstr = g_strdup(str);
-        message = dbus_message_new_signal(instance->path,"com.gnome.mplayer", localsignal);
+        message = dbus_message_new_signal(path,"com.gnome.mplayer", localsignal);
         dbus_message_append_args(message, DBUS_TYPE_STRING, &localstr, DBUS_TYPE_INVALID);
         dbus_connection_send(instance->connection,message,NULL);
         dbus_message_unref(message);
@@ -317,13 +373,20 @@ void send_signal_with_string(nsPluginInstance *instance, gchar *signal, gchar *s
     
 }
 
-void send_signal_with_double(nsPluginInstance *instance, gchar *signal, gdouble dbl) {
+void send_signal_with_double(nsPluginInstance *instance, ListItem *item, gchar *signal, gdouble dbl) {
     DBusMessage *message;
     const char *localsignal;
+    gchar *path;
+    
+    if (strlen(item->path) > 0) {
+        path = item->path;
+    } else {
+        path = instance->path;
+    }
     
     if (instance->playerready) {
         localsignal = g_strdup(signal);
-        message = dbus_message_new_signal(instance->path,"com.gnome.mplayer", localsignal);
+        message = dbus_message_new_signal(path,"com.gnome.mplayer", localsignal);
         dbus_message_append_args(message, DBUS_TYPE_DOUBLE, &dbl, DBUS_TYPE_INVALID);
         dbus_connection_send(instance->connection,message,NULL);
         dbus_message_unref(message);
@@ -331,13 +394,20 @@ void send_signal_with_double(nsPluginInstance *instance, gchar *signal, gdouble 
     
 }
 
-void send_signal_with_boolean(nsPluginInstance *instance, gchar *signal, gboolean boolean) {
+void send_signal_with_boolean(nsPluginInstance *instance, ListItem *item, gchar *signal, gboolean boolean) {
     DBusMessage *message;
     const char *localsignal;
+    gchar *path;
+    
+    if (strlen(item->path) > 0) {
+        path = item->path;
+    } else {
+        path = instance->path;
+    }
     
     if (instance->playerready) {
         localsignal = g_strdup(signal);
-        message = dbus_message_new_signal(instance->path,"com.gnome.mplayer", localsignal);
+        message = dbus_message_new_signal(path,"com.gnome.mplayer", localsignal);
         dbus_message_append_args(message, DBUS_TYPE_BOOLEAN, &boolean, DBUS_TYPE_INVALID);
         dbus_connection_send(instance->connection,message,NULL);
         dbus_message_unref(message);
@@ -345,16 +415,23 @@ void send_signal_with_boolean(nsPluginInstance *instance, gchar *signal, gboolea
     
 }
 
-gboolean request_boolean_value(nsPluginInstance *instance, gchar *member) {
+gboolean request_boolean_value(nsPluginInstance *instance, ListItem *item, gchar *member) {
     DBusMessage *message;
     DBusMessage *replymessage;
     const gchar *localmember;
     DBusError error;
     gboolean result = FALSE;    
+    gchar *path;
+    
+    if (strlen(item->path) > 0) {
+        path = item->path;
+    } else {
+        path = instance->path;
+    }
     
     if (instance->playerready) {
         localmember = g_strdup(member);
-        message = dbus_message_new_method_call("com.gnome.mplayer", instance->path, "com.gnome.mplayer", localmember);
+        message = dbus_message_new_method_call("com.gnome.mplayer", path, "com.gnome.mplayer", localmember);
         dbus_error_init(&error);
         replymessage = dbus_connection_send_with_reply_and_block(instance->connection,message, -1 ,&error);
         if (dbus_error_is_set(&error)) {
@@ -368,16 +445,23 @@ gboolean request_boolean_value(nsPluginInstance *instance, gchar *member) {
     return result;
 }
 
-gdouble request_double_value(nsPluginInstance *instance, gchar *member) {
+gdouble request_double_value(nsPluginInstance *instance, ListItem *item, gchar *member) {
     DBusMessage *message;
     DBusMessage *replymessage;
     const gchar *localmember;
     DBusError error;
     gdouble result = 0.0;    
+    gchar *path;
+    
+    if (strlen(item->path) > 0) {
+        path = item->path;
+    } else {
+        path = instance->path;
+    }
     
     if (instance->playerready) {
         localmember = g_strdup(member);
-        message = dbus_message_new_method_call("com.gnome.mplayer", instance->path, "com.gnome.mplayer", localmember);
+        message = dbus_message_new_method_call("com.gnome.mplayer", path, "com.gnome.mplayer", localmember);
         dbus_error_init(&error);
         replymessage = dbus_connection_send_with_reply_and_block(instance->connection,message, -1 ,&error);
         if (dbus_error_is_set(&error)) {
@@ -391,16 +475,23 @@ gdouble request_double_value(nsPluginInstance *instance, gchar *member) {
     return result;
 }
 
-gint request_int_value(nsPluginInstance *instance, gchar *member) {
+gint request_int_value(nsPluginInstance *instance, ListItem *item, gchar *member) {
     DBusMessage *message;
     DBusMessage *replymessage;
     const gchar *localmember;
     DBusError error;
     gint result = 0;    
+    gchar *path;
+    
+    if (strlen(item->path) > 0) {
+        path = item->path;
+    } else {
+        path = instance->path;
+    }
     
     if (instance->playerready) {
         localmember = g_strdup(member);
-        message = dbus_message_new_method_call("com.gnome.mplayer", instance->path, "com.gnome.mplayer", localmember);
+        message = dbus_message_new_method_call("com.gnome.mplayer", path, "com.gnome.mplayer", localmember);
         dbus_error_init(&error);
         replymessage = dbus_connection_send_with_reply_and_block(instance->connection,message, -1 ,&error);
         if (dbus_error_is_set(&error)) {
@@ -412,4 +503,31 @@ gint request_int_value(nsPluginInstance *instance, gchar *member) {
     }
     
     return result;
+}
+
+gboolean is_valid_path(nsPluginInstance *instance, const char *message) {
+    gboolean result = FALSE;
+    ListItem *item;
+    GList *iter;   
+    
+    if (g_ascii_strcasecmp(message,instance->path) == 0) {
+        
+        result = TRUE;
+        
+    } else {
+    
+        if (instance->playlist != NULL) {
+            for (iter = instance->playlist; iter !=NULL; iter = g_list_next(iter)) {
+                item = (ListItem *)iter->data;
+                if (item != NULL) {
+                    if (g_ascii_strcasecmp(message,item->path) == 0) {
+                        result = TRUE;
+                    }
+                }
+            }
+        }
+        
+    }
+    
+    return result; 
 }
