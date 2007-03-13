@@ -250,11 +250,6 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
             }
         }
     }
-    // flush the glib context 
-    while (g_main_context_pending(NULL)) {
-        g_main_context_iteration(NULL,FALSE);   
-    }    
-
     return TRUE;
 }
 
@@ -267,12 +262,6 @@ void nsPluginInstance::shut()
     acceptdata = FALSE;
     mInitialized = FALSE;
     
-    if (player_launched) {
-        while (!(playerready)) {
-            g_main_context_iteration(NULL,FALSE);   
-        }
-    }
-
     if (playlist != NULL) {
         for (iter = playlist; iter !=NULL; iter = g_list_next(iter)) {
             item = (ListItem *)iter->data;
