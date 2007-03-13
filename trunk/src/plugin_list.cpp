@@ -76,13 +76,18 @@ ListItem *list_find_by_controlid(GList* list, gint id) {
     GList *iter;   
     
     for (iter = list; iter !=NULL; iter = g_list_next(iter)) {
-        item = (ListItem *)iter->data;
-        if (item != NULL) {
-            if (item->controlid == id) {
-                return item;
+        if (iter != NULL) {
+            item = (ListItem *)iter->data;
+            //printf("item = %p\n",item);
+            if (item != NULL) {
+                if (item->controlid == id) {
+                    //printf("leaving with id = %i\n",id);
+                    return item;
+                }
             }
         }
     }
+    //printf("item = %p\n",item);
     
     return NULL;    
 }

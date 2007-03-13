@@ -70,21 +70,24 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
 //    if (dbus_message_get_path(message) != NULL && g_ascii_strcasecmp(dbus_message_get_path(message),path) == 0) {
     if (dbus_message_get_path(message) != NULL && is_valid_path(instance, dbus_message_get_path(message))) {
 	
-	// printf("Path matched %s\n", dbus_message_get_path(message));
+	//printf("Path matched %s\n", dbus_message_get_path(message));
         if (message_type == DBUS_MESSAGE_TYPE_SIGNAL) {
-			
             if (g_ascii_strcasecmp(dbus_message_get_member(message),"Ready") == 0) {
                 dbus_error_init(&error);
                 if (dbus_message_get_args(message, &error, DBUS_TYPE_INT32, &i, DBUS_TYPE_INVALID)) {
                     item = list_find_by_controlid(instance->playlist,i);
                     if (item != NULL) {
                         list_mark_controlid_ready(instance->playlist,i);
-                        instance->cache_size = request_int_value(instance, item, "GetCacheSize");
-                    } 
+                    } else {
+                        // printf("Control id not found\n");
+                    }
                 } else {
                     dbus_error_free(&error);
                 }
+                
                 instance->playerready = TRUE;
+                instance->cache_size = request_int_value(instance, item, "GetCacheSize");
+                // printf("cache size = %i\n",instance->cache_size);
                 return DBUS_HANDLER_RESULT_HANDLED;
             }
 
@@ -192,6 +195,7 @@ DBusConnection *dbus_hookup(nsPluginInstance *instance) {
 
 DBusConnection *dbus_unhook(DBusConnection *connection, nsPluginInstance *instance) {
     
+    dbus_connection_flush(connection);
     dbus_connection_remove_filter(connection,filter_func, instance);
     dbus_connection_unref(connection);
     
@@ -209,6 +213,7 @@ void open_location(nsPluginInstance *instance, ListItem *item, gboolean uselocal
     gint ok;
     
     list_dump(instance->playlist);
+    //printf("Sending Open %s to connection %p\n",file, instance->connection);
     
     if (!(instance->player_launched)) {
         if (!item->opened) {
@@ -218,6 +223,7 @@ void open_location(nsPluginInstance *instance, ListItem *item, gboolean uselocal
                 file = g_strdup(item->src);
             }
             
+            //printf("launching gnome-mplayer from Open with id = %i\n",instance->controlid);
             argvn[arg++] = g_strdup_printf("gnome-mplayer");
             argvn[arg++] = g_strdup_printf("--controlid=%i",instance->controlid);
             argvn[arg++] = g_strdup_printf("%s",file);
@@ -261,6 +267,7 @@ void open_location(nsPluginInstance *instance, ListItem *item, gboolean uselocal
             path = instance->path;
         }
         
+        //printf("Sending Open %s to connection %p\n",file, instance->connection);
         if (item->hrefid == 0) {
             message = dbus_message_new_signal(path,"com.gnome.mplayer","Open");
             dbus_message_append_args(message, DBUS_TYPE_STRING, &file, DBUS_TYPE_INVALID);
@@ -285,21 +292,21 @@ void resize_window(nsPluginInstance *instance, ListItem *item, gint x, gint y) {
     DBusMessage *message;
     gchar *path;
     
+    
     if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
     } else {
         path = instance->path;
     }
-   
-    while (!(instance->playerready)) {
-        g_main_context_iteration(NULL,FALSE);   
-    }
-        
+
     if (instance->playerready) {
-        message = dbus_message_new_signal(path,"com.gnome.mplayer", "ResizeWindow");
-        dbus_message_append_args(message, DBUS_TYPE_INT32, &x, DBUS_TYPE_INT32, &y, DBUS_TYPE_INVALID);
-        dbus_connection_send(instance->connection,message,NULL);
-        dbus_message_unref(message);
+        if (instance->connection != NULL) {
+            // printf("Sending ResizeWindow to connection %p\n", instance->connection);
+            message = dbus_message_new_signal(path,"com.gnome.mplayer", "ResizeWindow");
+            dbus_message_append_args(message, DBUS_TYPE_INT32, &x, DBUS_TYPE_INT32, &y, DBUS_TYPE_INVALID);
+            dbus_connection_send(instance->connection,message,NULL);
+            dbus_message_unref(message);
+        }
     }
     
 }
@@ -310,13 +317,15 @@ void send_signal(nsPluginInstance *instance, ListItem *item, gchar *signal) {
     const char *localsignal;
     gchar *path;
     
+    // printf("Sending %s to connection %p\n", signal, instance->connection);
+    
     if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
     } else {
         path = instance->path;
     }
     
-    if (instance->playerready) {
+    if (instance->playerready && instance->connection != NULL) {
         localsignal = g_strdup(signal);
         message = dbus_message_new_signal(path,"com.gnome.mplayer", localsignal);
         dbus_connection_send(instance->connection,message,NULL);
@@ -341,11 +350,16 @@ void send_signal_when_ready(nsPluginInstance *instance, ListItem *item, gchar *s
             g_main_context_iteration(NULL,FALSE);   
         }
             
-        if (instance->playerready) {
+        if (instance->playerready && instance->connection != NULL) {
+            //printf("Sending %s to connection %p\n", signal, instance->connection);
             localsignal = g_strdup(signal);
             message = dbus_message_new_signal(path,"com.gnome.mplayer", localsignal);
             dbus_connection_send(instance->connection,message,NULL);
             dbus_message_unref(message);
+            //printf("Sent %s to connection %p\n", signal, instance->connection);
+            while (g_main_context_pending(NULL)) {
+                g_main_context_iteration(NULL,FALSE);   
+            }    
         }
     } 
 }
@@ -356,13 +370,15 @@ void send_signal_with_string(nsPluginInstance *instance, ListItem *item, gchar *
     const char *localstr;
     gchar *path;
     
+    //printf("Sending %s to connection %p\n", signal, instance->connection);
+    
     if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
     } else {
         path = instance->path;
     }
     
-    if (instance->playerready) {
+    if (instance->playerready && instance->connection != NULL) {
         localsignal = g_strdup(signal);
         localstr = g_strdup(str);
         message = dbus_message_new_signal(path,"com.gnome.mplayer", localsignal);
@@ -378,13 +394,15 @@ void send_signal_with_double(nsPluginInstance *instance, ListItem *item, gchar *
     const char *localsignal;
     gchar *path;
     
+    //printf("Sending %s to connection %p\n", signal, instance->connection);
+    
     if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
     } else {
         path = instance->path;
     }
     
-    if (instance->playerready) {
+    if (instance->playerready && instance->connection != NULL) {
         localsignal = g_strdup(signal);
         message = dbus_message_new_signal(path,"com.gnome.mplayer", localsignal);
         dbus_message_append_args(message, DBUS_TYPE_DOUBLE, &dbl, DBUS_TYPE_INVALID);
@@ -399,13 +417,15 @@ void send_signal_with_boolean(nsPluginInstance *instance, ListItem *item, gchar 
     const char *localsignal;
     gchar *path;
     
+    //printf("Sending %s to connection %p\n", signal, instance->connection);
+    
     if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
     } else {
         path = instance->path;
     }
     
-    if (instance->playerready) {
+    if (instance->playerready && instance->connection != NULL) {
         localsignal = g_strdup(signal);
         message = dbus_message_new_signal(path,"com.gnome.mplayer", localsignal);
         dbus_message_append_args(message, DBUS_TYPE_BOOLEAN, &boolean, DBUS_TYPE_INVALID);
@@ -423,13 +443,15 @@ gboolean request_boolean_value(nsPluginInstance *instance, ListItem *item, gchar
     gboolean result = FALSE;    
     gchar *path;
     
+    //printf("Requesting %s to connection %p\n", member, instance->connection);
+
     if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
     } else {
         path = instance->path;
     }
     
-    if (instance->playerready) {
+    if (instance->playerready && instance->connection != NULL) {
         localmember = g_strdup(member);
         message = dbus_message_new_method_call("com.gnome.mplayer", path, "com.gnome.mplayer", localmember);
         dbus_error_init(&error);
@@ -453,13 +475,15 @@ gdouble request_double_value(nsPluginInstance *instance, ListItem *item, gchar *
     gdouble result = 0.0;    
     gchar *path;
     
+    //printf("Requesting %s to connection %p\n", member, instance->connection);
+    
     if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
     } else {
         path = instance->path;
     }
     
-    if (instance->playerready) {
+    if (instance->playerready && instance->connection != NULL) {
         localmember = g_strdup(member);
         message = dbus_message_new_method_call("com.gnome.mplayer", path, "com.gnome.mplayer", localmember);
         dbus_error_init(&error);
@@ -483,13 +507,15 @@ gint request_int_value(nsPluginInstance *instance, ListItem *item, gchar *member
     gint result = 0;    
     gchar *path;
     
+    //printf("Requesting %s to connection %p\n", member, instance->connection);
+
     if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
     } else {
         path = instance->path;
     }
     
-    if (instance->playerready) {
+    if (instance->playerready && instance->connection != NULL) {
         localmember = g_strdup(member);
         message = dbus_message_new_method_call("com.gnome.mplayer", path, "com.gnome.mplayer", localmember);
         dbus_error_init(&error);
@@ -510,6 +536,7 @@ gboolean is_valid_path(nsPluginInstance *instance, const char *message) {
     ListItem *item;
     GList *iter;   
     
+    // printf("entering is_valid_path\n");
     if (g_ascii_strcasecmp(message,instance->path) == 0) {
         
         result = TRUE;
@@ -528,6 +555,7 @@ gboolean is_valid_path(nsPluginInstance *instance, const char *message) {
         }
         
     }
+    // printf("leaving is_valid_path = %i\n", result);
     
     return result; 
 }

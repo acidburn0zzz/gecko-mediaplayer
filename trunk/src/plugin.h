@@ -132,7 +132,6 @@ class nsPluginInstance:public nsPluginInstanceBase {
     gboolean hidden;
     gint controlid;
     gint state;
-    
 };
 
 #endif                          // __PLUGIN_H__
