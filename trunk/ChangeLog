@@ -1,4 +1,7 @@
 Development
+    Fix NULL pointer problem in several places
+    Put xpt files in place that browser can find them
+    Bump version
     Make Apple HD trailers cache properly
     When sending command, check for control id on item and then use instance
     Handle "filename" embed tag
