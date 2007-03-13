@@ -292,6 +292,7 @@ void resize_window(nsPluginInstance *instance, ListItem *item, gint x, gint y) {
     DBusMessage *message;
     gchar *path;
     
+    if (instance == NULL) return;
     
     if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
@@ -318,6 +319,7 @@ void send_signal(nsPluginInstance *instance, ListItem *item, gchar *signal) {
     gchar *path;
     
     // printf("Sending %s to connection %p\n", signal, instance->connection);
+    if (instance == NULL) return;
     
     if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
@@ -338,6 +340,8 @@ void send_signal_when_ready(nsPluginInstance *instance, ListItem *item, gchar *s
     DBusMessage *message;
     const char *localsignal;
     gchar *path;
+    
+    if (instance == NULL) return;
     
     if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
@@ -371,6 +375,7 @@ void send_signal_with_string(nsPluginInstance *instance, ListItem *item, gchar *
     gchar *path;
     
     //printf("Sending %s to connection %p\n", signal, instance->connection);
+    if (instance == NULL) return;
     
     if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
@@ -395,6 +400,7 @@ void send_signal_with_double(nsPluginInstance *instance, ListItem *item, gchar *
     gchar *path;
     
     //printf("Sending %s to connection %p\n", signal, instance->connection);
+    if (instance == NULL) return;
     
     if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
@@ -418,6 +424,7 @@ void send_signal_with_boolean(nsPluginInstance *instance, ListItem *item, gchar 
     gchar *path;
     
     //printf("Sending %s to connection %p\n", signal, instance->connection);
+    if (instance == NULL) return;
     
     if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
@@ -444,6 +451,7 @@ gboolean request_boolean_value(nsPluginInstance *instance, ListItem *item, gchar
     gchar *path;
     
     //printf("Requesting %s to connection %p\n", member, instance->connection);
+    if (instance == NULL) return result;
 
     if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
@@ -476,6 +484,7 @@ gdouble request_double_value(nsPluginInstance *instance, ListItem *item, gchar *
     gchar *path;
     
     //printf("Requesting %s to connection %p\n", member, instance->connection);
+    if (instance == NULL) return result;
     
     if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
@@ -508,6 +517,7 @@ gint request_int_value(nsPluginInstance *instance, ListItem *item, gchar *member
     gchar *path;
     
     //printf("Requesting %s to connection %p\n", member, instance->connection);
+    if (instance == NULL) return result;
 
     if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
@@ -536,7 +546,8 @@ gboolean is_valid_path(nsPluginInstance *instance, const char *message) {
     ListItem *item;
     GList *iter;   
     
-    // printf("entering is_valid_path\n");
+    if (instance == NULL) return result;
+    
     if (g_ascii_strcasecmp(message,instance->path) == 0) {
         
         result = TRUE;
@@ -555,7 +566,6 @@ gboolean is_valid_path(nsPluginInstance *instance, const char *message) {
         }
         
     }
-    // printf("leaving is_valid_path = %i\n", result);
     
     return result; 
 }
