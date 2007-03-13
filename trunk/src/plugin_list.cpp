@@ -71,6 +71,39 @@ ListItem *list_find_by_id(GList* list, gint id) {
     return NULL;    
 }
 
+ListItem *list_find_by_controlid(GList* list, gint id) {
+    ListItem *item;
+    GList *iter;   
+    
+    for (iter = list; iter !=NULL; iter = g_list_next(iter)) {
+        item = (ListItem *)iter->data;
+        if (item != NULL) {
+            if (item->controlid == id) {
+                return item;
+            }
+        }
+    }
+    
+    return NULL;    
+}
+
+void list_mark_controlid_ready(GList* list, gint id) {
+    ListItem *item;
+    GList *iter;   
+    
+    for (iter = list; iter !=NULL; iter = g_list_next(iter)) {
+        item = (ListItem *)iter->data;
+        if (item != NULL) {
+            if (item->controlid == id) {
+                item->playerready = TRUE;
+            }
+        }
+    }
+    
+    return;    
+}
+
+
 ListItem *list_find_next_playable(GList* list) {
     ListItem *item;
     GList *iter;   
@@ -123,6 +156,9 @@ void list_dump(GList *list) {
                 printf("src = %s\n",item->src);
                 printf("id = %i\n",item->id);
                 printf("play = %i\n",item->play);
+                printf("path = %s\n",item->path);
+                printf("controlid = %i\n",item->controlid);
+                printf("playerready = %i\n", item->playerready);
             }
         }
     }
@@ -144,7 +180,7 @@ GList *list_parse_qt(GList *list, ListItem *item) {
     
     gint i;
     
-    //printf("Entering list_parse_qt\n");
+    printf("Entering list_parse_qt localsize = %i\n", item->localsize);
     
     if (item->localsize < (16*1024)) {
         if (g_file_get_contents(item->local,&data,&datalen,NULL)) {

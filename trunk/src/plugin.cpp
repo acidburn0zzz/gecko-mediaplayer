@@ -211,7 +211,7 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
     }
     
     if (player_launched && mWidth > 0 && mHeight > 0) {
-        resize_window(this, mWidth, mHeight);
+        resize_window(this, NULL, mWidth, mHeight);
     }
     
     if (!player_launched && mWidth > 0 && mHeight > 0) {
@@ -250,13 +250,29 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
 
 void nsPluginInstance::shut()
 {
+    ListItem *item;
+    GList *iter;   
     
     acceptdata = FALSE;
     
-    send_signal_when_ready(this,"Terminate");
+    list_dump(playlist);
+    
+    // printf("clearing list\n");
+    if (playlist != NULL) {
+        for (iter = playlist; iter !=NULL; iter = g_list_next(iter)) {
+            item = (ListItem *)iter->data;
+            if (item != NULL) {
+                if (item->controlid != 0) {
+                    send_signal_when_ready(this, item, "Terminate");                    
+                }
+            }
+        }
+    }
+    send_signal_when_ready(this, NULL, "Terminate");
     
     if (connection != NULL)
         connection = dbus_unhook(connection, this);
+    
     
     playlist = list_clear(playlist);
 
@@ -278,6 +294,9 @@ NPError nsPluginInstance::DestroyStream(NPStream * stream, NPError reason)
     ListItem *item;
     DBusMessage *message;
     const char *file;
+    gint id;
+    gchar *path;
+    gboolean ready;
     
     printf("Entering destroy stream %s\n", stream->url);
     if (reason == NPRES_DONE) {
@@ -296,26 +315,22 @@ NPError nsPluginInstance::DestroyStream(NPStream * stream, NPError reason)
         }
         
         if (!item->opened) {
+            id = item->controlid;
+            path = g_strdup(item->path);
+            ready = item->playerready;
             playlist = list_parse_qt(playlist,item);
             if (item->play) {
                 // printf("Opening %s\n",item->local);
                 open_location(this,item, TRUE);
             } else {
                 item = list_find_next_playable(playlist);
+                item->controlid = id;
+                g_strlcpy(item->path,path,1024);
+                item->playerready = ready;
                 if (item != NULL)
                     NPN_GetURLNotify(mInstance,item->src, NULL, item);
             }
-            /*
-            file = g_strdup(item->local);
-            while (!playerready) {
-                // printf("waiting for player\n");
-                g_main_context_iteration(NULL,FALSE);   
-            }
-            message = dbus_message_new_signal(path,"com.gnome.mplayer","Open");
-            dbus_message_append_args(message, DBUS_TYPE_STRING, &file, DBUS_TYPE_INVALID);
-            dbus_connection_send(connection,message,NULL);
-            dbus_message_unref(message);
-            */
+            g_free(path);
         }
     }
     
@@ -413,6 +428,9 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len,
     int32 wrotebytes;
     gchar *text;
     gdouble percent = 0.0;
+    gint id;
+    gchar *path;
+    gboolean ready;
     
     if (!acceptdata)
         return -1;
@@ -441,30 +459,39 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len,
             if (item->opened) {
                 
                 percent = (gdouble)item->localsize / (gdouble)item->mediasize;
-                send_signal_with_double(this,"SetCachePercent",percent);
+                send_signal_with_double(this, item, "SetCachePercent",percent);
                 
             } else {
                 percent = (gdouble)item->localsize / (gdouble)item->mediasize;
-                send_signal_with_double(this,"SetPercent",percent);
-                send_signal_with_double(this,"SetCachePercent",percent);
+                send_signal_with_double(this, item, "SetPercent",percent);
+                send_signal_with_double(this, item, "SetCachePercent",percent);
                 
                 text = g_strdup_printf(_("Cache fill: %2.2f%%"), percent * 100.0);
-                send_signal_with_string(this,"SetProgressText",text);
+                send_signal_with_string(this, item, "SetProgressText",text);
             }
         }
         
         // if not opened, over cache level and not an href target then try and open it
-        if ((!item->opened) && (percent > 0.2) && (item->localsize > (cache_size * 1024)) && item->id == 0) {
+        if ((!item->opened) && (percent > 0.2) && (item->localsize > (cache_size * 1024))) {
+            id = item->controlid;
+            path = g_strdup(item->path);
+            ready = item->playerready;
             playlist = list_parse_qt(playlist,item);
             if (item->play) {
                 open_location(this,item, TRUE);
             } else {
                 item = list_find_next_playable(playlist);
+                item->controlid = id;
+                g_strlcpy(item->path,path,1024);
+                item->playerready = ready;
                 if (item != NULL)
                     NPN_GetURLNotify(mInstance,item->src, NULL, item);
             }
+            g_free(path);
         }
+        
     }
+
     return wrotebytes;
 }
 // These are the javascript method callbacks
@@ -481,77 +508,77 @@ void nsPluginInstance::showVersion()
 void nsPluginInstance::Play()
 {
     //printf("Play inside plugin\nThis = %p\n", this);
-    send_signal(this,"Play");
+    send_signal(this, this->lastopened, "Play");
 }
 
 void nsPluginInstance::Pause()
 {
-    send_signal(this,"Pause");
+    send_signal(this, this->lastopened,"Pause");
 }
 
 void nsPluginInstance::Stop()
 {
-    send_signal(this,"Stop");
+    send_signal(this, this->lastopened,"Stop");
 }
 
 void nsPluginInstance::FastForward()
 {
-    send_signal(this,"FastForward");
+    send_signal(this, this->lastopened,"FastForward");
 }
 
 void nsPluginInstance::FastReverse()
 {
-    send_signal(this,"FastReverse");
+    send_signal(this, this->lastopened,"FastReverse");
 }
 
 void nsPluginInstance::Seek(double counter)
 {
-    send_signal_with_double(this,"Seek",counter);
+    send_signal_with_double(this, this->lastopened, "Seek",counter);
 }
 
 void nsPluginInstance::SetShowControls(PRBool value)
 {
-    send_signal_with_boolean(this,"SetShowControls",value);
+    send_signal_with_boolean(this,this->lastopened, "SetShowControls",value);
 }
 
 void nsPluginInstance::SetFullScreen(PRBool value)
 {
-    send_signal_with_boolean(this,"SetFullScreen",value);
+    send_signal_with_boolean(this,this->lastopened, "SetFullScreen",value);
 }
 
 void nsPluginInstance::SetVolume(double value)
 {
-    send_signal_with_double(this,"Volume", value);
+    send_signal_with_double(this,this->lastopened, "Volume", value);
 }
 
 void nsPluginInstance::GetVolume(double *_retval)
 {
-    *_retval = request_double_value(this,"GetVolume");
+    *_retval = request_double_value(this,this->lastopened, "GetVolume");
 }
 
 void nsPluginInstance::GetFullScreen(PRBool *_retval)
 {
-    *_retval = request_boolean_value(this,"GetFullScreen");
+    *_retval = request_boolean_value(this,this->lastopened, "GetFullScreen");
 }
 
 void nsPluginInstance::GetShowControls(PRBool *_retval)
 {
-    *_retval = request_boolean_value(this,"GetShowControls");
+    *_retval = request_boolean_value(this,this->lastopened, "GetShowControls");
 }
 
 void nsPluginInstance::GetTime(double *_retval)
 {
-    *_retval = request_double_value(this,"GetTime");
+    *_retval = request_double_value(this,this->lastopened, "GetTime");
 }
 
 void nsPluginInstance::GetDuration(double *_retval)
 {
-    *_retval = request_double_value(this,"GetDuration");
+    *_retval = request_double_value(this,this->lastopened, "GetDuration");
 }
 
 void nsPluginInstance::GetPercent(double *_retval)
 {
-    *_retval = request_double_value(this,"GetPercent");
+    *_retval = request_double_value(this,this->lastopened, "GetPercent");
 }
 
 void nsPluginInstance::GetFilename(char **filename)

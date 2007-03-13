@@ -48,14 +48,15 @@
 DBusConnection *dbus_hookup(nsPluginInstance *instance);
 DBusConnection *dbus_unhook(DBusConnection *connection, nsPluginInstance *instance);
 void open_location(nsPluginInstance *instance, ListItem *item, gboolean uselocal);
-void resize_window(nsPluginInstance *instance, gint x, gint y);
-void send_signal(nsPluginInstance *instance, gchar *signal);
-void send_signal_when_ready(nsPluginInstance *instance, gchar *signal);
-void send_signal_with_string(nsPluginInstance *instance, gchar *signal, gchar *str);
-void send_signal_with_double(nsPluginInstance *instance, gchar *signal, gdouble dbl);
-void send_signal_with_boolean(nsPluginInstance *instance, gchar *signal, gboolean boolean);
-gboolean request_boolean_value(nsPluginInstance *instance, gchar *member);
-gdouble request_double_value(nsPluginInstance *instance, gchar *member);
-gint request_int_value(nsPluginInstance *instance, gchar *member);
-        
+void resize_window(nsPluginInstance *instance, ListItem *item, gint x, gint y);
+void send_signal(nsPluginInstance *instance, ListItem *item, gchar *signal);
+void send_signal_when_ready(nsPluginInstance *instance, ListItem *item, gchar *signal);
+void send_signal_with_string(nsPluginInstance *instance, ListItem *item, gchar *signal, gchar *str);
+void send_signal_with_double(nsPluginInstance *instance, ListItem *item, gchar *signal, gdouble dbl);
+void send_signal_with_boolean(nsPluginInstance *instance, ListItem *item, gchar *signal, gboolean boolean);
+gboolean request_boolean_value(nsPluginInstance *instance, ListItem *item, gchar *member);
+gdouble request_double_value(nsPluginInstance *instance, ListItem *item, gchar *member);
+gint request_int_value(nsPluginInstance *instance, ListItem *item, gchar *member);
+gboolean is_valid_path(nsPluginInstance *instance, const char *message);
+ 
 #endif // _PLUGIN_DBUS_H

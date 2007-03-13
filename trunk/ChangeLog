@@ -1,4 +1,6 @@
 Development
+    Make Apple HD trailers cache properly
+    When sending command, check for control id on item and then use instance
     Handle "filename" embed tag
     Implement GetLoop, SetLoop and loop embed tag methods
     Implement GetMIMEType JS Method

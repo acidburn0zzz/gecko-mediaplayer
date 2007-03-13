@@ -48,6 +48,8 @@ typedef struct _ListItem {
     gchar path[1024];
     gint id;
     gint hrefid;
+    gint controlid;
+    gboolean playerready;
     gboolean newwindow;
     gboolean streaming;
     gboolean requested;
@@ -64,6 +66,8 @@ typedef struct _ListItem {
         
 ListItem *list_find(GList *list, gchar *url);
 ListItem *list_find_by_id(GList *list, gint id);
+ListItem *list_find_by_controlid(GList* list, gint id);
+void list_mark_controlid_ready(GList* list, gint id);
 ListItem *list_find_next_playable(GList* list);
 GList *list_clear(GList *list);
 void list_dump(GList *list);        
