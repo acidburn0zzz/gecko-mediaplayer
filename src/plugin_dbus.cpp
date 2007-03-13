@@ -302,14 +302,12 @@ void resize_window(nsPluginInstance *instance, ListItem *item, gint x, gint y) {
 
     if (instance->playerready) {
         if (instance->connection != NULL) {
-            // printf("Sending ResizeWindow to connection %p\n", instance->connection);
             message = dbus_message_new_signal(path,"com.gnome.mplayer", "ResizeWindow");
             dbus_message_append_args(message, DBUS_TYPE_INT32, &x, DBUS_TYPE_INT32, &y, DBUS_TYPE_INVALID);
             dbus_connection_send(instance->connection,message,NULL);
             dbus_message_unref(message);
         }
     }
-    
 }
 
 

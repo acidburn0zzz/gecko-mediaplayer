@@ -1,4 +1,5 @@
 Development
+    Remove unnecessary glib flushes
     Trap several instance = NULL cases
     Fix problem where window is destroyed immediately
     Fix NULL pointer problem in several places
