@@ -93,12 +93,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
             if (g_ascii_strcasecmp(dbus_message_get_member(message),"Cancel") == 0) {
                 dbus_error_init(&error);
                 if (dbus_message_get_args(message, &error, DBUS_TYPE_INT32, &i, DBUS_TYPE_INVALID)) {
-                    item = list_find_by_controlid(instance->playlist,i);
-                    if (item != NULL) {
-                        list_mark_controlid_cancelled(instance->playlist,i, TRUE);
-                    } else {
-                        // printf("Control id not found\n");
-                    }
+                    list_mark_controlid_cancelled(instance->playlist,i, TRUE);
                 } else {
                     dbus_error_free(&error);
                 }
