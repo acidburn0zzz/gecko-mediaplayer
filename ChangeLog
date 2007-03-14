@@ -1,4 +1,6 @@
 Development
+    Fix problem with request_*_value methods using wrong dest
+    Handle Cancel signal from player
     Change request calls to use unique (based on controlid) object names
     Remove unnecessary glib flushes
     Trap several instance = NULL cases

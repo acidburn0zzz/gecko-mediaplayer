@@ -73,20 +73,21 @@ ListItem *list_find_by_id(GList* list, gint id) {
 
 ListItem *list_find_by_controlid(GList* list, gint id) {
     ListItem *item;
-    GList *iter;   
-    
+    GList *iter;
+    ListItem *ret = NULL;
+          
     for (iter = list; iter !=NULL; iter = g_list_next(iter)) {
         if (iter != NULL) {
             item = (ListItem *)iter->data;
             if (item != NULL) {
                 if (item->controlid == id) {
-                    return item;
+                    ret = item;
                 }
             }
         }
     }
     
-    return NULL;    
+    return ret;    
 }
 
 void list_mark_controlid_ready(GList* list, gint id) {
@@ -105,6 +106,21 @@ void list_mark_controlid_ready(GList* list, gint id) {
     return;    
 }
 
+void list_mark_controlid_cancelled(GList* list, gint id, gboolean cancelled){
+    ListItem *item;
+    GList *iter;   
+    
+    for (iter = list; iter !=NULL; iter = g_list_next(iter)) {
+        item = (ListItem *)iter->data;
+        if (item != NULL) {
+            if (item->controlid == id) {
+                item->cancelled = cancelled;
+            }
+        }
+    }
+    
+    return;    
+}
 
 ListItem *list_find_next_playable(GList* list) {
     ListItem *item;
@@ -161,6 +177,7 @@ void list_dump(GList *list) {
                 printf("path = %s\n",item->path);
                 printf("controlid = %i\n",item->controlid);
                 printf("playerready = %i\n", item->playerready);
+                printf("newwindow = %i\n", item->newwindow);
             }
         }
     }
