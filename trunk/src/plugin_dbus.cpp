@@ -90,43 +90,62 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                 // printf("cache size = %i\n",instance->cache_size);
                 return DBUS_HANDLER_RESULT_HANDLED;
             }
+            if (g_ascii_strcasecmp(dbus_message_get_member(message),"Cancel") == 0) {
+                dbus_error_init(&error);
+                if (dbus_message_get_args(message, &error, DBUS_TYPE_INT32, &i, DBUS_TYPE_INVALID)) {
+                    item = list_find_by_controlid(instance->playlist,i);
+                    if (item != NULL) {
+                        list_mark_controlid_cancelled(instance->playlist,i, TRUE);
+                    } else {
+                        // printf("Control id not found\n");
+                    }
+                } else {
+                    dbus_error_free(&error);
+                }
+                
+                return DBUS_HANDLER_RESULT_HANDLED;
+            }
 
             if (g_ascii_strcasecmp(dbus_message_get_member(message),"RequestById") == 0) {
                 dbus_error_init(&error);
                 if (dbus_message_get_args(message, &error, DBUS_TYPE_STRING, &s, DBUS_TYPE_INVALID)) {
                     printf("Got id %s\n",s);
+                    // list_dump(instance->playlist);
                     item = list_find_by_id(instance->playlist,(gint)g_strtod(s,NULL));
-                    item->play = TRUE;
-                    printf("id %s has url of %s\n",s,item->src);
-                    printf("id %s has newwindow = %i\n",s,item->newwindow);
-                    if(item->newwindow == 0) {
-                        send_signal_with_boolean(instance,item, "SetShowControls",TRUE);
-                        if (item->streaming) {
-                            send_signal_with_string(instance, item, "Open",item->src);
+                    if (item != NULL) {
+                        item->play = TRUE;
+                        item->cancelled = FALSE;
+                        printf("id %s has url of %s\n",s,item->src);
+                        printf("id %s has newwindow = %i\n",s,item->newwindow);
+                        if(item->newwindow == 0) {
+                            send_signal_with_boolean(instance,item, "SetShowControls",TRUE);
+                            if (item->streaming) {
+                                send_signal_with_string(instance, item, "Open",item->src);
+                            } else {
+                                NPN_GetURLNotify(instance->mInstance,item->src, NULL, item);
+                            }
                         } else {
-                            NPN_GetURLNotify(instance->mInstance,item->src, NULL, item);
+                            i = 0;
+                            // generate a random controlid
+                            rand = g_rand_new();
+                            item->controlid = g_rand_int_range(rand,0,65535);
+                            g_rand_free(rand);
+                            tmp = g_strdup_printf("/control/%i",item->controlid);
+                            g_strlcpy(item->path,tmp,1024);
+                            g_free(tmp);
+                            
+                            arg[i++] = g_strdup("gnome-mplayer");
+                            arg[i++] = g_strdup_printf("--controlid=%i",item->controlid);
+                            arg[i] = NULL;
+                            g_spawn_async(NULL, arg, NULL,
+                                            G_SPAWN_SEARCH_PATH,
+                                            NULL, NULL, NULL, NULL);
+                            NPN_GetURLNotify(instance->mInstance,item->src, NULL, item);                        
                         }
-                    } else {
-                        i = 0;
-                        // generate a random controlid
-                        rand = g_rand_new();
-                        item->controlid = g_rand_int_range(rand,0,65535);
-                        g_rand_free(rand);
-                        tmp = g_strdup_printf("/control/%i",item->controlid);
-                        g_strlcpy(item->path,tmp,1024);
-                        g_free(tmp);
-                        
-                        arg[i++] = g_strdup("gnome-mplayer");
-                        arg[i++] = g_strdup_printf("--controlid=%i",item->controlid);
-                        arg[i] = NULL;
-                        g_spawn_async(NULL, arg, NULL,
-                                           G_SPAWN_SEARCH_PATH,
-                                           NULL, NULL, NULL, NULL);
-                        NPN_GetURLNotify(instance->mInstance,item->src, NULL, item);                        
+                        instance->lastopened->played = TRUE;
+                        item->requested = TRUE;
+                        instance->lastopened = item;
                     }
-                    instance->lastopened->played = TRUE;
-                    item->requested = TRUE;
-                    instance->lastopened = item;
                 } else {
                     dbus_error_free(&error);
                 }
@@ -448,17 +467,20 @@ gboolean request_boolean_value(nsPluginInstance *instance, ListItem *item, gchar
     gboolean result = FALSE;    
     gchar *path;
     gchar *dest;
+    gint controlid;
     
     //printf("Requesting %s to connection %p\n", member, instance->connection);
     if (instance == NULL) return result;
 
     if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
+        controlid = item->controlid;
     } else {
         path = instance->path;
+        controlid = instance->controlid;
     }
-    
-    dest = g_strdup_printf("com.gnome.mplayer.cid%i",instance->controlid);
+   
+    dest = g_strdup_printf("com.gnome.mplayer.cid%i",controlid);
     
     if (instance->playerready && instance->connection != NULL) {
         localmember = g_strdup(member);
@@ -485,17 +507,20 @@ gdouble request_double_value(nsPluginInstance *instance, ListItem *item, gchar *
     gdouble result = 0.0;    
     gchar *path;
     gchar *dest;
+    gint controlid;
     
     //printf("Requesting %s to connection %p\n", member, instance->connection);
     if (instance == NULL) return result;
-    
+
     if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
+        controlid = item->controlid;
     } else {
         path = instance->path;
+        controlid = instance->controlid;
     }
-    
-    dest = g_strdup_printf("com.gnome.mplayer.cid%i",instance->controlid);
+   
+    dest = g_strdup_printf("com.gnome.mplayer.cid%i",controlid);
     
     if (instance->playerready && instance->connection != NULL) {
         localmember = g_strdup(member);
@@ -522,17 +547,20 @@ gint request_int_value(nsPluginInstance *instance, ListItem *item, gchar *member
     gint result = 0;    
     gchar *path;
     gchar *dest;
+    gint controlid;
     
     //printf("Requesting %s to connection %p\n", member, instance->connection);
     if (instance == NULL) return result;
 
     if (item != NULL && strlen(item->path) > 0) {
         path = item->path;
+        controlid = item->controlid;
     } else {
         path = instance->path;
+        controlid = instance->controlid;
     }
-    
-    dest = g_strdup_printf("com.gnome.mplayer.cid%i",instance->controlid);
+   
+    dest = g_strdup_printf("com.gnome.mplayer.cid%i",controlid);
     
     if (instance->playerready && instance->connection != NULL) {
         localmember = g_strdup(member);

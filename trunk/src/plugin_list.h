@@ -49,6 +49,7 @@ typedef struct _ListItem {
     gint id;
     gint hrefid;
     gint controlid;
+    gboolean cancelled;
     gboolean playerready;
     gboolean newwindow;
     gboolean streaming;
@@ -68,6 +69,7 @@ ListItem *list_find(GList *list, gchar *url);
 ListItem *list_find_by_id(GList *list, gint id);
 ListItem *list_find_by_controlid(GList* list, gint id);
 void list_mark_controlid_ready(GList* list, gint id);
+void list_mark_controlid_cancelled(GList* list, gint id, gboolean cancelled);
 ListItem *list_find_next_playable(GList* list);
 GList *list_clear(GList *list);
 void list_dump(GList *list);        

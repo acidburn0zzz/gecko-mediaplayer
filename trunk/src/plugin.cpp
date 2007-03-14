@@ -241,6 +241,7 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
     if (playlist != NULL) {
         item = (ListItem*) playlist->data;
         if (!item->requested) {
+            item->cancelled = FALSE;
             if (item->streaming) {
                 open_location(this,item,FALSE);
                 item->requested = 1;
@@ -300,6 +301,7 @@ NPError nsPluginInstance::DestroyStream(NPStream * stream, NPError reason)
     gint id;
     gchar *path;
     gboolean ready;
+    gboolean newwindow;
     
     // printf("Entering destroy stream reason = %i for %s\n", reason,stream->url);
     if (reason == NPRES_DONE) {
@@ -321,6 +323,7 @@ NPError nsPluginInstance::DestroyStream(NPStream * stream, NPError reason)
             id = item->controlid;
             path = g_strdup(item->path);
             ready = item->playerready;
+            newwindow = item->newwindow;
             playlist = list_parse_qt(playlist,item);
             if (item->play) {
                 open_location(this,item, TRUE);
@@ -329,6 +332,8 @@ NPError nsPluginInstance::DestroyStream(NPStream * stream, NPError reason)
                 item->controlid = id;
                 g_strlcpy(item->path,path,1024);
                 item->playerready = ready;
+                item->newwindow = newwindow;
+                item->cancelled = FALSE;
                 if (item != NULL)
                     NPN_GetURLNotify(mInstance,item->src, NULL, item);
             }
@@ -397,6 +402,8 @@ int32 nsPluginInstance::WriteReady(NPStream * stream)
     }
     // printf("Write Ready item url = %s\n",item->src);
     
+    if (item->cancelled) return -1;
+    
     if (strlen(item->local) == 0) {
         g_snprintf(item->local, 1024, "%s",
                  tempnam("/tmp", "gecko-mediaplayerXXXXXX"));
@@ -434,6 +441,7 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len,
     gint id;
     gchar *path;
     gboolean ready;
+    gboolean newwindow;
     
     if (!acceptdata)
         return -1;
@@ -444,6 +452,9 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len,
         printf(_("Write unable to write because item is NULL"));   
         return -1;
     }
+    
+    if (item->cancelled) return -1;
+    
     if ((!item->localfp) && (!item->retrieved)) {
         printf("opening %s for localcache\n",item->local);
         item->localfp = fopen(item->local,"w+");
@@ -479,6 +490,7 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len,
             id = item->controlid;
             path = g_strdup(item->path);
             ready = item->playerready;
+            newwindow = item->newwindow;
             playlist = list_parse_qt(playlist,item);
             if (item->play) {
                 open_location(this,item, TRUE);
@@ -487,6 +499,8 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len,
                 item->controlid = id;
                 g_strlcpy(item->path,path,1024);
                 item->playerready = ready;
+                item->newwindow = newwindow;
+                item->cancelled = FALSE;
                 if (item != NULL)
                     NPN_GetURLNotify(mInstance,item->src, NULL, item);
             }
