@@ -115,6 +115,7 @@ void list_mark_controlid_cancelled(GList* list, gint id, gboolean cancelled){
         if (item != NULL) {
             if (item->controlid == id) {
                 item->cancelled = cancelled;
+                item->opened = FALSE;
             }
         }
     }
