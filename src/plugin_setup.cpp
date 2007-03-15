@@ -122,9 +122,9 @@ void new_instance(nsPluginInstance *instance, nsPluginCreateData *parameters) {
                  || (g_ascii_strcasecmp(parameters->argn[i], "autorewind") == 0)
                  || (g_ascii_strcasecmp(parameters->argn[i], "repeat") == 0)) {
 
-                if (strstr(parameters->argv[i], "true")
-                    || strstr(parameters->argv[i], "yes")
-                    || strstr(parameters->argv[i], "infinite")) {
+                if (g_ascii_strcasecmp(parameters->argv[i], "true") == 0
+                    || g_ascii_strcasecmp(parameters->argv[i], "yes") == 0
+                    || g_ascii_strcasecmp(parameters->argv[i], "infinite") == 0) {
                     loop = -1;	
                 } else if (g_ascii_isdigit((int) *(parameters->argv[i]))) {
                     sscanf(parameters->argv[i], "%i", &loop);

@@ -155,9 +155,13 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                     if (instance->lastopened != NULL && instance->lastopened->loop == TRUE) {
                         if (instance->lastopened->loopcount < 0) {
                             item = instance->lastopened;
+                            item->played = FALSE;
+                            item->opened = FALSE;
                         } else if(instance->lastopened->loopcount > 0 ) {
                             instance->lastopened->loopcount--;
                             item = instance->lastopened;
+                            item->played = FALSE;
+                            item->opened = FALSE;
                         } else {
                             // listcount = 0
                             instance->lastopened->loop = FALSE;
