@@ -402,7 +402,7 @@ int32 nsPluginInstance::WriteReady(NPStream * stream)
     }
     // printf("Write Ready item url = %s\n",item->src);
     
-    if (item->cancelled) return -1;
+    if (item->cancelled) NPN_DestroyStream(mInstance, stream, NPRES_USER_BREAK);
     
     if (strlen(item->local) == 0) {
         g_snprintf(item->local, 1024, "%s",
@@ -453,7 +453,7 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len,
         return -1;
     }
     
-    if (item->cancelled) return -1;
+    if (item->cancelled) NPN_DestroyStream(mInstance, stream, NPRES_USER_BREAK);
     
     if ((!item->localfp) && (!item->retrieved)) {
         printf("opening %s for localcache\n",item->local);
