@@ -230,7 +230,7 @@ void open_location(nsPluginInstance *instance, ListItem *item, gboolean uselocal
     gint arg = 0;
     gint ok;
     
-    list_dump(instance->playlist);
+    //list_dump(instance->playlist);
     //printf("Sending Open %s to connection %p\n",file, instance->connection);
     
     if (!(instance->player_launched)) {
