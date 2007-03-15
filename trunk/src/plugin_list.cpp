@@ -116,6 +116,7 @@ void list_mark_controlid_cancelled(GList* list, gint id, gboolean cancelled){
             if (item->controlid == id) {
                 item->cancelled = cancelled;
                 item->opened = FALSE;
+                item->playerready = FALSE;
             }
         }
     }
@@ -179,6 +180,7 @@ void list_dump(GList *list) {
                 printf("controlid = %i\n",item->controlid);
                 printf("playerready = %i\n", item->playerready);
                 printf("newwindow = %i\n", item->newwindow);
+                printf("cancelled = %i\n", item->cancelled);
             }
         }
     }
@@ -234,7 +236,7 @@ GList *list_parse_qt(GList *list, ListItem *item) {
                     ptr = g_strrstr(url,"/");
                     if (ptr != NULL && g_strrstr(rdrf,"://") == NULL) {
                         ptr++;
-                        ptr[0] = NULL;
+                        ptr[0] = (char)NULL;
                         g_strlcat(url,rdrf,1024);
                     } else {
                         g_strlcpy(url,rdrf, 1024);
