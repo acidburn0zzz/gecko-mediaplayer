@@ -181,6 +181,8 @@ void list_dump(GList *list) {
                 printf("playerready = %i\n", item->playerready);
                 printf("newwindow = %i\n", item->newwindow);
                 printf("cancelled = %i\n", item->cancelled);
+                printf("loop = %i\n", item->loop);
+                printf("loopcount = %i\n", item->loopcount);
             }
         }
     }
