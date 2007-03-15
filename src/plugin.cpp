@@ -340,6 +340,19 @@ NPError nsPluginInstance::DestroyStream(NPStream * stream, NPError reason)
             g_free(path);
         }
         //printf("Leaving destroy stream src = %s\n", item->src);
+    } else {
+        item = (ListItem *)stream->notifyData;
+        // item = list_find(playlist, (gchar*)stream->url);
+        
+        if (item == NULL) {
+            return NPERR_NO_ERROR;
+        }
+        
+        if (item->localfp) {
+            fclose(item->localfp);
+            item->retrieved = FALSE;
+            item->localfp = 0;
+        }
     }
     
     // list_dump(playlist);
@@ -400,7 +413,7 @@ int32 nsPluginInstance::WriteReady(NPStream * stream)
             return -1;
         }
     }
-    // printf("Write Ready item url = %s\n",item->src);
+    //printf("Write Ready item url = %s\n",item->src);
     
     if (item->cancelled) NPN_DestroyStream(mInstance, stream, NPRES_USER_BREAK);
     
@@ -459,7 +472,8 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len,
         printf("opening %s for localcache\n",item->local);
         item->localfp = fopen(item->local,"w+");
     }
-
+    // printf("Write item url = %s\n",item->src);
+    
     fseek(item->localfp, offset, SEEK_SET);
     wrotebytes = fwrite(buffer, 1, len, item->localfp);
     item->localsize += wrotebytes;

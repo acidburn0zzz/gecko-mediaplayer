@@ -1,4 +1,5 @@
 Development
+    Mark cancelled player as not ready
     Marked cancelled items as not opened
     Fix problem with request_*_value methods using wrong dest
     Handle Cancel signal from player

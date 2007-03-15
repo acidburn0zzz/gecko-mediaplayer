@@ -97,7 +97,6 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                 } else {
                     dbus_error_free(&error);
                 }
-                
                 return DBUS_HANDLER_RESULT_HANDLED;
             }
 
@@ -105,7 +104,6 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                 dbus_error_init(&error);
                 if (dbus_message_get_args(message, &error, DBUS_TYPE_STRING, &s, DBUS_TYPE_INVALID)) {
                     printf("Got id %s\n",s);
-                    // list_dump(instance->playlist);
                     item = list_find_by_id(instance->playlist,(gint)g_strtod(s,NULL));
                     if (item != NULL) {
                         item->play = TRUE;
@@ -128,6 +126,8 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                             tmp = g_strdup_printf("/control/%i",item->controlid);
                             g_strlcpy(item->path,tmp,1024);
                             g_free(tmp);
+                            
+                            // list_dump(instance->playlist);
                             
                             arg[i++] = g_strdup("gnome-mplayer");
                             arg[i++] = g_strdup_printf("--controlid=%i",item->controlid);
