@@ -117,6 +117,9 @@ void list_mark_controlid_cancelled(GList* list, gint id, gboolean cancelled){
                 item->cancelled = cancelled;
                 item->opened = FALSE;
                 item->playerready = FALSE;
+                item->requested = FALSE;
+                item->retrieved = FALSE;
+                item->played = FALSE;
             }
         }
     }
