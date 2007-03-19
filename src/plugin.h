@@ -101,6 +101,7 @@ class nsPluginInstance:public nsPluginInstanceBase {
     void GetTime(double *_retval);    
     void GetDuration(double *_retval);    
     void GetPercent(double *_retval);    
+    void SetFilename(const char *filename);
     void GetFilename(char **filename);
     void GetMIMEType(char **_retval);
     void GetLoop(PRBool * _retval);

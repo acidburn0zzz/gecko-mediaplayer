@@ -43,7 +43,7 @@ void new_instance(nsPluginInstance *instance, nsPluginCreateData *parameters) {
     
     gint i;
     gint newwindow = 0;
-    gint loop;
+    gint loop = 0;
     ListItem *item = NULL;
     ListItem *src = NULL;
     ListItem *href = NULL;

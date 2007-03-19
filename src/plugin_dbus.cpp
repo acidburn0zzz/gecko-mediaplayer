@@ -148,6 +148,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
             }
             
             if (g_ascii_strcasecmp(dbus_message_get_member(message),"Next") == 0) {
+                
                 if (instance->lastopened != NULL && instance->lastopened->loop == FALSE) {
                     instance->lastopened->played = TRUE;
                     item = list_find_next_playable(instance->playlist);

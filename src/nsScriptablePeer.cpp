@@ -254,14 +254,14 @@ NS_IMETHODIMP nsScriptablePeer::GetFilename(char **aFilename)
 NS_IMETHODIMP nsScriptablePeer::SetFilename(const char *aFilename)
 {
     printf("JS filename issued\n");
-    // mPlugin->SetFilename(aFilename);
+    mPlugin->SetFilename(aFilename);
     return NS_OK;
 }
 
 NS_IMETHODIMP nsScriptablePeer::Open(const char *filename)
 {
     printf("JS filename issued\n");
-    // mPlugin->SetFilename(filename);
+    mPlugin->SetFilename(filename);
     return NS_OK;
 }
 
@@ -285,7 +285,7 @@ NS_IMETHODIMP nsScriptablePeer::GetVolume(double *_retval)
 NS_IMETHODIMP nsScriptablePeer::SetFileName(const char *filename)
 {
     printf("JS filename issued\n");
-    // mPlugin->SetFilename(filename);
+    mPlugin->SetFilename(filename);
     return NS_OK;
 }
 
@@ -350,7 +350,7 @@ NS_IMETHODIMP nsScriptablePeer::PlaylistClear(PRBool * _retval)
 NS_IMETHODIMP nsScriptablePeer::SetHREF(const char *url)
 {
     printf("JS filename issued\n");
-    // mPlugin->SetFilename(url);
+    mPlugin->SetFilename(url);
     return NS_OK;
 }
 
@@ -366,7 +366,7 @@ NS_IMETHODIMP nsScriptablePeer::GetHREF(char **_retval)
 NS_IMETHODIMP nsScriptablePeer::SetURL(const char *url)
 {
     printf("JS filename issued\n");
-    // mPlugin->SetFilename(url);
+    mPlugin->SetFilename(url);
     return NS_OK;
 }
 

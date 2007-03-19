@@ -602,6 +602,26 @@ void nsPluginInstance::GetPercent(double *_retval)
     *_retval = request_double_value(this,this->lastopened, "GetPercent");
 }
 
+void nsPluginInstance::SetFilename(const char *filename)
+{
+    ListItem *item;
+    
+    item = g_new0(ListItem,1);
+    g_strlcpy(item->src,filename,1024);
+    item->streaming = streaming(item->src);
+    item->play = TRUE;
+    item->id = nextid++;
+    playlist = g_list_append(playlist,item);
+            
+    if (item->streaming) {
+        open_location(this,item,FALSE);
+        item->requested = 1;
+    } else {
+        item->requested = 1;
+        NPN_GetURLNotify(mInstance,item->src, NULL, item);
+    }
+}
+
 void nsPluginInstance::GetFilename(char **filename)
 {
     if (this->lastopened != NULL) {
