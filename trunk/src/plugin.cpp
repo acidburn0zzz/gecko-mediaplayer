@@ -612,7 +612,9 @@ void nsPluginInstance::SetFilename(const char *filename)
     item->play = TRUE;
     item->id = nextid++;
     playlist = g_list_append(playlist,item);
-            
+    
+    send_signal(this, this->lastopened,"Quit");        
+    
     if (item->streaming) {
         open_location(this,item,FALSE);
         item->requested = 1;

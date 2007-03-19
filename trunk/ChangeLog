@@ -1,4 +1,5 @@
 Development
+0.0.4
     Fix looping problem and initialization
     Mark cancelled player as not ready
     Marked cancelled items as not opened
