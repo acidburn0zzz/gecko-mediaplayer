@@ -1,4 +1,6 @@
 Development
+    Make quicktime autohref urls work
+    Version bump
 0.0.4
     Fix looping problem and initialization
     Mark cancelled player as not ready
