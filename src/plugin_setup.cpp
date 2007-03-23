@@ -44,10 +44,14 @@ void new_instance(nsPluginInstance *instance, nsPluginCreateData *parameters) {
     gint i;
     gint newwindow = 0;
     gint loop = 0;
+    gboolean autohref = FALSE;
     ListItem *item = NULL;
     ListItem *src = NULL;
     ListItem *href = NULL;
-    
+    gchar *arg[10];
+    GRand *rand;
+    gchar *tmp;
+        
     instance->mode = parameters->mode;
     instance->mimetype = g_strdup(parameters->type);
     instance->mInstance = parameters->instance;
@@ -118,6 +122,17 @@ void new_instance(nsPluginInstance *instance, nsPluginCreateData *parameters) {
                 
             }
             
+            if (g_ascii_strcasecmp(parameters->argn[i],"autohref") == 0) {
+                if (strstr(parameters->argv[i], "true")
+                    || strstr(parameters->argv[i], "yes")
+                    || strstr(parameters->argv[i], "1")) {
+                        autohref = TRUE;
+                    } else {
+                        autohref = FALSE;
+                    }
+                
+            }
+            
             if ((g_ascii_strcasecmp(parameters->argn[i], "loop") == 0)
                  || (g_ascii_strcasecmp(parameters->argn[i], "autorewind") == 0)
                  || (g_ascii_strcasecmp(parameters->argn[i], "repeat") == 0)) {
@@ -167,7 +182,33 @@ void new_instance(nsPluginInstance *instance, nsPluginCreateData *parameters) {
             item->requested = 1;
             NPN_GetURLNotify(instance->mInstance,item->src, NULL, item);
         }
-    }        
+    }
+          
+    printf("autohref = %i\n",autohref);
+    
+    if (autohref == TRUE) {
+        src->play = FALSE;
+        href->play = TRUE;
+        i = 0;
+                            // generate a random controlid
+        rand = g_rand_new();
+        href->controlid = g_rand_int_range(rand,0,65535);
+        g_rand_free(rand);
+        tmp = g_strdup_printf("/control/%i",item->controlid);
+        g_strlcpy(href->path,tmp,1024);
+        g_free(tmp);
+                            
+        //list_dump(instance->playlist);
+                            
+        arg[i++] = g_strdup("gnome-mplayer");
+        arg[i++] = g_strdup_printf("--controlid=%i",item->controlid);
+        arg[i] = NULL;
+        g_spawn_async(NULL, arg, NULL,
+                      G_SPAWN_SEARCH_PATH,
+                      NULL, NULL, NULL, NULL);
+        NPN_GetURLNotify(instance->mInstance,href->src, NULL, href);                       
+    }
+            
     
 }
 

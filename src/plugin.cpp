@@ -319,7 +319,7 @@ NPError nsPluginInstance::DestroyStream(NPStream * stream, NPError reason)
             item->localfp = 0;
         }
         
-        if (!item->opened) {
+        if (!item->opened && item->play) {
             id = item->controlid;
             path = g_strdup(item->path);
             ready = item->playerready;

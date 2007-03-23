@@ -170,13 +170,13 @@ void list_dump(GList *list) {
     ListItem *item;
     GList *iter;   
     
-    // printf("clearing list\n");
     if (list != NULL) {
         for (iter = list; iter !=NULL; iter = g_list_next(iter)) {
             item = (ListItem *)iter->data;
             if (item != NULL) {
                 printf("Item \n");
                 printf("src = %s\n",item->src);
+                printf("local = %s\n",item->local);
                 printf("id = %i\n",item->id);
                 printf("play = %i\n",item->play);
                 printf("path = %s\n",item->path);
@@ -262,6 +262,8 @@ GList *list_parse_qt(GList *list, ListItem *item) {
                                     // newitem->streaming = streaming(newitem->src);
                                     newitem->play = TRUE;
                                     newitem->id = item->id;
+                                    newitem->controlid = item->controlid;
+                                    g_strlcpy(newitem->path,item->path,1024);
                                     item->id = -1;
                                     list = g_list_append(list,newitem);
                                 }
@@ -291,7 +293,7 @@ GList *list_parse_qt(GList *list, ListItem *item) {
         // so skip parsing it.
         //printf("file not parsed > 16K actual size is %i\n",item->localsize);
     }
-    //list_dump(list);
+    list_dump(list);
     printf("Exiting list_parse_qt\n");
     return list;
     
