@@ -272,7 +272,7 @@ xpt_DATA = \
 	gecko-mediaplayer.xpt \
 	gecko-mediaplayer-wmp.xpt
 
-xptdir = $(DESTDIR)$(libdir)/mozilla/plugins
+xptdir = $(libdir)/mozilla/plugins
 COMMONCODE = \
 	plugin.cpp \
 	plugin.h \
@@ -292,7 +292,7 @@ COMMONCODE = \
 	nsIScriptableGeckoMediaPlayer.h \
 	npplat.h
 
-install_libexecdir = $(DESTDIR)$(libdir)/mozilla/plugins
+install_libexecdir = $(libdir)/mozilla/plugins
 gecko_mediaplayer_so_SOURCES = \
 	plugin_types_std.cpp \
 	$(COMMONCODE)

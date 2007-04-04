@@ -93,6 +93,7 @@ AC_SUBST(DBUS_LIBS)
 
 AC_OUTPUT([
 Makefile
+gecko-mediaplayer.spec
 src/Makefile
 po/Makefile.in
 ])

@@ -1,4 +1,6 @@
 Development
+    Create autobuilding spec file
+    Fix doc location
     Make quicktime autohref urls work
     Version bump
 0.0.4
