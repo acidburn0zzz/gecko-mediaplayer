@@ -3,7 +3,7 @@
 
 SUBDIRS = src po
 
-gecko_mediaplayerdocdir = ${prefix}/doc/gecko-mediaplayer
+gecko_mediaplayerdocdir = ${prefix}/share/doc/gecko-mediaplayer
 gecko_mediaplayerdoc_DATA = \
 	README\
 	COPYING\
@@ -12,7 +12,7 @@ gecko_mediaplayerdoc_DATA = \
 	INSTALL\
 	NEWS
 
-EXTRA_DIST = $(gecko_mediaplayerdoc_DATA)
+EXTRA_DIST = $(gecko_mediaplayerdoc_DATA) gecko-mediaplayer.spec.in
 
 # Copy all the spec files. Of cource, only one is actually used.
 dist-hook:
