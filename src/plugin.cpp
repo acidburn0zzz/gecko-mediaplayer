@@ -166,6 +166,8 @@ nsPluginInstance::~nsPluginInstance()
     // mScriptablePeer->SetInstance(NULL);
     // NS_IF_RELEASE(mScriptablePeer);
     
+    if (mInitialized) shut();
+    
     mInstance = NULL;
     
     if (mControlsScriptablePeer != NULL) {
@@ -278,8 +280,9 @@ void nsPluginInstance::shut()
     playerready = FALSE;
     playlist = list_clear(playlist);
     run_dispatcher = FALSE;
-    if (dbus_dispatch != NULL);
+    if (dbus_dispatch != NULL) {
         g_thread_join(dbus_dispatch);
+    }
     // flush the glib context 
     while (g_main_context_pending(NULL)) {
         g_main_context_iteration(NULL,FALSE);   
@@ -295,6 +298,13 @@ NPBool nsPluginInstance::isInitialized()
     return mInitialized;
 }
 
+NPError nsPluginInstance::NewStream(NPMIMEType type, NPStream * stream,
+                                    NPBool seekable, uint16 * stype)
+{
+    printf("New Stream Requested\n");
+    return NPERR_NO_ERROR;
+}
+   
 NPError nsPluginInstance::DestroyStream(NPStream * stream, NPError reason)
 {
     ListItem *item;
@@ -368,7 +378,7 @@ void nsPluginInstance::URLNotify(const char *url, NPReason reason,
     DBusMessage *message;
     const char *file;
     
-    // printf("URL Notify %s\n,%i = %i\n%s\n%s\n%s\n",url,reason, NPRES_DONE,item->src,item->local,path);
+    //printf("URL Notify %s\n,%i = %i\n%s\n%s\n%s\n",url,reason, NPRES_DONE,item->src,item->local,path);
     if (reason == NPRES_DONE) {
 
         if (!item->opened) {
@@ -415,7 +425,7 @@ int32 nsPluginInstance::WriteReady(NPStream * stream)
             return -1;
         }
     }
-    //printf("Write Ready item url = %s\n",item->src);
+    // printf("Write Ready item url = %s\n",item->src);
     
     if (item->cancelled) NPN_DestroyStream(mInstance, stream, NPRES_USER_BREAK);
     
