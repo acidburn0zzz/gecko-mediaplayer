@@ -207,8 +207,7 @@ DBusConnection *dbus_hookup(nsPluginInstance *instance) {
         connection = dbus_bus_get(type, &dberror);
         
         if (g_main_current_source() == NULL) {
-            // Can't figure out how to make this compile with QT support
-            // if I get this, it should make this work better in Opera
+            // In Opera we don't have a g_main_loop so we need to start our own dispatcher
             if (!g_thread_supported()) g_thread_init(NULL);
             instance->connection = connection;
             instance->run_dispatcher = TRUE;
