@@ -301,7 +301,7 @@ NPBool nsPluginInstance::isInitialized()
 NPError nsPluginInstance::NewStream(NPMIMEType type, NPStream * stream,
                                     NPBool seekable, uint16 * stype)
 {
-    printf("New Stream Requested\n");
+    //printf("New Stream Requested\n");
     return NPERR_NO_ERROR;
 }
    
