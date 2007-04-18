@@ -1,4 +1,5 @@
 Development
+    Switch from useing dbus_connection_setup_with_g_main to using our own dbus dispatcher
     Create autobuilding spec file
     Fix doc location
     Make quicktime autohref urls work

@@ -124,6 +124,7 @@ nsPluginInstance::nsPluginInstance(NPP aInstance):nsPluginInstanceBase(),
     mScriptablePeer(NULL),
     mControlsScriptablePeer(NULL),
     connection(NULL),
+    dbus_dispatch(NULL),
     path(NULL),
     acceptdata(TRUE),
     playerready(FALSE),
@@ -276,7 +277,9 @@ void nsPluginInstance::shut()
     send_signal_when_ready(this, NULL, "Terminate");
     playerready = FALSE;
     playlist = list_clear(playlist);
-    
+    run_dispatcher = FALSE;
+    if (dbus_dispatch != NULL);
+        g_thread_join(dbus_dispatch);
     // flush the glib context 
     while (g_main_context_pending(NULL)) {
         g_main_context_iteration(NULL,FALSE);   
@@ -285,7 +288,6 @@ void nsPluginInstance::shut()
     if (connection != NULL) {
         connection = dbus_unhook(connection, this);
     }
-    
 }
 
 NPBool nsPluginInstance::isInitialized()

@@ -128,11 +128,13 @@ class nsPluginInstance:public nsPluginInstanceBase {
     gboolean player_launched;
     gboolean playerready;
     DBusConnection *connection;
+    GThread *dbus_dispatch;
     ListItem *lastopened;
     gint cache_size;
     gboolean hidden;
     gint controlid;
     gint state;
+    gboolean run_dispatcher;
 };
 
 #endif                          // __PLUGIN_H__
