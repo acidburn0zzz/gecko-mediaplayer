@@ -42,9 +42,12 @@
 #include <glib.h>
 #include <dbus/dbus.h>
 #include <dbus/dbus-glib-lowlevel.h>
+// #include <dbus/dbus-qt.h>
 #include "plugin.h"
 #include "plugin_list.h"
         
+// extern void dbus_connection_setup_with_qt_main (DBusConnection *connection);
+
 DBusConnection *dbus_hookup(nsPluginInstance *instance);
 DBusConnection *dbus_unhook(DBusConnection *connection, nsPluginInstance *instance);
 void open_location(nsPluginInstance *instance, ListItem *item, gboolean uselocal);
@@ -58,5 +61,6 @@ gboolean request_boolean_value(nsPluginInstance *instance, ListItem *item, gchar
 gdouble request_double_value(nsPluginInstance *instance, ListItem *item, gchar *member);
 gint request_int_value(nsPluginInstance *instance, ListItem *item, gchar *member);
 gboolean is_valid_path(nsPluginInstance *instance, const char *message);
- 
+gpointer dbus_dispatcher(gpointer data);
+
 #endif // _PLUGIN_DBUS_H

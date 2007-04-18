@@ -22347,12 +22347,12 @@ if test -n "$PKG_CONFIG"; then
         pkg_cv_GLIB_CFLAGS="$GLIB_CFLAGS"
     else
         if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"glib-2.0 \"") >&5
-  ($PKG_CONFIG --exists --print-errors "glib-2.0 ") 2>&5
+    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"glib-2.0 gthread-2.0 \"") >&5
+  ($PKG_CONFIG --exists --print-errors "glib-2.0 gthread-2.0 ") 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; then
-  pkg_cv_GLIB_CFLAGS=`$PKG_CONFIG --cflags "glib-2.0 " 2>/dev/null`
+  pkg_cv_GLIB_CFLAGS=`$PKG_CONFIG --cflags "glib-2.0 gthread-2.0 " 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -22365,12 +22365,12 @@ if test -n "$PKG_CONFIG"; then
         pkg_cv_GLIB_LIBS="$GLIB_LIBS"
     else
         if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"glib-2.0 \"") >&5
-  ($PKG_CONFIG --exists --print-errors "glib-2.0 ") 2>&5
+    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"glib-2.0 gthread-2.0 \"") >&5
+  ($PKG_CONFIG --exists --print-errors "glib-2.0 gthread-2.0 ") 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; then
-  pkg_cv_GLIB_LIBS=`$PKG_CONFIG --libs "glib-2.0 " 2>/dev/null`
+  pkg_cv_GLIB_LIBS=`$PKG_CONFIG --libs "glib-2.0 gthread-2.0 " 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -22389,14 +22389,14 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        GLIB_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "glib-2.0 "`
+	        GLIB_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "glib-2.0 gthread-2.0 "`
         else
-	        GLIB_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "glib-2.0 "`
+	        GLIB_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "glib-2.0 gthread-2.0 "`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$GLIB_PKG_ERRORS" >&5
 
-	{ { echo "$as_me:$LINENO: error: Package requirements (glib-2.0 ) were not met:
+	{ { echo "$as_me:$LINENO: error: Package requirements (glib-2.0 gthread-2.0 ) were not met:
 
 $GLIB_PKG_ERRORS
 
@@ -22407,7 +22407,7 @@ Alternatively, you may set the environment variables GLIB_CFLAGS
 and GLIB_LIBS to avoid the need to call pkg-config.
 See the pkg-config man page for more details.
 " >&5
-echo "$as_me: error: Package requirements (glib-2.0 ) were not met:
+echo "$as_me: error: Package requirements (glib-2.0 gthread-2.0 ) were not met:
 
 $GLIB_PKG_ERRORS
 
@@ -22914,12 +22914,12 @@ if test -n "$PKG_CONFIG"; then
         pkg_cv_DBUS_CFLAGS="$DBUS_CFLAGS"
     else
         if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"dbus-1 >= 0.95 dbus-glib-1 >= 0.70 \"") >&5
-  ($PKG_CONFIG --exists --print-errors "dbus-1 >= 0.95 dbus-glib-1 >= 0.70 ") 2>&5
+    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"dbus-1 >= 0.95\"") >&5
+  ($PKG_CONFIG --exists --print-errors "dbus-1 >= 0.95") 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; then
-  pkg_cv_DBUS_CFLAGS=`$PKG_CONFIG --cflags "dbus-1 >= 0.95 dbus-glib-1 >= 0.70 " 2>/dev/null`
+  pkg_cv_DBUS_CFLAGS=`$PKG_CONFIG --cflags "dbus-1 >= 0.95" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -22932,12 +22932,12 @@ if test -n "$PKG_CONFIG"; then
         pkg_cv_DBUS_LIBS="$DBUS_LIBS"
     else
         if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"dbus-1 >= 0.95 dbus-glib-1 >= 0.70 \"") >&5
-  ($PKG_CONFIG --exists --print-errors "dbus-1 >= 0.95 dbus-glib-1 >= 0.70 ") 2>&5
+    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"dbus-1 >= 0.95\"") >&5
+  ($PKG_CONFIG --exists --print-errors "dbus-1 >= 0.95") 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; then
-  pkg_cv_DBUS_LIBS=`$PKG_CONFIG --libs "dbus-1 >= 0.95 dbus-glib-1 >= 0.70 " 2>/dev/null`
+  pkg_cv_DBUS_LIBS=`$PKG_CONFIG --libs "dbus-1 >= 0.95" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -22956,14 +22956,14 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        DBUS_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "dbus-1 >= 0.95 dbus-glib-1 >= 0.70 "`
+	        DBUS_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "dbus-1 >= 0.95"`
         else
-	        DBUS_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "dbus-1 >= 0.95 dbus-glib-1 >= 0.70 "`
+	        DBUS_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "dbus-1 >= 0.95"`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$DBUS_PKG_ERRORS" >&5
 
-	{ { echo "$as_me:$LINENO: error: Package requirements (dbus-1 >= 0.95 dbus-glib-1 >= 0.70 ) were not met:
+	{ { echo "$as_me:$LINENO: error: Package requirements (dbus-1 >= 0.95) were not met:
 
 $DBUS_PKG_ERRORS
 
@@ -22974,7 +22974,7 @@ Alternatively, you may set the environment variables DBUS_CFLAGS
 and DBUS_LIBS to avoid the need to call pkg-config.
 See the pkg-config man page for more details.
 " >&5
-echo "$as_me: error: Package requirements (dbus-1 >= 0.95 dbus-glib-1 >= 0.70 ) were not met:
+echo "$as_me: error: Package requirements (dbus-1 >= 0.95) were not met:
 
 $DBUS_PKG_ERRORS
 
@@ -23015,6 +23015,7 @@ else
 echo "${ECHO_T}yes" >&6
 	:
 fi
+
 
 
 

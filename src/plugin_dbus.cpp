@@ -199,10 +199,23 @@ DBusConnection *dbus_hookup(nsPluginInstance *instance) {
         DBusConnection *connection;
         DBusError dberror;
         DBusBusType type = DBUS_BUS_SESSION;
-                
+        GMainLoop *loop;
+         
         dbus_error_init(&dberror);
         connection = dbus_bus_get(type, &dberror);
-        dbus_connection_setup_with_g_main(connection, NULL);
+        
+        // if (g_main_current_source() == NULL) {
+            // Can't figure out how to make this compile with QT support
+            // if I get this, it should make this work better in Opera
+            // dbus_connection_setup_with_qt_main(connection);
+        // } else {
+        //    
+        // }
+        if (!g_thread_supported()) g_thread_init(NULL);
+        instance->connection = connection;
+        instance->run_dispatcher = TRUE;
+        instance->dbus_dispatch = g_thread_create(dbus_dispatcher,instance,TRUE,NULL);
+        //dbus_connection_setup_with_g_main(connection, NULL);
         
         dbus_bus_add_match(connection, "type='signal',interface='com.gecko.mediaplayer'", NULL);
         dbus_connection_add_filter(connection, filter_func,instance,NULL); 
@@ -607,4 +620,17 @@ gboolean is_valid_path(nsPluginInstance *instance, const char *message) {
     }
     
     return result; 
+}
+
+gpointer dbus_dispatcher(gpointer data) {
+    nsPluginInstance *instance = (nsPluginInstance *)data;
+    
+    while (instance != NULL 
+           && instance->run_dispatcher
+           && instance->connection != NULL
+           && dbus_connection_read_write_dispatch(instance->connection, 10)) {
+        // printf(".");
+    }
+    // printf("thread exiting\n");
+    g_thread_exit(0);
 }
