@@ -1,5 +1,7 @@
 Development
-    Switch from useing dbus_connection_setup_with_g_main to using our own dbus dispatcher
+    Switch from using dbus_connection_setup_with_g_main to 
+        using our own dbus dispatcher but only when we can't connect to 
+        g_main_loop. Fixes some trailers in Opera and in Firefox
     Create autobuilding spec file
     Fix doc location
     Make quicktime autohref urls work

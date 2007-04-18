@@ -87,7 +87,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                 
                 instance->playerready = TRUE;
                 instance->cache_size = request_int_value(instance, item, "GetCacheSize");
-                // printf("cache size = %i\n",instance->cache_size);
+                //printf("cache size = %i\n",instance->cache_size);
                 return DBUS_HANDLER_RESULT_HANDLED;
             }
             if (g_ascii_strcasecmp(dbus_message_get_member(message),"Cancel") == 0) {
@@ -108,6 +108,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                     if (item != NULL) {
                         item->play = TRUE;
                         item->cancelled = FALSE;
+                        item->retrieved = FALSE;
                         printf("id %s has url of %s\n",s,item->src);
                         printf("id %s has newwindow = %i\n",s,item->newwindow);
                         if(item->newwindow == 0) {
@@ -144,6 +145,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                 } else {
                     dbus_error_free(&error);
                 }
+                list_dump(instance->playlist);
                 return DBUS_HANDLER_RESULT_HANDLED;
             }
             
@@ -204,18 +206,16 @@ DBusConnection *dbus_hookup(nsPluginInstance *instance) {
         dbus_error_init(&dberror);
         connection = dbus_bus_get(type, &dberror);
         
-        // if (g_main_current_source() == NULL) {
+        if (g_main_current_source() == NULL) {
             // Can't figure out how to make this compile with QT support
             // if I get this, it should make this work better in Opera
-            // dbus_connection_setup_with_qt_main(connection);
-        // } else {
-        //    
-        // }
-        if (!g_thread_supported()) g_thread_init(NULL);
-        instance->connection = connection;
-        instance->run_dispatcher = TRUE;
-        instance->dbus_dispatch = g_thread_create(dbus_dispatcher,instance,TRUE,NULL);
-        //dbus_connection_setup_with_g_main(connection, NULL);
+            if (!g_thread_supported()) g_thread_init(NULL);
+            instance->connection = connection;
+            instance->run_dispatcher = TRUE;
+            instance->dbus_dispatch = g_thread_create(dbus_dispatcher,instance,TRUE,NULL);
+        } else {
+            dbus_connection_setup_with_g_main(connection, NULL);
+        }
         
         dbus_bus_add_match(connection, "type='signal',interface='com.gecko.mediaplayer'", NULL);
         dbus_connection_add_filter(connection, filter_func,instance,NULL); 

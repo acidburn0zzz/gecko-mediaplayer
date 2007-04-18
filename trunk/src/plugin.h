@@ -77,6 +77,7 @@ class nsPluginInstance:public nsPluginInstanceBase {
 
     NPError GetValue(NPPVariable variable, void *value);
     NPError SetWindow(NPWindow * aWindow);
+    NPError NewStream(NPMIMEType type, NPStream * stream, NPBool seekable, uint16 * stype);
     NPError DestroyStream(NPStream * stream, NPError reason);
     void URLNotify(const char *url, NPReason reason, void *notifyData);
     int32 WriteReady(NPStream * stream);
