@@ -37,7 +37,7 @@
 
 #include "plugin_list.h"
 gint asx_loop;
-gint entry_id;
+gint entry_id = 0;
 GList *parser_list;
 ListItem *parser_item;
 extern gint streaming(gchar * url);
@@ -343,7 +343,6 @@ GList *list_parse_asx(GList * list, ListItem * item)
             parser_list = list;
             parser_item = item;
             asx_loop = 0;
-            entry_id = 0;
             context = g_markup_parse_context_new(&parser, (GMarkupParseFlags) 0, data, NULL);
             g_markup_parse_context_parse(context, data, datalen, NULL);
             g_markup_parse_context_free(context);
@@ -423,7 +422,7 @@ start_element(GMarkupParseContext * context,
                         newitem->src[3] = g_ascii_tolower(newitem->src[3]);
                     }
                     newitem->play = TRUE;
-                    newitem->id = parser_item->id;
+                    newitem->id = entry_id;
                     newitem->controlid = parser_item->controlid;
                     if (asx_loop != 0) {
                         newitem->loop = TRUE;
