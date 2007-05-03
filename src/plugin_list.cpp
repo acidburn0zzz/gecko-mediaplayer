@@ -37,6 +37,7 @@
 
 #include "plugin_list.h"
 gint asx_loop;
+gint entry_id;
 GList *parser_list;
 ListItem *parser_item;
 extern gint streaming(gchar * url);
@@ -342,6 +343,7 @@ GList *list_parse_asx(GList * list, ListItem * item)
             parser_list = list;
             parser_item = item;
             asx_loop = 0;
+            entry_id = 0;
             context = g_markup_parse_context_new(&parser, (GMarkupParseFlags) 0, data, NULL);
             g_markup_parse_context_parse(context, data, datalen, NULL);
             g_markup_parse_context_free(context);
@@ -381,7 +383,12 @@ start_element(GMarkupParseContext * context,
                         newitem->src[3] = g_ascii_tolower(newitem->src[3]);
                     }
                     newitem->play = TRUE;
-                    newitem->id = parser_item->id;
+                    if (entry_id != 0) {
+                        newitem->id = entry_id;
+                    } else {
+                        newitem->id = parser_item->id;
+                        parser_item->id = -1;
+                    }
                     newitem->controlid = parser_item->controlid;
                     if (asx_loop != 0) {
                         newitem->loop = TRUE;
@@ -399,7 +406,7 @@ start_element(GMarkupParseContext * context,
         asx_loop--;
 
     if (g_ascii_strcasecmp(element_name, "ENTRYREF") == 0) {
-        parser_item->id = parser_item->id + 100;
+        entry_id = entry_id + 100;
         while (attribute_names[i] != NULL) {
             if (g_ascii_strcasecmp(attribute_names[i], "HREF") == 0) {
                 if (list_find(parser_list, (gchar *) attribute_values[i])
