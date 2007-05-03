@@ -48,8 +48,7 @@
 #include "plugin.h"
 
 static NS_DEFINE_IID(kIScriptableIID, NS_ISCRIPTABLEGECKOMEDIAPLAYER_IID);
-static NS_DEFINE_IID(kIScriptableControlIID,
-		     NS_ISCRIPTABLEGECKOMEDIAPLAYERCONTROLS_IID);
+static NS_DEFINE_IID(kIScriptableControlIID, NS_ISCRIPTABLEGECKOMEDIAPLAYERCONTROLS_IID);
 static NS_DEFINE_IID(kIClassInfoIID, NS_ICLASSINFO_IID);
 static NS_DEFINE_IID(kISupportsIID, NS_ISUPPORTS_IID);
 
@@ -81,40 +80,36 @@ NS_IMETHODIMP_(nsrefcnt) nsScriptablePeer::Release()
 {
     --mRefCnt;
     if (mRefCnt == 0) {
-	delete this;
-	return 0;
+        delete this;
+        return 0;
     }
     return mRefCnt;
 }
 
 // here nsScriptablePeer should return three interfaces it can be asked for by their iid's
 // static casts are necessary to ensure that correct pointer is returned
-NS_IMETHODIMP nsScriptablePeer::QueryInterface(const nsIID & aIID,
-					       void **aInstancePtr)
+NS_IMETHODIMP nsScriptablePeer::QueryInterface(const nsIID & aIID, void **aInstancePtr)
 {
     if (!aInstancePtr)
-	return NS_ERROR_NULL_POINTER;
+        return NS_ERROR_NULL_POINTER;
 
     if (aIID.Equals(kIScriptableIID)) {
-	*aInstancePtr =
-	    static_cast < nsIScriptableGeckoMediaPlayer * >(this);
-	AddRef();
-	return NS_OK;
+        *aInstancePtr = static_cast < nsIScriptableGeckoMediaPlayer * >(this);
+        AddRef();
+        return NS_OK;
     }
 
     if (aIID.Equals(kIClassInfoIID)) {
-	*aInstancePtr = static_cast < nsIClassInfo * >(this);
-	AddRef();
-	return NS_OK;
+        *aInstancePtr = static_cast < nsIClassInfo * >(this);
+        AddRef();
+        return NS_OK;
     }
 
     if (aIID.Equals(kISupportsIID)) {
-	*aInstancePtr =
-	    static_cast < nsISupports * >(static_cast <
-					  nsIScriptableGeckoMediaPlayer *
-					  >(this));
-	AddRef();
-	return NS_OK;
+        *aInstancePtr =
+            static_cast < nsISupports * >(static_cast < nsIScriptableGeckoMediaPlayer * >(this));
+        AddRef();
+        return NS_OK;
     }
 
     return NS_NOINTERFACE;
@@ -438,19 +433,17 @@ NS_IMETHODIMP nsScriptablePeer::SetShowlogo(PRBool aShowlogo)
 
 // WMP Controls subset
 
-NS_IMETHODIMP nsScriptablePeer::
-GetControls(nsIScriptableGeckoMediaPlayerControls * *aControls)
+NS_IMETHODIMP nsScriptablePeer::GetControls(nsIScriptableGeckoMediaPlayerControls * *aControls)
 {
     *aControls = mControls;
     if (mControls == NULL)
-	return NS_ERROR_NULL_POINTER;
+        return NS_ERROR_NULL_POINTER;
     else
-	return NS_OK;
+        return NS_OK;
 }
 
 
-nsControlsScriptablePeer::nsControlsScriptablePeer(nsPluginInstance *
-						   aPlugin)
+nsControlsScriptablePeer::nsControlsScriptablePeer(nsPluginInstance * aPlugin)
 {
     mPlugin = aPlugin;
     mRefCnt = 0;
@@ -473,41 +466,37 @@ NS_IMETHODIMP_(nsrefcnt) nsControlsScriptablePeer::Release()
 {
     --mRefCnt;
     if (mRefCnt == 0) {
-	//delete this;
-	return 0;
+        //delete this;
+        return 0;
     }
     return mRefCnt;
 }
 
 // here nsScriptablePeer should return three interfaces it can be asked for by their iid's
 // static casts are necessary to ensure that correct pointer is returned
-NS_IMETHODIMP nsControlsScriptablePeer::QueryInterface(const nsIID & aIID,
-						       void **aInstancePtr)
+NS_IMETHODIMP nsControlsScriptablePeer::QueryInterface(const nsIID & aIID, void **aInstancePtr)
 {
     if (!aInstancePtr)
-	return NS_ERROR_NULL_POINTER;
+        return NS_ERROR_NULL_POINTER;
 
     if (aIID.Equals(kIScriptableControlIID)) {
-	*aInstancePtr =
-	    NS_STATIC_CAST(nsIScriptableGeckoMediaPlayerControls *, this);
-	AddRef();
-	return NS_OK;
+        *aInstancePtr = NS_STATIC_CAST(nsIScriptableGeckoMediaPlayerControls *, this);
+        AddRef();
+        return NS_OK;
     }
 
     if (aIID.Equals(kIClassInfoIID)) {
-	*aInstancePtr = NS_STATIC_CAST(nsIClassInfo *, this);
-	AddRef();
-	return NS_OK;
+        *aInstancePtr = NS_STATIC_CAST(nsIClassInfo *, this);
+        AddRef();
+        return NS_OK;
     }
 
     if (aIID.Equals(kISupportsIID)) {
-	*aInstancePtr =
-	    NS_STATIC_CAST(nsISupports *,
-			   (NS_STATIC_CAST
-			    (nsIScriptableGeckoMediaPlayerControls *,
-			     this)));
-	AddRef();
-	return NS_OK;
+        *aInstancePtr =
+            NS_STATIC_CAST(nsISupports *,
+                           (NS_STATIC_CAST(nsIScriptableGeckoMediaPlayerControls *, this)));
+        AddRef();
+        return NS_OK;
     }
 
     return NS_NOINTERFACE;
