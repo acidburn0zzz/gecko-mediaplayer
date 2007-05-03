@@ -347,7 +347,8 @@ GList *list_parse_asx(GList * list, ListItem * item)
     gchar *data;
     gsize datalen;
 
-    printf("filename = %s\n", item->local);
+    printf("Entering list_parse_asx localsize = %i\n", item->localsize);
+
     if (item->localsize < (16 * 1024)) {
 	if (g_file_get_contents(item->local, &data, &datalen, NULL)) {
 	    parser_list = list;
@@ -363,6 +364,7 @@ GList *list_parse_asx(GList * list, ListItem * item)
 	}
     }
     list_dump(list);
+    printf("Exiting list_parse_asx\n");
     return list;
 }
 
@@ -385,16 +387,22 @@ start_element(GMarkupParseContext * context,
 		    parser_item->play = FALSE;
 		    newitem = g_new0(ListItem, 1);
 		    g_strlcpy(newitem->src, attribute_values[i], 1024);
+            newitem->streaming = streaming(newitem->src);                    
+		    // crappy hack, mplayer needs the protocol in lower case, some sites don't
+		    if (newitem->streaming) {
+    		    newitem->src[0] = g_ascii_tolower(newitem->src[0]);
+    		    newitem->src[1] = g_ascii_tolower(newitem->src[1]);
+    		    newitem->src[2] = g_ascii_tolower(newitem->src[2]);
+    		    newitem->src[3] = g_ascii_tolower(newitem->src[3]);
+		    }
 		    newitem->play = TRUE;
 		    newitem->id = parser_item->id;
 		    newitem->controlid = parser_item->controlid;
-                    newitem->streaming = streaming(newitem->src);                    
 		    if (asx_loop != 0) {
 			newitem->loop = TRUE;
 			newitem->loopcount = asx_loop;
 		    }
 		    g_strlcpy(newitem->path, parser_item->path, 1024);
-		    parser_item->id = -1;
 		    parser_list = g_list_append(parser_list, newitem);
 		}
 
@@ -414,16 +422,22 @@ start_element(GMarkupParseContext * context,
                     parser_item->play = FALSE;
                     newitem = g_new0(ListItem, 1);
                     g_strlcpy(newitem->src, attribute_values[i], 1024);
+                    newitem->streaming = streaming(newitem->src);                    
+        		    // crappy hack, mplayer needs the protocol in lower case, some sites don't
+        		    if (newitem->streaming) {
+            		    newitem->src[0] = g_ascii_tolower(newitem->src[0]);
+            		    newitem->src[1] = g_ascii_tolower(newitem->src[1]);
+            		    newitem->src[2] = g_ascii_tolower(newitem->src[2]);
+            		    newitem->src[3] = g_ascii_tolower(newitem->src[3]);
+        		    }
                     newitem->play = TRUE;
                     newitem->id = parser_item->id;
                     newitem->controlid = parser_item->controlid;
-                    newitem->streaming = streaming(newitem->src);                    
                     if (asx_loop != 0) {
                         newitem->loop = TRUE;
                         newitem->loopcount = asx_loop;
                     }
                     g_strlcpy(newitem->path, parser_item->path, 1024);
-                    parser_item->id = -1;
                     parser_list = g_list_append(parser_list, newitem);
                     }
 
