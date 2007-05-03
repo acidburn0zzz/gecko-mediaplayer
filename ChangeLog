@@ -1,4 +1,9 @@
 Development
+    Fix ASX parser to increment the entry pointer when we encounter a entry tag
+        This used for single ASX files where the entry entity contains several
+        ref tags all pointing to the same content
+    Fix ASX parser to handle entryrefs which basically is a url to another 
+        asx file that contains the same media at different sites (mirrors)
     If the local version of the url is requested but not found then use the url as the source
     Handle request for "Next" item off the playlist differently
     Implement ASX parser and extract the ASX fields out
