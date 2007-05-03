@@ -222,22 +222,22 @@ gint streaming(gchar * url)
 {
     gint ret = 0;
 
-    if (g_ascii_strncasecmp(url, "mms://",6) != 0)
+    if (g_ascii_strncasecmp(url, "mms://",6) == 0)
 	ret = 1;
 
-    if (g_ascii_strncasecmp(url, "mmst://",7) != 0)
+    if (g_ascii_strncasecmp(url, "mmst://",7) == 0)
         ret = 1;
 
-    if (g_ascii_strncasecmp(url, "mmsu://",7) != 0)
+    if (g_ascii_strncasecmp(url, "mmsu://",7) == 0)
 	ret = 1;
 
-    if (g_ascii_strncasecmp(url, "rtsp://",7) != 0)
+    if (g_ascii_strncasecmp(url, "rtsp://",7) == 0)
         ret = 1;
 
-    if (g_ascii_strncasecmp(url, "tv://",5) != 0)
+    if (g_ascii_strncasecmp(url, "tv://",5) == 0)
         ret = 1;
 
-    if (g_ascii_strncasecmp(url, "dvd://",6) != 0)
+    if (g_ascii_strncasecmp(url, "dvd://",6) == 0)
         ret = 1;
 
     return ret;
