@@ -340,17 +340,21 @@ NPError nsPluginInstance::DestroyStream(NPStream * stream, NPError reason)
 	    playlist = list_parse_qt(playlist, item);
 	    playlist = list_parse_asx(playlist, item);
 	    if (item->play) {
-		open_location(this, item, TRUE);
+		    open_location(this, item, TRUE);
 	    } else {
-		item = list_find_next_playable(playlist);
-		item->controlid = id;
-		g_strlcpy(item->path, path, 1024);
-		item->playerready = ready;
-		item->newwindow = newwindow;
-		item->cancelled = FALSE;
-		if (item != NULL)
-		    NPN_GetURLNotify(mInstance, item->src, NULL, item);
-	    }
+    		item = list_find_next_playable(playlist);
+    		if (!item->streaming) {
+        		item->controlid = id;
+        		g_strlcpy(item->path, path, 1024);
+        		item->playerready = ready;
+        		item->newwindow = newwindow;
+        		item->cancelled = FALSE;
+        		if (item != NULL)
+        		    NPN_GetURLNotify(mInstance, item->src, NULL, item);
+    	    } else {
+    	        open_location(this,item,FALSE);
+    	    }
+    	}
 	    g_free(path);
 	}
 	//printf("Leaving destroy stream src = %s\n", item->src);
