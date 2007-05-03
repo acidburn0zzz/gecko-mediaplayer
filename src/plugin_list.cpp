@@ -138,6 +138,22 @@ void list_mark_controlid_cancelled(GList * list, gint id,
     return;
 }
 
+void list_mark_id_played(GList *list, gint id)
+{
+    ListItem *item;
+    GList *iter;
+
+    if (id < 0) return;    
+    for (iter = list; iter != NULL; iter = g_list_next(iter)) {
+        item = (ListItem *) iter->data;
+        if (item != NULL) {
+            if (item->id == id) {
+                item->played = TRUE;
+            }
+        }
+    }
+}
+
 ListItem *list_find_next_playable(GList * list)
 {
     ListItem *item;
@@ -363,9 +379,6 @@ start_element(GMarkupParseContext * context,
     if (g_ascii_strcasecmp(element_name, "REF") == 0) {
 	while (attribute_names[i] != NULL) {
 	    if (g_ascii_strcasecmp(attribute_names[i], "HREF") == 0) {
-		printf("attr[%i]=%s  value[%i]=%s loop = %i\n", i,
-		       attribute_names[i], i, attribute_values[i],
-		       asx_loop);
 
 		if (list_find(parser_list, (gchar *) attribute_values[i])
 		    == NULL) {
@@ -392,6 +405,32 @@ start_element(GMarkupParseContext * context,
     if (g_ascii_strcasecmp(element_name, "REPEAT") == 0)
 	asx_loop--;
 
+    if (g_ascii_strcasecmp(element_name, "ENTRYREF") == 0) {
+        parser_item->id = parser_item->id + 100;
+        while (attribute_names[i] != NULL) {
+            if (g_ascii_strcasecmp(attribute_names[i], "HREF") == 0) {
+                if (list_find(parser_list, (gchar *) attribute_values[i])
+                    == NULL) {
+                    parser_item->play = FALSE;
+                    newitem = g_new0(ListItem, 1);
+                    g_strlcpy(newitem->src, attribute_values[i], 1024);
+                    newitem->play = TRUE;
+                    newitem->id = parser_item->id;
+                    newitem->controlid = parser_item->controlid;
+                    newitem->streaming = streaming(newitem->src);                    
+                    if (asx_loop != 0) {
+                        newitem->loop = TRUE;
+                        newitem->loopcount = asx_loop;
+                    }
+                    g_strlcpy(newitem->path, parser_item->path, 1024);
+                    parser_item->id = -1;
+                    parser_list = g_list_append(parser_list, newitem);
+                    }
+
+            }
+            i++;
+        }
+    }
 }
 
 void
