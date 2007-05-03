@@ -436,6 +436,9 @@ start_element(GMarkupParseContext * context,
             i++;
         }
     }
+    if (g_ascii_strcasecmp(element_name, "ENTRY") == 0) {
+        entry_id = entry_id + 100;
+    }    
 }
 
 void
