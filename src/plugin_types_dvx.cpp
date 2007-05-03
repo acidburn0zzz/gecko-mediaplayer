@@ -42,8 +42,8 @@ gchar *GetMIMEDescription()
     gchar MimeTypes[4000];
 
     g_strlcpy(MimeTypes,
-	      "video/divx:divx:DivX Media Format;"
-	      "video/vnd.divx:divx:DivX Media Format;", sizeof(MimeTypes));
+              "video/divx:divx:DivX Media Format;"
+              "video/vnd.divx:divx:DivX Media Format;", sizeof(MimeTypes));
 
     return g_strdup(MimeTypes);
 }
@@ -56,24 +56,24 @@ NPError PluginGetValue(NPPVariable variable, void *value)
     // description matches the features
 
     if (variable == NPPVpluginNameString) {
-	*((const char **) value) = "DivX Browser Plug-In";
+        *((const char **) value) = "DivX Browser Plug-In";
     }
     if (variable == NPPVpluginDescriptionString) {
-	*((const char **) value) =
-	    "<a href=\"http://dekorte.homeip.net/download/gnome-mplayer/\">Gecko Media Player</a> "
-	    VERSION
-	    "<br><br>Video Player Plug-in for QuickTime, RealPlayer and Windows Media Player streams using <a href=\"http://mplayerhq.hu\">MPlayer</a>";
+        *((const char **) value) =
+            "<a href=\"http://dekorte.homeip.net/download/gnome-mplayer/\">Gecko Media Player</a> "
+            VERSION
+            "<br><br>Video Player Plug-in for QuickTime, RealPlayer and Windows Media Player streams using <a href=\"http://mplayerhq.hu\">MPlayer</a>";
 
     }
 
     if (variable == NPPVpluginNeedsXEmbed) {
-	*((PRBool *) value) = PR_TRUE;
+        *((PRBool *) value) = PR_TRUE;
     }
 
     if ((variable != NPPVpluginNameString)
-	&& (variable != NPPVpluginDescriptionString)
-	&& (variable != NPPVpluginNeedsXEmbed)) {
-	err = NPERR_INVALID_PARAM;
+        && (variable != NPPVpluginDescriptionString)
+        && (variable != NPPVpluginNeedsXEmbed)) {
+        err = NPERR_INVALID_PARAM;
     }
 
     return err;
