@@ -37,103 +37,102 @@
 
 #include "plugin_types.h"
 
-gchar *GetMIMEDescription() {
+gchar *GetMIMEDescription()
+{
     gchar MimeTypes[4000];
-    
+
     g_strlcpy(MimeTypes,
-            "video/mpeg:mpg,mpeg:MPEG;"
-                    "audio/mpeg:mpg,mpeg:MPEG;"
-                    "video/x-mpeg:mpg,mpeg:MPEG;"
-                    "video/x-mpeg2:mpv2,mp2ve:MPEG2;"
-                    "audio/mpeg:mpg,mpeg:MPEG;"
-                    "audio/x-mpeg:mpg,mpeg:MPEG;"
-                    "audio/mpeg2:mp2:MPEG audio;"
-                    "audio/x-mpeg2:mp2:MPEG audio;"
-                    "video/mp4:mp4:MPEG 4 Video;"
-                    "video/3gpp:mp4,3gp:MPEG 4 Video;", sizeof(MimeTypes));
+	      "video/mpeg:mpg,mpeg:MPEG;"
+	      "audio/mpeg:mpg,mpeg:MPEG;"
+	      "video/x-mpeg:mpg,mpeg:MPEG;"
+	      "video/x-mpeg2:mpv2,mp2ve:MPEG2;"
+	      "audio/mpeg:mpg,mpeg:MPEG;"
+	      "audio/x-mpeg:mpg,mpeg:MPEG;"
+	      "audio/mpeg2:mp2:MPEG audio;"
+	      "audio/x-mpeg2:mp2:MPEG audio;"
+	      "video/mp4:mp4:MPEG 4 Video;"
+	      "video/3gpp:mp4,3gp:MPEG 4 Video;", sizeof(MimeTypes));
     g_strlcat(MimeTypes,
-            "audio/mpeg3:mp3:MPEG audio;"
-                    "audio/x-mpeg3:mp3:MPEG audio;"
-                    "audio/x-mpegurl:m3u:MPEG url;"
-                    "audio/mp3:mp3:MPEG audio;", sizeof(MimeTypes));
+	      "audio/mpeg3:mp3:MPEG audio;"
+	      "audio/x-mpeg3:mp3:MPEG audio;"
+	      "audio/x-mpegurl:m3u:MPEG url;"
+	      "audio/mp3:mp3:MPEG audio;", sizeof(MimeTypes));
     g_strlcat(MimeTypes,
-            "application/x-ogg:ogg:Ogg Vorbis Media;"
-                    "audio/ogg:ogg:Ogg Vorbis Audio;"
-                    "audio/x-ogg:ogg:Ogg Vorbis Audio;"
-                    "application/ogg:ogg:Ogg Vorbis / Ogg Theora;",
-            sizeof(MimeTypes));
+	      "application/x-ogg:ogg:Ogg Vorbis Media;"
+	      "audio/ogg:ogg:Ogg Vorbis Audio;"
+	      "audio/x-ogg:ogg:Ogg Vorbis Audio;"
+	      "application/ogg:ogg:Ogg Vorbis / Ogg Theora;",
+	      sizeof(MimeTypes));
     // FLAC
     g_strlcat(MimeTypes,
-            "audio/flac:flac:FLAC Audio;"
-                    "audio/x-flac:flac:FLAC Audio;", sizeof(MimeTypes));
+	      "audio/flac:flac:FLAC Audio;"
+	      "audio/x-flac:flac:FLAC Audio;", sizeof(MimeTypes));
 
     // FLI
     g_strlcat(MimeTypes,
-            "video/fli:fli,flc:FLI animation;"
-                    "video/x-fli:fli,flc:FLI animation;", sizeof(MimeTypes));
+	      "video/fli:fli,flc:FLI animation;"
+	      "video/x-fli:fli,flc:FLI animation;", sizeof(MimeTypes));
 
     // FLV
     g_strlcat(MimeTypes, "video/x-flv:flv:Flash Video;",
-            sizeof(MimeTypes));
+	      sizeof(MimeTypes));
 
     // Vivo
     g_strlcat(MimeTypes, "video/vnd.vivo:viv,vivo:VivoActive;",
-            sizeof(MimeTypes));
+	      sizeof(MimeTypes));
 
     // NSV
     g_strlcat(MimeTypes,
-            "application/x-nsv-vp3-mp3:nsv:Nullsoft Streaming Video;",
-            sizeof(MimeTypes));
+	      "application/x-nsv-vp3-mp3:nsv:Nullsoft Streaming Video;",
+	      sizeof(MimeTypes));
 
     // Soundtracker
     g_strlcat(MimeTypes,
-            "audio/x-mod:mod:Soundtracker;", sizeof(MimeTypes));
+	      "audio/x-mod:mod:Soundtracker;", sizeof(MimeTypes));
 
     // Basic
     g_strlcat(MimeTypes,
-            "audio/basic:au,snd:Basic Audio File;"
-                    "audio/x-basic:au,snd:Basic Audio File;",
-            sizeof(MimeTypes));
+	      "audio/basic:au,snd:Basic Audio File;"
+	      "audio/x-basic:au,snd:Basic Audio File;", sizeof(MimeTypes));
     // MIDI
     g_strlcat(MimeTypes,
-            "audio/midi:mid,midi,kar:MIDI Audio;",
-            sizeof(MimeTypes));        
-    
+	      "audio/midi:mid,midi,kar:MIDI Audio;", sizeof(MimeTypes));
+
     // Playlist
     g_strlcat(MimeTypes,
-            "audio/x-scpls:pls:Shoutcast Playlist;",
-            sizeof(MimeTypes));
-    
+	      "audio/x-scpls:pls:Shoutcast Playlist;", sizeof(MimeTypes));
+
     return g_strdup(MimeTypes);
 }
 
-NPError PluginGetValue(NPPVariable variable, void *value) {
+NPError PluginGetValue(NPPVariable variable, void *value)
+{
     NPError err = NPERR_NO_ERROR;
 
     // some sites use this description to figure out what formats can be played. So we have to make sure the 
     // description matches the features
 
     if (variable == NPPVpluginNameString) {
-        *((const char **) value) = "gecko-mediaplayer " VERSION;
+	*((const char **) value) = "gecko-mediaplayer " VERSION;
     }
     if (variable == NPPVpluginDescriptionString) {
-        *((const char **) value) =
-                "<a href=\"http://dekorte.homeip.net/download/gnome-mplayer/\">Gecko Media Player</a> "
-                VERSION
-                "<br><br>Video Player Plug-in for QuickTime, RealPlayer and Windows Media Player streams using <a href=\"http://mplayerhq.hu\">MPlayer</a>";
+	*((const char **) value) =
+	    "<a href=\"http://dekorte.homeip.net/download/gnome-mplayer/\">Gecko Media Player</a> "
+	    VERSION
+	    "<br><br>Video Player Plug-in for QuickTime, RealPlayer and Windows Media Player streams using <a href=\"http://mplayerhq.hu\">MPlayer</a>";
 
     }
 
     if (variable == NPPVpluginNeedsXEmbed) {
-        *((PRBool *) value) = PR_TRUE;
+	*((PRBool *) value) = PR_TRUE;
     }
 
     if ((variable != NPPVpluginNameString)
-         && (variable != NPPVpluginDescriptionString)
-         && (variable != NPPVpluginNeedsXEmbed)) {
-        err = NPERR_INVALID_PARAM;
+	&& (variable != NPPVpluginDescriptionString)
+	&& (variable != NPPVpluginNeedsXEmbed)) {
+	err = NPERR_INVALID_PARAM;
     }
 
     return err;
-    
+
 }

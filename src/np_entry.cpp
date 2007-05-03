@@ -54,7 +54,7 @@ NPError OSCALL NP_Shutdown()
 static NPError fillPluginFunctionTable(NPPluginFuncs * aNPPFuncs)
 {
     if (aNPPFuncs == NULL)
-        return NPERR_INVALID_FUNCTABLE_ERROR;
+	return NPERR_INVALID_FUNCTABLE_ERROR;
 
     // Set up the plugin function table that Netscape will use to
     // call us. Netscape needs to know about our version and size   
@@ -66,7 +66,8 @@ static NPError fillPluginFunctionTable(NPPluginFuncs * aNPPFuncs)
     aNPPFuncs->destroy = NewNPP_DestroyProc(Private_Destroy);
     aNPPFuncs->setwindow = NewNPP_SetWindowProc(Private_SetWindow);
     aNPPFuncs->newstream = NewNPP_NewStreamProc(Private_NewStream);
-    aNPPFuncs->destroystream = NewNPP_DestroyStreamProc(Private_DestroyStream);
+    aNPPFuncs->destroystream =
+	NewNPP_DestroyStreamProc(Private_DestroyStream);
     aNPPFuncs->asfile = NewNPP_StreamAsFileProc(Private_StreamAsFile);
     aNPPFuncs->writeready = NewNPP_WriteReadyProc(Private_WriteReady);
     aNPPFuncs->write = NewNPP_WriteProc(Private_Write);
@@ -100,13 +101,13 @@ static NPError fillPluginFunctionTable(NPPluginFuncs * aNPPFuncs)
 static NPError fillNetscapeFunctionTable(NPNetscapeFuncs * aNPNFuncs)
 {
     if (aNPNFuncs == NULL)
-        return NPERR_INVALID_FUNCTABLE_ERROR;
+	return NPERR_INVALID_FUNCTABLE_ERROR;
 
     if (HIBYTE(aNPNFuncs->version) > NP_VERSION_MAJOR)
-        return NPERR_INCOMPATIBLE_VERSION_ERROR;
+	return NPERR_INCOMPATIBLE_VERSION_ERROR;
 
     if (aNPNFuncs->size < sizeof(NPNetscapeFuncs))
-        return NPERR_INVALID_FUNCTABLE_ERROR;
+	return NPERR_INVALID_FUNCTABLE_ERROR;
 
     NPNFuncs.size = aNPNFuncs->size;
     NPNFuncs.version = aNPNFuncs->version;
@@ -152,7 +153,7 @@ NPError OSCALL NP_Initialize(NPNetscapeFuncs * aNPNFuncs)
 {
     NPError rv = fillNetscapeFunctionTable(aNPNFuncs);
     if (rv != NPERR_NO_ERROR)
-        return rv;
+	return rv;
 
     return NS_PluginInitialize();
 }
@@ -162,7 +163,7 @@ NPError OSCALL NP_GetEntryPoints(NPPluginFuncs * aNPPFuncs)
     return fillPluginFunctionTable(aNPPFuncs);
 }
 
-#endif                          //XP_WIN
+#endif				//XP_WIN
 
 /**************************************************/
 /*                                                */
@@ -171,15 +172,16 @@ NPError OSCALL NP_GetEntryPoints(NPPluginFuncs * aNPPFuncs)
 /**************************************************/
 #ifdef XP_UNIX
 
-NPError NP_Initialize(NPNetscapeFuncs * aNPNFuncs, NPPluginFuncs * aNPPFuncs)
+NPError NP_Initialize(NPNetscapeFuncs * aNPNFuncs,
+		      NPPluginFuncs * aNPPFuncs)
 {
     NPError rv = fillNetscapeFunctionTable(aNPNFuncs);
     if (rv != NPERR_NO_ERROR)
-        return rv;
+	return rv;
 
     rv = fillPluginFunctionTable(aNPPFuncs);
     if (rv != NPERR_NO_ERROR)
-        return rv;
+	return rv;
 
     return NS_PluginInitialize();
 }
@@ -194,7 +196,7 @@ NPError NP_GetValue(void *future, NPPVariable aVariable, void *aValue)
     return NS_PluginGetValue(aVariable, aValue);
 }
 
-#endif                          //XP_UNIX
+#endif				//XP_UNIX
 
 /**************************************************/
 /*                                                */
@@ -204,10 +206,10 @@ NPError NP_GetValue(void *future, NPPVariable aVariable, void *aValue)
 #ifdef XP_MAC
 
 #if !TARGET_API_MAC_CARBON
-QDGlobals *gQDPtr;              // Pointer to Netscape's QuickDraw globals
+QDGlobals *gQDPtr;		// Pointer to Netscape's QuickDraw globals
 #endif
 
-short gResFile;                 // Refnum of the plugin's resource file
+short gResFile;			// Refnum of the plugin's resource file
 
 NPError Private_Initialize(void)
 {
@@ -243,70 +245,77 @@ void SetUpQD(void)
     Boolean hasCFM = BitTst(&response, 31 - gestaltCFMPresent);
 
     if (hasCFM) {
-        // GetProcessInformation takes a process serial number and 
-        // will give us back the name and FSSpec of the application.
-        // See the Process Manager in IM.
-        infoRec.processInfoLength = sizeof(ProcessInfoRec);
-        infoRec.processName = name;
-        infoRec.processAppSpec = &myFSSpec;
+	// GetProcessInformation takes a process serial number and 
+	// will give us back the name and FSSpec of the application.
+	// See the Process Manager in IM.
+	infoRec.processInfoLength = sizeof(ProcessInfoRec);
+	infoRec.processName = name;
+	infoRec.processAppSpec = &myFSSpec;
 
-        PSN.highLongOfPSN = 0;
-        PSN.lowLongOfPSN = kCurrentProcess;
+	PSN.highLongOfPSN = 0;
+	PSN.lowLongOfPSN = kCurrentProcess;
 
-        result = GetProcessInformation(&PSN, &infoRec);
+	result = GetProcessInformation(&PSN, &infoRec);
     } else
-        // If no CFM installed, assume it must be a 68K app.
-        result = -1;
+	// If no CFM installed, assume it must be a 68K app.
+	result = -1;
 
     if (result == noErr) {
-        // Now that we know the app name and FSSpec, we can call GetDiskFragment
-        // to get a connID to use in a subsequent call to FindSymbol (it will also
-        // return the address of ³main² in app, which we ignore).  If GetDiskFragment 
-        // returns an error, we assume the app must be 68K.
-        Ptr mainAddr;
-        result = GetDiskFragment(infoRec.processAppSpec, 0L, 0L, infoRec.processName,
-                                 kReferenceCFrag, &connID, (Ptr *) & mainAddr, errName);
+	// Now that we know the app name and FSSpec, we can call GetDiskFragment
+	// to get a connID to use in a subsequent call to FindSymbol (it will also
+	// return the address of ³main² in app, which we ignore).  If GetDiskFragment 
+	// returns an error, we assume the app must be 68K.
+	Ptr mainAddr;
+	result =
+	    GetDiskFragment(infoRec.processAppSpec, 0L, 0L,
+			    infoRec.processName, kReferenceCFrag, &connID,
+			    (Ptr *) & mainAddr, errName);
     }
 
     if (result == noErr) {
-        // The app is a PPC code fragment, so call FindSymbol
-        // to get the exported ³qd² symbol so we can access its
-        // QuickDraw globals.
-        CFragSymbolClass symClass;
-        result = FindSymbol(connID, "\pqd", (Ptr *) & gQDPtr, &symClass);
+	// The app is a PPC code fragment, so call FindSymbol
+	// to get the exported ³qd² symbol so we can access its
+	// QuickDraw globals.
+	CFragSymbolClass symClass;
+	result = FindSymbol(connID, "\pqd", (Ptr *) & gQDPtr, &symClass);
     } else {
-        // The app is 68K, so use its A5 to compute the address
-        // of its QuickDraw globals.
-        gQDPtr = (QDGlobals *) (*((long *) SetCurrentA5()) - (sizeof(QDGlobals) - sizeof(GrafPtr)));
+	// The app is 68K, so use its A5 to compute the address
+	// of its QuickDraw globals.
+	gQDPtr =
+	    (QDGlobals *) (*((long *) SetCurrentA5()) -
+			   (sizeof(QDGlobals) - sizeof(GrafPtr)));
     }
-#endif                          /* !TARGET_API_MAC_CARBON */
+#endif				/* !TARGET_API_MAC_CARBON */
 }
 
-NPError main(NPNetscapeFuncs * nsTable, NPPluginFuncs * pluginFuncs, NPP_ShutdownUPP * unloadUpp);
+NPError main(NPNetscapeFuncs * nsTable, NPPluginFuncs * pluginFuncs,
+	     NPP_ShutdownUPP * unloadUpp);
 
 #if !TARGET_API_MAC_CARBON
 #pragma export on
 #if GENERATINGCFM
-RoutineDescriptor mainRD = BUILD_ROUTINE_DESCRIPTOR(uppNPP_MainEntryProcInfo, main);
+RoutineDescriptor mainRD =
+BUILD_ROUTINE_DESCRIPTOR(uppNPP_MainEntryProcInfo, main);
 #endif
 #pragma export off
-#endif                          /* !TARGET_API_MAC_CARBON */
+#endif				/* !TARGET_API_MAC_CARBON */
 
 
-NPError main(NPNetscapeFuncs * aNPNFuncs, NPPluginFuncs * aNPPFuncs, NPP_ShutdownUPP * aUnloadUpp)
+NPError main(NPNetscapeFuncs * aNPNFuncs, NPPluginFuncs * aNPPFuncs,
+	     NPP_ShutdownUPP * aUnloadUpp)
 {
     NPError rv = NPERR_NO_ERROR;
 
     if (aUnloadUpp == NULL)
-        rv = NPERR_INVALID_FUNCTABLE_ERROR;
+	rv = NPERR_INVALID_FUNCTABLE_ERROR;
 
     if (rv == NPERR_NO_ERROR)
-        rv = fillNetscapeFunctionTable(aNPNFuncs);
+	rv = fillNetscapeFunctionTable(aNPNFuncs);
 
     if (rv == NPERR_NO_ERROR) {
-        // defer static constructors until the global functions are initialized.
-        __InitCode__();
-        rv = fillPluginFunctionTable(aNPPFuncs);
+	// defer static constructors until the global functions are initialized.
+	__InitCode__();
+	rv = fillPluginFunctionTable(aNPPFuncs);
     }
 
     *aUnloadUpp = NewNPP_ShutdownProc(Private_Shutdown);
@@ -315,4 +324,4 @@ NPError main(NPNetscapeFuncs * aNPNFuncs, NPPluginFuncs * aNPPFuncs, NPP_Shutdow
 
     return rv;
 }
-#endif                          //XP_MAC
+#endif				//XP_MAC

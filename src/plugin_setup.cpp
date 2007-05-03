@@ -36,11 +36,13 @@
  * ***** END LICENSE BLOCK ***** */
 
 #include "plugin.h"
-#include "plugin_list.h"        
+#include "plugin_list.h"
 #include "plugin_setup.h"
-        
-void new_instance(nsPluginInstance *instance, nsPluginCreateData *parameters) {
-    
+
+void new_instance(nsPluginInstance * instance,
+		  nsPluginCreateData * parameters)
+{
+
     gint i;
     gint newwindow = 0;
     gint loop = 0;
@@ -51,188 +53,192 @@ void new_instance(nsPluginInstance *instance, nsPluginCreateData *parameters) {
     gchar *arg[10];
     GRand *rand;
     gchar *tmp;
-        
+
     instance->mode = parameters->mode;
     instance->mimetype = g_strdup(parameters->type);
     instance->mInstance = parameters->instance;
-    
-    if (instance->mode == NP_EMBED) {
-        for (i = 0; i < parameters->argc; i++) {
-            printf("ARG: %s = %s\n",parameters->argn[i],parameters->argv[i]);
-            
-            
-            if (g_ascii_strcasecmp(parameters->argn[i],"src") == 0) {
-                item = g_new0(ListItem,1);
-                g_strlcpy(item->src,parameters->argv[i],1024);
-                // printf("Item src = %s\n",item->src);
-                item->streaming = streaming(item->src);
-                item->play = TRUE;
-                item->id = instance->nextid++;
-                instance->playlist = g_list_append(instance->playlist,item);
-                src = item;
-            }
-            
-            if (g_ascii_strcasecmp(parameters->argn[i],"filename") == 0) {
-                item = g_new0(ListItem,1);
-                g_strlcpy(item->src,parameters->argv[i],1024);
-                // printf("Item src = %s\n",item->src);
-                item->streaming = streaming(item->src);
-                item->play = TRUE;
-                item->id = instance->nextid++;
-                instance->playlist = g_list_append(instance->playlist,item);
-                src = item;
-            }
-            
-            if (g_ascii_strcasecmp(parameters->argn[i],"href") == 0) {
-                item = g_new0(ListItem,1);
-                g_strlcpy(item->src,parameters->argv[i],1024);
-                // printf("Item href = %s\n",item->src);
-                item->streaming = streaming(item->src);
-                item->play = FALSE;
-                item->id = instance->nextid++;
-                instance->playlist = g_list_append(instance->playlist,item);
-                href = item;
-            }
-            
-            if (g_ascii_strcasecmp(parameters->argn[i],"file") == 0) {
-                item = g_new0(ListItem,1);
-                g_strlcpy(item->local,parameters->argv[i],1024);
-                // printf("Item href = %s\n",item->src);
-                item->streaming = streaming(item->src);
-                item->play = TRUE;
-                item->id = instance->nextid++;
-                instance->playlist = g_list_append(instance->playlist,item);
-                src = item;
-            }
-            
-            if (g_ascii_strcasecmp(parameters->argn[i],"target") == 0) {
-                if (g_ascii_strcasecmp(parameters->argv[i],"quicktimeplayer") == 0) {
-                    newwindow = TRUE;
-                }
-            }
-            
-            if (g_ascii_strcasecmp(parameters->argn[i],"hidden") == 0) {
-                if (strstr(parameters->argv[i], "true")
-                    || strstr(parameters->argv[i], "yes")
-                    || strstr(parameters->argv[i], "1")) {
-                    instance->hidden = TRUE;
-                } else {
-                    instance->hidden = FALSE;
-                }
-                
-            }
-            
-            if (g_ascii_strcasecmp(parameters->argn[i],"autohref") == 0) {
-                if (strstr(parameters->argv[i], "true")
-                    || strstr(parameters->argv[i], "yes")
-                    || strstr(parameters->argv[i], "1")) {
-                        autohref = TRUE;
-                    } else {
-                        autohref = FALSE;
-                    }
-                
-            }
-            
-            if ((g_ascii_strcasecmp(parameters->argn[i], "loop") == 0)
-                 || (g_ascii_strcasecmp(parameters->argn[i], "autorewind") == 0)
-                 || (g_ascii_strcasecmp(parameters->argn[i], "repeat") == 0)) {
 
-                if (g_ascii_strcasecmp(parameters->argv[i], "true") == 0
-                    || g_ascii_strcasecmp(parameters->argv[i], "yes") == 0
-                    || g_ascii_strcasecmp(parameters->argv[i], "infinite") == 0) {
-                    loop = -1;	
-                } else if (g_ascii_isdigit((int) *(parameters->argv[i]))) {
-                    sscanf(parameters->argv[i], "%i", &loop);
-                } else {
-                    loop = 0;	// loop disabled
-                }
-            }
-            
-        };
+    if (instance->mode == NP_EMBED) {
+	for (i = 0; i < parameters->argc; i++) {
+	    printf("ARG: %s = %s\n", parameters->argn[i],
+		   parameters->argv[i]);
+
+
+	    if (g_ascii_strcasecmp(parameters->argn[i], "src") == 0) {
+		item = g_new0(ListItem, 1);
+		g_strlcpy(item->src, parameters->argv[i], 1024);
+		// printf("Item src = %s\n",item->src);
+		item->streaming = streaming(item->src);
+		item->play = TRUE;
+		item->id = instance->nextid++;
+		instance->playlist =
+		    g_list_append(instance->playlist, item);
+		src = item;
+	    }
+
+	    if (g_ascii_strcasecmp(parameters->argn[i], "filename") == 0) {
+		item = g_new0(ListItem, 1);
+		g_strlcpy(item->src, parameters->argv[i], 1024);
+		// printf("Item src = %s\n",item->src);
+		item->streaming = streaming(item->src);
+		item->play = TRUE;
+		item->id = instance->nextid++;
+		instance->playlist =
+		    g_list_append(instance->playlist, item);
+		src = item;
+	    }
+
+	    if (g_ascii_strcasecmp(parameters->argn[i], "href") == 0) {
+		item = g_new0(ListItem, 1);
+		g_strlcpy(item->src, parameters->argv[i], 1024);
+		// printf("Item href = %s\n",item->src);
+		item->streaming = streaming(item->src);
+		item->play = FALSE;
+		item->id = instance->nextid++;
+		instance->playlist =
+		    g_list_append(instance->playlist, item);
+		href = item;
+	    }
+
+	    if (g_ascii_strcasecmp(parameters->argn[i], "file") == 0) {
+		item = g_new0(ListItem, 1);
+		g_strlcpy(item->local, parameters->argv[i], 1024);
+		// printf("Item href = %s\n",item->src);
+		item->streaming = streaming(item->src);
+		item->play = TRUE;
+		item->id = instance->nextid++;
+		instance->playlist =
+		    g_list_append(instance->playlist, item);
+		src = item;
+	    }
+
+	    if (g_ascii_strcasecmp(parameters->argn[i], "target") == 0) {
+		if (g_ascii_strcasecmp
+		    (parameters->argv[i], "quicktimeplayer") == 0) {
+		    newwindow = TRUE;
+		}
+	    }
+
+	    if (g_ascii_strcasecmp(parameters->argn[i], "hidden") == 0) {
+		if (strstr(parameters->argv[i], "true")
+		    || strstr(parameters->argv[i], "yes")
+		    || strstr(parameters->argv[i], "1")) {
+		    instance->hidden = TRUE;
+		} else {
+		    instance->hidden = FALSE;
+		}
+
+	    }
+
+	    if (g_ascii_strcasecmp(parameters->argn[i], "autohref") == 0) {
+		if (strstr(parameters->argv[i], "true")
+		    || strstr(parameters->argv[i], "yes")
+		    || strstr(parameters->argv[i], "1")) {
+		    autohref = TRUE;
+		} else {
+		    autohref = FALSE;
+		}
+
+	    }
+
+	    if ((g_ascii_strcasecmp(parameters->argn[i], "loop") == 0)
+		|| (g_ascii_strcasecmp(parameters->argn[i], "autorewind")
+		    == 0)
+		|| (g_ascii_strcasecmp(parameters->argn[i], "repeat") ==
+		    0)) {
+
+		if (g_ascii_strcasecmp(parameters->argv[i], "true") == 0
+		    || g_ascii_strcasecmp(parameters->argv[i], "yes") == 0
+		    || g_ascii_strcasecmp(parameters->argv[i],
+					  "infinite") == 0) {
+		    loop = -1;
+		} else if (g_ascii_isdigit((int) *(parameters->argv[i]))) {
+		    sscanf(parameters->argv[i], "%i", &loop);
+		} else {
+		    loop = 0;	// loop disabled
+		}
+	    }
+
+	};
     } else {
-        
+
     }
-    
+
     if (src != NULL) {
-        if (loop != 0) {
-            src->loop = TRUE;
-            src->loopcount = loop;
-        } else {
-            loop = FALSE;
-        }
+	if (loop != 0) {
+	    src->loop = TRUE;
+	    src->loopcount = loop;
+	} else {
+	    loop = FALSE;
+	}
     }
-    
     // link up src to href objects by id
     if (href != NULL && src != NULL) {
-        src->hrefid = href->id; 
+	src->hrefid = href->id;
     }
-    
     // if target is set, set it on the href
     if (href != NULL) {
-        href->newwindow = newwindow;
+	href->newwindow = newwindow;
     }
     // list_dump(instance->playlist);
-    
+
     if (instance->hidden == TRUE) {
-        
-        if (item->streaming) {
-            open_location(instance,item,FALSE);
-            item->requested = 1;
-        } else {
-            item->requested = 1;
-            NPN_GetURLNotify(instance->mInstance,item->src, NULL, item);
-        }
+
+	if (item->streaming) {
+	    open_location(instance, item, FALSE);
+	    item->requested = 1;
+	} else {
+	    item->requested = 1;
+	    NPN_GetURLNotify(instance->mInstance, item->src, NULL, item);
+	}
     }
-          
-    printf("autohref = %i\n",autohref);
-    
+
     if (autohref == TRUE) {
-        src->play = FALSE;
-        href->play = TRUE;
-        i = 0;
-                            // generate a random controlid
-        rand = g_rand_new();
-        href->controlid = g_rand_int_range(rand,0,65535);
-        g_rand_free(rand);
-        tmp = g_strdup_printf("/control/%i",item->controlid);
-        g_strlcpy(href->path,tmp,1024);
-        g_free(tmp);
-                            
-        //list_dump(instance->playlist);
-                            
-        arg[i++] = g_strdup("gnome-mplayer");
-        arg[i++] = g_strdup_printf("--controlid=%i",item->controlid);
-        arg[i] = NULL;
-        g_spawn_async(NULL, arg, NULL,
-                      G_SPAWN_SEARCH_PATH,
-                      NULL, NULL, NULL, NULL);
-        NPN_GetURLNotify(instance->mInstance,href->src, NULL, href);                       
+	src->play = FALSE;
+	href->play = TRUE;
+	i = 0;
+	// generate a random controlid
+	rand = g_rand_new();
+	href->controlid = g_rand_int_range(rand, 0, 65535);
+	g_rand_free(rand);
+	tmp = g_strdup_printf("/control/%i", item->controlid);
+	g_strlcpy(href->path, tmp, 1024);
+	g_free(tmp);
+
+	//list_dump(instance->playlist);
+
+	arg[i++] = g_strdup("gnome-mplayer");
+	arg[i++] = g_strdup_printf("--controlid=%i", item->controlid);
+	arg[i] = NULL;
+	g_spawn_async(NULL, arg, NULL,
+		      G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, NULL);
+	NPN_GetURLNotify(instance->mInstance, href->src, NULL, href);
     }
-            
-    
+
+
 }
 
-gint streaming(gchar *url) {
+gint streaming(gchar * url)
+{
     gint ret = 0;
-        
-    if (strstr(url,"mms://") != NULL)
-        ret = 1;
-    
-    if (strstr(url,"mmst://") != NULL)
-        ret = 1;
-    
-    if (strstr(url,"mmsu://") != NULL)
-        ret = 1;
-    
-    if (strstr(url,"rtsp://") != NULL)
-        ret = 1;
-    
-    if (strstr(url,"tv://") != NULL)
-        ret = 1;
-    
-    if (strstr(url,"dvd://") != NULL)
-        ret = 1;
+
+    if (strstr(url, "mms://") != NULL)
+	ret = 1;
+
+    if (strstr(url, "mmst://") != NULL)
+	ret = 1;
+
+    if (strstr(url, "mmsu://") != NULL)
+	ret = 1;
+
+    if (strstr(url, "rtsp://") != NULL)
+	ret = 1;
+
+    if (strstr(url, "tv://") != NULL)
+	ret = 1;
+
+    if (strstr(url, "dvd://") != NULL)
+	ret = 1;
 
     return ret;
 }
-

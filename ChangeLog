@@ -1,4 +1,7 @@
 Development
+    If the local version of the url is requested but not found then use the url as the source
+    Handle request for "Next" item off the playlist differently
+    Implement ASX parser and extract the ASX fields out
     Switch from using dbus_connection_setup_with_g_main to 
         using our own dbus dispatcher but only when we can't connect to 
         g_main_loop. Fixes some trailers in Opera and in Firefox

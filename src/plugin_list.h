@@ -65,6 +65,32 @@ typedef struct _ListItem {
     gint loopcount; // 0 - loop done, -1 loop forever
 } ListItem;
         
+        
+        
+void start_element (GMarkupParseContext * context,
+                    const gchar * element_name,
+                    const gchar ** attribute_names,
+                    const gchar ** attribute_values,
+                    gpointer user_data, GError ** error);
+
+void end_element (GMarkupParseContext * context,
+                  const gchar * element_name,
+                  gpointer user_data, GError ** error);
+
+void element_text (GMarkupParseContext * context,
+                   const gchar * text,
+                   gsize text_len, gpointer user_data, GError ** error);
+
+static const GMarkupParser parser = {
+    start_element,
+    end_element,
+    NULL,				//element_text,
+    NULL,
+    NULL,
+};
+
+
+
 ListItem *list_find(GList *list, gchar *url);
 ListItem *list_find_by_id(GList *list, gint id);
 ListItem *list_find_by_controlid(GList* list, gint id);
@@ -74,4 +100,5 @@ ListItem *list_find_next_playable(GList* list);
 GList *list_clear(GList *list);
 void list_dump(GList *list);        
 GList *list_parse_qt(GList *list, ListItem *item);         
+GList *list_parse_asx(GList *list, ListItem *item);         
 #endif // _PLUGIN_LIST_H

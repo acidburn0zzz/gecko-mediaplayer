@@ -37,49 +37,51 @@
 
 #include "plugin_types.h"
 
-gchar *GetMIMEDescription() {
+gchar *GetMIMEDescription()
+{
     gchar MimeTypes[4000];
-    
+
     g_strlcpy(MimeTypes,
-            "video/quicktime:mov:Quicktime;"
-                    "video/x-quicktime:mov:Quicktime;"
-                    "image/x-quicktime:mov:Quicktime;"
-                    "video/quicktime:mp4:Quicktime;"
-                    "video/quicktime:sdp:Quicktime - Session Description Protocol;"
-                    "application/x-quicktimeplayer:mov:Quicktime;",
-            sizeof(MimeTypes));
-    
+	      "video/quicktime:mov:Quicktime;"
+	      "video/x-quicktime:mov:Quicktime;"
+	      "image/x-quicktime:mov:Quicktime;"
+	      "video/quicktime:mp4:Quicktime;"
+	      "video/quicktime:sdp:Quicktime - Session Description Protocol;"
+	      "application/x-quicktimeplayer:mov:Quicktime;",
+	      sizeof(MimeTypes));
+
     return g_strdup(MimeTypes);
 }
 
-NPError PluginGetValue(NPPVariable variable, void *value) {
+NPError PluginGetValue(NPPVariable variable, void *value)
+{
     NPError err = NPERR_NO_ERROR;
 
     // some sites use this description to figure out what formats can be played. So we have to make sure the 
     // description matches the features
 
     if (variable == NPPVpluginNameString) {
-        *((const char **) value) = "QuickTime Plug-in 6.0 / 7";
+	*((const char **) value) = "QuickTime Plug-in 6.0 / 7";
     }
     if (variable == NPPVpluginDescriptionString) {
-        *((const char **) value) =
-                "<a href=\"http://dekorte.homeip.net/download/gnome-mplayer/\">Gecko Media Player</a> "
-                VERSION
-                "<br><br>Video Player Plug-in for QuickTime, RealPlayer and Windows Media Player streams using <a href=\"http://mplayerhq.hu\">MPlayer</a>";
+	*((const char **) value) =
+	    "<a href=\"http://dekorte.homeip.net/download/gnome-mplayer/\">Gecko Media Player</a> "
+	    VERSION
+	    "<br><br>Video Player Plug-in for QuickTime, RealPlayer and Windows Media Player streams using <a href=\"http://mplayerhq.hu\">MPlayer</a>";
 
     }
 
     if (variable == NPPVpluginNeedsXEmbed) {
-        *((PRBool *) value) = PR_TRUE;
+	*((PRBool *) value) = PR_TRUE;
     }
 
     if ((variable != NPPVpluginNameString)
-         && (variable != NPPVpluginDescriptionString)
-         && (variable != NPPVpluginNeedsXEmbed)) {
-        err = NPERR_INVALID_PARAM;
+	&& (variable != NPPVpluginDescriptionString)
+	&& (variable != NPPVpluginNeedsXEmbed)) {
+	err = NPERR_INVALID_PARAM;
     }
 
     return err;
-    
-    
+
+
 }

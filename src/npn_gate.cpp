@@ -44,7 +44,8 @@
 
 extern NPNetscapeFuncs NPNFuncs;
 
-void NPN_Version(int *plugin_major, int *plugin_minor, int *netscape_major, int *netscape_minor)
+void NPN_Version(int *plugin_major, int *plugin_minor, int *netscape_major,
+		 int *netscape_minor)
 {
     *plugin_major = NP_VERSION_MAJOR;
     *plugin_minor = NP_VERSION_MINOR;
@@ -52,63 +53,73 @@ void NPN_Version(int *plugin_major, int *plugin_minor, int *netscape_major, int 
     *netscape_minor = LOBYTE(NPNFuncs.version);
 }
 
-NPError NPN_GetURLNotify(NPP instance, const char *url, const char *target, void *notifyData)
+NPError NPN_GetURLNotify(NPP instance, const char *url, const char *target,
+			 void *notifyData)
 {
     int navMinorVers = NPNFuncs.version & 0xFF;
     NPError rv = NPERR_NO_ERROR;
 
     if (navMinorVers >= NPVERS_HAS_NOTIFICATION)
-        rv = CallNPN_GetURLNotifyProc(NPNFuncs.geturlnotify, instance, url, target, notifyData);
+	rv = CallNPN_GetURLNotifyProc(NPNFuncs.geturlnotify, instance, url,
+				      target, notifyData);
     else
-        rv = NPERR_INCOMPATIBLE_VERSION_ERROR;
+	rv = NPERR_INCOMPATIBLE_VERSION_ERROR;
 
     return rv;
 }
 
 NPError NPN_GetURL(NPP instance, const char *url, const char *target)
 {
-    NPError rv = CallNPN_GetURLProc(NPNFuncs.geturl, instance, url, target);
+    NPError rv =
+	CallNPN_GetURLProc(NPNFuncs.geturl, instance, url, target);
     return rv;
 }
 
-NPError NPN_PostURLNotify(NPP instance, const char *url, const char *window, uint32 len,
-                          const char *buf, NPBool file, void *notifyData)
+NPError NPN_PostURLNotify(NPP instance, const char *url,
+			  const char *window, uint32 len, const char *buf,
+			  NPBool file, void *notifyData)
 {
     int navMinorVers = NPNFuncs.version & 0xFF;
     NPError rv = NPERR_NO_ERROR;
 
     if (navMinorVers >= NPVERS_HAS_NOTIFICATION)
-        rv = CallNPN_PostURLNotifyProc(NPNFuncs.posturlnotify, instance, url, window, len, buf,
-                                       file, notifyData);
+	rv = CallNPN_PostURLNotifyProc(NPNFuncs.posturlnotify, instance,
+				       url, window, len, buf, file,
+				       notifyData);
     else
-        rv = NPERR_INCOMPATIBLE_VERSION_ERROR;
+	rv = NPERR_INCOMPATIBLE_VERSION_ERROR;
 
     return rv;
 }
 
-NPError NPN_PostURL(NPP instance, const char *url, const char *window, uint32 len, const char *buf,
-                    NPBool file)
+NPError NPN_PostURL(NPP instance, const char *url, const char *window,
+		    uint32 len, const char *buf, NPBool file)
 {
-    NPError rv = CallNPN_PostURLProc(NPNFuncs.posturl, instance, url, window, len, buf, file);
+    NPError rv =
+	CallNPN_PostURLProc(NPNFuncs.posturl, instance, url, window, len,
+			    buf, file);
     return rv;
 }
 
 NPError NPN_RequestRead(NPStream * stream, NPByteRange * rangeList)
 {
-    NPError rv = CallNPN_RequestReadProc(NPNFuncs.requestread, stream, rangeList);
+    NPError rv =
+	CallNPN_RequestReadProc(NPNFuncs.requestread, stream, rangeList);
     return rv;
 }
 
-NPError NPN_NewStream(NPP instance, NPMIMEType type, const char *target, NPStream ** stream)
+NPError NPN_NewStream(NPP instance, NPMIMEType type, const char *target,
+		      NPStream ** stream)
 {
     int navMinorVersion = NPNFuncs.version & 0xFF;
 
     NPError rv = NPERR_NO_ERROR;
 
     if (navMinorVersion >= NPVERS_HAS_STREAMOUTPUT)
-        rv = CallNPN_NewStreamProc(NPNFuncs.newstream, instance, type, target, stream);
+	rv = CallNPN_NewStreamProc(NPNFuncs.newstream, instance, type,
+				   target, stream);
     else
-        rv = NPERR_INCOMPATIBLE_VERSION_ERROR;
+	rv = NPERR_INCOMPATIBLE_VERSION_ERROR;
 
     return rv;
 }
@@ -119,9 +130,10 @@ int32 NPN_Write(NPP instance, NPStream * stream, int32 len, void *buffer)
     int32 rv = 0;
 
     if (navMinorVersion >= NPVERS_HAS_STREAMOUTPUT)
-        rv = CallNPN_WriteProc(NPNFuncs.write, instance, stream, len, buffer);
+	rv = CallNPN_WriteProc(NPNFuncs.write, instance, stream, len,
+			       buffer);
     else
-        rv = -1;
+	rv = -1;
 
     return rv;
 }
@@ -132,9 +144,10 @@ NPError NPN_DestroyStream(NPP instance, NPStream * stream, NPError reason)
     NPError rv = NPERR_NO_ERROR;
 
     if (navMinorVersion >= NPVERS_HAS_STREAMOUTPUT)
-        rv = CallNPN_DestroyStreamProc(NPNFuncs.destroystream, instance, stream, reason);
+	rv = CallNPN_DestroyStreamProc(NPNFuncs.destroystream, instance,
+				       stream, reason);
     else
-        rv = NPERR_INCOMPATIBLE_VERSION_ERROR;
+	rv = NPERR_INCOMPATIBLE_VERSION_ERROR;
 
     return rv;
 }
@@ -192,24 +205,28 @@ jref NPN_GetJavaPeer(NPP instance)
 
 NPError NPN_GetValue(NPP instance, NPNVariable variable, void *value)
 {
-    NPError rv = CallNPN_GetValueProc(NPNFuncs.getvalue, instance, variable, value);
+    NPError rv =
+	CallNPN_GetValueProc(NPNFuncs.getvalue, instance, variable, value);
     return rv;
 }
 
 NPError NPN_SetValue(NPP instance, NPPVariable variable, void *value)
 {
-    NPError rv = CallNPN_SetValueProc(NPNFuncs.setvalue, instance, variable, value);
+    NPError rv =
+	CallNPN_SetValueProc(NPNFuncs.setvalue, instance, variable, value);
     return rv;
 }
 
 void NPN_InvalidateRect(NPP instance, NPRect * invalidRect)
 {
-    CallNPN_InvalidateRectProc(NPNFuncs.invalidaterect, instance, invalidRect);
+    CallNPN_InvalidateRectProc(NPNFuncs.invalidaterect, instance,
+			       invalidRect);
 }
 
 void NPN_InvalidateRegion(NPP instance, NPRegion invalidRegion)
 {
-    CallNPN_InvalidateRegionProc(NPNFuncs.invalidateregion, instance, invalidRegion);
+    CallNPN_InvalidateRegionProc(NPNFuncs.invalidateregion, instance,
+				 invalidRegion);
 }
 
 void NPN_ForceRedraw(NPP instance)
