@@ -181,6 +181,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
 
 		if (instance->lastopened != NULL
 		    && instance->lastopened->loop == FALSE) {
+                    list_mark_id_played(instance->playlist,instance->lastopened->id);
 		    instance->lastopened->played = TRUE;
 		    item = list_find_next_playable(instance->playlist);
 		} else {

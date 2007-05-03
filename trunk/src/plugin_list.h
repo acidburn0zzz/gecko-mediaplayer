@@ -96,6 +96,7 @@ ListItem *list_find_by_id(GList *list, gint id);
 ListItem *list_find_by_controlid(GList* list, gint id);
 void list_mark_controlid_ready(GList* list, gint id);
 void list_mark_controlid_cancelled(GList* list, gint id, gboolean cancelled);
+void list_mark_id_played(GList *list, gint id);
 ListItem *list_find_next_playable(GList* list);
 GList *list_clear(GList *list);
 void list_dump(GList *list);        
