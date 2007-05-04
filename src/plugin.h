@@ -136,6 +136,7 @@ class nsPluginInstance:public nsPluginInstanceBase {
     gint controlid;
     gint state;
     gboolean run_dispatcher;
+    gint autostart;
 };
 
 #endif                          // __PLUGIN_H__

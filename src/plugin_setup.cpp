@@ -133,7 +133,17 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
                 }
 
             }
-
+            if ((g_ascii_strcasecmp(parameters->argn[i], "autoplay") == 0)
+                 || (g_ascii_strcasecmp(parameters->argn[i], "autostart") == 0)) {
+                if (g_ascii_strcasecmp(parameters->argv[i], "false") == 0
+                    || g_ascii_strcasecmp(parameters->argv[i], "no") == 0
+                    || g_ascii_strcasecmp(parameters->argv[i], "0") == 0 ) {
+                    instance->autostart = 0;
+                    } else {
+                        instance->autostart = 1;
+                    }
+                 }
+                 
             if ((g_ascii_strcasecmp(parameters->argn[i], "loop") == 0)
                 || (g_ascii_strcasecmp(parameters->argn[i], "autorewind")
                     == 0)

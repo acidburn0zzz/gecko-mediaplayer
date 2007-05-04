@@ -126,7 +126,7 @@ mControlsScriptablePeer(NULL),
 connection(NULL),
 dbus_dispatch(NULL),
 path(NULL),
-acceptdata(TRUE), playerready(FALSE), nextid(1), lastopened(NULL), cache_size(2048), hidden(FALSE)
+acceptdata(TRUE), playerready(FALSE), nextid(1), lastopened(NULL), cache_size(2048), hidden(FALSE),autostart(1)
 {
     GRand *rand;
 
@@ -225,6 +225,7 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
         argvn[arg++] = g_strdup_printf("--controlid=%i", controlid);
         argvn[arg++] = g_strdup_printf("--width=%i", mWidth);
         argvn[arg++] = g_strdup_printf("--height=%i", mHeight);
+        argvn[arg++] = g_strdup_printf("--autostart=%i", autostart);
         argvn[arg] = g_strdup("");
         argvn[arg + 1] = NULL;
         playerready = FALSE;
