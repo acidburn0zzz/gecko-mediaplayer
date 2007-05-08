@@ -1,4 +1,5 @@
 Development
+    Another ASX fix, strip out invalid unicode characters
     More work on the ASX parser to handle XMLish URLs and not break
     Fix ASX parser to increment the entry pointer when we encounter a entry tag
         This used for single ASX files where the entry entity contains several
