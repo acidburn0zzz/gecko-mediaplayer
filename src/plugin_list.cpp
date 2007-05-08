@@ -330,12 +330,42 @@ GList *list_parse_qt(GList * list, ListItem * item)
 
 }
 
+gboolean entities_present(gchar *data, gsize len) {
+    
+    if (g_strstr_len(data,len,"&amp;") != NULL) return TRUE;
+    if (g_strstr_len(data,len,"&lt;") != NULL) return TRUE;
+    if (g_strstr_len(data,len,"&gt;") != NULL) return TRUE;
+    if (g_strstr_len(data,len,"&quot;") != NULL) return TRUE;
+    if (g_strstr_len(data,len,"&apos;") != NULL) return TRUE;
+    
+    return FALSE;
+}
+
+void replace_amp(gchar *data) {
+    
+    gchar *pos;
+    
+    while(pos = g_strrstr(data,"&")) {
+        pos[0] = '\x01';
+    }
+}
+
+void unreplace_amp(gchar *data) {
+    gchar *pos;
+    
+    while(pos = g_strrstr(data,"\x01")) {
+        pos[0] = '&';
+    }
+
+}
+
 GList *list_parse_asx(GList * list, ListItem * item)
 {
     GMarkupParseContext *context;
     gchar *data;
     gsize datalen;
-
+    gboolean entities;
+    
     printf("Entering list_parse_asx localsize = %i\n", item->localsize);
 
     if (item->localsize < (16 * 1024)) {
@@ -343,6 +373,12 @@ GList *list_parse_asx(GList * list, ListItem * item)
             parser_list = list;
             parser_item = item;
             asx_loop = 0;
+            entities = entities_present(data,datalen);
+  
+            if (!entities) {
+                replace_amp(data);
+            }
+            
             context = g_markup_parse_context_new(&parser, (GMarkupParseFlags) 0, data, NULL);
             g_markup_parse_context_parse(context, data, datalen, NULL);
             g_markup_parse_context_free(context);
@@ -373,6 +409,7 @@ start_element(GMarkupParseContext * context,
                     parser_item->play = FALSE;
                     newitem = g_new0(ListItem, 1);
                     g_strlcpy(newitem->src, attribute_values[i], 1024);
+                    unreplace_amp(newitem->src);
                     newitem->streaming = streaming(newitem->src);
                     // crappy hack, mplayer needs the protocol in lower case, some sites don't
                     if (newitem->streaming) {
