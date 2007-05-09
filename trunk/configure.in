@@ -97,4 +97,5 @@ Makefile
 gecko-mediaplayer.spec
 src/Makefile
 po/Makefile.in
+debian/Makefile
 ])
