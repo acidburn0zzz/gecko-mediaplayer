@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 ## Created by Anjuta
 
-SUBDIRS = src po
+SUBDIRS = src po debian
 
 gecko_mediaplayerdocdir = ${prefix}/share/doc/gecko-mediaplayer
 gecko_mediaplayerdoc_DATA = \
