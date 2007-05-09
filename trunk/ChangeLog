@@ -13,6 +13,7 @@ Development
     Switch from using dbus_connection_setup_with_g_main to 
         using our own dbus dispatcher but only when we can't connect to 
         g_main_loop. Fixes some trailers in Opera and in Firefox
+0.0.5 (Not released)    
     Create autobuilding spec file
     Fix doc location
     Make quicktime autohref urls work
