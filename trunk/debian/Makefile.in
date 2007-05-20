@@ -182,9 +182,8 @@ EXTRA_DIST = \
 	     copyright \
 	     dirs \
 	     docs \
-	     gnome-mplayer.1 \
-	     gnome-mplayer.manpages \
-	     menu \
+	     gecko-mediaplayer.1 \
+	     gecko-mediaplayer.manpages \
 	     watch \
 	     rules
 

@@ -9,6 +9,5 @@ EXTRA_DIST = \
 	     docs \
 	     gecko-mediaplayer.1 \
 	     gecko-mediaplayer.manpages \
-	     menu \
 	     watch \
 	     rules
