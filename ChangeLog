@@ -1,4 +1,4 @@
-Development
+0.0.6
     Debian-ized the package
     Another ASX fix, strip out invalid unicode characters
     More work on the ASX parser to handle XMLish URLs and not break
