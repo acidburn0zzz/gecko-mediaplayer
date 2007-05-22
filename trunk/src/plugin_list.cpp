@@ -391,7 +391,7 @@ GList *list_parse_asx(GList * list, ListItem * item)
                 replace_amp(data);
             }
             
-            context = g_markup_parse_context_new(&parser, (GMarkupParseFlags) 0, data, NULL);
+            context = g_markup_parse_context_new(&asx_parser, (GMarkupParseFlags) 0, data, NULL);
             g_markup_parse_context_parse(context, data, datalen, NULL);
             g_markup_parse_context_free(context);
             parser_item = NULL;
@@ -404,7 +404,7 @@ GList *list_parse_asx(GList * list, ListItem * item)
 }
 
 void
-start_element(GMarkupParseContext * context,
+asx_start_element(GMarkupParseContext * context,
               const gchar * element_name,
               const gchar ** attribute_names,
               const gchar ** attribute_values, gpointer user_data, GError ** error)
@@ -497,10 +497,95 @@ start_element(GMarkupParseContext * context,
 }
 
 void
-end_element(GMarkupParseContext * context,
+asx_end_element(GMarkupParseContext * context,
             const gchar * element_name, gpointer user_data, GError ** error)
 {
     if (g_ascii_strcasecmp(element_name, "REPEAT") == 0)
         asx_loop++;
 
+}
+
+GList *list_parse_qml(GList * list, ListItem * item)
+{
+    GMarkupParseContext *context;
+    gchar *data;
+    gsize datalen;
+    gboolean entities;
+    
+    printf("Entering list_parse_qml localsize = %i\n", item->localsize);
+
+    if (item->localsize < (16 * 1024)) {
+        if (g_file_get_contents(item->local, &data, &datalen, NULL)) {
+            parser_list = list;
+            parser_item = item;
+            asx_loop = 0;
+            strip_unicode(data,datalen);
+            entities = entities_present(data,datalen);
+  
+            if (!entities) {
+                replace_amp(data);
+            }
+            
+            context = g_markup_parse_context_new(&qml_parser, (GMarkupParseFlags) 0, data, NULL);
+            g_markup_parse_context_parse(context, data, datalen, NULL);
+            g_markup_parse_context_free(context);
+            parser_item = NULL;
+            parser_list = NULL;
+        }
+    }
+    list_dump(list);
+    printf("Exiting list_parse_qml\n");
+    return list;
+}
+
+void
+qml_start_element(GMarkupParseContext * context,
+              const gchar * element_name,
+              const gchar ** attribute_names,
+              const gchar ** attribute_values, gpointer user_data, GError ** error)
+{
+    ListItem *newitem;
+    gchar *value;
+    gint i = 0;
+
+    if (g_ascii_strcasecmp(element_name, "EMBED") == 0) {
+        while (attribute_names[i] != NULL) {
+            if (g_ascii_strcasecmp(attribute_names[i], "SRC") == 0) {
+                        
+                if (list_find(parser_list, (gchar *) attribute_values[i])
+                    == NULL) {
+                    parser_item->play = FALSE;
+                    newitem = g_new0(ListItem, 1);
+                    value = g_strdup(attribute_values[i]);
+                    unreplace_amp(value);
+                    g_strlcpy(newitem->src, value, 1024);
+                    g_free(value);
+                    newitem->streaming = streaming(newitem->src);
+                    // crappy hack, mplayer needs the protocol in lower case, some sites don't
+                    if (newitem->streaming) {
+                        newitem->src[0] = g_ascii_tolower(newitem->src[0]);
+                        newitem->src[1] = g_ascii_tolower(newitem->src[1]);
+                        newitem->src[2] = g_ascii_tolower(newitem->src[2]);
+                        newitem->src[3] = g_ascii_tolower(newitem->src[3]);
+                    }
+                    newitem->play = TRUE;
+                    if (entry_id != 0) {
+                        newitem->id = entry_id;
+                    } else {
+                        newitem->id = parser_item->id;
+                        parser_item->id = -1;
+                    }
+                    newitem->controlid = parser_item->controlid;
+                    if (asx_loop != 0) {
+                        newitem->loop = TRUE;
+                        newitem->loopcount = asx_loop;
+                    }
+                    g_strlcpy(newitem->path, parser_item->path, 1024);
+                    parser_list = g_list_append(parser_list, newitem);
+                }
+
+            }
+            i++;
+        }
+    }
 }

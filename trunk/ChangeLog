@@ -1,3 +1,5 @@
+Development
+	QuickTime Media Link Parsing Support now plays http://movies.yahoo.com/feature/transformers.html
 0.0.6
     Debian-ized the package
     Another ASX fix, strip out invalid unicode characters
