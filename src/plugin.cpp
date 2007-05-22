@@ -334,6 +334,7 @@ NPError nsPluginInstance::DestroyStream(NPStream * stream, NPError reason)
             newwindow = item->newwindow;
             playlist = list_parse_qt(playlist, item);
             playlist = list_parse_asx(playlist, item);
+            playlist = list_parse_qml(playlist, item);
             if (item->play) {
                 open_location(this, item, TRUE);
             } else {
@@ -519,6 +520,7 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *
             newwindow = item->newwindow;
             playlist = list_parse_qt(playlist, item);
             playlist = list_parse_asx(playlist, item);
+            playlist = list_parse_qml(playlist, item);
             if (item->play) {
                 open_location(this, item, TRUE);
             } else {

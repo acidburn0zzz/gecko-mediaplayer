@@ -67,13 +67,13 @@ typedef struct _ListItem {
         
         
         
-void start_element (GMarkupParseContext * context,
+void asx_start_element (GMarkupParseContext * context,
                     const gchar * element_name,
                     const gchar ** attribute_names,
                     const gchar ** attribute_values,
                     gpointer user_data, GError ** error);
 
-void end_element (GMarkupParseContext * context,
+void asx_end_element (GMarkupParseContext * context,
                   const gchar * element_name,
                   gpointer user_data, GError ** error);
 
@@ -81,10 +81,24 @@ void element_text (GMarkupParseContext * context,
                    const gchar * text,
                    gsize text_len, gpointer user_data, GError ** error);
 
-static const GMarkupParser parser = {
-    start_element,
-    end_element,
+static const GMarkupParser asx_parser = {
+    asx_start_element,
+    asx_end_element,
     NULL,				//element_text,
+    NULL,
+    NULL,
+};
+
+void qml_start_element (GMarkupParseContext * context,
+                    const gchar * element_name,
+                    const gchar ** attribute_names,
+                    const gchar ** attribute_values,
+                    gpointer user_data, GError ** error);
+
+static const GMarkupParser qml_parser = {
+    qml_start_element,
+    NULL,
+    NULL,				
     NULL,
     NULL,
 };
@@ -102,4 +116,5 @@ GList *list_clear(GList *list);
 void list_dump(GList *list);        
 GList *list_parse_qt(GList *list, ListItem *item);         
 GList *list_parse_asx(GList *list, ListItem *item);         
+GList *list_parse_qml(GList *list, ListItem *item);         // Quick Time Media Link
 #endif // _PLUGIN_LIST_H
