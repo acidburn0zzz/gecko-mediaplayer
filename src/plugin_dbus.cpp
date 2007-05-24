@@ -284,6 +284,7 @@ void open_location(nsPluginInstance * instance, ListItem * item, gboolean useloc
 
             //printf("launching gnome-mplayer from Open with id = %i\n",instance->controlid);
             argvn[arg++] = g_strdup_printf("gnome-mplayer");
+            argvn[arg++] = g_strdup_printf("--window=-1");
             argvn[arg++] = g_strdup_printf("--controlid=%i", instance->controlid);
             argvn[arg++] = g_strdup_printf("%s", file);
             argvn[arg] = g_strdup("");

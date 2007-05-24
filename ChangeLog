@@ -1,4 +1,5 @@
 Development
+	When opening the media and no window has been set, tell gnome-mplayer to run hidden
 	Fix problem with looping
 	QuickTime Media Link Parsing Support now plays http://movies.yahoo.com/feature/transformers.html
 0.0.6
