@@ -150,7 +150,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
             }
 
             if (g_ascii_strcasecmp(dbus_message_get_member(message), "Next") == 0) {
-
+				
                 if (instance->lastopened != NULL && instance->lastopened->loop == FALSE) {
                     list_mark_id_played(instance->playlist, instance->lastopened->id);
                     instance->lastopened->played = TRUE;
@@ -176,6 +176,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
 
                 //printf("next item src = %s\n", item->src);
                 //printf("next item local = %s\n", item->local);
+                //printf("next item streaming = %i\n", item->streaming);
 
                 if (item != NULL) {
                     /*
@@ -202,8 +203,11 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                         item->playerready = instance->lastopened->playerready;
                         item->newwindow = instance->lastopened->newwindow;
                         item->cancelled = FALSE;
-                        if (item != NULL)
+                        if (item->retrieved) {
+                        	open_location(instance,item,TRUE);
+                        }  else {
                             NPN_GetURLNotify(instance->mInstance, item->src, NULL, item);
+                        }
                     } else {
                         open_location(instance, item, FALSE);
                     }
@@ -268,7 +272,7 @@ void open_location(nsPluginInstance * instance, ListItem * item, gboolean useloc
     gint ok;
 
     //list_dump(instance->playlist);
-    //printf("Sending Open %s to connection %p\n",file, instance->connection);
+    //printf("Opening %s to connection %p\n",file, instance->connection);
 
     if (!(instance->player_launched)) {
         if (!item->opened) {
