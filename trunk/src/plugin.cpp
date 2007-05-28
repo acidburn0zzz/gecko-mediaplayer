@@ -621,6 +621,8 @@ void nsPluginInstance::SetFilename(const char *filename)
 {
     ListItem *item;
 
+    if (filename == NULL) return;
+    
     item = g_new0(ListItem, 1);
     g_strlcpy(item->src, filename, 1024);
     item->streaming = streaming(item->src);
