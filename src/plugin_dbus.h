@@ -42,6 +42,7 @@
 #include <glib.h>
 #include <dbus/dbus.h>
 #include <dbus/dbus-glib-lowlevel.h>
+#include <unistd.h>
 // #include <dbus/dbus-qt.h>
 #include "plugin.h"
 #include "plugin_list.h"

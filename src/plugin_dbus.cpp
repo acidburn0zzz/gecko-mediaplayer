@@ -416,7 +416,11 @@ void send_signal_when_ready(nsPluginInstance * instance, ListItem * item, gchar 
 
     if (instance->player_launched) {
         while (!(instance->playerready)) {
-            g_main_context_iteration(NULL, FALSE);
+			if (g_main_current_source() == NULL) {        
+				sleep(1);
+			} else {
+            	g_main_context_iteration(NULL, FALSE);
+            }
         }
 
         if (instance->playerready && instance->connection != NULL) {
@@ -426,8 +430,12 @@ void send_signal_when_ready(nsPluginInstance * instance, ListItem * item, gchar 
             dbus_connection_send(instance->connection, message, NULL);
             dbus_message_unref(message);
             //printf("Sent %s to connection %p\n", signal, instance->connection);
-            while (g_main_context_pending(NULL)) {
-                g_main_context_iteration(NULL, FALSE);
+            if (g_main_current_source() == NULL) {
+            	sleep(1);
+            } else {
+            	while (g_main_context_pending(NULL)) {
+                	g_main_context_iteration(NULL, FALSE);
+            	}
             }
         }
     }
