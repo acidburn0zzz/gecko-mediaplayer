@@ -203,7 +203,7 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
         return TRUE;
 
     if (aWindow == NULL)
-        return FALSE;
+        return NPERR_NO_ERROR;
 
     mX = aWindow->x;
     mY = aWindow->y;
@@ -250,7 +250,7 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
             }
         }
     }
-    return TRUE;
+    return NPERR_NO_ERROR;
 }
 
 
