@@ -200,7 +200,7 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
     ListItem *item;
 
     if (!acceptdata)
-        return TRUE;
+        return NPERR_NO_ERROR;
 
     if (aWindow == NULL)
         return NPERR_NO_ERROR;
