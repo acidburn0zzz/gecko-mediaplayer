@@ -478,8 +478,9 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *
         return -1;
     }
 
-    if (item->cancelled)
+    if (item->cancelled || item->retrieved)
         NPN_DestroyStream(mInstance, stream, NPRES_USER_BREAK);
+        
 
     if ((!item->localfp) && (!item->retrieved)) {
         printf("opening %s for localcache\n", item->local);
