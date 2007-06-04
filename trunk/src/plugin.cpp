@@ -460,7 +460,7 @@ int32 nsPluginInstance::WriteReady(NPStream * stream)
 int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
 {
     ListItem *item;
-    int32 wrotebytes;
+    int32 wrotebytes = -1;
     gchar *text;
     gdouble percent = 0.0;
     gint id;
@@ -488,6 +488,10 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *
     }
     // printf("Write item url = %s\n",item->src);
 
+    if (item->localfp == NULL) {
+    	printf("Local cache file is not open, cannot write data\n");
+    	return -1;
+    }
     fseek(item->localfp, offset, SEEK_SET);
     wrotebytes = fwrite(buffer, 1, len, item->localfp);
     item->localsize += wrotebytes;
@@ -526,13 +530,14 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *
                 open_location(this, item, TRUE);
             } else {
                 item = list_find_next_playable(playlist);
-                item->controlid = id;
-                g_strlcpy(item->path, path, 1024);
-                item->playerready = ready;
-                item->newwindow = newwindow;
-                item->cancelled = FALSE;
-                if (item != NULL)
+                if (item != NULL) {
+	                item->controlid = id;
+	                g_strlcpy(item->path, path, 1024);
+	                item->playerready = ready;
+	                item->newwindow = newwindow;
+	                item->cancelled = FALSE;
                     NPN_GetURLNotify(mInstance, item->src, NULL, item);
+                }
             }
             g_free(path);
         }
