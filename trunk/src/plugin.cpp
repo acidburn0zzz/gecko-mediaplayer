@@ -126,7 +126,14 @@ mControlsScriptablePeer(NULL),
 connection(NULL),
 dbus_dispatch(NULL),
 path(NULL),
-acceptdata(TRUE), playerready(FALSE), nextid(1), lastopened(NULL), cache_size(2048), hidden(FALSE),autostart(1)
+acceptdata(TRUE), 
+playerready(FALSE), 
+nextid(1), 
+lastopened(NULL), 
+cache_size(2048), 
+hidden(FALSE),
+autostart(1),
+lastupdate(0)
 {
     GRand *rand;
 
@@ -502,18 +509,21 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *
     if (playerready) {
         if (item->mediasize > 0) {
 
-            if (item->opened) {
+			if (difftime(time(NULL), lastupdate) > 0.5) {
+	            if (item->opened) {
 
-                percent = (gdouble) item->localsize / (gdouble) item->mediasize;
-                send_signal_with_double(this, item, "SetCachePercent", percent);
+	                percent = (gdouble) item->localsize / (gdouble) item->mediasize;
+	                send_signal_with_double(this, item, "SetCachePercent", percent);
 
-            } else {
-                percent = (gdouble) item->localsize / (gdouble) item->mediasize;
-                send_signal_with_double(this, item, "SetPercent", percent);
-                send_signal_with_double(this, item, "SetCachePercent", percent);
+	            } else {
+	                percent = (gdouble) item->localsize / (gdouble) item->mediasize;
+	                send_signal_with_double(this, item, "SetPercent", percent);
+	                send_signal_with_double(this, item, "SetCachePercent", percent);
 
-                text = g_strdup_printf(_("Cache fill: %2.2f%%"), percent * 100.0);
-                send_signal_with_string(this, item, "SetProgressText", text);
+	                text = g_strdup_printf(_("Cache fill: %2.2f%%"), percent * 100.0);
+	                send_signal_with_string(this, item, "SetProgressText", text);
+	            }
+	            time(&lastupdate);
             }
         }
         // if not opened, over cache level and not an href target then try and open it
