@@ -509,14 +509,14 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *
     if (playerready) {
         if (item->mediasize > 0) {
 
-			if (difftime(time(NULL), lastupdate) > 0.5) {
+			percent = (gdouble) item->localsize / (gdouble) item->mediasize;
+			if (difftime(time(NULL), lastupdate) > 0.5 || percent > 0.99) {
 	            if (item->opened) {
 
-	                percent = (gdouble) item->localsize / (gdouble) item->mediasize;
 	                send_signal_with_double(this, item, "SetCachePercent", percent);
 
 	            } else {
-	                percent = (gdouble) item->localsize / (gdouble) item->mediasize;
+	                
 	                send_signal_with_double(this, item, "SetPercent", percent);
 	                send_signal_with_double(this, item, "SetCachePercent", percent);
 
