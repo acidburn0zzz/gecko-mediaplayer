@@ -53,6 +53,7 @@ gchar *GetMIMEDescription()
               "video/x-ms-wmv:wmv,*:Microsoft WMV video;"
               "audio/x-ms-wmv:wmv,*:Windows Media;"
               "video/x-ms-wmp:wmp,*:Windows Media;"
+              "application/x-ms-wmp:wmp,*:Windows Media;"
               "video/x-ms-wvx:wvx,*:Windows Media;"
               "audio/x-ms-wax:wax,*:Windows Media;"
               "audio/x-ms-wma:wma,*:Windows Media;"
