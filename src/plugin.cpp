@@ -332,6 +332,7 @@ NPError nsPluginInstance::DestroyStream(NPStream * stream, NPError reason)
             fclose(item->localfp);
             item->retrieved = TRUE;
             item->localfp = 0;
+            send_signal_with_double(this, item, "SetCachePercent", 1.0);
         }
 
         if (!item->opened && item->play) {
@@ -510,7 +511,7 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *
         if (item->mediasize > 0) {
 
 			percent = (gdouble) item->localsize / (gdouble) item->mediasize;
-			if (difftime(time(NULL), lastupdate) > 0.5 || percent > 0.99) {
+			if (difftime(time(NULL), lastupdate) > 0.5) {
 	            if (item->opened) {
 
 	                send_signal_with_double(this, item, "SetCachePercent", percent);
