@@ -50,7 +50,8 @@ gchar *GetMIMEDescription()
               "audio/x-mpeg:mpg,mpeg:MPEG;"
               "audio/mpeg2:mp2:MPEG audio;"
               "audio/x-mpeg2:mp2:MPEG audio;"
-              "video/mp4:mp4:MPEG 4 Video;" "video/3gpp:mp4,3gp:MPEG 4 Video;", sizeof(MimeTypes));
+              "video/mp4:mp4:MPEG 4 Video;" 
+              "video/x-m4v:m4v:MPEG 4 Video;""video/3gpp:mp4,3gp:MPEG 4 Video;", sizeof(MimeTypes));
     g_strlcat(MimeTypes,
               "audio/mpeg3:mp3:MPEG audio;"
               "audio/x-mpeg3:mp3:MPEG audio;"

@@ -1,4 +1,5 @@
 Development
+	Added video/x-m4v mimetype, made a video at arstechnica work.
 	Slow down the cache update messages to only 1 per 1/2 second
 	More safety checks in Write method
 	Don't allow NULL filename
