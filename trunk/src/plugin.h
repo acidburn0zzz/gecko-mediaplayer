@@ -138,6 +138,10 @@ class nsPluginInstance:public nsPluginInstanceBase {
     gboolean run_dispatcher;
     gint autostart;
     time_t lastupdate;
+    
+    // events
+    gchar *event_mediacomplete;
+    
 };
 
 #endif                          // __PLUGIN_H__

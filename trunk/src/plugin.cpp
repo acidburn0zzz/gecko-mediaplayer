@@ -133,7 +133,8 @@ lastopened(NULL),
 cache_size(2048), 
 hidden(FALSE),
 autostart(1),
-lastupdate(0)
+lastupdate(0),
+event_mediacomplete(NULL)
 {
     GRand *rand;
 
