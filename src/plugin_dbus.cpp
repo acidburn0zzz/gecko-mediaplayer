@@ -214,6 +214,16 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                 }
                 return DBUS_HANDLER_RESULT_HANDLED;
             }
+            if (g_ascii_strcasecmp(dbus_message_get_member(message), "Event") == 0) {
+            	dbus_error_init(&error);
+				if (dbus_message_get_args(message, &error, DBUS_TYPE_STRING, &s, DBUS_TYPE_INVALID)) {
+					if (g_ascii_strcasecmp(s,"MediaComplete") == 0) {
+						if (instance->event_mediacomplete != NULL) {
+							NPN_GetURL(instance->mInstance,instance->event_mediacomplete,NULL);
+						}
+					}
+				}
+			}            
         }
     } else {
         printf("path didn't match path = %s\n", path);

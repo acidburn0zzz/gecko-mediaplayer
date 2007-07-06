@@ -1,6 +1,9 @@
 Development
+	Impletement MediaComplete event and callback
+	Implement Event handling from gnome-mplayer
 	Added video/x-m4v mimetype, made a video at arstechnica work.
 	Slow down the cache update messages to only 1 per 1/2 second
+	Fix SetWindow return value, helps Opera some
 	More safety checks in Write method
 	Don't allow NULL filename
 	When opening the media and no window has been set, tell gnome-mplayer to run hidden
