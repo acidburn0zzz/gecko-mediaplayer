@@ -1,4 +1,5 @@
 Development
+	GUI message improvements
 	Impletement MediaComplete event and callback
 	Implement Event handling from gnome-mplayer
 	Added video/x-m4v mimetype, made a video at arstechnica work.

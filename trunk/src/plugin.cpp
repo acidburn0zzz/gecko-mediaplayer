@@ -316,6 +316,7 @@ NPError nsPluginInstance::DestroyStream(NPStream * stream, NPError reason)
     const char *file;
     gint id;
     gchar *path;
+    gchar *text;
     gboolean ready;
     gboolean newwindow;
 
@@ -334,6 +335,8 @@ NPError nsPluginInstance::DestroyStream(NPStream * stream, NPError reason)
             item->retrieved = TRUE;
             item->localfp = 0;
             send_signal_with_double(this, item, "SetCachePercent", 1.0);
+            text = g_strdup_printf(_("Cache fill: %2.2f%%"), 100.0);
+            send_signal_with_string(this, item, "SetProgressText", text);
         }
 
         if (!item->opened && item->play) {
