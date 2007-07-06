@@ -337,6 +337,7 @@ NPError nsPluginInstance::DestroyStream(NPStream * stream, NPError reason)
             send_signal_with_double(this, item, "SetCachePercent", 1.0);
             text = g_strdup_printf(_("Cache fill: %2.2f%%"), 100.0);
             send_signal_with_string(this, item, "SetProgressText", text);
+            g_free(text);
         }
 
         if (!item->opened && item->play) {
