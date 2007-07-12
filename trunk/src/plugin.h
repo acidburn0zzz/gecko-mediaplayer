@@ -138,9 +138,16 @@ class nsPluginInstance:public nsPluginInstanceBase {
     gboolean run_dispatcher;
     gint autostart;
     time_t lastupdate;
+    gint disable_context_menu;
+    
     
     // events
     gchar *event_mediacomplete;
+    gchar *event_mousedown;
+    gchar *event_mouseup;
+    gchar *event_mouseclicked;
+    gchar *event_enterwindow;
+    gchar *event_leavewindow;
     
 };
 
