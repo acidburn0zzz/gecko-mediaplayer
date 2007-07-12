@@ -142,8 +142,18 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
                     } else {
                         instance->autostart = 1;
                     }
-                 }
-                 
+            }
+
+            if (g_ascii_strcasecmp(parameters->argn[i], "enablecontextmenu") == 0) {
+                if (g_ascii_strcasecmp(parameters->argv[i], "false") == 0
+                    || g_ascii_strcasecmp(parameters->argv[i], "no") == 0
+                    || g_ascii_strcasecmp(parameters->argv[i], "0") == 0 ) {
+                    	instance->disable_context_menu = 1;
+                    } else {
+                        instance->disable_context_menu = 0;
+                    }
+            }
+                                  
             if ((g_ascii_strcasecmp(parameters->argn[i], "loop") == 0)
                 || (g_ascii_strcasecmp(parameters->argn[i], "autorewind")
                     == 0)

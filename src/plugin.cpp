@@ -134,7 +134,13 @@ cache_size(2048),
 hidden(FALSE),
 autostart(1),
 lastupdate(0),
-event_mediacomplete(NULL)
+disable_context_menu(0),
+event_mediacomplete(NULL),
+event_mousedown(NULL),
+event_mouseup(NULL),
+event_mouseclicked(NULL),
+event_enterwindow(NULL),
+event_leavewindow(NULL)
 {
     GRand *rand;
 
