@@ -52,7 +52,8 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
     gchar *arg[10];
     GRand *rand;
     gchar *tmp;
-
+    gchar **parse;
+    
     instance->mode = parameters->mode;
     instance->mimetype = g_strdup(parameters->type);
     instance->mInstance = parameters->instance;
@@ -176,6 +177,49 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
            		} else {
            			instance->event_mediacomplete = g_strdup_printf("javascript:%s",parameters->argv[i]);
            		}           		
+            }
+
+           if (g_ascii_strcasecmp(parameters->argn[i], "onmouseover") == 0) {
+           		if (g_ascii_strncasecmp(parameters->argv[i],"javascript:",11) == 0) {
+           			instance->event_enterwindow = g_strdup_printf("%s",parameters->argv[i]);
+           		} else {
+           			instance->event_enterwindow = g_strdup_printf("javascript:%s",parameters->argv[i]);
+           		}           		
+            }
+           if (g_ascii_strcasecmp(parameters->argn[i], "onmouseout") == 0) {
+           		if (g_ascii_strncasecmp(parameters->argv[i],"javascript:",11) == 0) {
+           			instance->event_leavewindow = g_strdup_printf("%s",parameters->argv[i]);
+           		} else {
+           			instance->event_leavewindow = g_strdup_printf("javascript:%s",parameters->argv[i]);
+           		}           		
+            }
+
+           if (g_ascii_strcasecmp(parameters->argn[i], "onclick") == 0) {
+           		if (g_ascii_strncasecmp(parameters->argv[i],"javascript:",11) == 0) {
+           			instance->event_mouseclicked = g_strdup_printf("%s",parameters->argv[i]);
+           		} else {
+           			instance->event_mouseclicked = g_strdup_printf("javascript:%s",parameters->argv[i]);
+           		}           		
+            }
+
+           if (g_ascii_strcasecmp(parameters->argn[i], "onmousedown") == 0) {
+           		parse = g_strsplit(parameters->argv[i],"(",0);
+           		if (g_ascii_strncasecmp(parse[0],"javascript:",11) == 0) {
+           			instance->event_mousedown = g_strdup_printf("%s",parse[0]);
+           		} else {
+           			instance->event_mousedown = g_strdup_printf("javascript:%s",parse[0]);
+           		}           		
+           		g_strfreev(parse);
+            }
+
+           if (g_ascii_strcasecmp(parameters->argn[i], "onmouseup") == 0) {
+           		parse = g_strsplit(parameters->argv[i],"(",0);
+           		if (g_ascii_strncasecmp(parse[0],"javascript:",11) == 0) {
+           			instance->event_mouseup = g_strdup_printf("%s",parse[0]);
+           		} else {
+           			instance->event_mouseup = g_strdup_printf("javascript:%s",parse[0]);
+           		}           		
+           		g_strfreev(parse);
             }
 
         };
