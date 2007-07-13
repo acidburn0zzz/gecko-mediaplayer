@@ -240,6 +240,9 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
         argvn[arg++] = g_strdup_printf("--width=%i", mWidth);
         argvn[arg++] = g_strdup_printf("--height=%i", mHeight);
         argvn[arg++] = g_strdup_printf("--autostart=%i", autostart);
+		if (disable_context_menu == 1) 
+	        argvn[arg++] = g_strdup_printf("--disablecontextmenu");
+        
         argvn[arg] = g_strdup("");
         argvn[arg + 1] = NULL;
         playerready = FALSE;

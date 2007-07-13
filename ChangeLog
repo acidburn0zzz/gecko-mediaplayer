@@ -1,4 +1,5 @@
 Development
+	Add support for option "enableContextMenu"
 	Add more callback events onmouseclick, onmousedown, onmouseup, onmouseover, onmouseout
 	GUI message improvements
 	Impletement MediaComplete event and callback

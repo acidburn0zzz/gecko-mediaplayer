@@ -217,6 +217,9 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
             if (g_ascii_strcasecmp(dbus_message_get_member(message), "Event") == 0) {
             	dbus_error_init(&error);
 				if (dbus_message_get_args(message, &error, DBUS_TYPE_STRING, &s, DBUS_TYPE_INT32, &i, DBUS_TYPE_INVALID)) {
+					// uncomment for event debugging
+					// printf("Event: %s button %i\n",s,i);
+				
 					if (g_ascii_strcasecmp(s,"MediaComplete") == 0) {
 						if (instance->event_mediacomplete != NULL) {
 							NPN_GetURL(instance->mInstance,instance->event_mediacomplete,NULL);
