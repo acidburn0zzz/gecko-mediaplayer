@@ -216,10 +216,39 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
             }
             if (g_ascii_strcasecmp(dbus_message_get_member(message), "Event") == 0) {
             	dbus_error_init(&error);
-				if (dbus_message_get_args(message, &error, DBUS_TYPE_STRING, &s, DBUS_TYPE_INVALID)) {
+				if (dbus_message_get_args(message, &error, DBUS_TYPE_STRING, &s, DBUS_TYPE_INT32, &i, DBUS_TYPE_INVALID)) {
 					if (g_ascii_strcasecmp(s,"MediaComplete") == 0) {
 						if (instance->event_mediacomplete != NULL) {
 							NPN_GetURL(instance->mInstance,instance->event_mediacomplete,NULL);
+						}
+					}
+					if (g_ascii_strcasecmp(s,"MouseClicked") == 0) {
+						if (instance->event_mediacomplete != NULL) {
+							NPN_GetURL(instance->mInstance,instance->event_mouseclicked,NULL);
+						}
+					}
+					if (g_ascii_strcasecmp(s,"EnterWindow") == 0) {
+						if (instance->event_mediacomplete != NULL) {
+							NPN_GetURL(instance->mInstance,instance->event_enterwindow,NULL);
+						}
+					}
+					if (g_ascii_strcasecmp(s,"LeaveWindow") == 0) {
+						if (instance->event_mediacomplete != NULL) {
+							NPN_GetURL(instance->mInstance,instance->event_leavewindow,NULL);
+						}
+					}
+					if (g_ascii_strcasecmp(s,"MouseDown") == 0) {
+						if (instance->event_mediacomplete != NULL) {
+							tmp = g_strdup_printf("%s(%i);",instance->event_mousedown,i);
+							NPN_GetURL(instance->mInstance,tmp,NULL);
+							g_free(tmp);
+						}
+					}
+					if (g_ascii_strcasecmp(s,"MouseUp") == 0) {
+						if (instance->event_mediacomplete != NULL) {
+							tmp = g_strdup_printf("%s(%i);",instance->event_mouseup,i);
+							NPN_GetURL(instance->mInstance,tmp,NULL);
+							g_free(tmp);
 						}
 					}
 				}
