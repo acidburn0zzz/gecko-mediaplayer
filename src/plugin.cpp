@@ -136,6 +136,7 @@ autostart(1),
 lastupdate(0),
 disable_context_menu(0),
 event_mediacomplete(NULL),
+event_destroy(NULL),
 event_mousedown(NULL),
 event_mouseup(NULL),
 event_mouseclicked(NULL),
@@ -300,6 +301,12 @@ void nsPluginInstance::shut()
     while (g_main_context_pending(NULL)) {
         g_main_context_iteration(NULL, FALSE);
     }
+
+    if (event_destroy != NULL) {
+		NPN_GetURL(mInstance, event_destroy, NULL);
+    }
+
+
 
     if (connection != NULL) {
         connection = dbus_unhook(connection, this);

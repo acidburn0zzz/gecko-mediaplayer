@@ -143,6 +143,7 @@ class nsPluginInstance:public nsPluginInstanceBase {
     
     // events
     gchar *event_mediacomplete;
+    gchar *event_destroy;
     gchar *event_mousedown;
     gchar *event_mouseup;
     gchar *event_mouseclicked;

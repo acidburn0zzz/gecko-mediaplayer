@@ -178,6 +178,14 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
            			instance->event_mediacomplete = g_strdup_printf("javascript:%s",parameters->argv[i]);
            		}           		
             }
+            
+           if (g_ascii_strcasecmp(parameters->argn[i], "ondestroy") == 0) {
+           		if (g_ascii_strncasecmp(parameters->argv[i],"javascript:",11) == 0) {
+           			instance->event_destroy = g_strdup_printf("%s",parameters->argv[i]);
+           		} else {
+           			instance->event_destroy = g_strdup_printf("javascript:%s",parameters->argv[i]);
+           		}           		
+            }
 
            if (g_ascii_strcasecmp(parameters->argn[i], "onmouseover") == 0) {
            		if (g_ascii_strncasecmp(parameters->argv[i],"javascript:",11) == 0) {
