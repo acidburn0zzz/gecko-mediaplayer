@@ -46,6 +46,7 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
     gint newwindow = 0;
     gint loop = 0;
     gboolean autohref = FALSE;
+    gboolean force_streaming = FALSE;
     ListItem *item = NULL;
     ListItem *src = NULL;
     ListItem *href = NULL;
@@ -170,7 +171,17 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
                     loop = 0;   // loop disabled
                 }
             }
+            
+            if (g_ascii_strcasecmp(parameters->argn[i], "nocache") == 0) {
+                if (strstr(parameters->argv[i], "true")
+                    || strstr(parameters->argv[i], "yes")
+                    || strstr(parameters->argv[i], "1")) {
+                    force_streaming = TRUE;
+                } else {
+                    force_streaming = FALSE;
+                }
 
+            }
            if (g_ascii_strcasecmp(parameters->argn[i], "onmediacomplete") == 0) {
            		if (g_ascii_strncasecmp(parameters->argv[i],"javascript:",11) == 0) {
            			instance->event_mediacomplete = g_strdup_printf("%s",parameters->argv[i]);
@@ -250,6 +261,10 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
     // if target is set, set it on the href
     if (href != NULL) {
         href->newwindow = newwindow;
+    }
+    
+    if (force_streaming) {
+    	item->streaming = TRUE;
     }
     // list_dump(instance->playlist);
 
