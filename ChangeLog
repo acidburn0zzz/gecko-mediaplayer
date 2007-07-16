@@ -1,10 +1,11 @@
 Development
+	Detect ICY streams on download and switch them to streaming media
 	Add embed command 'NoCache'
 	Callback event "onDestroy"
 	Add support for option "enableContextMenu"
 	Add more callback events onmouseclick, onmousedown, onmouseup, onmouseover, onmouseout
 	GUI message improvements
-	Impletement MediaComplete event and callback
+	Implement MediaComplete event and callback
 	Implement Event handling from gnome-mplayer
 	Added video/x-m4v mimetype, made a video at arstechnica work.
 	Slow down the cache update messages to only 1 per 1/2 second
