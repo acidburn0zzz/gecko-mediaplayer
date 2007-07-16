@@ -1,4 +1,5 @@
 Development
+	Add "debug" option to the embed tag so that we can watch output in certain test cases
 	Detect ICY streams on download and switch them to streaming media
 	Add embed command 'NoCache'
 	Callback event "onDestroy"
