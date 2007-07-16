@@ -37,11 +37,11 @@
 
 #ifndef _PLUGIN_TYPES_H
 #define _PLUGIN_TYPES_H
-#include <glib.h>        
+#include <glib.h>
 #include "plugin.h"
 #include "config.h"
-  
+
 gchar *GetMIMEDescription();
 NPError PluginGetValue(NPPVariable variable, void *value);
 
-#endif // _PLUGIN_TYPES_QT_H
+#endif                          // _PLUGIN_TYPES_QT_H

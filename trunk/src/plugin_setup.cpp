@@ -54,7 +54,7 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
     GRand *rand;
     gchar *tmp;
     gchar **parse;
-    
+
     instance->mode = parameters->mode;
     instance->mimetype = g_strdup(parameters->type);
     instance->mInstance = parameters->instance;
@@ -122,7 +122,6 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
                 } else {
                     instance->hidden = FALSE;
                 }
-
             }
 
             if (g_ascii_strcasecmp(parameters->argn[i], "autohref") == 0) {
@@ -133,29 +132,29 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
                 } else {
                     autohref = FALSE;
                 }
-
             }
+            
             if ((g_ascii_strcasecmp(parameters->argn[i], "autoplay") == 0)
-                 || (g_ascii_strcasecmp(parameters->argn[i], "autostart") == 0)) {
+                || (g_ascii_strcasecmp(parameters->argn[i], "autostart") == 0)) {
                 if (g_ascii_strcasecmp(parameters->argv[i], "false") == 0
                     || g_ascii_strcasecmp(parameters->argv[i], "no") == 0
-                    || g_ascii_strcasecmp(parameters->argv[i], "0") == 0 ) {
+                    || g_ascii_strcasecmp(parameters->argv[i], "0") == 0) {
                     instance->autostart = 0;
-                    } else {
-                        instance->autostart = 1;
-                    }
+                } else {
+                    instance->autostart = 1;
+                }
             }
 
             if (g_ascii_strcasecmp(parameters->argn[i], "enablecontextmenu") == 0) {
                 if (g_ascii_strcasecmp(parameters->argv[i], "false") == 0
                     || g_ascii_strcasecmp(parameters->argv[i], "no") == 0
-                    || g_ascii_strcasecmp(parameters->argv[i], "0") == 0 ) {
-                    	instance->disable_context_menu = 1;
-                    } else {
-                        instance->disable_context_menu = 0;
-                    }
+                    || g_ascii_strcasecmp(parameters->argv[i], "0") == 0) {
+                    instance->disable_context_menu = TRUE;
+                } else {
+                    instance->disable_context_menu = FALSE;
+                }
             }
-                                  
+
             if ((g_ascii_strcasecmp(parameters->argn[i], "loop") == 0)
                 || (g_ascii_strcasecmp(parameters->argn[i], "autorewind")
                     == 0)
@@ -171,7 +170,7 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
                     loop = 0;   // loop disabled
                 }
             }
-            
+
             if (g_ascii_strcasecmp(parameters->argn[i], "nocache") == 0) {
                 if (strstr(parameters->argv[i], "true")
                     || strstr(parameters->argv[i], "yes")
@@ -180,65 +179,80 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
                 } else {
                     force_streaming = FALSE;
                 }
-
             }
-           if (g_ascii_strcasecmp(parameters->argn[i], "onmediacomplete") == 0) {
-           		if (g_ascii_strncasecmp(parameters->argv[i],"javascript:",11) == 0) {
-           			instance->event_mediacomplete = g_strdup_printf("%s",parameters->argv[i]);
-           		} else {
-           			instance->event_mediacomplete = g_strdup_printf("javascript:%s",parameters->argv[i]);
-           		}           		
+
+            if (g_ascii_strcasecmp(parameters->argn[i], "onmediacomplete") == 0) {
+                if (g_ascii_strncasecmp(parameters->argv[i], "javascript:", 11) == 0) {
+                    instance->event_mediacomplete = g_strdup_printf("%s", parameters->argv[i]);
+                } else {
+                    instance->event_mediacomplete =
+                        g_strdup_printf("javascript:%s", parameters->argv[i]);
+                }
+            }
+
+            if (g_ascii_strcasecmp(parameters->argn[i], "ondestroy") == 0) {
+                if (g_ascii_strncasecmp(parameters->argv[i], "javascript:", 11) == 0) {
+                    instance->event_destroy = g_strdup_printf("%s", parameters->argv[i]);
+                } else {
+                    instance->event_destroy = g_strdup_printf("javascript:%s", parameters->argv[i]);
+                }
+            }
+
+            if (g_ascii_strcasecmp(parameters->argn[i], "onmouseover") == 0) {
+                if (g_ascii_strncasecmp(parameters->argv[i], "javascript:", 11) == 0) {
+                    instance->event_enterwindow = g_strdup_printf("%s", parameters->argv[i]);
+                } else {
+                    instance->event_enterwindow =
+                        g_strdup_printf("javascript:%s", parameters->argv[i]);
+                }
             }
             
-           if (g_ascii_strcasecmp(parameters->argn[i], "ondestroy") == 0) {
-           		if (g_ascii_strncasecmp(parameters->argv[i],"javascript:",11) == 0) {
-           			instance->event_destroy = g_strdup_printf("%s",parameters->argv[i]);
-           		} else {
-           			instance->event_destroy = g_strdup_printf("javascript:%s",parameters->argv[i]);
-           		}           		
+            if (g_ascii_strcasecmp(parameters->argn[i], "onmouseout") == 0) {
+                if (g_ascii_strncasecmp(parameters->argv[i], "javascript:", 11) == 0) {
+                    instance->event_leavewindow = g_strdup_printf("%s", parameters->argv[i]);
+                } else {
+                    instance->event_leavewindow =
+                        g_strdup_printf("javascript:%s", parameters->argv[i]);
+                }
             }
 
-           if (g_ascii_strcasecmp(parameters->argn[i], "onmouseover") == 0) {
-           		if (g_ascii_strncasecmp(parameters->argv[i],"javascript:",11) == 0) {
-           			instance->event_enterwindow = g_strdup_printf("%s",parameters->argv[i]);
-           		} else {
-           			instance->event_enterwindow = g_strdup_printf("javascript:%s",parameters->argv[i]);
-           		}           		
-            }
-           if (g_ascii_strcasecmp(parameters->argn[i], "onmouseout") == 0) {
-           		if (g_ascii_strncasecmp(parameters->argv[i],"javascript:",11) == 0) {
-           			instance->event_leavewindow = g_strdup_printf("%s",parameters->argv[i]);
-           		} else {
-           			instance->event_leavewindow = g_strdup_printf("javascript:%s",parameters->argv[i]);
-           		}           		
+            if (g_ascii_strcasecmp(parameters->argn[i], "onclick") == 0) {
+                if (g_ascii_strncasecmp(parameters->argv[i], "javascript:", 11) == 0) {
+                    instance->event_mouseclicked = g_strdup_printf("%s", parameters->argv[i]);
+                } else {
+                    instance->event_mouseclicked =
+                        g_strdup_printf("javascript:%s", parameters->argv[i]);
+                }
             }
 
-           if (g_ascii_strcasecmp(parameters->argn[i], "onclick") == 0) {
-           		if (g_ascii_strncasecmp(parameters->argv[i],"javascript:",11) == 0) {
-           			instance->event_mouseclicked = g_strdup_printf("%s",parameters->argv[i]);
-           		} else {
-           			instance->event_mouseclicked = g_strdup_printf("javascript:%s",parameters->argv[i]);
-           		}           		
+            if (g_ascii_strcasecmp(parameters->argn[i], "onmousedown") == 0) {
+                parse = g_strsplit(parameters->argv[i], "(", 0);
+                if (g_ascii_strncasecmp(parse[0], "javascript:", 11) == 0) {
+                    instance->event_mousedown = g_strdup_printf("%s", parse[0]);
+                } else {
+                    instance->event_mousedown = g_strdup_printf("javascript:%s", parse[0]);
+                }
+                g_strfreev(parse);
             }
 
-           if (g_ascii_strcasecmp(parameters->argn[i], "onmousedown") == 0) {
-           		parse = g_strsplit(parameters->argv[i],"(",0);
-           		if (g_ascii_strncasecmp(parse[0],"javascript:",11) == 0) {
-           			instance->event_mousedown = g_strdup_printf("%s",parse[0]);
-           		} else {
-           			instance->event_mousedown = g_strdup_printf("javascript:%s",parse[0]);
-           		}           		
-           		g_strfreev(parse);
+            if (g_ascii_strcasecmp(parameters->argn[i], "onmouseup") == 0) {
+                parse = g_strsplit(parameters->argv[i], "(", 0);
+                if (g_ascii_strncasecmp(parse[0], "javascript:", 11) == 0) {
+                    instance->event_mouseup = g_strdup_printf("%s", parse[0]);
+                } else {
+                    instance->event_mouseup = g_strdup_printf("javascript:%s", parse[0]);
+                }
+                g_strfreev(parse);
             }
 
-           if (g_ascii_strcasecmp(parameters->argn[i], "onmouseup") == 0) {
-           		parse = g_strsplit(parameters->argv[i],"(",0);
-           		if (g_ascii_strncasecmp(parse[0],"javascript:",11) == 0) {
-           			instance->event_mouseup = g_strdup_printf("%s",parse[0]);
-           		} else {
-           			instance->event_mouseup = g_strdup_printf("javascript:%s",parse[0]);
-           		}           		
-           		g_strfreev(parse);
+            if (g_ascii_strcasecmp(parameters->argn[i], "debug") == 0) {
+                if (g_ascii_strcasecmp(parameters->argv[i], "true") == 0
+                    || g_ascii_strcasecmp(parameters->argv[i], "yes") == 0
+                    || g_ascii_strcasecmp(parameters->argv[i], "1") == 0) {
+                    instance->debug = TRUE;
+                } else {
+                    instance->debug = FALSE;
+                }
             }
 
         };
@@ -262,9 +276,9 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
     if (href != NULL) {
         href->newwindow = newwindow;
     }
-    
+
     if (force_streaming) {
-    	item->streaming = TRUE;
+        item->streaming = TRUE;
     }
     // list_dump(instance->playlist);
 

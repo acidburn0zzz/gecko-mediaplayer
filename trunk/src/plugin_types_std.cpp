@@ -50,17 +50,16 @@ gchar *GetMIMEDescription()
               "audio/x-mpeg:mpg,mpeg:MPEG;"
               "audio/mpeg2:mp2:MPEG audio;"
               "audio/x-mpeg2:mp2:MPEG audio;"
-              "video/mp4:mp4:MPEG 4 Video;" 
-              "video/x-m4v:m4v:MPEG 4 Video;""video/3gpp:mp4,3gp:MPEG 4 Video;", sizeof(MimeTypes));
+              "video/mp4:mp4:MPEG 4 Video;"
+              "video/x-m4v:m4v:MPEG 4 Video;" "video/3gpp:mp4,3gp:MPEG 4 Video;",
+              sizeof(MimeTypes));
     g_strlcat(MimeTypes,
-              "audio/mpeg3:mp3:MPEG audio;"
-              "audio/x-mpeg3:mp3:MPEG audio;"
+              "audio/mpeg3:mp3:MPEG audio;" "audio/x-mpeg3:mp3:MPEG audio;"
               "audio/x-mpegurl:m3u:MPEG url;" "audio/mp3:mp3:MPEG audio;", sizeof(MimeTypes));
     g_strlcat(MimeTypes,
-              "application/x-ogg:ogg:Ogg Vorbis Media;"
-              "audio/ogg:ogg:Ogg Vorbis Audio;"
-              "audio/x-ogg:ogg:Ogg Vorbis Audio;"
-              "application/ogg:ogg:Ogg Vorbis / Ogg Theora;", sizeof(MimeTypes));
+              "application/x-ogg:ogg:Ogg Vorbis Media;" "audio/ogg:ogg:Ogg Vorbis Audio;"
+              "audio/x-ogg:ogg:Ogg Vorbis Audio;" "application/ogg:ogg:Ogg Vorbis / Ogg Theora;",
+              sizeof(MimeTypes));
     // FLAC
     g_strlcat(MimeTypes,
               "audio/flac:flac:FLAC Audio;" "audio/x-flac:flac:FLAC Audio;", sizeof(MimeTypes));

@@ -86,39 +86,39 @@ class nsPluginInstance:public nsPluginInstanceBase {
 
     nsScriptablePeer *getScriptablePeer();
     nsControlsScriptablePeer *getControlsScriptablePeer();
-    
+
     void Play();
     void Pause();
     void Stop();
     void FastForward();
     void FastReverse();
     void Seek(double counter);
-    void SetShowControls(PRBool value);    
+    void SetShowControls(PRBool value);
     void SetFullScreen(PRBool value);
     void SetVolume(double value);
-    void GetVolume(double *_retval);    
-    void GetFullScreen(PRBool *_retval);    
-    void GetShowControls(PRBool *_retval);    
-    void GetTime(double *_retval);    
-    void GetDuration(double *_retval);    
-    void GetPercent(double *_retval);    
+    void GetVolume(double *_retval);
+    void GetFullScreen(PRBool * _retval);
+    void GetShowControls(PRBool * _retval);
+    void GetTime(double *_retval);
+    void GetDuration(double *_retval);
+    void GetPercent(double *_retval);
     void SetFilename(const char *filename);
     void GetFilename(char **filename);
     void GetMIMEType(char **_retval);
     void GetLoop(PRBool * _retval);
     void SetLoop(PRBool value);
-        
+
   private:
-    NPBool mInitialized;
-        
+     NPBool mInitialized;
+
     gint mX, mY;
     gint mWidth, mHeight;
-    
+
     nsScriptablePeer *mScriptablePeer;
     nsControlsScriptablePeer *mControlsScriptablePeer;
 
   public:
-    Window mWindow;
+     Window mWindow;
     NPP mInstance;
     gint nextid;
     uint16 mode;
@@ -138,9 +138,9 @@ class nsPluginInstance:public nsPluginInstanceBase {
     gboolean run_dispatcher;
     gint autostart;
     time_t lastupdate;
-    gint disable_context_menu;
-    
-    
+    gboolean disable_context_menu;
+    gboolean debug;
+
     // events
     gchar *event_mediacomplete;
     gchar *event_destroy;
@@ -149,7 +149,7 @@ class nsPluginInstance:public nsPluginInstanceBase {
     gchar *event_mouseclicked;
     gchar *event_enterwindow;
     gchar *event_leavewindow;
-    
+
 };
 
 #endif                          // __PLUGIN_H__
