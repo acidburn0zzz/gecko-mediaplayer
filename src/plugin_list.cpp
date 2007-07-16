@@ -330,41 +330,50 @@ GList *list_parse_qt(GList * list, ListItem * item)
 
 }
 
-void strip_unicode(gchar *data, gsize len) {
-    gsize i =0;
-        
-    for (i = 0 ; i < len; i++) {
+void strip_unicode(gchar * data, gsize len)
+{
+    gsize i = 0;
+
+    for (i = 0; i < len; i++) {
         if (!g_unichar_validate(data[i])) {
             data[i] = ' ';
         }
     }
-    
+
 }
 
-gboolean entities_present(gchar *data, gsize len) {
-    
-    if (g_strstr_len(data,len,"&amp;") != NULL) return TRUE;
-    if (g_strstr_len(data,len,"&lt;") != NULL) return TRUE;
-    if (g_strstr_len(data,len,"&gt;") != NULL) return TRUE;
-    if (g_strstr_len(data,len,"&quot;") != NULL) return TRUE;
-    if (g_strstr_len(data,len,"&apos;") != NULL) return TRUE;
-    
+gboolean entities_present(gchar * data, gsize len)
+{
+
+    if (g_strstr_len(data, len, "&amp;") != NULL)
+        return TRUE;
+    if (g_strstr_len(data, len, "&lt;") != NULL)
+        return TRUE;
+    if (g_strstr_len(data, len, "&gt;") != NULL)
+        return TRUE;
+    if (g_strstr_len(data, len, "&quot;") != NULL)
+        return TRUE;
+    if (g_strstr_len(data, len, "&apos;") != NULL)
+        return TRUE;
+
     return FALSE;
 }
 
-void replace_amp(gchar *data) {
-    
+void replace_amp(gchar * data)
+{
+
     gchar *pos;
-    
-    while(pos = g_strrstr(data,"&")) {
+
+    while (pos = g_strrstr(data, "&")) {
         pos[0] = '\x01';
     }
 }
 
-void unreplace_amp(gchar *data) {
+void unreplace_amp(gchar * data)
+{
     gchar *pos;
-    
-    while(pos = g_strrstr(data,"\x01")) {
+
+    while (pos = g_strrstr(data, "\x01")) {
         pos[0] = '&';
     }
 
@@ -376,7 +385,7 @@ GList *list_parse_asx(GList * list, ListItem * item)
     gchar *data;
     gsize datalen;
     gboolean entities;
-    
+
     printf("Entering list_parse_asx localsize = %i\n", item->localsize);
 
     if (item->localsize < (16 * 1024)) {
@@ -384,13 +393,13 @@ GList *list_parse_asx(GList * list, ListItem * item)
             parser_list = list;
             parser_item = item;
             asx_loop = 0;
-            strip_unicode(data,datalen);
-            entities = entities_present(data,datalen);
-  
+            strip_unicode(data, datalen);
+            entities = entities_present(data, datalen);
+
             if (!entities) {
                 replace_amp(data);
             }
-            
+
             context = g_markup_parse_context_new(&asx_parser, (GMarkupParseFlags) 0, data, NULL);
             g_markup_parse_context_parse(context, data, datalen, NULL);
             g_markup_parse_context_free(context);
@@ -405,9 +414,9 @@ GList *list_parse_asx(GList * list, ListItem * item)
 
 void
 asx_start_element(GMarkupParseContext * context,
-              const gchar * element_name,
-              const gchar ** attribute_names,
-              const gchar ** attribute_values, gpointer user_data, GError ** error)
+                  const gchar * element_name,
+                  const gchar ** attribute_names,
+                  const gchar ** attribute_values, gpointer user_data, GError ** error)
 {
     ListItem *newitem;
     gchar *value;
@@ -493,12 +502,12 @@ asx_start_element(GMarkupParseContext * context,
     }
     if (g_ascii_strcasecmp(element_name, "ENTRY") == 0) {
         entry_id = entry_id + 100;
-    }    
+    }
 }
 
 void
 asx_end_element(GMarkupParseContext * context,
-            const gchar * element_name, gpointer user_data, GError ** error)
+                const gchar * element_name, gpointer user_data, GError ** error)
 {
     if (g_ascii_strcasecmp(element_name, "REPEAT") == 0)
         asx_loop++;
@@ -511,7 +520,7 @@ GList *list_parse_qml(GList * list, ListItem * item)
     gchar *data;
     gsize datalen;
     gboolean entities;
-    
+
     printf("Entering list_parse_qml localsize = %i\n", item->localsize);
 
     if (item->localsize < (16 * 1024)) {
@@ -519,13 +528,13 @@ GList *list_parse_qml(GList * list, ListItem * item)
             parser_list = list;
             parser_item = item;
             asx_loop = 0;
-            strip_unicode(data,datalen);
-            entities = entities_present(data,datalen);
-  
+            strip_unicode(data, datalen);
+            entities = entities_present(data, datalen);
+
             if (!entities) {
                 replace_amp(data);
             }
-            
+
             context = g_markup_parse_context_new(&qml_parser, (GMarkupParseFlags) 0, data, NULL);
             g_markup_parse_context_parse(context, data, datalen, NULL);
             g_markup_parse_context_free(context);
@@ -540,9 +549,9 @@ GList *list_parse_qml(GList * list, ListItem * item)
 
 void
 qml_start_element(GMarkupParseContext * context,
-              const gchar * element_name,
-              const gchar ** attribute_names,
-              const gchar ** attribute_values, gpointer user_data, GError ** error)
+                  const gchar * element_name,
+                  const gchar ** attribute_names,
+                  const gchar ** attribute_values, gpointer user_data, GError ** error)
 {
     ListItem *newitem;
     gchar *value;
@@ -551,7 +560,7 @@ qml_start_element(GMarkupParseContext * context,
     if (g_ascii_strcasecmp(element_name, "EMBED") == 0) {
         while (attribute_names[i] != NULL) {
             if (g_ascii_strcasecmp(attribute_names[i], "SRC") == 0) {
-                        
+
                 if (list_find(parser_list, (gchar *) attribute_values[i])
                     == NULL) {
                     parser_item->play = FALSE;

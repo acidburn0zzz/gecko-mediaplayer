@@ -62,7 +62,8 @@ class nsPluginInstanceBase {
     // class as needed
     virtual NPError SetWindow(NPWindow * pNPWindow) {
         return NPERR_NO_ERROR;
-    } virtual NPError NewStream(NPMIMEType type, NPStream * stream, NPBool seekable, uint16 * stype) {
+    }
+    virtual NPError NewStream(NPMIMEType type, NPStream * stream, NPBool seekable, uint16 * stype) {
         return NPERR_NO_ERROR;
     }
     virtual NPError DestroyStream(NPStream * stream, NPError reason) {

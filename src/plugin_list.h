@@ -38,10 +38,10 @@
 #ifndef _PLUGIN_LIST_H
 #define _PLUGIN_LIST_H
 #include <glib.h>
-#include <glib/gstdio.h>        
+#include <glib/gstdio.h>
 #include <stdio.h>
 #include <string.h>
-               
+
 typedef struct _ListItem {
     gchar src[1024];
     gchar local[1024];
@@ -61,60 +61,56 @@ typedef struct _ListItem {
     gint mediasize;
     gint localsize;
     FILE *localfp;
-    gboolean loop;  // TRUE if we should loop
-    gint loopcount; // 0 - loop done, -1 loop forever
+    gboolean loop;              // TRUE if we should loop
+    gint loopcount;             // 0 - loop done, -1 loop forever
 } ListItem;
-        
-        
-        
-void asx_start_element (GMarkupParseContext * context,
-                    const gchar * element_name,
-                    const gchar ** attribute_names,
-                    const gchar ** attribute_values,
-                    gpointer user_data, GError ** error);
 
-void asx_end_element (GMarkupParseContext * context,
-                  const gchar * element_name,
-                  gpointer user_data, GError ** error);
 
-void element_text (GMarkupParseContext * context,
-                   const gchar * text,
-                   gsize text_len, gpointer user_data, GError ** error);
+
+void asx_start_element(GMarkupParseContext * context,
+                       const gchar * element_name,
+                       const gchar ** attribute_names,
+                       const gchar ** attribute_values, gpointer user_data, GError ** error);
+
+void asx_end_element(GMarkupParseContext * context,
+                     const gchar * element_name, gpointer user_data, GError ** error);
+
+void element_text(GMarkupParseContext * context,
+                  const gchar * text, gsize text_len, gpointer user_data, GError ** error);
 
 static const GMarkupParser asx_parser = {
     asx_start_element,
     asx_end_element,
-    NULL,				//element_text,
+    NULL,                       //element_text,
     NULL,
     NULL,
 };
 
-void qml_start_element (GMarkupParseContext * context,
-                    const gchar * element_name,
-                    const gchar ** attribute_names,
-                    const gchar ** attribute_values,
-                    gpointer user_data, GError ** error);
+void qml_start_element(GMarkupParseContext * context,
+                       const gchar * element_name,
+                       const gchar ** attribute_names,
+                       const gchar ** attribute_values, gpointer user_data, GError ** error);
 
 static const GMarkupParser qml_parser = {
     qml_start_element,
     NULL,
-    NULL,				
+    NULL,
     NULL,
     NULL,
 };
 
 
 
-ListItem *list_find(GList *list, gchar *url);
-ListItem *list_find_by_id(GList *list, gint id);
-ListItem *list_find_by_controlid(GList* list, gint id);
-void list_mark_controlid_ready(GList* list, gint id);
-void list_mark_controlid_cancelled(GList* list, gint id, gboolean cancelled);
-void list_mark_id_played(GList *list, gint id);
-ListItem *list_find_next_playable(GList* list);
-GList *list_clear(GList *list);
-void list_dump(GList *list);        
-GList *list_parse_qt(GList *list, ListItem *item);         
-GList *list_parse_asx(GList *list, ListItem *item);         
-GList *list_parse_qml(GList *list, ListItem *item);         // Quick Time Media Link
-#endif // _PLUGIN_LIST_H
+ListItem *list_find(GList * list, gchar * url);
+ListItem *list_find_by_id(GList * list, gint id);
+ListItem *list_find_by_controlid(GList * list, gint id);
+void list_mark_controlid_ready(GList * list, gint id);
+void list_mark_controlid_cancelled(GList * list, gint id, gboolean cancelled);
+void list_mark_id_played(GList * list, gint id);
+ListItem *list_find_next_playable(GList * list);
+GList *list_clear(GList * list);
+void list_dump(GList * list);
+GList *list_parse_qt(GList * list, ListItem * item);
+GList *list_parse_asx(GList * list, ListItem * item);
+GList *list_parse_qml(GList * list, ListItem * item);   // Quick Time Media Link
+#endif                          // _PLUGIN_LIST_H

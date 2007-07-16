@@ -126,22 +126,20 @@ mControlsScriptablePeer(NULL),
 connection(NULL),
 dbus_dispatch(NULL),
 path(NULL),
-acceptdata(TRUE), 
-playerready(FALSE), 
-nextid(1), 
-lastopened(NULL), 
-cache_size(2048), 
+acceptdata(TRUE),
+playerready(FALSE),
+nextid(1),
+lastopened(NULL),
+cache_size(2048),
 hidden(FALSE),
 autostart(1),
 lastupdate(0),
-disable_context_menu(0),
+disable_context_menu(FALSE),
 event_mediacomplete(NULL),
 event_destroy(NULL),
 event_mousedown(NULL),
 event_mouseup(NULL),
-event_mouseclicked(NULL),
-event_enterwindow(NULL),
-event_leavewindow(NULL)
+event_mouseclicked(NULL), event_enterwindow(NULL), event_leavewindow(NULL), debug(FALSE)
 {
     GRand *rand;
 
@@ -241,9 +239,11 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
         argvn[arg++] = g_strdup_printf("--width=%i", mWidth);
         argvn[arg++] = g_strdup_printf("--height=%i", mHeight);
         argvn[arg++] = g_strdup_printf("--autostart=%i", autostart);
-		if (disable_context_menu == 1) 
-	        argvn[arg++] = g_strdup_printf("--disablecontextmenu");
-        
+        if (disable_context_menu == TRUE)
+            argvn[arg++] = g_strdup_printf("--disablecontextmenu");
+        if (debug == TRUE)
+            argvn[arg++] = g_strdup_printf("--verbose");
+
         argvn[arg] = g_strdup("");
         argvn[arg + 1] = NULL;
         playerready = FALSE;
@@ -303,7 +303,7 @@ void nsPluginInstance::shut()
     }
 
     if (event_destroy != NULL) {
-		NPN_GetURL(mInstance, event_destroy, NULL);
+        NPN_GetURL(mInstance, event_destroy, NULL);
     }
 
 
@@ -510,15 +510,15 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *
     if (item->cancelled || item->retrieved)
         NPN_DestroyStream(mInstance, stream, NPRES_USER_BREAK);
 
-    if (strstr((char *)buffer,"ICY 200 OK") != NULL) {
-    	item->streaming = TRUE;
-    	open_location(this, item, FALSE);
+    if (strstr((char *) buffer, "ICY 200 OK") != NULL) {
+        item->streaming = TRUE;
+        open_location(this, item, FALSE);
         item->requested = TRUE;
-		if (item->localfp) {
-			fclose(item->localfp);
-		}
-    	return -1;
-    }       
+        if (item->localfp) {
+            fclose(item->localfp);
+        }
+        return -1;
+    }
 
     if ((!item->localfp) && (!item->retrieved)) {
         printf("opening %s for localcache\n", item->local);
@@ -527,8 +527,8 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *
     // printf("Write item url = %s\n",item->src);
 
     if (item->localfp == NULL) {
-    	printf("Local cache file is not open, cannot write data\n");
-    	return -1;
+        printf("Local cache file is not open, cannot write data\n");
+        return -1;
     }
     fseek(item->localfp, offset, SEEK_SET);
     wrotebytes = fwrite(buffer, 1, len, item->localfp);
@@ -540,21 +540,21 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *
     if (playerready) {
         if (item->mediasize > 0) {
 
-			percent = (gdouble) item->localsize / (gdouble) item->mediasize;
-			if (difftime(time(NULL), lastupdate) > 0.5) {
-	            if (item->opened) {
+            percent = (gdouble) item->localsize / (gdouble) item->mediasize;
+            if (difftime(time(NULL), lastupdate) > 0.5) {
+                if (item->opened) {
 
-	                send_signal_with_double(this, item, "SetCachePercent", percent);
+                    send_signal_with_double(this, item, "SetCachePercent", percent);
 
-	            } else {
-	                
-	                send_signal_with_double(this, item, "SetPercent", percent);
-	                send_signal_with_double(this, item, "SetCachePercent", percent);
+                } else {
 
-	                text = g_strdup_printf(_("Cache fill: %2.2f%%"), percent * 100.0);
-	                send_signal_with_string(this, item, "SetProgressText", text);
-	            }
-	            time(&lastupdate);
+                    send_signal_with_double(this, item, "SetPercent", percent);
+                    send_signal_with_double(this, item, "SetCachePercent", percent);
+
+                    text = g_strdup_printf(_("Cache fill: %2.2f%%"), percent * 100.0);
+                    send_signal_with_string(this, item, "SetProgressText", text);
+                }
+                time(&lastupdate);
             }
         }
         // if not opened, over cache level and not an href target then try and open it
@@ -572,11 +572,11 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *
             } else {
                 item = list_find_next_playable(playlist);
                 if (item != NULL) {
-	                item->controlid = id;
-	                g_strlcpy(item->path, path, 1024);
-	                item->playerready = ready;
-	                item->newwindow = newwindow;
-	                item->cancelled = FALSE;
+                    item->controlid = id;
+                    g_strlcpy(item->path, path, 1024);
+                    item->playerready = ready;
+                    item->newwindow = newwindow;
+                    item->cancelled = FALSE;
                     NPN_GetURLNotify(mInstance, item->src, NULL, item);
                 }
             }
@@ -668,8 +668,9 @@ void nsPluginInstance::SetFilename(const char *filename)
 {
     ListItem *item;
 
-    if (filename == NULL) return;
-    
+    if (filename == NULL)
+        return;
+
     item = g_new0(ListItem, 1);
     g_strlcpy(item->src, filename, 1024);
     item->streaming = streaming(item->src);

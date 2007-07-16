@@ -37,7 +37,7 @@
 
 #ifndef _PLUGIN_DBUS_H
 #define _PLUGIN_DBUS_H
-        
+
 #include <stdio.h>
 #include <glib.h>
 #include <dbus/dbus.h>
@@ -46,22 +46,25 @@
 // #include <dbus/dbus-qt.h>
 #include "plugin.h"
 #include "plugin_list.h"
-        
+
 // extern void dbus_connection_setup_with_qt_main (DBusConnection *connection);
 
-DBusConnection *dbus_hookup(nsPluginInstance *instance);
-DBusConnection *dbus_unhook(DBusConnection *connection, nsPluginInstance *instance);
-void open_location(nsPluginInstance *instance, ListItem *item, gboolean uselocal);
-void resize_window(nsPluginInstance *instance, ListItem *item, gint x, gint y);
-void send_signal(nsPluginInstance *instance, ListItem *item, gchar *signal);
-void send_signal_when_ready(nsPluginInstance *instance, ListItem *item, gchar *signal);
-void send_signal_with_string(nsPluginInstance *instance, ListItem *item, gchar *signal, gchar *str);
-void send_signal_with_double(nsPluginInstance *instance, ListItem *item, gchar *signal, gdouble dbl);
-void send_signal_with_boolean(nsPluginInstance *instance, ListItem *item, gchar *signal, gboolean boolean);
-gboolean request_boolean_value(nsPluginInstance *instance, ListItem *item, gchar *member);
-gdouble request_double_value(nsPluginInstance *instance, ListItem *item, gchar *member);
-gint request_int_value(nsPluginInstance *instance, ListItem *item, gchar *member);
-gboolean is_valid_path(nsPluginInstance *instance, const char *message);
+DBusConnection *dbus_hookup(nsPluginInstance * instance);
+DBusConnection *dbus_unhook(DBusConnection * connection, nsPluginInstance * instance);
+void open_location(nsPluginInstance * instance, ListItem * item, gboolean uselocal);
+void resize_window(nsPluginInstance * instance, ListItem * item, gint x, gint y);
+void send_signal(nsPluginInstance * instance, ListItem * item, gchar * signal);
+void send_signal_when_ready(nsPluginInstance * instance, ListItem * item, gchar * signal);
+void send_signal_with_string(nsPluginInstance * instance, ListItem * item, gchar * signal,
+                             gchar * str);
+void send_signal_with_double(nsPluginInstance * instance, ListItem * item, gchar * signal,
+                             gdouble dbl);
+void send_signal_with_boolean(nsPluginInstance * instance, ListItem * item, gchar * signal,
+                              gboolean boolean);
+gboolean request_boolean_value(nsPluginInstance * instance, ListItem * item, gchar * member);
+gdouble request_double_value(nsPluginInstance * instance, ListItem * item, gchar * member);
+gint request_int_value(nsPluginInstance * instance, ListItem * item, gchar * member);
+gboolean is_valid_path(nsPluginInstance * instance, const char *message);
 gpointer dbus_dispatcher(gpointer data);
 
-#endif // _PLUGIN_DBUS_H
+#endif                          // _PLUGIN_DBUS_H
