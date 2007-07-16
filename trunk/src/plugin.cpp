@@ -509,7 +509,16 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *
 
     if (item->cancelled || item->retrieved)
         NPN_DestroyStream(mInstance, stream, NPRES_USER_BREAK);
-        
+
+    if (strstr((char *)buffer,"ICY 200 OK") != NULL) {
+    	item->streaming = TRUE;
+    	open_location(this, item, FALSE);
+        item->requested = TRUE;
+		if (item->localfp) {
+			fclose(item->localfp);
+		}
+    	return -1;
+    }       
 
     if ((!item->localfp) && (!item->retrieved)) {
         printf("opening %s for localcache\n", item->local);
