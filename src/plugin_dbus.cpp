@@ -59,15 +59,15 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
     sender = dbus_message_get_sender(message);
     destination = dbus_message_get_destination(message);
 
+	/*
     printf("path=%s; interface=%s; member=%s; data=%s\n",
            dbus_message_get_path(message),
            dbus_message_get_interface(message), dbus_message_get_member(message), s);
-
+	*/
+	
     instance = (nsPluginInstance *) user_data;
     path = instance->path;
-    // printf("userdata = %s\n",path);
 
-//    if (dbus_message_get_path(message) != NULL && g_ascii_strcasecmp(dbus_message_get_path(message),path) == 0) {
     if (dbus_message_get_path(message) != NULL
         && is_valid_path(instance, dbus_message_get_path(message))) {
 
@@ -740,7 +740,7 @@ gpointer dbus_dispatcher(gpointer data)
     while (instance != NULL
            && instance->run_dispatcher
            && instance->connection != NULL
-           && dbus_connection_read_write_dispatch(instance->connection, 10)) {
+           && dbus_connection_read_write_dispatch(instance->connection, 100)) {
         // printf(".");
     }
     // printf("thread exiting\n");
