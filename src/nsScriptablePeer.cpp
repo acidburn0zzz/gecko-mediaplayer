@@ -428,8 +428,11 @@ NS_IMETHODIMP nsScriptablePeer::SetShowlogo(PRBool aShowlogo)
     return NS_OK;
 }
 
-
-
+NS_IMETHODIMP nsScriptablePeer::OnClick(const char *event)
+{
+    mPlugin->SetOnClick(event);
+    return NS_OK;
+}
 
 // WMP Controls subset
 

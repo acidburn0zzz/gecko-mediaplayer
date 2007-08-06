@@ -47,5 +47,6 @@ interface nsIScriptableGeckoMediaPlayer : nsISupports
 	attribute boolean fullscreen;
 	attribute boolean showlogo;
 	readonly attribute long playState;
-        readonly attribute nsIScriptableGeckoMediaPlayerControls controls;
+    readonly attribute nsIScriptableGeckoMediaPlayerControls controls;
+    void onClick(in string event);
 };

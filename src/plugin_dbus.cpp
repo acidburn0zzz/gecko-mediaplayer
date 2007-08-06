@@ -228,29 +228,29 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                         }
                     }
                     if (g_ascii_strcasecmp(s, "MouseClicked") == 0) {
-                        if (instance->event_mediacomplete != NULL) {
+                        if (instance->event_mouseclicked != NULL) {
                             NPN_GetURL(instance->mInstance, instance->event_mouseclicked, NULL);
                         }
                     }
                     if (g_ascii_strcasecmp(s, "EnterWindow") == 0) {
-                        if (instance->event_mediacomplete != NULL) {
+                        if (instance->event_enterwindow != NULL) {
                             NPN_GetURL(instance->mInstance, instance->event_enterwindow, NULL);
                         }
                     }
                     if (g_ascii_strcasecmp(s, "LeaveWindow") == 0) {
-                        if (instance->event_mediacomplete != NULL) {
+                        if (instance->event_leavewindow != NULL) {
                             NPN_GetURL(instance->mInstance, instance->event_leavewindow, NULL);
                         }
                     }
                     if (g_ascii_strcasecmp(s, "MouseDown") == 0) {
-                        if (instance->event_mediacomplete != NULL) {
+                        if (instance->event_mousedown != NULL) {
                             tmp = g_strdup_printf("%s(%i);", instance->event_mousedown, i);
                             NPN_GetURL(instance->mInstance, tmp, NULL);
                             g_free(tmp);
                         }
                     }
                     if (g_ascii_strcasecmp(s, "MouseUp") == 0) {
-                        if (instance->event_mediacomplete != NULL) {
+                        if (instance->event_mouseup != NULL) {
                             tmp = g_strdup_printf("%s(%i);", instance->event_mouseup, i);
                             NPN_GetURL(instance->mInstance, tmp, NULL);
                             g_free(tmp);

@@ -721,6 +721,19 @@ void nsPluginInstance::SetLoop(PRBool value)
     }
 }
 
+void nsPluginInstance::SetOnClick(const char *event)
+{
+	if(event_mouseclicked != NULL) {
+		g_free(event_mouseclicked);
+	}
+	 
+    if (g_ascii_strncasecmp(event, "javascript:", 11) == 0) {
+        event_mouseclicked = g_strdup_printf("%s", event);
+    } else {
+        event_mouseclicked = g_strdup_printf("javascript:%s", event);
+    }
+}
+
 // ==============================
 // ! Scriptability related code !
 // ==============================

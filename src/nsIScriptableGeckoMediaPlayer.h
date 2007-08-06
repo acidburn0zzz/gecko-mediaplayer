@@ -240,6 +240,9 @@ class NS_NO_VTABLE nsIScriptableGeckoMediaPlayer : public nsISupports {
   /* readonly attribute nsIScriptableGeckoMediaPlayerControls controls; */
   NS_IMETHOD GetControls(nsIScriptableGeckoMediaPlayerControls * *aControls) = 0;
 
+  /* void onClick (in string event); */
+  NS_IMETHOD OnClick(const char *event) = 0;
+
 };
 
 /* Use this macro when declaring classes that implement this interface. */
@@ -285,7 +288,8 @@ class NS_NO_VTABLE nsIScriptableGeckoMediaPlayer : public nsISupports {
   NS_IMETHOD GetShowlogo(PRBool *aShowlogo); \
   NS_IMETHOD SetShowlogo(PRBool aShowlogo); \
   NS_IMETHOD GetPlayState(PRInt32 *aPlayState); \
-  NS_IMETHOD GetControls(nsIScriptableGeckoMediaPlayerControls * *aControls); 
+  NS_IMETHOD GetControls(nsIScriptableGeckoMediaPlayerControls * *aControls); \
+  NS_IMETHOD OnClick(const char *event); 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object. */
 #define NS_FORWARD_NSISCRIPTABLEGECKOMEDIAPLAYER(_to) \
@@ -330,7 +334,8 @@ class NS_NO_VTABLE nsIScriptableGeckoMediaPlayer : public nsISupports {
   NS_IMETHOD GetShowlogo(PRBool *aShowlogo) { return _to GetShowlogo(aShowlogo); } \
   NS_IMETHOD SetShowlogo(PRBool aShowlogo) { return _to SetShowlogo(aShowlogo); } \
   NS_IMETHOD GetPlayState(PRInt32 *aPlayState) { return _to GetPlayState(aPlayState); } \
-  NS_IMETHOD GetControls(nsIScriptableGeckoMediaPlayerControls * *aControls) { return _to GetControls(aControls); } 
+  NS_IMETHOD GetControls(nsIScriptableGeckoMediaPlayerControls * *aControls) { return _to GetControls(aControls); } \
+  NS_IMETHOD OnClick(const char *event) { return _to OnClick(event); } 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object in a safe way. */
 #define NS_FORWARD_SAFE_NSISCRIPTABLEGECKOMEDIAPLAYER(_to) \
@@ -375,7 +380,8 @@ class NS_NO_VTABLE nsIScriptableGeckoMediaPlayer : public nsISupports {
   NS_IMETHOD GetShowlogo(PRBool *aShowlogo) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetShowlogo(aShowlogo); } \
   NS_IMETHOD SetShowlogo(PRBool aShowlogo) { return !_to ? NS_ERROR_NULL_POINTER : _to->SetShowlogo(aShowlogo); } \
   NS_IMETHOD GetPlayState(PRInt32 *aPlayState) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetPlayState(aPlayState); } \
-  NS_IMETHOD GetControls(nsIScriptableGeckoMediaPlayerControls * *aControls) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetControls(aControls); } 
+  NS_IMETHOD GetControls(nsIScriptableGeckoMediaPlayerControls * *aControls) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetControls(aControls); } \
+  NS_IMETHOD OnClick(const char *event) { return !_to ? NS_ERROR_NULL_POINTER : _to->OnClick(event); } 
 
 #if 0
 /* Use the code below as a template for the implementation class for this interface. */
@@ -649,6 +655,12 @@ NS_IMETHODIMP nsScriptableGeckoMediaPlayer::GetPlayState(PRInt32 *aPlayState)
 
 /* readonly attribute nsIScriptableGeckoMediaPlayerControls controls; */
 NS_IMETHODIMP nsScriptableGeckoMediaPlayer::GetControls(nsIScriptableGeckoMediaPlayerControls * *aControls)
+{
+    return NS_ERROR_NOT_IMPLEMENTED;
+}
+
+/* void onClick (in string event); */
+NS_IMETHODIMP nsScriptableGeckoMediaPlayer::OnClick(const char *event)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
