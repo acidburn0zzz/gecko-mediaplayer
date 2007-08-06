@@ -1,3 +1,6 @@
+Development
+	Fix several bugs in dbus event processor
+	Add the ability to set the onClick callback via a javascript method
 0.0.7
 	Add "debug" option to the embed tag so that we can watch output in certain test cases
 	Detect ICY streams on download and switch them to streaming media

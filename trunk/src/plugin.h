@@ -107,7 +107,8 @@ class nsPluginInstance:public nsPluginInstanceBase {
     void GetMIMEType(char **_retval);
     void GetLoop(PRBool * _retval);
     void SetLoop(PRBool value);
-
+    void SetOnClick(const char *event);
+    
   private:
      NPBool mInitialized;
 
