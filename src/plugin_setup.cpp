@@ -277,9 +277,14 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
         href->newwindow = newwindow;
     }
 
+#ifdef DISABLE_CACHE
+	item->streaming = TRUE;
+#else
     if (force_streaming) {
         item->streaming = TRUE;
     }
+#endif
+
     // list_dump(instance->playlist);
 
     if (instance->hidden == TRUE) {
