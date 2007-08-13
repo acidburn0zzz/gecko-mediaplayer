@@ -89,6 +89,9 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                 instance->playerready = TRUE;
                 instance->cache_size = request_int_value(instance, item, "GetCacheSize");
                 //printf("cache size = %i\n",instance->cache_size);
+                if (instance->cache_size == 0) {
+                	item->streaming = 1;
+                }
                 return DBUS_HANDLER_RESULT_HANDLED;
             }
             if (g_ascii_strcasecmp(dbus_message_get_member(message), "Cancel") == 0) {
