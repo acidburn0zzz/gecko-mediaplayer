@@ -548,7 +548,7 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *
 
                 } else {
 
-                    send_signal_with_double(this, item, "SetPercent", percent);
+                    // send_signal_with_double(this, item, "SetPercent", percent);
                     send_signal_with_double(this, item, "SetCachePercent", percent);
 
                     text = g_strdup_printf(_("Cache fill: %2.2f%%"), percent * 100.0);
