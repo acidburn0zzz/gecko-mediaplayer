@@ -99,11 +99,15 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
 
             if (g_ascii_strcasecmp(parameters->argn[i], "qtsrc") == 0) {
                 item = g_new0(ListItem, 1);
-                g_strlcpy(item->src,src->src,1024);
-                tmp = g_strrstr(item->src,"/") + sizeof(char);
-                if (tmp)
-	                tmp[0] = '\0';
-                g_strlcat(item->src, parameters->argv[i], 1024);
+                tmp = g_strrstr(src->src,"/");
+                if (tmp) {
+                	g_strlcpy(item->src,src->src,1024);
+                	tmp = g_strrstr(item->src,"/");
+	                tmp[1] = '\0';
+                	g_strlcat(item->src, parameters->argv[i], 1024);
+                } else {
+                	g_strlcpy(item->src, parameters->argv[i], 1024);
+                }
                 item->streaming = streaming(item->src);
                 item->play = TRUE;
                 item->id = instance->nextid++;
