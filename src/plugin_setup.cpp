@@ -101,7 +101,8 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
                 item = g_new0(ListItem, 1);
                 g_strlcpy(item->src,src->src,1024);
                 tmp = g_strrstr(item->src,"/") + sizeof(char);
-                tmp[0] = '\0';
+                if (tmp)
+	                tmp[0] = '\0';
                 g_strlcat(item->src, parameters->argv[i], 1024);
                 item->streaming = streaming(item->src);
                 item->play = TRUE;
