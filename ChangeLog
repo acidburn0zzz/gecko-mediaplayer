@@ -1,4 +1,5 @@
 Development
+	Make qtsrc locations work, makes some apple sites work
 	Add configure option --disable-caching, which never uses local storage for the media cache
 	If cache size from gnome-mplayer is 0, set media to streaming
 	Fix several bugs in dbus event processor
