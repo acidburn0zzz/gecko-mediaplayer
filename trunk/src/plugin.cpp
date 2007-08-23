@@ -386,7 +386,7 @@ NPError nsPluginInstance::DestroyStream(NPStream * stream, NPError reason)
     } else {
         item = (ListItem *) stream->notifyData;
         // item = list_find(playlist, (gchar*)stream->url);
-
+		printf("Exiting destroy stream reason = %i for %s\n", reason,stream->url);
         if (item == NULL) {
             return NPERR_NO_ERROR;
         }
