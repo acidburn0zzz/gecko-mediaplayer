@@ -108,6 +108,12 @@ class nsPluginInstance:public nsPluginInstanceBase {
     void GetLoop(PRBool * _retval);
     void SetLoop(PRBool value);
     void SetOnClick(const char *event);
+    void SetOnMediaComplete(const char *event);
+    void SetOnMouseUp(const char *event);
+    void SetOnMouseDown(const char *event);
+    void SetOnMouseOut(const char *event);
+    void SetOnMouseOver(const char *event);
+    void SetOnDestroy(const char *event);
     
   private:
      NPBool mInitialized;

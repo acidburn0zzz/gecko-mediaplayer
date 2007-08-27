@@ -49,4 +49,11 @@ interface nsIScriptableGeckoMediaPlayer : nsISupports
 	readonly attribute long playState;
     readonly attribute nsIScriptableGeckoMediaPlayerControls controls;
     void onClick(in string event);
+    void onMediaComplete(in string event);
+    void onMouseUp(in string event);
+    void onMouseDown(in string event);
+    void onMouseOut(in string event);
+    void onMouseOver(in string event);
+    void onDestroy(in string event);
+    
 };
