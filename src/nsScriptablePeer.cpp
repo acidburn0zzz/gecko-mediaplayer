@@ -434,6 +434,36 @@ NS_IMETHODIMP nsScriptablePeer::OnClick(const char *event)
     return NS_OK;
 }
 
+NS_IMETHODIMP nsScriptablePeer::OnMouseUp(const char *event)
+{
+    mPlugin->SetOnMouseUp(event);
+    return NS_OK;
+}
+
+NS_IMETHODIMP nsScriptablePeer::OnMouseDown(const char *event)
+{
+    mPlugin->SetOnMouseDown(event);
+    return NS_OK;
+}
+
+NS_IMETHODIMP nsScriptablePeer::OnMouseOut(const char *event)
+{
+    mPlugin->SetOnMouseOut(event);
+    return NS_OK;
+}
+
+NS_IMETHODIMP nsScriptablePeer::OnMouseOver(const char *event)
+{
+    mPlugin->SetOnMouseOver(event);
+    return NS_OK;
+}
+
+NS_IMETHODIMP nsScriptablePeer::OnDestroy(const char *event)
+{
+    mPlugin->SetOnDestroy(event);
+    return NS_OK;
+}
+
 // WMP Controls subset
 
 NS_IMETHODIMP nsScriptablePeer::GetControls(nsIScriptableGeckoMediaPlayerControls * *aControls)

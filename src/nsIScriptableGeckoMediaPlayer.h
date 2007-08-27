@@ -243,6 +243,24 @@ class NS_NO_VTABLE nsIScriptableGeckoMediaPlayer : public nsISupports {
   /* void onClick (in string event); */
   NS_IMETHOD OnClick(const char *event) = 0;
 
+  /* void onMediaComplete (in string event); */
+  NS_IMETHOD OnMediaComplete(const char *event) = 0;
+
+  /* void onMouseUp (in string event); */
+  NS_IMETHOD OnMouseUp(const char *event) = 0;
+
+  /* void onMouseDown (in string event); */
+  NS_IMETHOD OnMouseDown(const char *event) = 0;
+
+  /* void onMouseOut (in string event); */
+  NS_IMETHOD OnMouseOut(const char *event) = 0;
+
+  /* void onMouseOver (in string event); */
+  NS_IMETHOD OnMouseOver(const char *event) = 0;
+
+  /* void onDestroy (in string event); */
+  NS_IMETHOD OnDestroy(const char *event) = 0;
+
 };
 
 /* Use this macro when declaring classes that implement this interface. */
@@ -289,7 +307,13 @@ class NS_NO_VTABLE nsIScriptableGeckoMediaPlayer : public nsISupports {
   NS_IMETHOD SetShowlogo(PRBool aShowlogo); \
   NS_IMETHOD GetPlayState(PRInt32 *aPlayState); \
   NS_IMETHOD GetControls(nsIScriptableGeckoMediaPlayerControls * *aControls); \
-  NS_IMETHOD OnClick(const char *event); 
+  NS_IMETHOD OnClick(const char *event); \
+  NS_IMETHOD OnMediaComplete(const char *event); \
+  NS_IMETHOD OnMouseUp(const char *event); \
+  NS_IMETHOD OnMouseDown(const char *event); \
+  NS_IMETHOD OnMouseOut(const char *event); \
+  NS_IMETHOD OnMouseOver(const char *event); \
+  NS_IMETHOD OnDestroy(const char *event); 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object. */
 #define NS_FORWARD_NSISCRIPTABLEGECKOMEDIAPLAYER(_to) \
@@ -335,7 +359,13 @@ class NS_NO_VTABLE nsIScriptableGeckoMediaPlayer : public nsISupports {
   NS_IMETHOD SetShowlogo(PRBool aShowlogo) { return _to SetShowlogo(aShowlogo); } \
   NS_IMETHOD GetPlayState(PRInt32 *aPlayState) { return _to GetPlayState(aPlayState); } \
   NS_IMETHOD GetControls(nsIScriptableGeckoMediaPlayerControls * *aControls) { return _to GetControls(aControls); } \
-  NS_IMETHOD OnClick(const char *event) { return _to OnClick(event); } 
+  NS_IMETHOD OnClick(const char *event) { return _to OnClick(event); } \
+  NS_IMETHOD OnMediaComplete(const char *event) { return _to OnMediaComplete(event); } \
+  NS_IMETHOD OnMouseUp(const char *event) { return _to OnMouseUp(event); } \
+  NS_IMETHOD OnMouseDown(const char *event) { return _to OnMouseDown(event); } \
+  NS_IMETHOD OnMouseOut(const char *event) { return _to OnMouseOut(event); } \
+  NS_IMETHOD OnMouseOver(const char *event) { return _to OnMouseOver(event); } \
+  NS_IMETHOD OnDestroy(const char *event) { return _to OnDestroy(event); } 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object in a safe way. */
 #define NS_FORWARD_SAFE_NSISCRIPTABLEGECKOMEDIAPLAYER(_to) \
@@ -381,7 +411,13 @@ class NS_NO_VTABLE nsIScriptableGeckoMediaPlayer : public nsISupports {
   NS_IMETHOD SetShowlogo(PRBool aShowlogo) { return !_to ? NS_ERROR_NULL_POINTER : _to->SetShowlogo(aShowlogo); } \
   NS_IMETHOD GetPlayState(PRInt32 *aPlayState) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetPlayState(aPlayState); } \
   NS_IMETHOD GetControls(nsIScriptableGeckoMediaPlayerControls * *aControls) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetControls(aControls); } \
-  NS_IMETHOD OnClick(const char *event) { return !_to ? NS_ERROR_NULL_POINTER : _to->OnClick(event); } 
+  NS_IMETHOD OnClick(const char *event) { return !_to ? NS_ERROR_NULL_POINTER : _to->OnClick(event); } \
+  NS_IMETHOD OnMediaComplete(const char *event) { return !_to ? NS_ERROR_NULL_POINTER : _to->OnMediaComplete(event); } \
+  NS_IMETHOD OnMouseUp(const char *event) { return !_to ? NS_ERROR_NULL_POINTER : _to->OnMouseUp(event); } \
+  NS_IMETHOD OnMouseDown(const char *event) { return !_to ? NS_ERROR_NULL_POINTER : _to->OnMouseDown(event); } \
+  NS_IMETHOD OnMouseOut(const char *event) { return !_to ? NS_ERROR_NULL_POINTER : _to->OnMouseOut(event); } \
+  NS_IMETHOD OnMouseOver(const char *event) { return !_to ? NS_ERROR_NULL_POINTER : _to->OnMouseOver(event); } \
+  NS_IMETHOD OnDestroy(const char *event) { return !_to ? NS_ERROR_NULL_POINTER : _to->OnDestroy(event); } 
 
 #if 0
 /* Use the code below as a template for the implementation class for this interface. */
@@ -661,6 +697,42 @@ NS_IMETHODIMP nsScriptableGeckoMediaPlayer::GetControls(nsIScriptableGeckoMediaP
 
 /* void onClick (in string event); */
 NS_IMETHODIMP nsScriptableGeckoMediaPlayer::OnClick(const char *event)
+{
+    return NS_ERROR_NOT_IMPLEMENTED;
+}
+
+/* void onMediaComplete (in string event); */
+NS_IMETHODIMP nsScriptableGeckoMediaPlayer::OnMediaComplete(const char *event)
+{
+    return NS_ERROR_NOT_IMPLEMENTED;
+}
+
+/* void onMouseUp (in string event); */
+NS_IMETHODIMP nsScriptableGeckoMediaPlayer::OnMouseUp(const char *event)
+{
+    return NS_ERROR_NOT_IMPLEMENTED;
+}
+
+/* void onMouseDown (in string event); */
+NS_IMETHODIMP nsScriptableGeckoMediaPlayer::OnMouseDown(const char *event)
+{
+    return NS_ERROR_NOT_IMPLEMENTED;
+}
+
+/* void onMouseOut (in string event); */
+NS_IMETHODIMP nsScriptableGeckoMediaPlayer::OnMouseOut(const char *event)
+{
+    return NS_ERROR_NOT_IMPLEMENTED;
+}
+
+/* void onMouseOver (in string event); */
+NS_IMETHODIMP nsScriptableGeckoMediaPlayer::OnMouseOver(const char *event)
+{
+    return NS_ERROR_NOT_IMPLEMENTED;
+}
+
+/* void onDestroy (in string event); */
+NS_IMETHODIMP nsScriptableGeckoMediaPlayer::OnDestroy(const char *event)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }

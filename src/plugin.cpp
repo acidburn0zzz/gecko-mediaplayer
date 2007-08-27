@@ -734,6 +734,83 @@ void nsPluginInstance::SetOnClick(const char *event)
     }
 }
 
+void nsPluginInstance::SetOnMediaComplete(const char *event)
+{
+	if(event_mediacomplete != NULL) {
+		g_free(event_mediacomplete);
+	}
+	 
+    if (g_ascii_strncasecmp(event, "javascript:", 11) == 0) {
+        event_mediacomplete = g_strdup_printf("%s", event);
+    } else {
+        event_mediacomplete = g_strdup_printf("javascript:%s", event);
+    }
+}
+
+void nsPluginInstance::SetOnMouseUp(const char *event)
+{
+	if(event_mouseup != NULL) {
+		g_free(event_mouseup);
+	}
+	 
+    if (g_ascii_strncasecmp(event, "javascript:", 11) == 0) {
+        event_mouseup = g_strdup_printf("%s", event);
+    } else {
+        event_mouseup = g_strdup_printf("javascript:%s", event);
+    }
+}
+
+void nsPluginInstance::SetOnMouseDown(const char *event)
+{
+	if(event_mousedown != NULL) {
+		g_free(event_mousedown);
+	}
+	 
+    if (g_ascii_strncasecmp(event, "javascript:", 11) == 0) {
+        event_mousedown = g_strdup_printf("%s", event);
+    } else {
+        event_mousedown = g_strdup_printf("javascript:%s", event);
+    }
+}
+
+void nsPluginInstance::SetOnMouseOut(const char *event)
+{
+	if(event_leavewindow != NULL) {
+		g_free(event_leavewindow);
+	}
+	 
+    if (g_ascii_strncasecmp(event, "javascript:", 11) == 0) {
+        event_leavewindow = g_strdup_printf("%s", event);
+    } else {
+        event_leavewindow = g_strdup_printf("javascript:%s", event);
+    }
+}
+
+void nsPluginInstance::SetOnMouseOver(const char *event)
+{
+	if(event_enterwindow != NULL) {
+		g_free(event_enterwindow);
+	}
+	 
+    if (g_ascii_strncasecmp(event, "javascript:", 11) == 0) {
+        event_enterwindow = g_strdup_printf("%s", event);
+    } else {
+        event_enterwindow = g_strdup_printf("javascript:%s", event);
+    }
+}
+
+void nsPluginInstance::SetOnDestroy(const char *event)
+{
+	if(event_destroy != NULL) {
+		g_free(event_destroy);
+	}
+	 
+    if (g_ascii_strncasecmp(event, "javascript:", 11) == 0) {
+        event_destroy = g_strdup_printf("%s", event);
+    } else {
+        event_destroy = g_strdup_printf("javascript:%s", event);
+    }
+}
 // ==============================
 // ! Scriptability related code !
 // ==============================
