@@ -434,6 +434,12 @@ NS_IMETHODIMP nsScriptablePeer::OnClick(const char *event)
     return NS_OK;
 }
 
+NS_IMETHODIMP nsScriptablePeer::OnMediaComplete(const char *event)
+{
+    mPlugin->SetOnMediaComplete(event);
+    return NS_OK;
+}
+
 NS_IMETHODIMP nsScriptablePeer::OnMouseUp(const char *event)
 {
     mPlugin->SetOnMouseUp(event);
