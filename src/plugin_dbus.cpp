@@ -300,11 +300,15 @@ DBusConnection *dbus_hookup(nsPluginInstance * instance)
 DBusConnection *dbus_unhook(DBusConnection * connection, nsPluginInstance * instance)
 {
 
+	if (instance->run_dispatcher == TRUE) {
+	    instance->run_dispatcher = FALSE;
+    	usleep(20);
+    }
     dbus_connection_flush(connection);
     dbus_connection_remove_filter(connection, filter_func, instance);
     dbus_connection_close(connection);
     dbus_connection_unref(connection);
-
+    
     return NULL;
 }
 
