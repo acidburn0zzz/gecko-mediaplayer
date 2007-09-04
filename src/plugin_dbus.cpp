@@ -276,7 +276,7 @@ DBusConnection *dbus_hookup(nsPluginInstance * instance)
     GMainLoop *loop;
 
     dbus_error_init(&dberror);
-    connection = dbus_bus_get(type, &dberror);
+    connection = dbus_bus_get_private(type, &dberror);
 
     if (g_main_current_source() == NULL) {
         // In Opera we don't have a g_main_loop so we need to start our own dispatcher
@@ -302,6 +302,7 @@ DBusConnection *dbus_unhook(DBusConnection * connection, nsPluginInstance * inst
 
     dbus_connection_flush(connection);
     dbus_connection_remove_filter(connection, filter_func, instance);
+    dbus_connection_close(connection);
     dbus_connection_unref(connection);
 
     return NULL;
