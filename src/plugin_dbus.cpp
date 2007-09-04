@@ -302,7 +302,7 @@ DBusConnection *dbus_unhook(DBusConnection * connection, nsPluginInstance * inst
 
 	if (instance->run_dispatcher == TRUE) {
 	    instance->run_dispatcher = FALSE;
-    	usleep(20);
+    	usleep(150);
     }
     dbus_connection_flush(connection);
     dbus_connection_remove_filter(connection, filter_func, instance);
