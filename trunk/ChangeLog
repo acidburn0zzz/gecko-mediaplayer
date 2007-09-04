@@ -1,4 +1,4 @@
-Development
+0.5.0
 	If mimetype is video/x-flv then mark the media as streaming
 	Version sync with gnome-mplayer
 	Handle more javascript methods, that allow setting callbacks on events
