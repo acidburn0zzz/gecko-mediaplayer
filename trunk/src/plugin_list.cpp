@@ -394,11 +394,7 @@ GList *list_parse_asx(GList * list, ListItem * item)
             parser_item = item;
             asx_loop = 0;
             strip_unicode(data, datalen);
-            entities = entities_present(data, datalen);
-
-            if (!entities) {
-                replace_amp(data);
-            }
+            replace_amp(data);
 
             context = g_markup_parse_context_new(&asx_parser, (GMarkupParseFlags) 0, data, NULL);
             g_markup_parse_context_parse(context, data, datalen, NULL);
@@ -529,11 +525,7 @@ GList *list_parse_qml(GList * list, ListItem * item)
             parser_item = item;
             asx_loop = 0;
             strip_unicode(data, datalen);
-            entities = entities_present(data, datalen);
-
-            if (!entities) {
-                replace_amp(data);
-            }
+            replace_amp(data);
 
             context = g_markup_parse_context_new(&qml_parser, (GMarkupParseFlags) 0, data, NULL);
             g_markup_parse_context_parse(context, data, datalen, NULL);
