@@ -146,6 +146,13 @@ NS_IMETHODIMP nsScriptablePeer::Pause(void)
     return NS_OK;
 }
 
+NS_IMETHODIMP nsScriptablePeer::PlayPause(void)
+{
+    printf("JS playPause issued\n");
+    mPlugin->PlayPause();
+    return NS_OK;
+}
+
 NS_IMETHODIMP nsScriptablePeer::Stop(void)
 {
     printf("JS Stop issued\n");
@@ -219,7 +226,7 @@ NS_IMETHODIMP nsScriptablePeer::Seek(double counter)
 NS_IMETHODIMP nsScriptablePeer::GetPlayState(PRInt32 * aPlayState)
 {
     printf("JS playState issued\n");
-    // mPlugin->GetPlayState(aPlayState);
+    mPlugin->GetPlayState(aPlayState);
     return NS_OK;
 }
 

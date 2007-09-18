@@ -694,6 +694,11 @@ void nsPluginInstance::GetMIMEType(char **_retval)
     *_retval = g_strdup(mimetype);
 }
 
+void nsPluginInstance::GetPlayState(PRInt32 * playstate)
+{
+    *playstate = request_int_value(this, this->lastopened, "GetPlayState");
+}
+
 void nsPluginInstance::GetLoop(PRBool * _retval)
 {
     if (lastopened != NULL) {
@@ -711,6 +716,21 @@ void nsPluginInstance::SetLoop(PRBool value)
         lastopened->loopcount = -1;
     }
 }
+
+void nsPluginInstance::PlayPause()
+{
+    gint state;   
+    
+    state = request_int_value(this, this->lastopened, "GetPlayState");
+    if (state == STATE_PAUSED) {
+        send_signal(this, this->lastopened, "Play");
+    }
+    
+    if (state == STATE_PLAYING) {
+        send_signal(this, this->lastopened, "Pause");
+    }
+}
+
 
 void nsPluginInstance::SetOnClick(const char *event)
 {
