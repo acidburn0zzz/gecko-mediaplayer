@@ -131,6 +131,9 @@ class NS_NO_VTABLE nsIScriptableGeckoMediaPlayer : public nsISupports {
   /* void Pause (); */
   NS_IMETHOD Pause(void) = 0;
 
+  /* void PlayPause (); */
+  NS_IMETHOD PlayPause(void) = 0;
+
   /* void Stop (); */
   NS_IMETHOD Stop(void) = 0;
 
@@ -268,6 +271,7 @@ class NS_NO_VTABLE nsIScriptableGeckoMediaPlayer : public nsISupports {
   NS_IMETHOD Play(void); \
   NS_IMETHOD PlayAt(double value); \
   NS_IMETHOD Pause(void); \
+  NS_IMETHOD PlayPause(void); \
   NS_IMETHOD Stop(void); \
   NS_IMETHOD Quit(void); \
   NS_IMETHOD DoPlay(void); \
@@ -320,6 +324,7 @@ class NS_NO_VTABLE nsIScriptableGeckoMediaPlayer : public nsISupports {
   NS_IMETHOD Play(void) { return _to Play(); } \
   NS_IMETHOD PlayAt(double value) { return _to PlayAt(value); } \
   NS_IMETHOD Pause(void) { return _to Pause(); } \
+  NS_IMETHOD PlayPause(void) { return _to PlayPause(); } \
   NS_IMETHOD Stop(void) { return _to Stop(); } \
   NS_IMETHOD Quit(void) { return _to Quit(); } \
   NS_IMETHOD DoPlay(void) { return _to DoPlay(); } \
@@ -372,6 +377,7 @@ class NS_NO_VTABLE nsIScriptableGeckoMediaPlayer : public nsISupports {
   NS_IMETHOD Play(void) { return !_to ? NS_ERROR_NULL_POINTER : _to->Play(); } \
   NS_IMETHOD PlayAt(double value) { return !_to ? NS_ERROR_NULL_POINTER : _to->PlayAt(value); } \
   NS_IMETHOD Pause(void) { return !_to ? NS_ERROR_NULL_POINTER : _to->Pause(); } \
+  NS_IMETHOD PlayPause(void) { return !_to ? NS_ERROR_NULL_POINTER : _to->PlayPause(); } \
   NS_IMETHOD Stop(void) { return !_to ? NS_ERROR_NULL_POINTER : _to->Stop(); } \
   NS_IMETHOD Quit(void) { return !_to ? NS_ERROR_NULL_POINTER : _to->Quit(); } \
   NS_IMETHOD DoPlay(void) { return !_to ? NS_ERROR_NULL_POINTER : _to->DoPlay(); } \
@@ -465,6 +471,12 @@ NS_IMETHODIMP nsScriptableGeckoMediaPlayer::PlayAt(double value)
 
 /* void Pause (); */
 NS_IMETHODIMP nsScriptableGeckoMediaPlayer::Pause()
+{
+    return NS_ERROR_NOT_IMPLEMENTED;
+}
+
+/* void PlayPause (); */
+NS_IMETHODIMP nsScriptableGeckoMediaPlayer::PlayPause()
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }

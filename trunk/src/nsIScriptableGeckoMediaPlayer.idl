@@ -13,6 +13,7 @@ interface nsIScriptableGeckoMediaPlayer : nsISupports
 	void Play();
 	void PlayAt(in double value);
 	void Pause();
+	void PlayPause();
 	void Stop();
 	void quit();
 	void DoPlay();

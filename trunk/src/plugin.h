@@ -89,6 +89,7 @@ class nsPluginInstance:public nsPluginInstanceBase {
 
     void Play();
     void Pause();
+    void PlayPause();
     void Stop();
     void FastForward();
     void FastReverse();
@@ -102,6 +103,7 @@ class nsPluginInstance:public nsPluginInstanceBase {
     void GetTime(double *_retval);
     void GetDuration(double *_retval);
     void GetPercent(double *_retval);
+    void GetPlayState(PRInt32 * playstate);
     void SetFilename(const char *filename);
     void GetFilename(char **filename);
     void GetMIMEType(char **_retval);
