@@ -755,5 +755,6 @@ gpointer dbus_dispatcher(gpointer data)
         // printf(".");
     }
     // printf("thread exiting\n");
+    g_main_context_unref(context);
     g_thread_exit(0);
 }
