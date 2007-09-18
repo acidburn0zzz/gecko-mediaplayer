@@ -65,6 +65,5 @@ gboolean request_boolean_value(nsPluginInstance * instance, ListItem * item, gch
 gdouble request_double_value(nsPluginInstance * instance, ListItem * item, gchar * member);
 gint request_int_value(nsPluginInstance * instance, ListItem * item, gchar * member);
 gboolean is_valid_path(nsPluginInstance * instance, const char *message);
-gpointer dbus_dispatcher(gpointer data);
 
 #endif                          // _PLUGIN_DBUS_H

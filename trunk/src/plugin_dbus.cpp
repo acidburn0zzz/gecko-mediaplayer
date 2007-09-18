@@ -278,18 +278,6 @@ DBusConnection *dbus_hookup(nsPluginInstance * instance)
     dbus_error_init(&dberror);
     connection = dbus_bus_get_private(type, &dberror);
 
-/*
-    if (g_main_current_source() == NULL) {
-        // In Opera we don't have a g_main_loop so we need to start our own dispatcher
-        if (!g_thread_supported())
-            g_thread_init(NULL);
-        instance->connection = connection;
-        instance->run_dispatcher = TRUE;
-        instance->dbus_dispatch = g_thread_create(dbus_dispatcher, instance, TRUE, NULL);
-    } else {
-        dbus_connection_setup_with_g_main(connection, NULL);
-    }
-*/
     dbus_connection_setup_with_g_main(connection, NULL);
 
     dbus_bus_add_match(connection, "type='signal',interface='com.gecko.mediaplayer'", NULL);
@@ -303,10 +291,6 @@ DBusConnection *dbus_hookup(nsPluginInstance * instance)
 DBusConnection *dbus_unhook(DBusConnection * connection, nsPluginInstance * instance)
 {
 
-	if (instance->run_dispatcher == TRUE) {
-	    instance->run_dispatcher = FALSE;
-    	usleep(150);
-    }
     dbus_connection_flush(connection);
     dbus_connection_remove_filter(connection, filter_func, instance);
     dbus_connection_close(connection);
@@ -748,20 +732,4 @@ gboolean is_valid_path(nsPluginInstance * instance, const char *message)
     return result;
 }
 
-gpointer dbus_dispatcher(gpointer data)
-{
-    nsPluginInstance *instance = (nsPluginInstance *) data;
-	GMainContext *context;
-	
-	//context = g_main_context_new();
-    while (instance != NULL
-           && instance->run_dispatcher
-           && instance->connection != NULL
-           && dbus_connection_read_write_dispatch(instance->connection, 100)) {
-           //g_main_context_iteration(context,TRUE);
-        // printf(".");
-    }
-    printf("thread exiting\n");
-    //g_main_context_unref(context);
-    g_thread_exit(0);
-}
+

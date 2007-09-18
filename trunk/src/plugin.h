@@ -142,7 +142,6 @@ class nsPluginInstance:public nsPluginInstanceBase {
     gboolean hidden;
     gint controlid;
     gint state;
-    gboolean run_dispatcher;
     gint autostart;
     time_t lastupdate;
     gboolean disable_context_menu;
