@@ -279,8 +279,9 @@ void nsPluginInstance::shut()
 
     acceptdata = FALSE;
     mInitialized = FALSE;
-
+printf("shut called\n");
     if (playlist != NULL) {
+    	printf("playlist != NULL\n");
         for (iter = playlist; iter != NULL; iter = g_list_next(iter)) {
             item = (ListItem *) iter->data;
             if (item != NULL) {
@@ -290,18 +291,26 @@ void nsPluginInstance::shut()
             }
         }
     }
+printf("about to terminate\n");
     send_signal_when_ready(this, NULL, "Terminate");
+printf("all clients terminated\n");
     playerready = FALSE;
     playlist = list_clear(playlist);
-    run_dispatcher = FALSE;
-    if (dbus_dispatch != NULL) {
-        g_thread_join(dbus_dispatch);
-    }
-    // flush the glib context 
-    while (g_main_context_pending(NULL)) {
-        g_main_context_iteration(NULL, FALSE);
-    }
-
+   
+printf("about to join run_dispatcher = %i \n",run_dispatcher);    
+    if (run_dispatcher) {
+printf("run_dispatcher = TRUE\n");
+		run_dispatcher = FALSE;
+		g_thread_join(dbus_dispatch);
+printf("joined\n");
+    } else {
+printf("flushing context\n");
+	    // flush the glib context 
+//	    while (g_main_context_pending(NULL)) {
+//	        g_main_context_iteration(NULL, FALSE);
+//	    }
+printf("context flushed\n");
+	}
     if (event_destroy != NULL) {
         NPN_GetURL(mInstance, event_destroy, NULL);
     }
@@ -311,6 +320,7 @@ void nsPluginInstance::shut()
     if (connection != NULL) {
         connection = dbus_unhook(connection, this);
     }
+printf("unhooked\n");
 }
 
 NPBool nsPluginInstance::isInitialized()

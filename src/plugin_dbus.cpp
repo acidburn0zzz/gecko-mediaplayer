@@ -278,6 +278,7 @@ DBusConnection *dbus_hookup(nsPluginInstance * instance)
     dbus_error_init(&dberror);
     connection = dbus_bus_get_private(type, &dberror);
 
+/*
     if (g_main_current_source() == NULL) {
         // In Opera we don't have a g_main_loop so we need to start our own dispatcher
         if (!g_thread_supported())
@@ -288,6 +289,8 @@ DBusConnection *dbus_hookup(nsPluginInstance * instance)
     } else {
         dbus_connection_setup_with_g_main(connection, NULL);
     }
+*/
+    dbus_connection_setup_with_g_main(connection, NULL);
 
     dbus_bus_add_match(connection, "type='signal',interface='com.gecko.mediaplayer'", NULL);
     dbus_connection_add_filter(connection, filter_func, instance, NULL);
@@ -474,8 +477,10 @@ void send_signal_when_ready(nsPluginInstance * instance, ListItem * item, gchar 
     if (instance->player_launched) {
         while (!(instance->playerready)) {
             if (g_main_current_source() == NULL) {
+            	printf("sleeping\n");
                 sleep(1);
             } else {
+            	printf("iterating\n");
                 g_main_context_iteration(NULL, FALSE);
             }
         }
@@ -487,14 +492,16 @@ void send_signal_when_ready(nsPluginInstance * instance, ListItem * item, gchar 
             dbus_connection_send(instance->connection, message, NULL);
             dbus_message_unref(message);
             //printf("Sent %s to connection %p\n", signal, instance->connection);
-            if (g_main_current_source() == NULL) {
+/*            if (g_main_current_source() == NULL) {
+            	printf("sleeping post\n");
                 sleep(1);
             } else {
                 while (g_main_context_pending(NULL)) {
+            		printf("iterating post\n");
                     g_main_context_iteration(NULL, FALSE);
                 }
             }
-        }
+*/        }
     }
 }
 
@@ -754,7 +761,7 @@ gpointer dbus_dispatcher(gpointer data)
            //g_main_context_iteration(context,TRUE);
         // printf(".");
     }
-    // printf("thread exiting\n");
+    printf("thread exiting\n");
     //g_main_context_unref(context);
     g_thread_exit(0);
 }
