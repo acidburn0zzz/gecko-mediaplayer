@@ -744,11 +744,14 @@ gboolean is_valid_path(nsPluginInstance * instance, const char *message)
 gpointer dbus_dispatcher(gpointer data)
 {
     nsPluginInstance *instance = (nsPluginInstance *) data;
-
+	GMainContext *context;
+	
+	context = g_main_context_new();
     while (instance != NULL
            && instance->run_dispatcher
            && instance->connection != NULL
            && dbus_connection_read_write_dispatch(instance->connection, 100)) {
+           g_main_context_iteration(context,TRUE);
         // printf(".");
     }
     // printf("thread exiting\n");
