@@ -746,15 +746,15 @@ gpointer dbus_dispatcher(gpointer data)
     nsPluginInstance *instance = (nsPluginInstance *) data;
 	GMainContext *context;
 	
-	context = g_main_context_new();
+	//context = g_main_context_new();
     while (instance != NULL
            && instance->run_dispatcher
            && instance->connection != NULL
            && dbus_connection_read_write_dispatch(instance->connection, 100)) {
-           g_main_context_iteration(context,TRUE);
+           //g_main_context_iteration(context,TRUE);
         // printf(".");
     }
     // printf("thread exiting\n");
-    g_main_context_unref(context);
+    //g_main_context_unref(context);
     g_thread_exit(0);
 }
