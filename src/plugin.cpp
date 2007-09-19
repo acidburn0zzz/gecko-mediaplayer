@@ -72,20 +72,7 @@ void NS_PluginShutdown()
 // get values per plugin
 NPError NS_PluginGetValue(NPPVariable aVariable, void *aValue)
 {
-    /* 
-       NPError err = NPERR_NO_ERROR;
-       switch (aVariable) {
-       case NPPVpluginNameString:
-       *((char **) aValue) = PLUGIN_NAME;
-       break;
-       case NPPVpluginDescriptionString:
-       *((char **) aValue) = PLUGIN_DESCRIPTION;
-       break;
-       default:
-       err = NPERR_INVALID_PARAM;
-       break;
-       }
-     */
+ 
     return PluginGetValue(aVariable, aValue);
 }
 
@@ -281,7 +268,6 @@ void nsPluginInstance::shut()
     mInitialized = FALSE;
 
     if (playlist != NULL) {
-    	printf("playlist != NULL\n");
         for (iter = playlist; iter != NULL; iter = g_list_next(iter)) {
             item = (ListItem *) iter->data;
             if (item != NULL) {
