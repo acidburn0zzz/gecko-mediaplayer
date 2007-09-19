@@ -460,13 +460,7 @@ void send_signal_when_ready(nsPluginInstance * instance, ListItem * item, gchar 
 
     if (instance->player_launched) {
         while (!(instance->playerready)) {
-            if (g_main_current_source() == NULL) {
-            	printf("sleeping\n");
-                sleep(1);
-            } else {
-            	printf("iterating\n");
-                g_main_context_iteration(NULL, FALSE);
-            }
+            sleep(1);
         }
 
         if (instance->playerready && instance->connection != NULL) {
@@ -476,16 +470,7 @@ void send_signal_when_ready(nsPluginInstance * instance, ListItem * item, gchar 
             dbus_connection_send(instance->connection, message, NULL);
             dbus_message_unref(message);
             //printf("Sent %s to connection %p\n", signal, instance->connection);
-/*            if (g_main_current_source() == NULL) {
-            	printf("sleeping post\n");
-                sleep(1);
-            } else {
-                while (g_main_context_pending(NULL)) {
-            		printf("iterating post\n");
-                    g_main_context_iteration(NULL, FALSE);
-                }
-            }
-*/        }
+        }
     }
 }
 
