@@ -448,6 +448,7 @@ void send_signal_when_ready(nsPluginInstance * instance, ListItem * item, gchar 
     DBusMessage *message;
     const char *localsignal;
     gchar *path;
+    gint i = 0;
 
     if (instance == NULL)
         return;
@@ -459,11 +460,12 @@ void send_signal_when_ready(nsPluginInstance * instance, ListItem * item, gchar 
     }
 
     if (instance->player_launched) {
-        while (!(instance->playerready)) {
-            sleep(1);
+        while (!(instance->playerready) && i < 100) {
+            g_usleep(10000);
+            i++;
         }
 
-        if (instance->playerready && instance->connection != NULL) {
+        if ((i < 100) && instance->playerready && (instance->connection != NULL)) {
             //printf("Sending %s to connection %p\n", signal, instance->connection);
             localsignal = g_strdup(signal);
             message = dbus_message_new_signal(path, "com.gnome.mplayer", localsignal);
