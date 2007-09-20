@@ -1,4 +1,6 @@
 Development
+	New dbus callback "ReloadPlugins" tells browser to reload its plugin settings
+	Allow configuration of plugins by setting from gconf
 	In send_signal_when_ready change the sleep to a smaller value and then only try 100 times before dropping out
 	Implement PlayPause JS method
 	Remove custom dbus dispatcher for Opera, doesn't seem to be needed

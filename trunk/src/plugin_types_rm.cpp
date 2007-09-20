@@ -40,17 +40,28 @@
 gchar *GetMIMEDescription()
 {
     gchar MimeTypes[4000];
+    GConfClient *gconf;
+    gboolean real_disabled;
+    
+    gconf = gconf_client_get_default();
+    real_disabled = gconf_client_get_bool(gconf, DISABLE_REAL, NULL);
+    g_object_unref(G_OBJECT(gconf));
 
-    g_strlcpy(MimeTypes,
-              "audio/x-pn-realaudio:ram,rm:RealAudio;"
-              "application/vnd.rn-realmedia:rm:RealMedia;"
-              "application/vnd.rn-realaudio:ra,ram:RealAudio;"
-              "video/vnd.rn-realvideo:rv:RealVideo;"
-              "audio/x-realaudio:ra:RealAudio;"
-              "audio/x-pn-realaudio-plugin:rpm:RealAudio;"
-              "application/smil:smil:SMIL;", sizeof(MimeTypes));
+    if (real_disabled) {
+        return NULL;
+    } else {
 
-    return g_strdup(MimeTypes);
+        g_strlcpy(MimeTypes,
+                  "audio/x-pn-realaudio:ram,rm:RealAudio;"
+                  "application/vnd.rn-realmedia:rm:RealMedia;"
+                  "application/vnd.rn-realaudio:ra,ram:RealAudio;"
+                  "video/vnd.rn-realvideo:rv:RealVideo;"
+                  "audio/x-realaudio:ra:RealAudio;"
+                  "audio/x-pn-realaudio-plugin:rpm:RealAudio;"
+                  "application/smil:smil:SMIL;", sizeof(MimeTypes));
+
+        return g_strdup(MimeTypes);
+    }
 }
 
 NPError PluginGetValue(NPPVariable variable, void *value)

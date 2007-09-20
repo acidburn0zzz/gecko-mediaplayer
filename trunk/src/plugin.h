@@ -40,6 +40,9 @@
 #include <X11/Xlib.h>
 #include <dbus/dbus.h>
 #include <dbus/dbus-glib-lowlevel.h>
+#include <gconf/gconf.h>
+#include <gconf/gconf-client.h>
+#include <gconf/gconf-value.h>
 #include <glib.h>
 #include "pluginbase.h"
 #include "nsScriptablePeer.h"
@@ -64,6 +67,14 @@
 #define STATE_TRANSITIONING 9
 #define STATE_READY	    10
 #define STATE_RECONNECTING  11
+
+// config settings stored in gconf
+#define CACHE_SIZE		"/apps/gnome-mplayer/preferences/cache_size"
+#define DISABLE_QT		"/apps/gecko-mediaplayer/preferences/disable_qt"
+#define DISABLE_REAL	"/apps/gecko-mediaplayer/preferences/disable_real"
+#define DISABLE_WMP		"/apps/gecko-mediaplayer/preferences/disable_wmp"
+#define DISABLE_DVX		"/apps/gecko-mediaplayer/preferences/disable_wmp"
+#define DEBUG_LEVEL		"/apps/gecko-mediaplayer/preferences/debug_level"
 
 
 class nsPluginInstance:public nsPluginInstanceBase {
@@ -158,6 +169,9 @@ class nsPluginInstance:public nsPluginInstanceBase {
     gchar *event_enterwindow;
     gchar *event_leavewindow;
 
+    // options
+    gint debug_level;
+    
 };
 
 #endif                          // __PLUGIN_H__

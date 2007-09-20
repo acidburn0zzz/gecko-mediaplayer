@@ -40,16 +40,26 @@
 gchar *GetMIMEDescription()
 {
     gchar MimeTypes[4000];
+    GConfClient *gconf;
+    gboolean qt_disabled;
+    
+    gconf = gconf_client_get_default();
+    qt_disabled = gconf_client_get_bool(gconf, DISABLE_QT, NULL);
+    g_object_unref(G_OBJECT(gconf));
 
-    g_strlcpy(MimeTypes,
-              "video/quicktime:mov:Quicktime;"
-              "video/x-quicktime:mov:Quicktime;"
-              "image/x-quicktime:mov:Quicktime;"
-              "video/quicktime:mp4:Quicktime;"
-              "video/quicktime:sdp:Quicktime - Session Description Protocol;"
-              "application/x-quicktimeplayer:mov:Quicktime;", sizeof(MimeTypes));
+    if (qt_disabled) {
+        return NULL;
+    } else {
+        g_strlcpy(MimeTypes,
+                  "video/quicktime:mov:Quicktime;"
+                  "video/x-quicktime:mov:Quicktime;"
+                  "image/x-quicktime:mov:Quicktime;"
+                  "video/quicktime:mp4:Quicktime;"
+                  "video/quicktime:sdp:Quicktime - Session Description Protocol;"
+                  "application/x-quicktimeplayer:mov:Quicktime;", sizeof(MimeTypes));
 
-    return g_strdup(MimeTypes);
+        return g_strdup(MimeTypes);
+    }
 }
 
 NPError PluginGetValue(NPPVariable variable, void *value)
