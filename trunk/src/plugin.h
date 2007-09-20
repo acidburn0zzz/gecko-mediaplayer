@@ -73,7 +73,7 @@
 #define DISABLE_QT		"/apps/gecko-mediaplayer/preferences/disable_qt"
 #define DISABLE_REAL	"/apps/gecko-mediaplayer/preferences/disable_real"
 #define DISABLE_WMP		"/apps/gecko-mediaplayer/preferences/disable_wmp"
-#define DISABLE_DVX		"/apps/gecko-mediaplayer/preferences/disable_wmp"
+#define DISABLE_DVX		"/apps/gecko-mediaplayer/preferences/disable_dvx"
 #define DEBUG_LEVEL		"/apps/gecko-mediaplayer/preferences/debug_level"
 
 

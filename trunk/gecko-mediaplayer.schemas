@@ -49,5 +49,18 @@
       </locale>
     </schema>
 
+
+    <schema>
+      <key>/schemas/apps/gecko-mediaplayer/preferences/debug_level</key>
+      <applyto>/apps/gecko-mediaplayer/preferences/debug_level</applyto>
+      <owner>gecko-mediaplayer</owner>
+      <type>int</type>
+      <default>0</default>
+      <locale name="C">
+        <short>Set debug level</short>
+        <long>Set debug level higher numbers give more verbose messages</long>
+      </locale>
+    </schema>
+
   </schemalist>
 </gconfschemafile>
