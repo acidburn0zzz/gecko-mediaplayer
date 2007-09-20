@@ -13,7 +13,8 @@ INCLUDES = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
 	$(GECKO_CFLAGS) \
 	$(GLIB_CFLAGS) \
-	$(DBUS_CFLAGS) 
+	$(DBUS_CFLAGS) \
+	$(GCONF_CFLAGS)
 
 AM_CFLAGS =\
 	 -Wall \
@@ -62,7 +63,7 @@ gecko_mediaplayer_so_SOURCES = \
 	$(COMMONCODE)
 		
 gecko_mediaplayer_so_CFLAGS = -fPIC
-gecko_mediaplayer_so_LDFLAGS = -shared $(GLIB_LIBS) $(DBUS_LIBS)
+gecko_mediaplayer_so_LDFLAGS = -shared $(GLIB_LIBS) $(DBUS_LIBS) $(GCONF_LIBS) -fPIC
 
 gecko_mediaplayer_qt_so_SOURCES = \
 	plugin_types_qt.cpp \
@@ -70,7 +71,7 @@ gecko_mediaplayer_qt_so_SOURCES = \
 
 	
 gecko_mediaplayer_qt_so_CFLAGS = -fPIC
-gecko_mediaplayer_qt_so_LDFLAGS = -shared $(GLIB_LIBS) $(DBUS_LIBS) -fPIC
+gecko_mediaplayer_qt_so_LDFLAGS = -shared $(GLIB_LIBS) $(DBUS_LIBS) $(GCONF_LIBS) -fPIC
 
 gecko_mediaplayer_wmp_so_SOURCES = \
 	plugin_types_wmp.cpp \
@@ -78,7 +79,7 @@ gecko_mediaplayer_wmp_so_SOURCES = \
 
 	
 gecko_mediaplayer_wmp_so_CFLAGS = -fPIC
-gecko_mediaplayer_wmp_so_LDFLAGS = -shared $(GLIB_LIBS) $(DBUS_LIBS) -fPIC
+gecko_mediaplayer_wmp_so_LDFLAGS = -shared $(GLIB_LIBS) $(DBUS_LIBS) $(GCONF_LIBS) -fPIC
 
 gecko_mediaplayer_dvx_so_SOURCES = \
 	plugin_types_dvx.cpp \
@@ -86,7 +87,7 @@ gecko_mediaplayer_dvx_so_SOURCES = \
 
 	
 gecko_mediaplayer_dvx_so_CFLAGS = -fPIC
-gecko_mediaplayer_dvx_so_LDFLAGS = -shared $(GLIB_LIBS) $(DBUS_LIBS) -fPIC
+gecko_mediaplayer_dvx_so_LDFLAGS = -shared $(GLIB_LIBS) $(DBUS_LIBS) $(GCONF_LIBS) -fPIC
 
 gecko_mediaplayer_rm_so_SOURCES = \
 	plugin_types_rm.cpp \
@@ -94,7 +95,7 @@ gecko_mediaplayer_rm_so_SOURCES = \
 
 	
 gecko_mediaplayer_rm_so_CFLAGS = -fPIC
-gecko_mediaplayer_rm_so_LDFLAGS = -shared $(GLIB_LIBS) $(DBUS_LIBS) -fPIC
+gecko_mediaplayer_rm_so_LDFLAGS = -shared $(GLIB_LIBS) $(DBUS_LIBS) $(GCONF_LIBS) -fPIC
 
 nsIScriptableGeckoMediaPlayer.h: nsIScriptableGeckoMediaPlayer.idl
 	$(GECKO_XPIDL) -w -m header -I $(GECKO_IDLDIR) -I $(srcdir) -e $@ $<

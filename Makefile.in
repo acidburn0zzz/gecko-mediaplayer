@@ -62,9 +62,11 @@ am__vpath_adj = case $$p in \
     *) f=$$p;; \
   esac;
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
-am__installdirs = "$(DESTDIR)$(gecko_mediaplayerdocdir)"
+am__installdirs = "$(DESTDIR)$(gecko_mediaplayerdocdir)" \
+	"$(DESTDIR)$(gecko_mediaplayeretcdir)"
 gecko_mediaplayerdocDATA_INSTALL = $(INSTALL_DATA)
-DATA = $(gecko_mediaplayerdoc_DATA)
+gecko_mediaplayeretcDATA_INSTALL = $(INSTALL_DATA)
+DATA = $(gecko_mediaplayerdoc_DATA) $(gecko_mediaplayeretc_DATA)
 RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\
   distclean-recursive maintainer-clean-recursive
 ETAGS = etags
@@ -113,6 +115,8 @@ EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 F77 = @F77@
 FFLAGS = @FFLAGS@
+GCONF_CFLAGS = @GCONF_CFLAGS@
+GCONF_LIBS = @GCONF_LIBS@
 GECKO_CFLAGS = @GECKO_CFLAGS@
 GECKO_HOME = @GECKO_HOME@
 GECKO_IDLDIR = @GECKO_IDLDIR@
@@ -225,7 +229,9 @@ gecko_mediaplayerdoc_DATA = \
 	INSTALL\
 	NEWS
 
-EXTRA_DIST = $(gecko_mediaplayerdoc_DATA) gecko-mediaplayer.spec.in
+gecko_mediaplayeretcdir = ${sysconfdir}/gconf/schemas
+gecko_mediaplayeretc_DATA = gecko-mediaplayer.schemas
+EXTRA_DIST = $(gecko_mediaplayerdoc_DATA) $(gecko_mediaplayeretc_DATA) gecko-mediaplayer.spec.in
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
@@ -307,6 +313,23 @@ uninstall-gecko_mediaplayerdocDATA:
 	  f=$(am__strip_dir) \
 	  echo " rm -f '$(DESTDIR)$(gecko_mediaplayerdocdir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(gecko_mediaplayerdocdir)/$$f"; \
+	done
+install-gecko_mediaplayeretcDATA: $(gecko_mediaplayeretc_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(gecko_mediaplayeretcdir)" || $(MKDIR_P) "$(DESTDIR)$(gecko_mediaplayeretcdir)"
+	@list='$(gecko_mediaplayeretc_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(gecko_mediaplayeretcDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(gecko_mediaplayeretcdir)/$$f'"; \
+	  $(gecko_mediaplayeretcDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(gecko_mediaplayeretcdir)/$$f"; \
+	done
+
+uninstall-gecko_mediaplayeretcDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(gecko_mediaplayeretc_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(gecko_mediaplayeretcdir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(gecko_mediaplayeretcdir)/$$f"; \
 	done
 
 # This directory's subdirectories are mostly independent; you can cd
@@ -590,7 +613,7 @@ check: check-recursive
 all-am: Makefile $(DATA) config.h
 installdirs: installdirs-recursive
 installdirs-am:
-	for dir in "$(DESTDIR)$(gecko_mediaplayerdocdir)"; do \
+	for dir in "$(DESTDIR)$(gecko_mediaplayerdocdir)" "$(DESTDIR)$(gecko_mediaplayeretcdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-recursive
@@ -637,7 +660,8 @@ info: info-recursive
 
 info-am:
 
-install-data-am: install-gecko_mediaplayerdocDATA
+install-data-am: install-gecko_mediaplayerdocDATA \
+	install-gecko_mediaplayeretcDATA
 
 install-dvi: install-dvi-recursive
 
@@ -673,7 +697,8 @@ ps: ps-recursive
 
 ps-am:
 
-uninstall-am: uninstall-gecko_mediaplayerdocDATA
+uninstall-am: uninstall-gecko_mediaplayerdocDATA \
+	uninstall-gecko_mediaplayeretcDATA
 
 .MAKE: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) install-am \
 	install-strip
@@ -687,13 +712,15 @@ uninstall-am: uninstall-gecko_mediaplayerdocDATA
 	dvi-am html html-am info info-am install install-am \
 	install-data install-data-am install-dvi install-dvi-am \
 	install-exec install-exec-am install-gecko_mediaplayerdocDATA \
-	install-html install-html-am install-info install-info-am \
-	install-man install-pdf install-pdf-am install-ps \
-	install-ps-am install-strip installcheck installcheck-am \
-	installdirs installdirs-am maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-generic \
-	mostlyclean-libtool pdf pdf-am ps ps-am tags tags-recursive \
-	uninstall uninstall-am uninstall-gecko_mediaplayerdocDATA
+	install-gecko_mediaplayeretcDATA install-html install-html-am \
+	install-info install-info-am install-man install-pdf \
+	install-pdf-am install-ps install-ps-am install-strip \
+	installcheck installcheck-am installdirs installdirs-am \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
+	tags tags-recursive uninstall uninstall-am \
+	uninstall-gecko_mediaplayerdocDATA \
+	uninstall-gecko_mediaplayeretcDATA
 
 
 # Copy all the spec files. Of cource, only one is actually used.

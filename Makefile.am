@@ -12,7 +12,10 @@ gecko_mediaplayerdoc_DATA = \
 	INSTALL\
 	NEWS
 
-EXTRA_DIST = $(gecko_mediaplayerdoc_DATA) gecko-mediaplayer.spec.in
+gecko_mediaplayeretcdir = ${sysconfdir}/gconf/schemas
+gecko_mediaplayeretc_DATA = gecko-mediaplayer.schemas
+
+EXTRA_DIST = $(gecko_mediaplayerdoc_DATA) $(gecko_mediaplayeretc_DATA) gecko-mediaplayer.spec.in
 
 # Copy all the spec files. Of cource, only one is actually used.
 dist-hook:

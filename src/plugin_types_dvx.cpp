@@ -40,12 +40,23 @@
 gchar *GetMIMEDescription()
 {
     gchar MimeTypes[4000];
+    GConfClient *gconf;
+    gboolean dvx_disabled;
+    
+    gconf = gconf_client_get_default();
+    dvx_disabled = gconf_client_get_bool(gconf, DISABLE_DVX, NULL);
+    g_object_unref(G_OBJECT(gconf));
 
-    g_strlcpy(MimeTypes,
-              "video/divx:divx:DivX Media Format;"
-              "video/vnd.divx:divx:DivX Media Format;", sizeof(MimeTypes));
+    if (dvx_disabled) {
+        return NULL;
+    } else {
 
-    return g_strdup(MimeTypes);
+        g_strlcpy(MimeTypes,
+                  "video/divx:divx:DivX Media Format;"
+                  "video/vnd.divx:divx:DivX Media Format;", sizeof(MimeTypes));
+
+        return g_strdup(MimeTypes);
+    }
 }
 
 NPError PluginGetValue(NPPVariable variable, void *value)

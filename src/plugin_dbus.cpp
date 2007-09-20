@@ -103,6 +103,10 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                 }
                 return DBUS_HANDLER_RESULT_HANDLED;
             }
+            if (g_ascii_strcasecmp(dbus_message_get_member(message), "ReloadPlugins") == 0) {
+                NPN_ReloadPlugins(FALSE);
+                return DBUS_HANDLER_RESULT_HANDLED;
+            }
 
             if (g_ascii_strcasecmp(dbus_message_get_member(message), "RequestById") == 0) {
                 dbus_error_init(&error);
