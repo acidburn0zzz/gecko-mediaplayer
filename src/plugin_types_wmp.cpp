@@ -43,6 +43,7 @@ gchar *GetMIMEDescription()
     GConfClient *gconf;
     gboolean wmp_disabled;
     
+    g_type_init();
     gconf = gconf_client_get_default();
     wmp_disabled = gconf_client_get_bool(gconf, DISABLE_WMP, NULL);
     g_object_unref(G_OBJECT(gconf));
