@@ -43,6 +43,7 @@ gchar *GetMIMEDescription()
     GConfClient *gconf;
     gboolean dvx_disabled;
     
+    g_type_init();
     gconf = gconf_client_get_default();
     dvx_disabled = gconf_client_get_bool(gconf, DISABLE_DVX, NULL);
     g_object_unref(G_OBJECT(gconf));
