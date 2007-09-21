@@ -267,7 +267,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
             }
         }
     } else {
-        printf("path didn't match path = %s\n", path);
+        // printf("path didn't match path = %s\n", path);
     }
     return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
 }
