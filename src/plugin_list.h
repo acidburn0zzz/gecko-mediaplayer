@@ -60,6 +60,7 @@ typedef struct _ListItem {
     gboolean opened;
     gint mediasize;
     gint localsize;
+    gint lastsize;
     FILE *localfp;
     gboolean loop;              // TRUE if we should loop
     gint loopcount;             // 0 - loop done, -1 loop forever

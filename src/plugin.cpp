@@ -535,12 +535,12 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *
 
                     // send_signal_with_double(this, item, "SetPercent", percent);
                     send_signal_with_double(this, item, "SetCachePercent", percent);
-                    rate = ((item->localsize - lastsize) / 1024) / difftime(time(NULL), lastupdate);
+                    rate = ((item->localsize - item->lastsize) / 1024) / difftime(time(NULL), lastupdate);
                     text = g_strdup_printf(_("Cache fill: %2.2f%% (%2.2f K/s)"), percent * 100.0, rate);
                     send_signal_with_string(this, item, "SetProgressText", text);
                 }
                 time(&lastupdate);
-                lastsize = item->localsize;
+                item->lastsize = item->localsize;
             }
         }
         // if not opened, over cache level and not an href target then try and open it
