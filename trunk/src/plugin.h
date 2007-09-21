@@ -157,6 +157,7 @@ class nsPluginInstance:public nsPluginInstanceBase {
     gint state;
     gint autostart;
     time_t lastupdate;
+    gint lastsize;
     gboolean disable_context_menu;
     gboolean debug;
 
