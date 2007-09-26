@@ -1,4 +1,5 @@
 Development
+	Cleanup K/s display to show only tenths, also make sure we use floating point math
 	A K/s info while caching for non-streaming data
 	New dbus callback "ReloadPlugins" tells browser to reload its plugin settings
 	Allow configuration of plugins by setting from gconf
