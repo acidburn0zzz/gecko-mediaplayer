@@ -389,6 +389,7 @@ void open_location(nsPluginInstance * instance, ListItem * item, gboolean useloc
             dbus_connection_send(instance->connection, message, NULL);
             dbus_message_unref(message);
         }
+        send_signal_with_string(instance,item,"SetURL",item->src);
         item->opened = TRUE;
         instance->lastopened = item;
     }
