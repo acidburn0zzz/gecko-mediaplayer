@@ -5,6 +5,11 @@ interface nsIScriptableGeckoMediaPlayerControls : nsISupports
 	void play();
 	void pause();
 	void stop();
+	void fastForward();
+	void fastReverse();
+	void step();
+	attribute double currentPosition;
+	
 };
 
 [scriptable, uuid(f728830f-1dd1-4444-6666-fb9f414f2465)]
