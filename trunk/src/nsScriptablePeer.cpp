@@ -573,3 +573,38 @@ NS_IMETHODIMP nsControlsScriptablePeer::Stop(void)
     mPlugin->Stop();
     return NS_OK;
 }
+
+NS_IMETHODIMP nsControlsScriptablePeer::FastForward(void)
+{
+    printf("JS ff issued\n");
+    mPlugin->FastForward();
+    return NS_OK;
+}
+
+NS_IMETHODIMP nsControlsScriptablePeer::FastReverse(void)
+{
+    printf("JS rew issued\n");
+    mPlugin->FastReverse();
+    return NS_OK;
+}
+
+NS_IMETHODIMP nsControlsScriptablePeer::Step(void)
+{
+    mPlugin->Play();
+    mPlugin->Pause();
+    return NS_OK;
+}
+
+NS_IMETHODIMP nsControlsScriptablePeer::GetCurrentPosition(double *aCurrentPosition)
+{
+    mPlugin->GetTime(aCurrentPosition);
+    return NS_OK;
+}
+
+NS_IMETHODIMP nsControlsScriptablePeer::SetCurrentPosition(double aCurrentPosition)
+{
+    mPlugin->Seek(aCurrentPosition);
+    return NS_OK;
+}
+
+

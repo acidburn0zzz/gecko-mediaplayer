@@ -36,25 +36,53 @@ class NS_NO_VTABLE nsIScriptableGeckoMediaPlayerControls : public nsISupports {
   /* void stop (); */
   NS_IMETHOD Stop(void) = 0;
 
+  /* void fastForward (); */
+  NS_IMETHOD FastForward(void) = 0;
+
+  /* void fastReverse (); */
+  NS_IMETHOD FastReverse(void) = 0;
+
+  /* void step (); */
+  NS_IMETHOD Step(void) = 0;
+
+  /* attribute double currentPosition; */
+  NS_IMETHOD GetCurrentPosition(double *aCurrentPosition) = 0;
+  NS_IMETHOD SetCurrentPosition(double aCurrentPosition) = 0;
+
 };
 
 /* Use this macro when declaring classes that implement this interface. */
 #define NS_DECL_NSISCRIPTABLEGECKOMEDIAPLAYERCONTROLS \
   NS_IMETHOD Play(void); \
   NS_IMETHOD Pause(void); \
-  NS_IMETHOD Stop(void); 
+  NS_IMETHOD Stop(void); \
+  NS_IMETHOD FastForward(void); \
+  NS_IMETHOD FastReverse(void); \
+  NS_IMETHOD Step(void); \
+  NS_IMETHOD GetCurrentPosition(double *aCurrentPosition); \
+  NS_IMETHOD SetCurrentPosition(double aCurrentPosition); 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object. */
 #define NS_FORWARD_NSISCRIPTABLEGECKOMEDIAPLAYERCONTROLS(_to) \
   NS_IMETHOD Play(void) { return _to Play(); } \
   NS_IMETHOD Pause(void) { return _to Pause(); } \
-  NS_IMETHOD Stop(void) { return _to Stop(); } 
+  NS_IMETHOD Stop(void) { return _to Stop(); } \
+  NS_IMETHOD FastForward(void) { return _to FastForward(); } \
+  NS_IMETHOD FastReverse(void) { return _to FastReverse(); } \
+  NS_IMETHOD Step(void) { return _to Step(); } \
+  NS_IMETHOD GetCurrentPosition(double *aCurrentPosition) { return _to GetCurrentPosition(aCurrentPosition); } \
+  NS_IMETHOD SetCurrentPosition(double aCurrentPosition) { return _to SetCurrentPosition(aCurrentPosition); } 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object in a safe way. */
 #define NS_FORWARD_SAFE_NSISCRIPTABLEGECKOMEDIAPLAYERCONTROLS(_to) \
   NS_IMETHOD Play(void) { return !_to ? NS_ERROR_NULL_POINTER : _to->Play(); } \
   NS_IMETHOD Pause(void) { return !_to ? NS_ERROR_NULL_POINTER : _to->Pause(); } \
-  NS_IMETHOD Stop(void) { return !_to ? NS_ERROR_NULL_POINTER : _to->Stop(); } 
+  NS_IMETHOD Stop(void) { return !_to ? NS_ERROR_NULL_POINTER : _to->Stop(); } \
+  NS_IMETHOD FastForward(void) { return !_to ? NS_ERROR_NULL_POINTER : _to->FastForward(); } \
+  NS_IMETHOD FastReverse(void) { return !_to ? NS_ERROR_NULL_POINTER : _to->FastReverse(); } \
+  NS_IMETHOD Step(void) { return !_to ? NS_ERROR_NULL_POINTER : _to->Step(); } \
+  NS_IMETHOD GetCurrentPosition(double *aCurrentPosition) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetCurrentPosition(aCurrentPosition); } \
+  NS_IMETHOD SetCurrentPosition(double aCurrentPosition) { return !_to ? NS_ERROR_NULL_POINTER : _to->SetCurrentPosition(aCurrentPosition); } 
 
 #if 0
 /* Use the code below as a template for the implementation class for this interface. */
@@ -102,6 +130,34 @@ NS_IMETHODIMP nsScriptableGeckoMediaPlayerControls::Pause()
 
 /* void stop (); */
 NS_IMETHODIMP nsScriptableGeckoMediaPlayerControls::Stop()
+{
+    return NS_ERROR_NOT_IMPLEMENTED;
+}
+
+/* void fastForward (); */
+NS_IMETHODIMP nsScriptableGeckoMediaPlayerControls::FastForward()
+{
+    return NS_ERROR_NOT_IMPLEMENTED;
+}
+
+/* void fastReverse (); */
+NS_IMETHODIMP nsScriptableGeckoMediaPlayerControls::FastReverse()
+{
+    return NS_ERROR_NOT_IMPLEMENTED;
+}
+
+/* void step (); */
+NS_IMETHODIMP nsScriptableGeckoMediaPlayerControls::Step()
+{
+    return NS_ERROR_NOT_IMPLEMENTED;
+}
+
+/* attribute double currentPosition; */
+NS_IMETHODIMP nsScriptableGeckoMediaPlayerControls::GetCurrentPosition(double *aCurrentPosition)
+{
+    return NS_ERROR_NOT_IMPLEMENTED;
+}
+NS_IMETHODIMP nsScriptableGeckoMediaPlayerControls::SetCurrentPosition(double aCurrentPosition)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
