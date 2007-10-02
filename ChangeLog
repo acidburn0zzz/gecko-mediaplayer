@@ -1,5 +1,4 @@
 Development
-	Try 2 on workaround for opera
 	Implement several WMP controls methods
 	Tell the player what URL we are getting the data from via SetURL
 	Cleanup K/s display to show only tenths, also make sure we use floating point math
