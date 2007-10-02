@@ -55,6 +55,11 @@ ListItem *list_find(GList * list, gchar * url)
                 // printf("found %s at %p\n",url,item);
                 return item;
             }
+//            if (g_strrstr(url, item->src) != NULL && item->play == TRUE) {
+//                // printf("found %s at %p\n",url,item);
+//                return item;
+//            }
+            
         }
     }
 

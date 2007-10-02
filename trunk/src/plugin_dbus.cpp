@@ -143,6 +143,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                             arg[i] = NULL;
                             g_spawn_async(NULL, arg, NULL,
                                           G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, NULL);
+                            printf("requesting %s \n",item->src);
                             NPN_GetURLNotify(instance->mInstance, item->src, NULL, item);
                         }
                         instance->lastopened->played = TRUE;
@@ -152,7 +153,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                 } else {
                     dbus_error_free(&error);
                 }
-                list_dump(instance->playlist);
+                //list_dump(instance->playlist);
                 return DBUS_HANDLER_RESULT_HANDLED;
             }
 
