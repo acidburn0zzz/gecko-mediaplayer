@@ -424,20 +424,12 @@ int32 nsPluginInstance::WriteReady(NPStream * stream)
     item = (ListItem *) stream->notifyData;
     // item = list_find(playlist, (gchar*)stream->url);
     if (item == NULL) {
-
-        if (mode == NP_FULL) {
-            //printf("adding new item %s\n",stream->url);
-            item = g_new0(ListItem, 1);
-            g_strlcpy(item->src, stream->url, 1024);
-            item->requested = TRUE;
-            item->play = TRUE;
-            playlist = g_list_append(playlist, item);
-            stream->notifyData = item;
-        } else {
-            //printf("item is null\nstream url %s\n",stream->url);
-            NPN_DestroyStream(mInstance, stream, NPRES_DONE);
-            return -1;
-        }
+        item = g_new0(ListItem, 1);
+        g_strlcpy(item->src, stream->url, 1024);
+        item->requested = TRUE;
+        item->play = TRUE;
+        playlist = g_list_append(playlist, item);
+        stream->notifyData = item;
     }
     // printf("Write Ready item url = %s\n",item->src);
 
