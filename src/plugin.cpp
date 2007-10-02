@@ -434,7 +434,7 @@ int32 nsPluginInstance::WriteReady(NPStream * stream)
             playlist = g_list_append(playlist, item);
             stream->notifyData = item;
         } else {
-            printf("item is null\nstream url %s\n",stream->url);
+            //printf("item is null\nstream url %s\n",stream->url);
             NPN_DestroyStream(mInstance, stream, NPRES_DONE);
             return -1;
         }
