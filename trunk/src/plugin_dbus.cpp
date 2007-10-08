@@ -434,18 +434,24 @@ void send_signal(nsPluginInstance * instance, ListItem * item, gchar * signal)
     if (instance == NULL)
         return;
 
-    if (item != NULL && strlen(item->path) > 0) {
-        path = item->path;
+    if (instance->console != NULL) {
+        path = g_strdup_printf("/console/%s",instance->console);
     } else {
-        path = instance->path;
+        if (item != NULL && strlen(item->path) > 0) {
+            path = g_strdup(item->path);
+        } else {
+            path = g_strdup(instance->path);
+        }
     }
-
+    
     if (instance->playerready && instance->connection != NULL) {
         localsignal = g_strdup(signal);
         message = dbus_message_new_signal(path, "com.gnome.mplayer", localsignal);
         dbus_connection_send(instance->connection, message, NULL);
         dbus_message_unref(message);
     }
+    
+    g_free(path);
 
 }
 
@@ -494,10 +500,14 @@ void send_signal_with_string(nsPluginInstance * instance, ListItem * item,
     if (instance == NULL)
         return;
 
-    if (item != NULL && strlen(item->path) > 0) {
-        path = item->path;
+    if (instance->console != NULL) {
+        path = g_strdup_printf("/console/%s",instance->console);
     } else {
-        path = instance->path;
+        if (item != NULL && strlen(item->path) > 0) {
+            path = g_strdup(item->path);
+        } else {
+            path = g_strdup(instance->path);
+        }
     }
 
     if (instance->playerready && instance->connection != NULL) {
@@ -509,6 +519,7 @@ void send_signal_with_string(nsPluginInstance * instance, ListItem * item,
         dbus_message_unref(message);
     }
 
+    g_free(path);
 }
 
 void send_signal_with_double(nsPluginInstance * instance, ListItem * item,
@@ -522,10 +533,14 @@ void send_signal_with_double(nsPluginInstance * instance, ListItem * item,
     if (instance == NULL)
         return;
 
-    if (item != NULL && strlen(item->path) > 0) {
-        path = item->path;
+    if (instance->console != NULL) {
+        path = g_strdup_printf("/console/%s",instance->console);
     } else {
-        path = instance->path;
+        if (item != NULL && strlen(item->path) > 0) {
+            path = g_strdup(item->path);
+        } else {
+            path = g_strdup(instance->path);
+        }
     }
 
     if (instance->playerready && instance->connection != NULL) {
@@ -535,7 +550,8 @@ void send_signal_with_double(nsPluginInstance * instance, ListItem * item,
         dbus_connection_send(instance->connection, message, NULL);
         dbus_message_unref(message);
     }
-
+    
+    g_free(path);
 }
 
 void send_signal_with_boolean(nsPluginInstance * instance, ListItem * item,
@@ -549,10 +565,14 @@ void send_signal_with_boolean(nsPluginInstance * instance, ListItem * item,
     if (instance == NULL)
         return;
 
-    if (item != NULL && strlen(item->path) > 0) {
-        path = item->path;
+    if (instance->console != NULL) {
+        path = g_strdup_printf("/console/%s",instance->console);
     } else {
-        path = instance->path;
+        if (item != NULL && strlen(item->path) > 0) {
+            path = g_strdup(item->path);
+        } else {
+            path = g_strdup(instance->path);
+        }
     }
 
     if (instance->playerready && instance->connection != NULL) {
@@ -563,6 +583,7 @@ void send_signal_with_boolean(nsPluginInstance * instance, ListItem * item,
         dbus_message_unref(message);
     }
 
+    g_free(path);
 }
 
 gboolean request_boolean_value(nsPluginInstance * instance, ListItem * item, gchar * member)
@@ -604,7 +625,7 @@ gboolean request_boolean_value(nsPluginInstance * instance, ListItem * item, gch
         dbus_message_unref(replymessage);
     }
     g_free(dest);
-
+    
     return result;
 }
 
@@ -646,6 +667,7 @@ gdouble request_double_value(nsPluginInstance * instance, ListItem * item, gchar
         dbus_message_unref(message);
         dbus_message_unref(replymessage);
     }
+
     g_free(dest);
 
     return result;

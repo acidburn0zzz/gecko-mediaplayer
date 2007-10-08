@@ -63,6 +63,18 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
         for (i = 0; i < parameters->argc; i++) {
             printf("ARG: %s = %s\n", parameters->argn[i], parameters->argv[i]);
 
+            if (g_ascii_strcasecmp(parameters->argn[i], "name") == 0) {
+                    instance->name = g_strdup(parameters->argv[i]);
+            }
+
+            if (g_ascii_strcasecmp(parameters->argn[i], "console") == 0) {
+                    instance->console = g_strdup(parameters->argv[i]);
+            }
+
+            if (g_ascii_strcasecmp(parameters->argn[i], "controls") == 0) {
+                    instance->controls = g_strdup(parameters->argv[i]);
+                    printf("controls = '%s'",instance->controls);
+            }
 
             if (g_ascii_strcasecmp(parameters->argn[i], "src") == 0) {
                 item = g_new0(ListItem, 1);

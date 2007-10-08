@@ -1,3 +1,5 @@
+Development
+	More work on realplayer emulation
 0.5.1
 	Implement several WMP controls methods
 	Tell the player what URL we are getting the data from via SetURL

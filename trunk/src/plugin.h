@@ -159,6 +159,9 @@ class nsPluginInstance:public nsPluginInstanceBase {
     time_t lastupdate;
     gboolean disable_context_menu;
     gboolean debug;
+    gchar *name;
+    gchar *console;
+    gchar *controls;
 
     // events
     gchar *event_mediacomplete;
