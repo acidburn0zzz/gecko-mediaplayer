@@ -121,6 +121,9 @@ cache_size(2048),
 hidden(FALSE),
 autostart(1),
 lastupdate(0),
+name(NULL),
+console(NULL),
+controls(NULL),
 disable_context_menu(FALSE),
 event_mediacomplete(NULL),
 event_destroy(NULL),
@@ -237,9 +240,16 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
             argvn[arg++] = g_strdup_printf("--disablecontextmenu");
         if (debug == TRUE)
             argvn[arg++] = g_strdup_printf("--verbose");
+        if (name != NULL)
+            argvn[arg++] = g_strdup_printf("--rpname=%s",name);
+        if (console != NULL)
+            argvn[arg++] = g_strdup_printf("--rpconsole=%s",console);
+        if (controls != NULL) {
+            printf("controls = '%s'\n",controls);
+            argvn[arg++] = g_strdup_printf("--rpcontrols=%s",controls);
+        }
 
-        argvn[arg] = g_strdup("");
-        argvn[arg + 1] = NULL;
+        argvn[arg] = NULL;
         playerready = FALSE;
         ok = g_spawn_async(NULL, argvn, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error);
 
