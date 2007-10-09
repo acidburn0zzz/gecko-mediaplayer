@@ -226,7 +226,11 @@ NS_IMETHODIMP nsScriptablePeer::Seek(double counter)
 NS_IMETHODIMP nsScriptablePeer::GetPlayState(PRInt32 * aPlayState)
 {
     printf("JS playState issued\n");
-    mPlugin->GetPlayState(aPlayState);
+    if (mPlugin != NULL) {
+        mPlugin->GetPlayState(aPlayState);
+    } else {
+        *aPlayState = STATE_UNDEFINED;
+    }
     return NS_OK;
 }
 
