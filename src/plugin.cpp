@@ -94,6 +94,7 @@ nsPluginInstanceBase *NS_NewPluginInstance(nsPluginCreateData * aCreateDataStruc
 
 void NS_DestroyPluginInstance(nsPluginInstanceBase * aPlugin)
 {
+    printf("plugin destroyed\n");
     if (aPlugin)
         delete(nsPluginInstance *) aPlugin;
 }
@@ -159,7 +160,7 @@ event_mouseclicked(NULL), event_enterwindow(NULL), event_leavewindow(NULL), debu
     if (connection == NULL) {
         connection = dbus_hookup(this);
     }
-
+    mInitialized = TRUE;
 }
 
 nsPluginInstance::~nsPluginInstance()
@@ -283,7 +284,7 @@ void nsPluginInstance::shut()
 
     acceptdata = FALSE;
     mInitialized = FALSE;
-
+printf("shutting\n");
     if (playlist != NULL) {
         for (iter = playlist; iter != NULL; iter = g_list_next(iter)) {
             item = (ListItem *) iter->data;
