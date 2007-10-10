@@ -73,7 +73,6 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
 
             if (g_ascii_strcasecmp(parameters->argn[i], "controls") == 0) {
                     instance->controls = g_strdup(parameters->argv[i]);
-                    printf("controls = '%s'",instance->controls);
             }
 
             if (g_ascii_strcasecmp(parameters->argn[i], "src") == 0) {
