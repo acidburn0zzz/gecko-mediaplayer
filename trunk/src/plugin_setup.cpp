@@ -312,9 +312,9 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
         item->streaming = TRUE;
     }
     
-    if (g_ascii_strcasecmp(instance->mimetype,"video/x-flv") == 0) {
-    	item->streaming = TRUE;
-    }
+//    if (g_ascii_strcasecmp(instance->mimetype,"video/x-flv") == 0) {
+//    	item->streaming = TRUE;
+//    }
 #endif
 
     // list_dump(instance->playlist);
