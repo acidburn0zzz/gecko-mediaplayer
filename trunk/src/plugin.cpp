@@ -228,7 +228,7 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
     if (player_launched && mWidth > 0 && mHeight > 0) {
         resize_window(this, NULL, mWidth, mHeight);
     }
-
+    
     if (!player_launched && mWidth > 0 && mHeight > 0) {
         argvn[arg++] = g_strdup_printf("gnome-mplayer");
         argvn[arg++] = g_strdup_printf("--window=%i", mWindow);
