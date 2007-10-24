@@ -273,7 +273,6 @@ NS_IMETHODIMP nsScriptablePeer::GetSrc(char **aSrc)
 {
     printf("JS src requested\n");
     mPlugin->GetFilename(aSrc);
-    printf("returning '%s'\n",aSrc);
     return NS_OK;
 }
 
