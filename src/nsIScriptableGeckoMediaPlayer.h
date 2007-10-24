@@ -281,6 +281,10 @@ class NS_NO_VTABLE nsIScriptableGeckoMediaPlayer : public nsISupports {
   NS_IMETHOD GetFilename(char * *aFilename) = 0;
   NS_IMETHOD SetFilename(const char * aFilename) = 0;
 
+  /* attribute string src; */
+  NS_IMETHOD GetSrc(char * *aSrc) = 0;
+  NS_IMETHOD SetSrc(const char * aSrc) = 0;
+
   /* attribute boolean ShowControls; */
   NS_IMETHOD GetShowControls(PRBool *aShowControls) = 0;
   NS_IMETHOD SetShowControls(PRBool aShowControls) = 0;
@@ -359,6 +363,8 @@ class NS_NO_VTABLE nsIScriptableGeckoMediaPlayer : public nsISupports {
   NS_IMETHOD PlaylistClear(PRBool *_retval); \
   NS_IMETHOD GetFilename(char * *aFilename); \
   NS_IMETHOD SetFilename(const char * aFilename); \
+  NS_IMETHOD GetSrc(char * *aSrc); \
+  NS_IMETHOD SetSrc(const char * aSrc); \
   NS_IMETHOD GetShowControls(PRBool *aShowControls); \
   NS_IMETHOD SetShowControls(PRBool aShowControls); \
   NS_IMETHOD GetFullscreen(PRBool *aFullscreen); \
@@ -412,6 +418,8 @@ class NS_NO_VTABLE nsIScriptableGeckoMediaPlayer : public nsISupports {
   NS_IMETHOD PlaylistClear(PRBool *_retval) { return _to PlaylistClear(_retval); } \
   NS_IMETHOD GetFilename(char * *aFilename) { return _to GetFilename(aFilename); } \
   NS_IMETHOD SetFilename(const char * aFilename) { return _to SetFilename(aFilename); } \
+  NS_IMETHOD GetSrc(char * *aSrc) { return _to GetSrc(aSrc); } \
+  NS_IMETHOD SetSrc(const char * aSrc) { return _to SetSrc(aSrc); } \
   NS_IMETHOD GetShowControls(PRBool *aShowControls) { return _to GetShowControls(aShowControls); } \
   NS_IMETHOD SetShowControls(PRBool aShowControls) { return _to SetShowControls(aShowControls); } \
   NS_IMETHOD GetFullscreen(PRBool *aFullscreen) { return _to GetFullscreen(aFullscreen); } \
@@ -465,6 +473,8 @@ class NS_NO_VTABLE nsIScriptableGeckoMediaPlayer : public nsISupports {
   NS_IMETHOD PlaylistClear(PRBool *_retval) { return !_to ? NS_ERROR_NULL_POINTER : _to->PlaylistClear(_retval); } \
   NS_IMETHOD GetFilename(char * *aFilename) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetFilename(aFilename); } \
   NS_IMETHOD SetFilename(const char * aFilename) { return !_to ? NS_ERROR_NULL_POINTER : _to->SetFilename(aFilename); } \
+  NS_IMETHOD GetSrc(char * *aSrc) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetSrc(aSrc); } \
+  NS_IMETHOD SetSrc(const char * aSrc) { return !_to ? NS_ERROR_NULL_POINTER : _to->SetSrc(aSrc); } \
   NS_IMETHOD GetShowControls(PRBool *aShowControls) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetShowControls(aShowControls); } \
   NS_IMETHOD SetShowControls(PRBool aShowControls) { return !_to ? NS_ERROR_NULL_POINTER : _to->SetShowControls(aShowControls); } \
   NS_IMETHOD GetFullscreen(PRBool *aFullscreen) { return !_to ? NS_ERROR_NULL_POINTER : _to->GetFullscreen(aFullscreen); } \
@@ -717,6 +727,16 @@ NS_IMETHODIMP nsScriptableGeckoMediaPlayer::GetFilename(char * *aFilename)
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 NS_IMETHODIMP nsScriptableGeckoMediaPlayer::SetFilename(const char * aFilename)
+{
+    return NS_ERROR_NOT_IMPLEMENTED;
+}
+
+/* attribute string src; */
+NS_IMETHODIMP nsScriptableGeckoMediaPlayer::GetSrc(char * *aSrc)
+{
+    return NS_ERROR_NOT_IMPLEMENTED;
+}
+NS_IMETHODIMP nsScriptableGeckoMediaPlayer::SetSrc(const char * aSrc)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }

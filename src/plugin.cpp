@@ -687,10 +687,16 @@ void nsPluginInstance::SetFilename(const char *filename)
 
 void nsPluginInstance::GetFilename(char **filename)
 {
+    ListItem *item;
     if (this->lastopened != NULL) {
         *filename = g_strdup(this->lastopened->src);
     } else {
-        *filename = NULL;
+        item = (ListItem *) playlist->data;
+        if (item != NULL) {
+            *filename = g_strdup(item->src);
+        } else {
+            *filename = NULL;
+        }
     }
 }
 
