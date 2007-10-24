@@ -269,6 +269,37 @@ NS_IMETHODIMP nsScriptablePeer::SetFilename(const char *aFilename)
     return NS_OK;
 }
 
+NS_IMETHODIMP nsScriptablePeer::GetSrc(char **aSrc)
+{
+    printf("JS src requested\n");
+    mPlugin->GetFilename(aSrc);
+    printf("returning '%s'\n",aSrc);
+    return NS_OK;
+}
+
+NS_IMETHODIMP nsScriptablePeer::SetSrc(const char *aSrc)
+{
+    printf("JS src issued to %s\n",aSrc);
+    mPlugin->SetFilename(aSrc);
+    return NS_OK;
+}
+
+/*
+NS_IMETHODIMP nsScriptablePeer::GetURL(char **aURL)
+{
+    printf("JS URL issued\n");
+    mPlugin->GetFilename(aURL);
+    return NS_OK;
+}
+
+NS_IMETHODIMP nsScriptablePeer::SetURL(const char *aURL)
+{
+    printf("JS URL issued\n");
+    mPlugin->SetFilename(aURL);
+    return NS_OK;
+}
+*/
+
 NS_IMETHODIMP nsScriptablePeer::Open(const char *filename)
 {
     printf("JS filename issued\n");

@@ -49,6 +49,7 @@ interface nsIScriptableGeckoMediaPlayer : nsISupports
 	void playlistAppend(in string item);
 	boolean playlistClear();
 	attribute string filename;
+	attribute string src;
 	attribute boolean ShowControls;
 	attribute boolean fullscreen;
 	attribute boolean showlogo;
