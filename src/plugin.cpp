@@ -427,8 +427,10 @@ int32 nsPluginInstance::WriteReady(NPStream * stream)
 {
     ListItem *item;
 
-    if (!acceptdata)
+    if (!acceptdata) {
+        NPN_DestroyStream(mInstance, stream, NPRES_DONE);
         return -1;
+    }
 
 
     item = (ListItem *) stream->notifyData;
@@ -474,8 +476,10 @@ int32 nsPluginInstance::WriteReady(NPStream * stream)
 
     }
 
-    if (item->retrieved)
+    if (item->retrieved) {
+        NPN_DestroyStream(mInstance, stream, NPRES_DONE);
         return -1;
+    }
 
     return STREAMBUFSIZE;
 }
@@ -492,13 +496,16 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *
     gboolean ready;
     gboolean newwindow;
 
-    if (!acceptdata)
+    if (!acceptdata) {
+        NPN_DestroyStream(mInstance, stream, NPRES_DONE);
         return -1;
+    }
 
     item = (ListItem *) stream->notifyData;
 
     if (item == NULL) {
         printf(_("Write unable to write because item is NULL"));
+        NPN_DestroyStream(mInstance, stream, NPRES_DONE);
         return -1;
     }
 
@@ -512,6 +519,7 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *
         if (item->localfp) {
             fclose(item->localfp);
         }
+        NPN_DestroyStream(mInstance, stream, NPRES_DONE);
         return -1;
     }
 
@@ -523,6 +531,7 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *
 
     if (item->localfp == NULL) {
         printf("Local cache file is not open, cannot write data\n");
+        NPN_DestroyStream(mInstance, stream, NPRES_DONE);
         return -1;
     }
     fseek(item->localfp, offset, SEEK_SET);
