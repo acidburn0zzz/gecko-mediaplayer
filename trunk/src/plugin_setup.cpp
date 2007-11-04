@@ -54,7 +54,7 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
     GRand *rand;
     gchar *tmp;
     gchar **parse;
-    gint width,height;
+    gint width = 0,height=0;
 
     instance->mode = parameters->mode;
     instance->mimetype = g_strdup(parameters->type);
@@ -328,7 +328,7 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
 
     // list_dump(instance->playlist);
 
-    if (instance->hidden == TRUE || (width == 0 || height == 0)) {
+    if (instance->hidden == TRUE || ((width == 0 || height == 0) && instance->mode != NP_FULL)) {
 
         if (item->streaming) {
             open_location(instance, item, FALSE);
