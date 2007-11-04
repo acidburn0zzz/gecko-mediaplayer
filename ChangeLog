@@ -1,3 +1,5 @@
+Development
+	Fix problem with uninitialized width and height and NP_FULL media
 0.5.2
 	Add French translation
 	Add javascript src attribute
