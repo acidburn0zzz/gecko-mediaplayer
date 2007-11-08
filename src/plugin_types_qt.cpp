@@ -40,14 +40,16 @@
 gchar *GetMIMEDescription()
 {
     gchar MimeTypes[4000];
-    GConfClient *gconf;
-    gboolean qt_disabled;
+    GConfClient *gconf = NULL;
+    gboolean qt_disabled = FALSE;
     
     g_type_init();
     gconf = gconf_client_get_default();
-    qt_disabled = gconf_client_get_bool(gconf, DISABLE_QT, NULL);
-    g_object_unref(G_OBJECT(gconf));
-
+    if (gconf != NULL) {
+        qt_disabled = gconf_client_get_bool(gconf, DISABLE_QT, NULL);
+        g_object_unref(G_OBJECT(gconf));
+    }
+    
     if (qt_disabled) {
         return NULL;
     } else {

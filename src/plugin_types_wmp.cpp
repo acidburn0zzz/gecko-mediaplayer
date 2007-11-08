@@ -40,14 +40,16 @@
 gchar *GetMIMEDescription()
 {
     gchar MimeTypes[4000];
-    GConfClient *gconf;
-    gboolean wmp_disabled;
+    GConfClient *gconf = NULL;
+    gboolean wmp_disabled = FALSE;
     
     g_type_init();
     gconf = gconf_client_get_default();
-    wmp_disabled = gconf_client_get_bool(gconf, DISABLE_WMP, NULL);
-    g_object_unref(G_OBJECT(gconf));
-
+    if (gconf != NULL) {
+        wmp_disabled = gconf_client_get_bool(gconf, DISABLE_WMP, NULL);
+        g_object_unref(G_OBJECT(gconf));
+    }
+    
     if (wmp_disabled) {
         return NULL;
     } else {

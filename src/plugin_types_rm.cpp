@@ -40,14 +40,16 @@
 gchar *GetMIMEDescription()
 {
     gchar MimeTypes[4000];
-    GConfClient *gconf;
-    gboolean real_disabled;
+    GConfClient *gconf = NULL;
+    gboolean real_disabled = FALSE;
     
     g_type_init();
     gconf = gconf_client_get_default();
-    real_disabled = gconf_client_get_bool(gconf, DISABLE_REAL, NULL);
-    g_object_unref(G_OBJECT(gconf));
-
+    if (gconf != NULL) {
+        real_disabled = gconf_client_get_bool(gconf, DISABLE_REAL, NULL);
+        g_object_unref(G_OBJECT(gconf));
+    }
+    
     if (real_disabled) {
         return NULL;
     } else {
