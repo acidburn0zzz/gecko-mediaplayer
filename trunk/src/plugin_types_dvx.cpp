@@ -40,14 +40,16 @@
 gchar *GetMIMEDescription()
 {
     gchar MimeTypes[4000];
-    GConfClient *gconf;
-    gboolean dvx_disabled;
+    GConfClient *gconf = NULL;
+    gboolean dvx_disabled = FALSE;
     
     g_type_init();
     gconf = gconf_client_get_default();
-    dvx_disabled = gconf_client_get_bool(gconf, DISABLE_DVX, NULL);
-    g_object_unref(G_OBJECT(gconf));
-
+    if (gconf != NULL) {
+        dvx_disabled = gconf_client_get_bool(gconf, DISABLE_DVX, NULL);
+        g_object_unref(G_OBJECT(gconf));
+    }
+    
     if (dvx_disabled) {
         return NULL;
     } else {
