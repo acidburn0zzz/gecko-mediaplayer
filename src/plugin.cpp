@@ -132,7 +132,7 @@ event_mouseup(NULL),
 event_mouseclicked(NULL), event_enterwindow(NULL), event_leavewindow(NULL), debug(FALSE)
 {
     GRand *rand;
-    GConfClient *gconf;
+    GConfClient *gconf = NULL;
     
     // generate a random controlid
     rand = g_rand_new();
@@ -146,10 +146,11 @@ event_mouseclicked(NULL), event_enterwindow(NULL), event_leavewindow(NULL), debu
 
     g_type_init();
     gconf = gconf_client_get_default();
-    debug_level = gconf_client_get_int(gconf, DEBUG_LEVEL, NULL);
-    g_object_unref(G_OBJECT(gconf));
-    
-    
+    if (gconf != NULL) {
+        debug_level = gconf_client_get_int(gconf, DEBUG_LEVEL, NULL);
+        g_object_unref(G_OBJECT(gconf));
+    }
+        
     mScriptablePeer = getScriptablePeer();
     mScriptablePeer->SetInstance(this);
     mControlsScriptablePeer = getControlsScriptablePeer();
