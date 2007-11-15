@@ -1,4 +1,5 @@
 Development
+	Set Copy Url eariler in the code, so that you can copy the url before 20% buffer
 	Fix problem with uninitialized width and height and NP_FULL media
 0.5.2
 	Add French translation
