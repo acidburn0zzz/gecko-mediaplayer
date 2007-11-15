@@ -558,6 +558,8 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *
                     rate = (gdouble)((item->localsize - item->lastsize) / 1024.0) / (gdouble)difftime(time(NULL), lastupdate);
                     text = g_strdup_printf(_("Cache fill: %2.2f%% (%0.1f K/s)"), percent * 100.0, rate);
                     send_signal_with_string(this, item, "SetProgressText", text);
+                    send_signal_with_string(this, item, "SetURL", item->src);
+
                 }
                 time(&lastupdate);
                 item->lastsize = item->localsize;
