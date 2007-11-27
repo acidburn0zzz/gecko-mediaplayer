@@ -86,7 +86,7 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
             
             if (g_ascii_strcasecmp(parameters->argn[i], "src") == 0) {
                 item = g_new0(ListItem, 1);
-                g_strlcpy(item->src, parameters->argv[i], 1024);
+                g_strlcpy(item->src, parameters->argv[i], 4096);
                 // printf("Item src = %s\n",item->src);
                 item->streaming = streaming(item->src);
                 item->play = TRUE;
@@ -97,7 +97,7 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
 
             if (g_ascii_strcasecmp(parameters->argn[i], "filename") == 0) {
                 item = g_new0(ListItem, 1);
-                g_strlcpy(item->src, parameters->argv[i], 1024);
+                g_strlcpy(item->src, parameters->argv[i], 4096);
                 // printf("Item src = %s\n",item->src);
                 item->streaming = streaming(item->src);
                 item->play = TRUE;
@@ -108,7 +108,7 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
 
             if (g_ascii_strcasecmp(parameters->argn[i], "href") == 0) {
                 item = g_new0(ListItem, 1);
-                g_strlcpy(item->src, parameters->argv[i], 1024);
+                g_strlcpy(item->src, parameters->argv[i], 4096);
                 // printf("Item href = %s\n",item->src);
                 item->streaming = streaming(item->src);
                 item->play = FALSE;
@@ -124,9 +124,9 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
                 	g_strlcpy(item->src,src->src,1024);
                 	tmp = g_strrstr(item->src,"/");
 	                tmp[1] = '\0';
-                	g_strlcat(item->src, parameters->argv[i], 1024);
+                	g_strlcat(item->src, parameters->argv[i], 4096);
                 } else {
-                	g_strlcpy(item->src, parameters->argv[i], 1024);
+                	g_strlcpy(item->src, parameters->argv[i], 4096);
                 }
                 item->streaming = streaming(item->src);
                 item->play = TRUE;
