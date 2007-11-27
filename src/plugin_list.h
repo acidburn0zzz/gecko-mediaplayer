@@ -43,7 +43,7 @@
 #include <string.h>
 
 typedef struct _ListItem {
-    gchar src[1024];
+    gchar src[4096];
     gchar local[1024];
     gchar path[1024];
     gint id;
