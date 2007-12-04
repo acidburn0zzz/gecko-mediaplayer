@@ -3,7 +3,7 @@
 Name: gecko-mediaplayer
 Summary: Multimedia browser plugin for Gecko based browsers
 Version: %{ver}
-Release: f%{fedora}_1
+Release: 1.f%{fedora}
 License: GPL
 Group: Internet/Multimedia
 Packager: Kevin DeKorte <kdekorte@gmail.com>
