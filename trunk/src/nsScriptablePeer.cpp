@@ -544,21 +544,19 @@ NS_IMETHODIMP nsControlsScriptablePeer::QueryInterface(const nsIID & aIID, void 
         return NS_ERROR_NULL_POINTER;
 
     if (aIID.Equals(kIScriptableControlIID)) {
-        *aInstancePtr = NS_STATIC_CAST(nsIScriptableGeckoMediaPlayerControls *, this);
+        *aInstancePtr = static_cast < nsIScriptableGeckoMediaPlayerControls *> (this);
         AddRef();
         return NS_OK;
     }
-
     if (aIID.Equals(kIClassInfoIID)) {
-        *aInstancePtr = NS_STATIC_CAST(nsIClassInfo *, this);
+        *aInstancePtr = static_cast < nsIClassInfo *> (this);
         AddRef();
         return NS_OK;
     }
 
     if (aIID.Equals(kISupportsIID)) {
-        *aInstancePtr =
-            NS_STATIC_CAST(nsISupports *,
-                           (NS_STATIC_CAST(nsIScriptableGeckoMediaPlayerControls *, this)));
+        *aInstancePtr =static_cast < nsISupports * >
+                           ( static_cast < nsIScriptableGeckoMediaPlayerControls *> (this));
         AddRef();
         return NS_OK;
     }
