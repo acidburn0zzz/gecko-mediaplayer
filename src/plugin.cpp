@@ -256,6 +256,10 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
 
         if (ok) {
             player_launched = TRUE;
+        } else {
+            printf("Unable to launch gnome-mplayer: %s\n",error->message);
+            g_error_free(error);
+            error = NULL;
         }
     }
 

@@ -55,6 +55,7 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
     gchar *tmp;
     gchar **parse;
     gint width = 0,height=0;
+    GError *error;
 
     instance->mode = parameters->mode;
     instance->mimetype = g_strdup(parameters->type);
@@ -356,7 +357,12 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
         arg[i++] = g_strdup("gnome-mplayer");
         arg[i++] = g_strdup_printf("--controlid=%i", item->controlid);
         arg[i] = NULL;
-        g_spawn_async(NULL, arg, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, NULL);
+        error = NULL;
+        if (g_spawn_async(NULL, arg, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error) == FALSE) {
+            printf("Unable to launch: %s\n",error->message);
+            g_error_free(error);
+            error = NULL;
+        }
         NPN_GetURLNotify(instance->mInstance, href->src, NULL, href);
     }
 
