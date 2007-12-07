@@ -54,6 +54,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
     gint i;
     GRand *rand;
     gchar *tmp;
+    GError *gerror;
 
     message_type = dbus_message_get_type(message);
     sender = dbus_message_get_sender(message);
@@ -141,8 +142,13 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                             arg[i++] = g_strdup("gnome-mplayer");
                             arg[i++] = g_strdup_printf("--controlid=%i", item->controlid);
                             arg[i] = NULL;
-                            g_spawn_async(NULL, arg, NULL,
-                                          G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, NULL);
+                            gerror = NULL;
+                            if (g_spawn_async(NULL, arg, NULL,
+                                          G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &gerror) == FALSE) {
+                                printf("Unable to launch gnome-mplayer: %s\n",gerror->message);
+                                g_error_free(gerror);
+                                gerror = NULL;
+                            }
                             printf("requesting %s \n",item->src);
                             NPN_GetURLNotify(instance->mInstance, item->src, NULL, item);
                         }

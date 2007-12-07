@@ -47,6 +47,7 @@
 
 #include "nsIScriptableGeckoMediaPlayer.h"
 #include "nsIClassInfo.h"
+#include "nsIProgrammingLanguage.h"
 
 class nsPluginInstance;
 
