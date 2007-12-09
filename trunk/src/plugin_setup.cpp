@@ -315,6 +315,13 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
         href->newwindow = newwindow;
     }
 
+    if (item == NULL) {
+        item = g_new0(ListItem, 1);  
+        item->play = FALSE;
+        item->id = instance->nextid++;
+        item->streaming = FALSE;
+    }
+    
 #ifdef DISABLE_CACHE
 	item->streaming = TRUE;
 #else
@@ -326,7 +333,6 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
 //    	item->streaming = TRUE;
 //    }
 #endif
-
     // list_dump(instance->playlist);
 
     if (instance->hidden == TRUE || ((width == 0 || height == 0) && instance->mode != NP_FULL)) {
