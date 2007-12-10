@@ -6506,7 +6506,7 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 
-ALL_LINGUAS="fr pt_BR"
+ALL_LINGUAS="fr pl pt_BR"
 # On IRIX 5.3, sys/types and inttypes.h are conflicting.
 
 
