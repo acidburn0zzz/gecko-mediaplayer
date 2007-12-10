@@ -49,7 +49,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
     DBusMessage *reply_message;
     gchar *path;
     nsPluginInstance *instance;
-    ListItem *item;
+    ListItem *item = NULL;
     gchar *arg[10];
     gint i;
     GRand *rand;
@@ -284,7 +284,6 @@ DBusConnection *dbus_hookup(nsPluginInstance * instance)
     DBusConnection *connection;
     DBusError dberror;
     DBusBusType type = DBUS_BUS_SESSION;
-    GMainLoop *loop;
 
     dbus_error_init(&dberror);
     connection = dbus_bus_get_private(type, &dberror);
