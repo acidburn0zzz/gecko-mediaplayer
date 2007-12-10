@@ -232,7 +232,7 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
     
     if (!player_launched && mWidth > 0 && mHeight > 0) {
         argvn[arg++] = g_strdup_printf("gnome-mplayer");
-        argvn[arg++] = g_strdup_printf("--window=%i", mWindow);
+        argvn[arg++] = g_strdup_printf("--window=%i", (gint)mWindow);
         argvn[arg++] = g_strdup_printf("--controlid=%i", controlid);
         argvn[arg++] = g_strdup_printf("--width=%i", mWidth);
         argvn[arg++] = g_strdup_printf("--height=%i", mHeight);
@@ -327,8 +327,6 @@ NPError nsPluginInstance::NewStream(NPMIMEType type, NPStream * stream,
 NPError nsPluginInstance::DestroyStream(NPStream * stream, NPError reason)
 {
     ListItem *item;
-    DBusMessage *message;
-    const char *file;
     gint id;
     gchar *path;
     gchar *text;

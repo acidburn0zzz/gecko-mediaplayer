@@ -234,15 +234,12 @@ GList *list_parse_qt(GList * list, ListItem * item)
     gchar *data;
     gsize datalen;
     gchar *p;
-    gchar *nextrmda;
+    gchar *nextrmda = NULL;
     gchar *rdrf;                // this is the pointer to a URL that we are adding
     gchar *rmdr;                // this is data about the URL
     gchar url[1024];
     gchar *ptr;
-    unsigned int code;          // some value about the URL
-
-
-    gint i;
+    unsigned int code = 0;          // some value about the URL
 
     printf("Entering list_parse_qt localsize = %i\n", item->localsize);
 
@@ -369,8 +366,10 @@ void replace_amp(gchar * data)
 
     gchar *pos;
 
-    while (pos = g_strrstr(data, "&")) {
+    pos = g_strrstr(data, "&");
+    while (pos) {
         pos[0] = '\x01';
+        pos = g_strrstr(data, "&");        
     }
 }
 
@@ -378,8 +377,10 @@ void unreplace_amp(gchar * data)
 {
     gchar *pos;
 
-    while (pos = g_strrstr(data, "\x01")) {
+    pos = g_strrstr(data, "\x01");
+    while (pos) {
         pos[0] = '&';
+        pos = g_strrstr(data, "\x01");        
     }
 
 }
@@ -389,7 +390,6 @@ GList *list_parse_asx(GList * list, ListItem * item)
     GMarkupParseContext *context;
     gchar *data;
     gsize datalen;
-    gboolean entities;
 
     printf("Entering list_parse_asx localsize = %i\n", item->localsize);
 
@@ -520,7 +520,6 @@ GList *list_parse_qml(GList * list, ListItem * item)
     GMarkupParseContext *context;
     gchar *data;
     gsize datalen;
-    gboolean entities;
 
     printf("Entering list_parse_qml localsize = %i\n", item->localsize);
 

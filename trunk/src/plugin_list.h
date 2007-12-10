@@ -58,7 +58,7 @@ typedef struct _ListItem {
     gboolean play;
     gboolean played;
     gboolean opened;
-    gint mediasize;
+    guint mediasize;
     gint localsize;
     gint lastsize;
     FILE *localfp;
