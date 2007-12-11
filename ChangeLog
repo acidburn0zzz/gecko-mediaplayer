@@ -1,4 +1,5 @@
 Development
+	Added Polish translation
 	Print Error on unable to launch gnome-mplayer
 	Increase URL buffer from 1K to 4K
 	Added pt_BR language
