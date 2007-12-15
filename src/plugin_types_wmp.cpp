@@ -87,7 +87,7 @@ NPError PluginGetValue(NPPVariable variable, void *value)
     // description matches the features
 
     if (variable == NPPVpluginNameString) {
-        *((const char **) value) = "Windows Media Player Plugin";
+        *((const char **) value) = "Windows Media Player Plug-in";
     }
     if (variable == NPPVpluginDescriptionString) {
         *((const char **) value) =
