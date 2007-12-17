@@ -175,6 +175,14 @@ class nsPluginInstance:public nsPluginInstanceBase {
     // options
     gint debug_level;
     
+    // tv options
+    gchar *tv_device;
+    gchar *tv_driver;
+    gchar *tv_input;
+    gint tv_width;
+    gint tv_height;
+    
+    
 };
 
 #endif                          // __PLUGIN_H__
