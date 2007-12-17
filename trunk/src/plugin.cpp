@@ -129,7 +129,8 @@ event_mediacomplete(NULL),
 event_destroy(NULL),
 event_mousedown(NULL),
 event_mouseup(NULL),
-event_mouseclicked(NULL), event_enterwindow(NULL), event_leavewindow(NULL), debug(FALSE)
+event_mouseclicked(NULL), event_enterwindow(NULL), event_leavewindow(NULL), debug(FALSE),
+tv_driver(NULL),tv_device(NULL),tv_input(NULL),tv_width(0),tv_height(0)
 {
     GRand *rand;
     GConfClient *gconf = NULL;
@@ -246,10 +247,24 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
         if (console != NULL)
             argvn[arg++] = g_strdup_printf("--rpconsole=%s",console);
         if (controls != NULL) {
-            printf("controls = '%s'\n",controls);
             argvn[arg++] = g_strdup_printf("--rpcontrols=%s",controls);
         }
-
+        if (tv_device != NULL) {
+            argvn[arg++] = g_strdup_printf("--tvdevice=%s",tv_device);
+        }
+        if (tv_driver != NULL) {
+            argvn[arg++] = g_strdup_printf("--tvdriver=%s",tv_driver);
+        }
+        if (tv_input != NULL) {
+            argvn[arg++] = g_strdup_printf("--tvinput=%s",tv_input);
+        }
+        if (tv_width > 0) {
+            argvn[arg++] = g_strdup_printf("--tvwidth=%i",tv_width);
+        }
+        if (tv_height > 0) {
+            argvn[arg++] = g_strdup_printf("--tvheight=%i",tv_height);
+        }
+        
         argvn[arg] = NULL;
         playerready = FALSE;
         ok = g_spawn_async(NULL, argvn, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error);

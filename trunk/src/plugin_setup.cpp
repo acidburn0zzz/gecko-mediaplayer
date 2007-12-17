@@ -161,7 +161,27 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
                     instance->hidden = FALSE;
                 }
             }
+            
+            if (g_ascii_strcasecmp(parameters->argn[i], "tv_device") == 0) {
+                instance->tv_device = g_strdup_printf("%s",parameters->argv[i]);
+            }
 
+            if (g_ascii_strcasecmp(parameters->argn[i], "tv_driver") == 0) {
+                instance->tv_driver = g_strdup_printf("%s",parameters->argv[i]);
+            }
+
+            if (g_ascii_strcasecmp(parameters->argn[i], "tv_input") == 0) {
+                instance->tv_input = g_strdup_printf("%s",parameters->argv[i]);
+            }
+            
+            if (g_ascii_strcasecmp(parameters->argn[i], "tv_width") == 0) {
+                sscanf(parameters->argv[i], "%i",&(instance->tv_width));
+            }
+            
+            if (g_ascii_strcasecmp(parameters->argn[i], "tv_height") == 0) {
+                sscanf(parameters->argv[i], "%i",&(instance->tv_height));
+            }
+            
             if (g_ascii_strcasecmp(parameters->argn[i], "autohref") == 0) {
                 if (strstr(parameters->argv[i], "true")
                     || strstr(parameters->argv[i], "yes")
