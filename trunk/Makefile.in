@@ -730,6 +730,8 @@ dist-hook:
 			cp -p $$specfile $(distdir); \
 		fi \
 	done
+	echo 'cleaning up dist'
+	rm -rf $(distdir)/src/nsIScriptableGeckoMediaPlayer.h
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

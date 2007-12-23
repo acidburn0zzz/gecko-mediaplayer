@@ -2,9 +2,7 @@
 
 ## Created by Anjuta
 
-noinst_DATA = nsIScriptableGeckoMediaPlayer.idl
-
-EXTRA_DIST = $(noinst_DATA)
+EXTRA_DIST = nsIScriptableGeckoMediaPlayer.idl
 
 INCLUDES = \
 	-fPIC \
@@ -31,10 +29,15 @@ xpt_DATA = \
 	
 xptdir = $(libdir)/mozilla/plugins
 
-nsIScriptableGeckoMediaPlayer.h: nsIScriptableGeckoMediaPlayer.idl
-	$(GECKO_XPIDL) -w -m header -I $(GECKO_IDLDIR) -I $(srcdir) -e $@ $<
-
-%.xpt: nsIScriptableGeckoMediaPlayer.idl
+gecko-mediaplayer-dvx.xpt: nsIScriptableGeckoMediaPlayer.idl
+	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(srcdir) -e $@ $<
+gecko-mediaplayer-qt.xpt: nsIScriptableGeckoMediaPlayer.idl
+	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(srcdir) -e $@ $<
+gecko-mediaplayer-rm.xpt: nsIScriptableGeckoMediaPlayer.idl
+	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(srcdir) -e $@ $<
+gecko-mediaplayer.xpt: nsIScriptableGeckoMediaPlayer.idl
+	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(srcdir) -e $@ $<
+gecko-mediaplayer-wmp.xpt: nsIScriptableGeckoMediaPlayer.idl
 	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(srcdir) -e $@ $<
 
 COMMONCODE = \
@@ -74,7 +77,6 @@ gecko_mediaplayer_so_LDFLAGS = -shared $(GLIB_LIBS) $(DBUS_LIBS) $(GCONF_LIBS) -
 gecko_mediaplayer_qt_so_SOURCES = \
 	plugin_types_qt.cpp \
 	$(COMMONCODE)
-
 	
 gecko_mediaplayer_qt_so_CFLAGS = -fPIC
 gecko_mediaplayer_qt_so_LDFLAGS = -shared $(GLIB_LIBS) $(DBUS_LIBS) $(GCONF_LIBS) -fPIC
@@ -82,7 +84,6 @@ gecko_mediaplayer_qt_so_LDFLAGS = -shared $(GLIB_LIBS) $(DBUS_LIBS) $(GCONF_LIBS
 gecko_mediaplayer_wmp_so_SOURCES = \
 	plugin_types_wmp.cpp \
 	$(COMMONCODE)
-
 	
 gecko_mediaplayer_wmp_so_CFLAGS = -fPIC
 gecko_mediaplayer_wmp_so_LDFLAGS = -shared $(GLIB_LIBS) $(DBUS_LIBS) $(GCONF_LIBS) -fPIC
@@ -90,7 +91,6 @@ gecko_mediaplayer_wmp_so_LDFLAGS = -shared $(GLIB_LIBS) $(DBUS_LIBS) $(GCONF_LIB
 gecko_mediaplayer_dvx_so_SOURCES = \
 	plugin_types_dvx.cpp \
 	$(COMMONCODE)
-
 	
 gecko_mediaplayer_dvx_so_CFLAGS = -fPIC
 gecko_mediaplayer_dvx_so_LDFLAGS = -shared $(GLIB_LIBS) $(DBUS_LIBS) $(GCONF_LIBS) -fPIC
@@ -98,9 +98,7 @@ gecko_mediaplayer_dvx_so_LDFLAGS = -shared $(GLIB_LIBS) $(DBUS_LIBS) $(GCONF_LIB
 gecko_mediaplayer_rm_so_SOURCES = \
 	plugin_types_rm.cpp \
 	$(COMMONCODE)
-
 	
 gecko_mediaplayer_rm_so_CFLAGS = -fPIC
 gecko_mediaplayer_rm_so_LDFLAGS = -shared $(GLIB_LIBS) $(DBUS_LIBS) $(GCONF_LIBS) -fPIC
-
 
