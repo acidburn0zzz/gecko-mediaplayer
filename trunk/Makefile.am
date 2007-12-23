@@ -24,6 +24,5 @@ dist-hook:
 			cp -p $$specfile $(distdir); \
 		fi \
 	done
-	echo 'cleaning up dist'
 	rm -rf $(distdir)/src/nsIScriptableGeckoMediaPlayer.h
 
