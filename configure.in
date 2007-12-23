@@ -108,3 +108,6 @@ gecko-mediaplayer.spec
 src/Makefile
 po/Makefile.in
 ])
+
+echo "$GECKO_XPIDL -w -m header -I $GECKO_IDLDIR -I $srcdir -e src/nsIScriptableGeckoMediaPlayer.h src/nsIScriptableGeckoMediaPlayer.idl"
+`$GECKO_XPIDL -w -m header -I $GECKO_IDLDIR -I $srcdir -e src/nsIScriptableGeckoMediaPlayer.h src/nsIScriptableGeckoMediaPlayer.idl`

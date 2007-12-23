@@ -136,7 +136,7 @@ am__vpath_adj = case $$p in \
   esac;
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
 xptDATA_INSTALL = $(INSTALL_DATA)
-DATA = $(noinst_DATA) $(xpt_DATA)
+DATA = $(xpt_DATA)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -276,8 +276,7 @@ sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-noinst_DATA = nsIScriptableGeckoMediaPlayer.idl
-EXTRA_DIST = $(noinst_DATA)
+EXTRA_DIST = nsIScriptableGeckoMediaPlayer.idl
 INCLUDES = \
 	-fPIC \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
@@ -674,10 +673,15 @@ uninstall-am: uninstall-install_libexecPROGRAMS uninstall-xptDATA
 	uninstall-install_libexecPROGRAMS uninstall-xptDATA
 
 
-nsIScriptableGeckoMediaPlayer.h: nsIScriptableGeckoMediaPlayer.idl
-	$(GECKO_XPIDL) -w -m header -I $(GECKO_IDLDIR) -I $(srcdir) -e $@ $<
-
-%.xpt: nsIScriptableGeckoMediaPlayer.idl
+gecko-mediaplayer-dvx.xpt: nsIScriptableGeckoMediaPlayer.idl
+	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(srcdir) -e $@ $<
+gecko-mediaplayer-qt.xpt: nsIScriptableGeckoMediaPlayer.idl
+	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(srcdir) -e $@ $<
+gecko-mediaplayer-rm.xpt: nsIScriptableGeckoMediaPlayer.idl
+	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(srcdir) -e $@ $<
+gecko-mediaplayer.xpt: nsIScriptableGeckoMediaPlayer.idl
+	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(srcdir) -e $@ $<
+gecko-mediaplayer-wmp.xpt: nsIScriptableGeckoMediaPlayer.idl
 	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(srcdir) -e $@ $<
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

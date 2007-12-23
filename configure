@@ -25107,3 +25107,6 @@ if test "$no_create" != yes; then
   $ac_cs_success || { (exit 1); exit 1; }
 fi
 
+
+echo "$GECKO_XPIDL -w -m header -I $GECKO_IDLDIR -I $srcdir -e src/nsIScriptableGeckoMediaPlayer.h src/nsIScriptableGeckoMediaPlayer.idl"
+`$GECKO_XPIDL -w -m header -I $GECKO_IDLDIR -I $srcdir -e src/nsIScriptableGeckoMediaPlayer.h src/nsIScriptableGeckoMediaPlayer.idl`
