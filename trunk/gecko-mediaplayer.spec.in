@@ -4,7 +4,7 @@ Name: gecko-mediaplayer
 Summary: Multimedia browser plugin for Gecko based browsers
 Version: %{ver}
 Release: 1%{?dist}
-License: GPL
+License: GPLv2+
 Group: Internet/Multimedia
 Packager: Kevin DeKorte <kdekorte@gmail.com>
 Source0: http://dekorte.homeip.net/download/gecko-mediaplayer/gecko-mediaplayer-%{ver}.tar.gz

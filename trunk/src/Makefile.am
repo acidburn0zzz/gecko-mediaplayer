@@ -31,6 +31,12 @@ xpt_DATA = \
 	
 xptdir = $(libdir)/mozilla/plugins
 
+nsIScriptableGeckoMediaPlayer.h: nsIScriptableGeckoMediaPlayer.idl
+	$(GECKO_XPIDL) -w -m header -I $(GECKO_IDLDIR) -I $(srcdir) -e $@ $<
+
+%.xpt: nsIScriptableGeckoMediaPlayer.idl
+	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(srcdir) -e $@ $<
+
 COMMONCODE = \
 	plugin.cpp \
 	plugin.h \
@@ -97,8 +103,4 @@ gecko_mediaplayer_rm_so_SOURCES = \
 gecko_mediaplayer_rm_so_CFLAGS = -fPIC
 gecko_mediaplayer_rm_so_LDFLAGS = -shared $(GLIB_LIBS) $(DBUS_LIBS) $(GCONF_LIBS) -fPIC
 
-nsIScriptableGeckoMediaPlayer.h: nsIScriptableGeckoMediaPlayer.idl
-	$(GECKO_XPIDL) -w -m header -I $(GECKO_IDLDIR) -I $(srcdir) -e $@ $<
 
-%.xpt: nsIScriptableGeckoMediaPlayer.idl
-	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(srcdir) -e $@ $<
