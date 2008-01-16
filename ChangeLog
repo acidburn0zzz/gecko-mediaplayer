@@ -1,4 +1,4 @@
-Development
+0.5.4
 	Fix .h generation problem
 	Add support for tv:// type devices
 	Change "Windows Media Player Plugin" to "Windows Media Player Plug-in"
