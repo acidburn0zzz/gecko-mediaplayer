@@ -63,7 +63,7 @@ PKG_CHECK_MODULES(GECKO, [xulrunner-plugin xulrunner-xpcom],[
 fi
 
 if test "$GECKO_CFLAGS" = ""; then
-PKG_CHECK_MODULES(GECKO, [mozilla-plugin libxul],[
+PKG_CHECK_MODULES(GECKO, [mozilla-plugin libxul libxul-embedding],[
     GECKO_HOME=`$PKG_CONFIG --variable=libdir mozilla-plugin`
     GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir libxul`
     ],[AC_MSG_WARN([libxul/mozilla-plugin not found, trying another])])
