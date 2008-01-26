@@ -64,7 +64,7 @@ fi
 
 if test "$GECKO_CFLAGS" = ""; then
 PKG_CHECK_MODULES(GECKO, [mozilla-plugin libxul libxul-embedding],[
-    GECKO_HOME=`$PKG_CONFIG --variable=libdir mozilla-plugin`
+    GECKO_HOME=`$PKG_CONFIG --variable=libdir libxul`
     GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir libxul-embedding`
     ],[AC_MSG_WARN([libxul/mozilla-plugin not found, trying another])])
 fi
