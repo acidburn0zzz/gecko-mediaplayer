@@ -23345,7 +23345,7 @@ else
 echo "${ECHO_T}yes" >&6; }
 
     GECKO_HOME=`$PKG_CONFIG --variable=libdir libxul`
-    GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir libxul-embedding`
+    GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir libxul`
 
 fi
 fi
