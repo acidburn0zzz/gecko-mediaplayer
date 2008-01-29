@@ -1,3 +1,6 @@
+Development
+	Trigger at either 20% of media or 2 * cache size whichever is smaller
+	Fix compliation problem with xulrunner on Fedora 9
 0.5.4
 	Fix .h generation problem
 	Add support for tv:// type devices

@@ -583,8 +583,10 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *
             }
         }
         // if not opened, over cache level and not an href target then try and open it
-        if ((!item->opened) && (percent > 0.2)
+        if ((!item->opened) && 
+            ((percent > 0.2) || (item->localsize > (cache_size * 2 * 1024)))
             && (item->localsize > (cache_size * 1024))) {
+//printf("playback triggerred: localsize = %i\n",item->localsize);                
             id = item->controlid;
             path = g_strdup(item->path);
             ready = item->playerready;
