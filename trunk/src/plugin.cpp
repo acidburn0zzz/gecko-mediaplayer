@@ -513,6 +513,7 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *
     gchar *path;
     gboolean ready;
     gboolean newwindow;
+    gboolean ok_to_play = FALSE;
 
     if (!acceptdata) {
         NPN_DestroyStream(mInstance, stream, NPRES_DONE);
@@ -576,17 +577,30 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *
                     text = g_strdup_printf(_("Cache fill: %2.2f%% (%0.1f K/s)"), percent * 100.0, rate);
                     send_signal_with_string(this, item, "SetProgressText", text);
                     send_signal_with_string(this, item, "SetURL", item->src);
-
+                    
                 }
                 time(&lastupdate);
                 item->lastsize = item->localsize;
             }
         }
+        if (!item->opened) {        
+            if ((item->localsize > (cache_size * 1024)) && (percent > 0.2))
+                ok_to_play = TRUE;
+            if (ok_to_play == FALSE && (item->localsize > (cache_size * 2 * 1024)) && (percent > 0.2))
+                ok_to_play = TRUE;
+            if (ok_to_play == FALSE) {
+                if (item->bitrate == 0) {
+                    item->bitrate = request_bitrate(this,item,item->local);
+                }
+                if (item->bitrate > 0) {
+                    if (item->localsize / item->bitrate >= 10) {
+                        ok_to_play = TRUE;
+                    }
+                }
+            }
+        }        
         // if not opened, over cache level and not an href target then try and open it
-        if ((!item->opened) && 
-            ((percent > 0.2) || (item->localsize > (cache_size * 2 * 1024)))
-            && (item->localsize > (cache_size * 1024))) {
-//printf("playback triggerred: localsize = %i\n",item->localsize);                
+        if ((!item->opened) && ok_to_play == TRUE) {
             id = item->controlid;
             path = g_strdup(item->path);
             ready = item->playerready;

@@ -64,6 +64,7 @@ typedef struct _ListItem {
     FILE *localfp;
     gboolean loop;              // TRUE if we should loop
     gint loopcount;             // 0 - loop done, -1 loop forever
+    gint bitrate;
 } ListItem;
 
 
