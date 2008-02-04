@@ -584,7 +584,7 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *
             }
         }
         if (!item->opened) {        
-            if ((item->localsize > (cache_size * 1024)) && (percent > 0.2))
+            if ((item->localsize >= (cache_size * 1024)) && (percent >= 0.2))
                 ok_to_play = TRUE;
             if (ok_to_play == FALSE && (item->localsize > (cache_size * 2 * 1024)) && (cache_size >= 512))
                 ok_to_play = TRUE;
