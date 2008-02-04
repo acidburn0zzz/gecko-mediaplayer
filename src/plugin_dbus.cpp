@@ -755,11 +755,11 @@ gint request_bitrate(nsPluginInstance * instance, ListItem * item, gchar * name)
     DBusMessage *message;
     DBusMessage *replymessage;
     const gchar *localmember;
+    const gchar *localname;
     DBusError error;
     gint result = 0;
     gchar *path;
     gchar *dest;
-    gchar *localname;
     gint controlid;
 
     //printf("Requesting %s to connection %p\n", member, instance->connection);
@@ -787,9 +787,11 @@ gint request_bitrate(nsPluginInstance * instance, ListItem * item, gchar * name)
         if (dbus_error_is_set(&error)) {
             printf("Error message = %s\n", error.message);
         }
-        dbus_message_get_args(replymessage, &error, DBUS_TYPE_INT32, &result, DBUS_TYPE_INVALID);
+        if (replymessage != NULL) {
+            dbus_message_get_args(replymessage, &error, DBUS_TYPE_INT32, &result, DBUS_TYPE_INVALID);
+            dbus_message_unref(replymessage);
+        }
         dbus_message_unref(message);
-        dbus_message_unref(replymessage);
     }
     g_free(dest);
 
