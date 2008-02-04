@@ -1,4 +1,9 @@
 Development
+	Set start trigger to be based off of media bitrate
+		New trigger code works like this
+		Test for > 20% and over cache size
+		Test for 2 * cache size as long as cache size > 512
+		Test for downloaded amount / bitrate > 10
 	Trigger at either 20% of media or 2 * cache size whichever is smaller
 	Fix compliation problem with xulrunner on Fedora 9
 0.5.4

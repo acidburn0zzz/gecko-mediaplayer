@@ -750,4 +750,49 @@ gboolean is_valid_path(nsPluginInstance * instance, const char *message)
     return result;
 }
 
+gint request_bitrate(nsPluginInstance * instance, ListItem * item, gchar * name)
+{
+    DBusMessage *message;
+    DBusMessage *replymessage;
+    const gchar *localmember;
+    DBusError error;
+    gint result = 0;
+    gchar *path;
+    gchar *dest;
+    gchar *localname;
+    gint controlid;
+
+    //printf("Requesting %s to connection %p\n", member, instance->connection);
+    if (instance == NULL)
+        return result;
+
+    if (item != NULL && strlen(item->path) > 0) {
+        path = item->path;
+        controlid = item->controlid;
+    } else {
+        path = instance->path;
+        controlid = instance->controlid;
+    }
+
+    dest = g_strdup_printf("com.gnome.mplayer.cid%i", controlid);
+
+    if (instance->playerready && instance->connection != NULL) {
+        localmember = g_strdup("GetBitrate");
+        localname = g_strdup(name);
+        message = dbus_message_new_method_call(dest, path, "com.gnome.mplayer", localmember);
+        dbus_message_append_args(message, DBUS_TYPE_STRING, &localname, DBUS_TYPE_INVALID);
+        dbus_error_init(&error);
+        replymessage =
+            dbus_connection_send_with_reply_and_block(instance->connection, message, -1, &error);
+        if (dbus_error_is_set(&error)) {
+            printf("Error message = %s\n", error.message);
+        }
+        dbus_message_get_args(replymessage, &error, DBUS_TYPE_INT32, &result, DBUS_TYPE_INVALID);
+        dbus_message_unref(message);
+        dbus_message_unref(replymessage);
+    }
+    g_free(dest);
+
+    return result;
+}
 
