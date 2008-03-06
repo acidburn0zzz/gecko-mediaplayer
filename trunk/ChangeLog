@@ -1,4 +1,5 @@
 Development
+	No longer require libxul-embedding on F9
 	Remove debian files, add DOCS/tech/javascript.txt
 	Added Spanish translation by Festor Wailon Dacoba
 0.6.0
