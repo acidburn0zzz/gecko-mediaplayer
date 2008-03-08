@@ -212,6 +212,16 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
                     instance->disable_context_menu = FALSE;
                 }
             }
+            
+            if (g_ascii_strcasecmp(parameters->argn[i], "enablefullscreen") == 0) {
+                if (g_ascii_strcasecmp(parameters->argv[i], "false") == 0
+                    || g_ascii_strcasecmp(parameters->argv[i], "no") == 0
+                    || g_ascii_strcasecmp(parameters->argv[i], "0") == 0) {
+                    instance->disable_fullscreen = TRUE;
+                } else {
+                    instance->disable_fullscreen = FALSE;
+                }
+            }
 
             if ((g_ascii_strcasecmp(parameters->argn[i], "loop") == 0)
                 || (g_ascii_strcasecmp(parameters->argn[i], "autorewind")

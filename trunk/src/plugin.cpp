@@ -125,6 +125,7 @@ name(NULL),
 console(NULL),
 controls(NULL),
 disable_context_menu(FALSE),
+disable_fullscreen(FALSE),
 event_mediacomplete(NULL),
 event_destroy(NULL),
 event_mousedown(NULL),
@@ -240,6 +241,8 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
         argvn[arg++] = g_strdup_printf("--autostart=%i", autostart);
         if (disable_context_menu == TRUE)
             argvn[arg++] = g_strdup_printf("--disablecontextmenu");
+        if (disable_fullscreen == TRUE)
+            argvn[arg++] = g_strdup_printf("--disablefullscreen");
         if (debug == TRUE)
             argvn[arg++] = g_strdup_printf("--verbose");
         if (name != NULL)

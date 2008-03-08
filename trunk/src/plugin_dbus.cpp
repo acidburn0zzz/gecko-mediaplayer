@@ -429,7 +429,7 @@ void resize_window(nsPluginInstance * instance, ListItem * item, gint x, gint y)
 }
 
 
-void send_signal(nsPluginInstance * instance, ListItem * item, gchar * signal)
+void send_signal(nsPluginInstance * instance, ListItem * item, const gchar * signal)
 {
     DBusMessage *message;
     const char *localsignal;
@@ -460,7 +460,7 @@ void send_signal(nsPluginInstance * instance, ListItem * item, gchar * signal)
 
 }
 
-void send_signal_when_ready(nsPluginInstance * instance, ListItem * item, gchar * signal)
+void send_signal_when_ready(nsPluginInstance * instance, ListItem * item, const gchar * signal)
 {
     DBusMessage *message;
     const char *localsignal;
@@ -492,7 +492,7 @@ void send_signal_when_ready(nsPluginInstance * instance, ListItem * item, gchar 
 }
 
 void send_signal_with_string(nsPluginInstance * instance, ListItem * item,
-                             gchar * signal, gchar * str)
+                             const gchar * signal, gchar * str)
 {
     DBusMessage *message;
     const char *localsignal;
@@ -526,7 +526,7 @@ void send_signal_with_string(nsPluginInstance * instance, ListItem * item,
 }
 
 void send_signal_with_double(nsPluginInstance * instance, ListItem * item,
-                             gchar * signal, gdouble dbl)
+                             const gchar * signal, gdouble dbl)
 {
     DBusMessage *message;
     const char *localsignal;
@@ -558,7 +558,7 @@ void send_signal_with_double(nsPluginInstance * instance, ListItem * item,
 }
 
 void send_signal_with_boolean(nsPluginInstance * instance, ListItem * item,
-                              gchar * signal, gboolean boolean)
+                              const gchar * signal, gboolean boolean)
 {
     DBusMessage *message;
     const char *localsignal;
@@ -589,7 +589,7 @@ void send_signal_with_boolean(nsPluginInstance * instance, ListItem * item,
     g_free(path);
 }
 
-gboolean request_boolean_value(nsPluginInstance * instance, ListItem * item, gchar * member)
+gboolean request_boolean_value(nsPluginInstance * instance, ListItem * item, const gchar * member)
 {
     DBusMessage *message;
     DBusMessage *replymessage;
@@ -632,7 +632,7 @@ gboolean request_boolean_value(nsPluginInstance * instance, ListItem * item, gch
     return result;
 }
 
-gdouble request_double_value(nsPluginInstance * instance, ListItem * item, gchar * member)
+gdouble request_double_value(nsPluginInstance * instance, ListItem * item, const gchar * member)
 {
     DBusMessage *message;
     DBusMessage *replymessage;
@@ -676,7 +676,7 @@ gdouble request_double_value(nsPluginInstance * instance, ListItem * item, gchar
     return result;
 }
 
-gint request_int_value(nsPluginInstance * instance, ListItem * item, gchar * member)
+gint request_int_value(nsPluginInstance * instance, ListItem * item, const gchar * member)
 {
     DBusMessage *message;
     DBusMessage *replymessage;

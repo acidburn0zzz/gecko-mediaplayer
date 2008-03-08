@@ -1,4 +1,6 @@
 Development
+	Add embedoption "enablefullscreen" works like "enablecontextmenu" to prevent user from
+		making the window fullscreen
 	No longer require libxul-embedding on F9
 	Remove debian files, add DOCS/tech/javascript.txt
 	Added Spanish translation by Festor Wailon Dacoba
