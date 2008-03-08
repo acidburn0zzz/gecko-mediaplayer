@@ -53,17 +53,17 @@ DBusConnection *dbus_hookup(nsPluginInstance * instance);
 DBusConnection *dbus_unhook(DBusConnection * connection, nsPluginInstance * instance);
 void open_location(nsPluginInstance * instance, ListItem * item, gboolean uselocal);
 void resize_window(nsPluginInstance * instance, ListItem * item, gint x, gint y);
-void send_signal(nsPluginInstance * instance, ListItem * item, gchar * signal);
-void send_signal_when_ready(nsPluginInstance * instance, ListItem * item, gchar * signal);
-void send_signal_with_string(nsPluginInstance * instance, ListItem * item, gchar * signal,
+void send_signal(nsPluginInstance * instance, ListItem * item, const gchar * signal);
+void send_signal_when_ready(nsPluginInstance * instance, ListItem * item, const gchar * signal);
+void send_signal_with_string(nsPluginInstance * instance, ListItem * item, const gchar * signal,
                              gchar * str);
-void send_signal_with_double(nsPluginInstance * instance, ListItem * item, gchar * signal,
+void send_signal_with_double(nsPluginInstance * instance, ListItem * item, const gchar * signal,
                              gdouble dbl);
-void send_signal_with_boolean(nsPluginInstance * instance, ListItem * item, gchar * signal,
+void send_signal_with_boolean(nsPluginInstance * instance, ListItem * item, const gchar * signal,
                               gboolean boolean);
-gboolean request_boolean_value(nsPluginInstance * instance, ListItem * item, gchar * member);
-gdouble request_double_value(nsPluginInstance * instance, ListItem * item, gchar * member);
-gint request_int_value(nsPluginInstance * instance, ListItem * item, gchar * member);
+gboolean request_boolean_value(nsPluginInstance * instance, ListItem * item, const gchar * member);
+gdouble request_double_value(nsPluginInstance * instance, ListItem * item, const gchar * member);
+gint request_int_value(nsPluginInstance * instance, ListItem * item, const gchar * member);
 gboolean is_valid_path(nsPluginInstance * instance, const char *message);
 gint request_bitrate(nsPluginInstance * instance, ListItem * item, gchar * name);
 

@@ -158,6 +158,7 @@ class nsPluginInstance:public nsPluginInstanceBase {
     gint autostart;
     time_t lastupdate;
     gboolean disable_context_menu;
+    gboolean disable_fullscreen;
     gboolean debug;
     gchar *name;
     gchar *console;
