@@ -564,6 +564,7 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *
         item->mediasize = stream->end;
 
     if (playerready) {
+        percent = 0.0;
         if (item->mediasize > 0) {
 
             percent = (gdouble) item->localsize / (gdouble) item->mediasize;

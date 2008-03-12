@@ -26,3 +26,6 @@ dist-hook:
 	done
 	rm -rf $(distdir)/src/nsIScriptableGeckoMediaPlayer.h
 
+install-data-hook:
+	if [ -e ${sysconfdir}/gconf/schemas/gecko-mediaplayer.schemas ]; then GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source` gconftool-2 --makefile-install-rule ${sysconfdir}/gconf/schemas/gecko-mediaplayer.schemas > /dev/null;	fi
+
