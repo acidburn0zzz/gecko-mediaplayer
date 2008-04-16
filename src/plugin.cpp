@@ -602,6 +602,7 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *
                     }
                 }
             }
+            
         }        
         // if not opened, over cache level and not an href target then try and open it
         if ((!item->opened) && ok_to_play == TRUE) {
