@@ -1,4 +1,4 @@
-Development
+0.6.1
 	Update Makefile.am to install schema file correctly 
 	Update aclocal/automake settings
 	Add embedoption "enablefullscreen" works like "enablecontextmenu" to prevent user from
