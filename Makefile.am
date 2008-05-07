@@ -10,7 +10,8 @@ gecko_mediaplayerdoc_DATA = \
 	AUTHORS\
 	ChangeLog\
 	INSTALL\
-	NEWS
+	NEWS\
+	DOCS/tech/javascript.txt
 
 gecko_mediaplayeretcdir = ${sysconfdir}/gconf/schemas
 gecko_mediaplayeretc_DATA = gecko-mediaplayer.schemas
