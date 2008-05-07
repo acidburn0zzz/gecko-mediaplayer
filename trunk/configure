@@ -855,6 +855,14 @@ CXXDEPMODE
 am__fastdepCXX_TRUE
 am__fastdepCXX_FALSE
 GETTEXT_PACKAGE
+build
+build_cpu
+build_vendor
+build_os
+host
+host_cpu
+host_vendor
+host_os
 USE_NLS
 MSGFMT
 MSGFMT_OPTS
@@ -871,14 +879,6 @@ PO_IN_DATADIR_FALSE
 POFILES
 POSUB
 MKINSTALLDIRS
-build
-build_cpu
-build_vendor
-build_os
-host
-host_cpu
-host_vendor
-host_os
 SED
 LN_S
 ECHO
@@ -6576,6 +6576,89 @@ fi
 done
 
 
+# Make sure we can run config.sub.
+$SHELL "$ac_aux_dir/config.sub" sun4 >/dev/null 2>&1 ||
+  { { echo "$as_me:$LINENO: error: cannot run $SHELL $ac_aux_dir/config.sub" >&5
+echo "$as_me: error: cannot run $SHELL $ac_aux_dir/config.sub" >&2;}
+   { (exit 1); exit 1; }; }
+
+{ echo "$as_me:$LINENO: checking build system type" >&5
+echo $ECHO_N "checking build system type... $ECHO_C" >&6; }
+if test "${ac_cv_build+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_build_alias=$build_alias
+test "x$ac_build_alias" = x &&
+  ac_build_alias=`$SHELL "$ac_aux_dir/config.guess"`
+test "x$ac_build_alias" = x &&
+  { { echo "$as_me:$LINENO: error: cannot guess build type; you must specify one" >&5
+echo "$as_me: error: cannot guess build type; you must specify one" >&2;}
+   { (exit 1); exit 1; }; }
+ac_cv_build=`$SHELL "$ac_aux_dir/config.sub" $ac_build_alias` ||
+  { { echo "$as_me:$LINENO: error: $SHELL $ac_aux_dir/config.sub $ac_build_alias failed" >&5
+echo "$as_me: error: $SHELL $ac_aux_dir/config.sub $ac_build_alias failed" >&2;}
+   { (exit 1); exit 1; }; }
+
+fi
+{ echo "$as_me:$LINENO: result: $ac_cv_build" >&5
+echo "${ECHO_T}$ac_cv_build" >&6; }
+case $ac_cv_build in
+*-*-*) ;;
+*) { { echo "$as_me:$LINENO: error: invalid value of canonical build" >&5
+echo "$as_me: error: invalid value of canonical build" >&2;}
+   { (exit 1); exit 1; }; };;
+esac
+build=$ac_cv_build
+ac_save_IFS=$IFS; IFS='-'
+set x $ac_cv_build
+shift
+build_cpu=$1
+build_vendor=$2
+shift; shift
+# Remember, the first character of IFS is used to create $*,
+# except with old shells:
+build_os=$*
+IFS=$ac_save_IFS
+case $build_os in *\ *) build_os=`echo "$build_os" | sed 's/ /-/g'`;; esac
+
+
+{ echo "$as_me:$LINENO: checking host system type" >&5
+echo $ECHO_N "checking host system type... $ECHO_C" >&6; }
+if test "${ac_cv_host+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  if test "x$host_alias" = x; then
+  ac_cv_host=$ac_cv_build
+else
+  ac_cv_host=`$SHELL "$ac_aux_dir/config.sub" $host_alias` ||
+    { { echo "$as_me:$LINENO: error: $SHELL $ac_aux_dir/config.sub $host_alias failed" >&5
+echo "$as_me: error: $SHELL $ac_aux_dir/config.sub $host_alias failed" >&2;}
+   { (exit 1); exit 1; }; }
+fi
+
+fi
+{ echo "$as_me:$LINENO: result: $ac_cv_host" >&5
+echo "${ECHO_T}$ac_cv_host" >&6; }
+case $ac_cv_host in
+*-*-*) ;;
+*) { { echo "$as_me:$LINENO: error: invalid value of canonical host" >&5
+echo "$as_me: error: invalid value of canonical host" >&2;}
+   { (exit 1); exit 1; }; };;
+esac
+host=$ac_cv_host
+ac_save_IFS=$IFS; IFS='-'
+set x $ac_cv_host
+shift
+host_cpu=$1
+host_vendor=$2
+shift; shift
+# Remember, the first character of IFS is used to create $*,
+# except with old shells:
+host_os=$*
+IFS=$ac_save_IFS
+case $host_os in *\ *) host_os=`echo "$host_os" | sed 's/ /-/g'`;; esac
+
+
 
 
 for ac_header in locale.h
@@ -6777,7 +6860,7 @@ _ACEOF
 
     fi
   fi
-     USE_NLS=yes
+         USE_NLS=yes
 
 
     gt_cv_have_gettext=no
@@ -8165,89 +8248,6 @@ if test "${enable_fast_install+set}" = set; then
 else
   enable_fast_install=yes
 fi
-
-
-# Make sure we can run config.sub.
-$SHELL "$ac_aux_dir/config.sub" sun4 >/dev/null 2>&1 ||
-  { { echo "$as_me:$LINENO: error: cannot run $SHELL $ac_aux_dir/config.sub" >&5
-echo "$as_me: error: cannot run $SHELL $ac_aux_dir/config.sub" >&2;}
-   { (exit 1); exit 1; }; }
-
-{ echo "$as_me:$LINENO: checking build system type" >&5
-echo $ECHO_N "checking build system type... $ECHO_C" >&6; }
-if test "${ac_cv_build+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_build_alias=$build_alias
-test "x$ac_build_alias" = x &&
-  ac_build_alias=`$SHELL "$ac_aux_dir/config.guess"`
-test "x$ac_build_alias" = x &&
-  { { echo "$as_me:$LINENO: error: cannot guess build type; you must specify one" >&5
-echo "$as_me: error: cannot guess build type; you must specify one" >&2;}
-   { (exit 1); exit 1; }; }
-ac_cv_build=`$SHELL "$ac_aux_dir/config.sub" $ac_build_alias` ||
-  { { echo "$as_me:$LINENO: error: $SHELL $ac_aux_dir/config.sub $ac_build_alias failed" >&5
-echo "$as_me: error: $SHELL $ac_aux_dir/config.sub $ac_build_alias failed" >&2;}
-   { (exit 1); exit 1; }; }
-
-fi
-{ echo "$as_me:$LINENO: result: $ac_cv_build" >&5
-echo "${ECHO_T}$ac_cv_build" >&6; }
-case $ac_cv_build in
-*-*-*) ;;
-*) { { echo "$as_me:$LINENO: error: invalid value of canonical build" >&5
-echo "$as_me: error: invalid value of canonical build" >&2;}
-   { (exit 1); exit 1; }; };;
-esac
-build=$ac_cv_build
-ac_save_IFS=$IFS; IFS='-'
-set x $ac_cv_build
-shift
-build_cpu=$1
-build_vendor=$2
-shift; shift
-# Remember, the first character of IFS is used to create $*,
-# except with old shells:
-build_os=$*
-IFS=$ac_save_IFS
-case $build_os in *\ *) build_os=`echo "$build_os" | sed 's/ /-/g'`;; esac
-
-
-{ echo "$as_me:$LINENO: checking host system type" >&5
-echo $ECHO_N "checking host system type... $ECHO_C" >&6; }
-if test "${ac_cv_host+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  if test "x$host_alias" = x; then
-  ac_cv_host=$ac_cv_build
-else
-  ac_cv_host=`$SHELL "$ac_aux_dir/config.sub" $host_alias` ||
-    { { echo "$as_me:$LINENO: error: $SHELL $ac_aux_dir/config.sub $host_alias failed" >&5
-echo "$as_me: error: $SHELL $ac_aux_dir/config.sub $host_alias failed" >&2;}
-   { (exit 1); exit 1; }; }
-fi
-
-fi
-{ echo "$as_me:$LINENO: result: $ac_cv_host" >&5
-echo "${ECHO_T}$ac_cv_host" >&6; }
-case $ac_cv_host in
-*-*-*) ;;
-*) { { echo "$as_me:$LINENO: error: invalid value of canonical host" >&5
-echo "$as_me: error: invalid value of canonical host" >&2;}
-   { (exit 1); exit 1; }; };;
-esac
-host=$ac_cv_host
-ac_save_IFS=$IFS; IFS='-'
-set x $ac_cv_host
-shift
-host_cpu=$1
-host_vendor=$2
-shift; shift
-# Remember, the first character of IFS is used to create $*,
-# except with old shells:
-host_os=$*
-IFS=$ac_save_IFS
-case $host_os in *\ *) host_os=`echo "$host_os" | sed 's/ /-/g'`;; esac
 
 
 { echo "$as_me:$LINENO: checking for a sed that does not truncate output" >&5
@@ -22934,10 +22934,11 @@ pkg_failed=no
 { echo "$as_me:$LINENO: checking for GLIB" >&5
 echo $ECHO_N "checking for GLIB... $ECHO_C" >&6; }
 
-if test -n "$GLIB_CFLAGS"; then
-    pkg_cv_GLIB_CFLAGS="$GLIB_CFLAGS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
+if test -n "$PKG_CONFIG"; then
+    if test -n "$GLIB_CFLAGS"; then
+        pkg_cv_GLIB_CFLAGS="$GLIB_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"glib-2.0 gthread-2.0 \"") >&5
   ($PKG_CONFIG --exists --print-errors "glib-2.0 gthread-2.0 ") 2>&5
   ac_status=$?
@@ -22947,13 +22948,15 @@ if test -n "$GLIB_CFLAGS"; then
 else
   pkg_failed=yes
 fi
- else
-    pkg_failed=untried
+    fi
+else
+	pkg_failed=untried
 fi
-if test -n "$GLIB_LIBS"; then
-    pkg_cv_GLIB_LIBS="$GLIB_LIBS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
+if test -n "$PKG_CONFIG"; then
+    if test -n "$GLIB_LIBS"; then
+        pkg_cv_GLIB_LIBS="$GLIB_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"glib-2.0 gthread-2.0 \"") >&5
   ($PKG_CONFIG --exists --print-errors "glib-2.0 gthread-2.0 ") 2>&5
   ac_status=$?
@@ -22963,8 +22966,9 @@ if test -n "$GLIB_LIBS"; then
 else
   pkg_failed=yes
 fi
- else
-    pkg_failed=untried
+    fi
+else
+	pkg_failed=untried
 fi
 
 
@@ -22977,9 +22981,9 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        GLIB_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "glib-2.0 gthread-2.0 " 2>&1`
+	        GLIB_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "glib-2.0 gthread-2.0 "`
         else
-	        GLIB_PKG_ERRORS=`$PKG_CONFIG --print-errors "glib-2.0 gthread-2.0 " 2>&1`
+	        GLIB_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "glib-2.0 gthread-2.0 "`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$GLIB_PKG_ERRORS" >&5
@@ -23044,10 +23048,11 @@ pkg_failed=no
 { echo "$as_me:$LINENO: checking for GECKO" >&5
 echo $ECHO_N "checking for GECKO... $ECHO_C" >&6; }
 
-if test -n "$GECKO_CFLAGS"; then
-    pkg_cv_GECKO_CFLAGS="$GECKO_CFLAGS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
+if test -n "$PKG_CONFIG"; then
+    if test -n "$GECKO_CFLAGS"; then
+        pkg_cv_GECKO_CFLAGS="$GECKO_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"mozilla-plugin mozilla-xpcom\"") >&5
   ($PKG_CONFIG --exists --print-errors "mozilla-plugin mozilla-xpcom") 2>&5
   ac_status=$?
@@ -23057,13 +23062,15 @@ if test -n "$GECKO_CFLAGS"; then
 else
   pkg_failed=yes
 fi
- else
-    pkg_failed=untried
+    fi
+else
+	pkg_failed=untried
 fi
-if test -n "$GECKO_LIBS"; then
-    pkg_cv_GECKO_LIBS="$GECKO_LIBS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
+if test -n "$PKG_CONFIG"; then
+    if test -n "$GECKO_LIBS"; then
+        pkg_cv_GECKO_LIBS="$GECKO_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"mozilla-plugin mozilla-xpcom\"") >&5
   ($PKG_CONFIG --exists --print-errors "mozilla-plugin mozilla-xpcom") 2>&5
   ac_status=$?
@@ -23073,8 +23080,9 @@ if test -n "$GECKO_LIBS"; then
 else
   pkg_failed=yes
 fi
- else
-    pkg_failed=untried
+    fi
+else
+	pkg_failed=untried
 fi
 
 
@@ -23087,9 +23095,9 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        GECKO_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "mozilla-plugin mozilla-xpcom" 2>&1`
+	        GECKO_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "mozilla-plugin mozilla-xpcom"`
         else
-	        GECKO_PKG_ERRORS=`$PKG_CONFIG --print-errors "mozilla-plugin mozilla-xpcom" 2>&1`
+	        GECKO_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "mozilla-plugin mozilla-xpcom"`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$GECKO_PKG_ERRORS" >&5
@@ -23118,10 +23126,11 @@ pkg_failed=no
 { echo "$as_me:$LINENO: checking for GECKO" >&5
 echo $ECHO_N "checking for GECKO... $ECHO_C" >&6; }
 
-if test -n "$GECKO_CFLAGS"; then
-    pkg_cv_GECKO_CFLAGS="$GECKO_CFLAGS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
+if test -n "$PKG_CONFIG"; then
+    if test -n "$GECKO_CFLAGS"; then
+        pkg_cv_GECKO_CFLAGS="$GECKO_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"firefox-plugin firefox-xpcom\"") >&5
   ($PKG_CONFIG --exists --print-errors "firefox-plugin firefox-xpcom") 2>&5
   ac_status=$?
@@ -23131,13 +23140,15 @@ if test -n "$GECKO_CFLAGS"; then
 else
   pkg_failed=yes
 fi
- else
-    pkg_failed=untried
+    fi
+else
+	pkg_failed=untried
 fi
-if test -n "$GECKO_LIBS"; then
-    pkg_cv_GECKO_LIBS="$GECKO_LIBS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
+if test -n "$PKG_CONFIG"; then
+    if test -n "$GECKO_LIBS"; then
+        pkg_cv_GECKO_LIBS="$GECKO_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"firefox-plugin firefox-xpcom\"") >&5
   ($PKG_CONFIG --exists --print-errors "firefox-plugin firefox-xpcom") 2>&5
   ac_status=$?
@@ -23147,8 +23158,9 @@ if test -n "$GECKO_LIBS"; then
 else
   pkg_failed=yes
 fi
- else
-    pkg_failed=untried
+    fi
+else
+	pkg_failed=untried
 fi
 
 
@@ -23161,9 +23173,9 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        GECKO_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "firefox-plugin firefox-xpcom" 2>&1`
+	        GECKO_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "firefox-plugin firefox-xpcom"`
         else
-	        GECKO_PKG_ERRORS=`$PKG_CONFIG --print-errors "firefox-plugin firefox-xpcom" 2>&1`
+	        GECKO_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "firefox-plugin firefox-xpcom"`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$GECKO_PKG_ERRORS" >&5
@@ -23193,10 +23205,11 @@ pkg_failed=no
 { echo "$as_me:$LINENO: checking for GECKO" >&5
 echo $ECHO_N "checking for GECKO... $ECHO_C" >&6; }
 
-if test -n "$GECKO_CFLAGS"; then
-    pkg_cv_GECKO_CFLAGS="$GECKO_CFLAGS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
+if test -n "$PKG_CONFIG"; then
+    if test -n "$GECKO_CFLAGS"; then
+        pkg_cv_GECKO_CFLAGS="$GECKO_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"seamonkey-plugin seamonkey-xpcom\"") >&5
   ($PKG_CONFIG --exists --print-errors "seamonkey-plugin seamonkey-xpcom") 2>&5
   ac_status=$?
@@ -23206,13 +23219,15 @@ if test -n "$GECKO_CFLAGS"; then
 else
   pkg_failed=yes
 fi
- else
-    pkg_failed=untried
+    fi
+else
+	pkg_failed=untried
 fi
-if test -n "$GECKO_LIBS"; then
-    pkg_cv_GECKO_LIBS="$GECKO_LIBS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
+if test -n "$PKG_CONFIG"; then
+    if test -n "$GECKO_LIBS"; then
+        pkg_cv_GECKO_LIBS="$GECKO_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"seamonkey-plugin seamonkey-xpcom\"") >&5
   ($PKG_CONFIG --exists --print-errors "seamonkey-plugin seamonkey-xpcom") 2>&5
   ac_status=$?
@@ -23222,8 +23237,9 @@ if test -n "$GECKO_LIBS"; then
 else
   pkg_failed=yes
 fi
- else
-    pkg_failed=untried
+    fi
+else
+	pkg_failed=untried
 fi
 
 
@@ -23236,9 +23252,9 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        GECKO_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "seamonkey-plugin seamonkey-xpcom" 2>&1`
+	        GECKO_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "seamonkey-plugin seamonkey-xpcom"`
         else
-	        GECKO_PKG_ERRORS=`$PKG_CONFIG --print-errors "seamonkey-plugin seamonkey-xpcom" 2>&1`
+	        GECKO_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "seamonkey-plugin seamonkey-xpcom"`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$GECKO_PKG_ERRORS" >&5
@@ -23268,10 +23284,11 @@ pkg_failed=no
 { echo "$as_me:$LINENO: checking for GECKO" >&5
 echo $ECHO_N "checking for GECKO... $ECHO_C" >&6; }
 
-if test -n "$GECKO_CFLAGS"; then
-    pkg_cv_GECKO_CFLAGS="$GECKO_CFLAGS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
+if test -n "$PKG_CONFIG"; then
+    if test -n "$GECKO_CFLAGS"; then
+        pkg_cv_GECKO_CFLAGS="$GECKO_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"xulrunner-plugin xulrunner-xpcom\"") >&5
   ($PKG_CONFIG --exists --print-errors "xulrunner-plugin xulrunner-xpcom") 2>&5
   ac_status=$?
@@ -23281,13 +23298,15 @@ if test -n "$GECKO_CFLAGS"; then
 else
   pkg_failed=yes
 fi
- else
-    pkg_failed=untried
+    fi
+else
+	pkg_failed=untried
 fi
-if test -n "$GECKO_LIBS"; then
-    pkg_cv_GECKO_LIBS="$GECKO_LIBS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
+if test -n "$PKG_CONFIG"; then
+    if test -n "$GECKO_LIBS"; then
+        pkg_cv_GECKO_LIBS="$GECKO_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"xulrunner-plugin xulrunner-xpcom\"") >&5
   ($PKG_CONFIG --exists --print-errors "xulrunner-plugin xulrunner-xpcom") 2>&5
   ac_status=$?
@@ -23297,8 +23316,9 @@ if test -n "$GECKO_LIBS"; then
 else
   pkg_failed=yes
 fi
- else
-    pkg_failed=untried
+    fi
+else
+	pkg_failed=untried
 fi
 
 
@@ -23311,9 +23331,9 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        GECKO_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "xulrunner-plugin xulrunner-xpcom" 2>&1`
+	        GECKO_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "xulrunner-plugin xulrunner-xpcom"`
         else
-	        GECKO_PKG_ERRORS=`$PKG_CONFIG --print-errors "xulrunner-plugin xulrunner-xpcom" 2>&1`
+	        GECKO_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "xulrunner-plugin xulrunner-xpcom"`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$GECKO_PKG_ERRORS" >&5
@@ -23343,10 +23363,11 @@ pkg_failed=no
 { echo "$as_me:$LINENO: checking for GECKO" >&5
 echo $ECHO_N "checking for GECKO... $ECHO_C" >&6; }
 
-if test -n "$GECKO_CFLAGS"; then
-    pkg_cv_GECKO_CFLAGS="$GECKO_CFLAGS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
+if test -n "$PKG_CONFIG"; then
+    if test -n "$GECKO_CFLAGS"; then
+        pkg_cv_GECKO_CFLAGS="$GECKO_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"mozilla-plugin libxul\"") >&5
   ($PKG_CONFIG --exists --print-errors "mozilla-plugin libxul") 2>&5
   ac_status=$?
@@ -23356,13 +23377,15 @@ if test -n "$GECKO_CFLAGS"; then
 else
   pkg_failed=yes
 fi
- else
-    pkg_failed=untried
+    fi
+else
+	pkg_failed=untried
 fi
-if test -n "$GECKO_LIBS"; then
-    pkg_cv_GECKO_LIBS="$GECKO_LIBS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
+if test -n "$PKG_CONFIG"; then
+    if test -n "$GECKO_LIBS"; then
+        pkg_cv_GECKO_LIBS="$GECKO_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"mozilla-plugin libxul\"") >&5
   ($PKG_CONFIG --exists --print-errors "mozilla-plugin libxul") 2>&5
   ac_status=$?
@@ -23372,8 +23395,9 @@ if test -n "$GECKO_LIBS"; then
 else
   pkg_failed=yes
 fi
- else
-    pkg_failed=untried
+    fi
+else
+	pkg_failed=untried
 fi
 
 
@@ -23386,9 +23410,9 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        GECKO_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "mozilla-plugin libxul" 2>&1`
+	        GECKO_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "mozilla-plugin libxul"`
         else
-	        GECKO_PKG_ERRORS=`$PKG_CONFIG --print-errors "mozilla-plugin libxul" 2>&1`
+	        GECKO_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "mozilla-plugin libxul"`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$GECKO_PKG_ERRORS" >&5
@@ -23418,10 +23442,11 @@ pkg_failed=no
 { echo "$as_me:$LINENO: checking for GECKO" >&5
 echo $ECHO_N "checking for GECKO... $ECHO_C" >&6; }
 
-if test -n "$GECKO_CFLAGS"; then
-    pkg_cv_GECKO_CFLAGS="$GECKO_CFLAGS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
+if test -n "$PKG_CONFIG"; then
+    if test -n "$GECKO_CFLAGS"; then
+        pkg_cv_GECKO_CFLAGS="$GECKO_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"iceape-plugin iceape-xpcom\"") >&5
   ($PKG_CONFIG --exists --print-errors "iceape-plugin iceape-xpcom") 2>&5
   ac_status=$?
@@ -23431,13 +23456,15 @@ if test -n "$GECKO_CFLAGS"; then
 else
   pkg_failed=yes
 fi
- else
-    pkg_failed=untried
+    fi
+else
+	pkg_failed=untried
 fi
-if test -n "$GECKO_LIBS"; then
-    pkg_cv_GECKO_LIBS="$GECKO_LIBS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
+if test -n "$PKG_CONFIG"; then
+    if test -n "$GECKO_LIBS"; then
+        pkg_cv_GECKO_LIBS="$GECKO_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"iceape-plugin iceape-xpcom\"") >&5
   ($PKG_CONFIG --exists --print-errors "iceape-plugin iceape-xpcom") 2>&5
   ac_status=$?
@@ -23447,8 +23474,9 @@ if test -n "$GECKO_LIBS"; then
 else
   pkg_failed=yes
 fi
- else
-    pkg_failed=untried
+    fi
+else
+	pkg_failed=untried
 fi
 
 
@@ -23461,9 +23489,9 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        GECKO_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "iceape-plugin iceape-xpcom" 2>&1`
+	        GECKO_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "iceape-plugin iceape-xpcom"`
         else
-	        GECKO_PKG_ERRORS=`$PKG_CONFIG --print-errors "iceape-plugin iceape-xpcom" 2>&1`
+	        GECKO_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "iceape-plugin iceape-xpcom"`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$GECKO_PKG_ERRORS" >&5
@@ -23551,10 +23579,11 @@ pkg_failed=no
 { echo "$as_me:$LINENO: checking for DBUS" >&5
 echo $ECHO_N "checking for DBUS... $ECHO_C" >&6; }
 
-if test -n "$DBUS_CFLAGS"; then
-    pkg_cv_DBUS_CFLAGS="$DBUS_CFLAGS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
+if test -n "$PKG_CONFIG"; then
+    if test -n "$DBUS_CFLAGS"; then
+        pkg_cv_DBUS_CFLAGS="$DBUS_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"dbus-1 >= 0.95 dbus-glib-1 >= 0.70\"") >&5
   ($PKG_CONFIG --exists --print-errors "dbus-1 >= 0.95 dbus-glib-1 >= 0.70") 2>&5
   ac_status=$?
@@ -23564,13 +23593,15 @@ if test -n "$DBUS_CFLAGS"; then
 else
   pkg_failed=yes
 fi
- else
-    pkg_failed=untried
+    fi
+else
+	pkg_failed=untried
 fi
-if test -n "$DBUS_LIBS"; then
-    pkg_cv_DBUS_LIBS="$DBUS_LIBS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
+if test -n "$PKG_CONFIG"; then
+    if test -n "$DBUS_LIBS"; then
+        pkg_cv_DBUS_LIBS="$DBUS_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"dbus-1 >= 0.95 dbus-glib-1 >= 0.70\"") >&5
   ($PKG_CONFIG --exists --print-errors "dbus-1 >= 0.95 dbus-glib-1 >= 0.70") 2>&5
   ac_status=$?
@@ -23580,8 +23611,9 @@ if test -n "$DBUS_LIBS"; then
 else
   pkg_failed=yes
 fi
- else
-    pkg_failed=untried
+    fi
+else
+	pkg_failed=untried
 fi
 
 
@@ -23594,9 +23626,9 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        DBUS_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "dbus-1 >= 0.95 dbus-glib-1 >= 0.70" 2>&1`
+	        DBUS_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "dbus-1 >= 0.95 dbus-glib-1 >= 0.70"`
         else
-	        DBUS_PKG_ERRORS=`$PKG_CONFIG --print-errors "dbus-1 >= 0.95 dbus-glib-1 >= 0.70" 2>&1`
+	        DBUS_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "dbus-1 >= 0.95 dbus-glib-1 >= 0.70"`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$DBUS_PKG_ERRORS" >&5
@@ -23661,10 +23693,11 @@ pkg_failed=no
 { echo "$as_me:$LINENO: checking for GCONF" >&5
 echo $ECHO_N "checking for GCONF... $ECHO_C" >&6; }
 
-if test -n "$GCONF_CFLAGS"; then
-    pkg_cv_GCONF_CFLAGS="$GCONF_CFLAGS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
+if test -n "$PKG_CONFIG"; then
+    if test -n "$GCONF_CFLAGS"; then
+        pkg_cv_GCONF_CFLAGS="$GCONF_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"gconf-2.0\"") >&5
   ($PKG_CONFIG --exists --print-errors "gconf-2.0") 2>&5
   ac_status=$?
@@ -23674,13 +23707,15 @@ if test -n "$GCONF_CFLAGS"; then
 else
   pkg_failed=yes
 fi
- else
-    pkg_failed=untried
+    fi
+else
+	pkg_failed=untried
 fi
-if test -n "$GCONF_LIBS"; then
-    pkg_cv_GCONF_LIBS="$GCONF_LIBS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
+if test -n "$PKG_CONFIG"; then
+    if test -n "$GCONF_LIBS"; then
+        pkg_cv_GCONF_LIBS="$GCONF_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"gconf-2.0\"") >&5
   ($PKG_CONFIG --exists --print-errors "gconf-2.0") 2>&5
   ac_status=$?
@@ -23690,8 +23725,9 @@ if test -n "$GCONF_LIBS"; then
 else
   pkg_failed=yes
 fi
- else
-    pkg_failed=untried
+    fi
+else
+	pkg_failed=untried
 fi
 
 
@@ -23704,9 +23740,9 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        GCONF_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "gconf-2.0" 2>&1`
+	        GCONF_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "gconf-2.0"`
         else
-	        GCONF_PKG_ERRORS=`$PKG_CONFIG --print-errors "gconf-2.0" 2>&1`
+	        GCONF_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "gconf-2.0"`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$GCONF_PKG_ERRORS" >&5
@@ -24544,15 +24580,15 @@ CXXDEPMODE!$CXXDEPMODE$ac_delim
 am__fastdepCXX_TRUE!$am__fastdepCXX_TRUE$ac_delim
 am__fastdepCXX_FALSE!$am__fastdepCXX_FALSE$ac_delim
 GETTEXT_PACKAGE!$GETTEXT_PACKAGE$ac_delim
+build!$build$ac_delim
+build_cpu!$build_cpu$ac_delim
+build_vendor!$build_vendor$ac_delim
+build_os!$build_os$ac_delim
+host!$host$ac_delim
+host_cpu!$host_cpu$ac_delim
+host_vendor!$host_vendor$ac_delim
+host_os!$host_os$ac_delim
 USE_NLS!$USE_NLS$ac_delim
-MSGFMT!$MSGFMT$ac_delim
-MSGFMT_OPTS!$MSGFMT_OPTS$ac_delim
-GMSGFMT!$GMSGFMT$ac_delim
-XGETTEXT!$XGETTEXT$ac_delim
-CATALOGS!$CATALOGS$ac_delim
-CATOBJEXT!$CATOBJEXT$ac_delim
-DATADIRNAME!$DATADIRNAME$ac_delim
-GMOFILES!$GMOFILES$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -24594,6 +24630,14 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+MSGFMT!$MSGFMT$ac_delim
+MSGFMT_OPTS!$MSGFMT_OPTS$ac_delim
+GMSGFMT!$GMSGFMT$ac_delim
+XGETTEXT!$XGETTEXT$ac_delim
+CATALOGS!$CATALOGS$ac_delim
+CATOBJEXT!$CATOBJEXT$ac_delim
+DATADIRNAME!$DATADIRNAME$ac_delim
+GMOFILES!$GMOFILES$ac_delim
 INSTOBJEXT!$INSTOBJEXT$ac_delim
 INTLLIBS!$INTLLIBS$ac_delim
 PO_IN_DATADIR_TRUE!$PO_IN_DATADIR_TRUE$ac_delim
@@ -24601,14 +24645,6 @@ PO_IN_DATADIR_FALSE!$PO_IN_DATADIR_FALSE$ac_delim
 POFILES!$POFILES$ac_delim
 POSUB!$POSUB$ac_delim
 MKINSTALLDIRS!$MKINSTALLDIRS$ac_delim
-build!$build$ac_delim
-build_cpu!$build_cpu$ac_delim
-build_vendor!$build_vendor$ac_delim
-build_os!$build_os$ac_delim
-host!$host$ac_delim
-host_cpu!$host_cpu$ac_delim
-host_vendor!$host_vendor$ac_delim
-host_os!$host_os$ac_delim
 SED!$SED$ac_delim
 LN_S!$LN_S$ac_delim
 ECHO!$ECHO$ac_delim
@@ -25036,22 +25072,21 @@ echo "$as_me: $ac_file is unchanged" >&6;}
   fi
   rm -f "$tmp/out12"
 # Compute $ac_file's index in $config_headers.
-_am_arg=$ac_file
 _am_stamp_count=1
 for _am_header in $config_headers :; do
   case $_am_header in
-    $_am_arg | $_am_arg:* )
+    $ac_file | $ac_file:* )
       break ;;
     * )
       _am_stamp_count=`expr $_am_stamp_count + 1` ;;
   esac
 done
-echo "timestamp for $_am_arg" >`$as_dirname -- "$_am_arg" ||
-$as_expr X"$_am_arg" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
-	 X"$_am_arg" : 'X\(//\)[^/]' \| \
-	 X"$_am_arg" : 'X\(//\)$' \| \
-	 X"$_am_arg" : 'X\(/\)' \| . 2>/dev/null ||
-echo X"$_am_arg" |
+echo "timestamp for $ac_file" >`$as_dirname -- $ac_file ||
+$as_expr X$ac_file : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X$ac_file : 'X\(//\)[^/]' \| \
+	 X$ac_file : 'X\(//\)$' \| \
+	 X$ac_file : 'X\(/\)' \| . 2>/dev/null ||
+echo X$ac_file |
     sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{
 	    s//\1/
 	    q
@@ -25088,7 +25123,7 @@ echo "$as_me: executing $ac_file commands" >&6;}
   # each Makefile.in and add a new line on top of each file to say so.
   # Grep'ing the whole file is not good either: AIX grep has a line
   # limit of 2048, but all sed's we know have understand at least 4000.
-  if sed -n 's,^#.*generated by automake.*,X,p' "$mf" | grep X >/dev/null 2>&1; then
+  if sed 10q "$mf" | grep '^#.*generated by automake' > /dev/null 2>&1; then
     dirpart=`$as_dirname -- "$mf" ||
 $as_expr X"$mf" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
 	 X"$mf" : 'X\(//\)[^/]' \| \
