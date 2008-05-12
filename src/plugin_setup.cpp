@@ -408,6 +408,7 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
 gint streaming(gchar * url)
 {
     gint ret = 0;
+    char *p;
 
     if (g_ascii_strncasecmp(url, "mms://", 6) == 0)
         ret = 1;
@@ -427,5 +428,12 @@ gint streaming(gchar * url)
     if (g_ascii_strncasecmp(url, "dvd://", 6) == 0)
         ret = 1;
 
+    if (g_file_test(url, G_FILE_TEST_EXISTS))
+        ret = 1;
+    
+    p = url + strlen("file://");
+    if (g_file_test(p, G_FILE_TEST_EXISTS))
+        ret = 1;
+                     
     return ret;
 }

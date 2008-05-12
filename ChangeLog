@@ -1,3 +1,5 @@
+Development
+    Detect local files and play them directly																												
 0.6.1
 	Update Makefile.am to install schema file correctly 
 	Update aclocal/automake settings

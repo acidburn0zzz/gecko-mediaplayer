@@ -464,6 +464,7 @@ int32 nsPluginInstance::WriteReady(NPStream * stream)
             g_strlcpy(item->src, stream->url, 1024);
             item->requested = TRUE;
             item->play = TRUE;
+            item->streaming = streaming(item->src);
             playlist = g_list_append(playlist, item);
             stream->notifyData = item;
         } else {
@@ -534,7 +535,7 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *
     if (item->cancelled || item->retrieved)
         NPN_DestroyStream(mInstance, stream, NPRES_USER_BREAK);
 
-    if (strstr((char *) buffer, "ICY 200 OK") != NULL) {
+    if (strstr((char *) buffer, "ICY 200 OK") != NULL || item->streaming == TRUE) {
         item->streaming = TRUE;
         open_location(this, item, FALSE);
         item->requested = TRUE;
