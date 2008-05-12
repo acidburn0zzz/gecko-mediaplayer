@@ -428,12 +428,15 @@ gint streaming(gchar * url)
     if (g_ascii_strncasecmp(url, "dvd://", 6) == 0)
         ret = 1;
 
-    if (g_file_test(url, G_FILE_TEST_EXISTS))
-        ret = 1;
-    
-    p = url + strlen("file://");
-    if (g_file_test(p, G_FILE_TEST_EXISTS))
-        ret = 1;
-                     
+    if (g_ascii_strncasecmp(url, "file://", 7) == 0) {
+        p = g_filename_from_uri(url,NULL,NULL);
+        if (p != NULL) {
+            if (g_file_test(p, G_FILE_TEST_EXISTS)) {
+                g_strlcpy(url, p, 1024);
+                ret = 1;
+            }
+            g_free(p);
+        }
+    }
     return ret;
 }
