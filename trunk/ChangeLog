@@ -1,4 +1,5 @@
 Development
+	Change "QuickTime Plug-in 6.0 /7" to "QuickTime 7.4.5"
 	Better local file handling
     Detect local files and play them directly																												
 0.6.1
