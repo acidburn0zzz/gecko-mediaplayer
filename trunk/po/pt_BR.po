@@ -1,18 +1,18 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Brazilian Portuguese translation of Gecko MediaPlayer.
+# Fábio Antunes, 2007, 2008.
+# This file is distributed under the same license as the Gecko MediaPlayer package.
+# Copyright (C) Kevin DeKorte 2006-2008 <kdekorte@gmail.com>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-05-07 11:09-0600\n"
-"PO-Revision-Date: 2007-11-19 10:46-0800\n"
+"PO-Revision-Date: 2008-05-31 12:46-0300\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/plugin.cpp:369
@@ -23,9 +23,10 @@ msgstr "Armazenando cache: %2.2f%%"
 #: src/plugin.cpp:529
 #, c-format
 msgid "Write unable to write because item is NULL"
-msgstr "Não foi possível escrever porquê o ítem é inválido (NULL)"
+msgstr "Não foi possível escrever porque o item é inválido (NULL)"
 
 #: src/plugin.cpp:581
 #, c-format
 msgid "Cache fill: %2.2f%% (%0.1f K/s)"
 msgstr "Armazenando cache: %2.2f%% (%0.1f K/s)"
+
