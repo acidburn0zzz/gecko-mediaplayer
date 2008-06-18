@@ -77,7 +77,7 @@ NPError PluginGetValue(NPPVariable variable, void *value)
     }
     if (variable == NPPVpluginDescriptionString) {
         *((const char **) value) =
-            "<a href=\"http://dekorte.homeip.net/download/gnome-mplayer/\">Gecko Media Player</a> "
+            "<a href=\"http://kdekorte.googlepages.com/gecko-mediaplayer\">Gecko Media Player</a> "
             VERSION
             "<br><br>Video Player Plug-in for QuickTime, RealPlayer and Windows Media Player streams using <a href=\"http://mplayerhq.hu\">MPlayer</a>";
 
