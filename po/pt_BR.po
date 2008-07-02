@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-07 11:09-0600\n"
+"POT-Creation-Date: 2008-07-02 07:10-0600\n"
 "PO-Revision-Date: 2008-05-31 12:46-0300\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,13 +20,12 @@ msgstr ""
 msgid "Cache fill: %2.2f%%"
 msgstr "Armazenando cache: %2.2f%%"
 
-#: src/plugin.cpp:529
+#: src/plugin.cpp:530
 #, c-format
 msgid "Write unable to write because item is NULL"
 msgstr "Não foi possível escrever porque o item é inválido (NULL)"
 
-#: src/plugin.cpp:581
+#: src/plugin.cpp:582
 #, c-format
 msgid "Cache fill: %2.2f%% (%0.1f K/s)"
 msgstr "Armazenando cache: %2.2f%% (%0.1f K/s)"
-
