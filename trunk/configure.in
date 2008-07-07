@@ -70,6 +70,14 @@ PKG_CHECK_MODULES(GECKO, [libxul],[
 fi
 
 if test "$GECKO_CFLAGS" = ""; then
+PKG_CHECK_MODULES(GECKO, [libxul],[
+    GECKO_HOME=`$PKG_CONFIG --variable=libdir libxul-unstable`
+    GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir libxul-unstable`
+    ],[AC_MSG_WARN([libxul-unstable not found, trying another])])
+fi
+
+
+if test "$GECKO_CFLAGS" = ""; then
 PKG_CHECK_MODULES(GECKO, [iceape-plugin iceape-xpcom],[
     GECKO_HOME=`$PKG_CONFIG --variable=libdir iceape-plugin`
     GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir iceape-xpcom`
