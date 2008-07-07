@@ -23419,11 +23419,11 @@ fi
 
 	{ echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6; }
-                { echo "$as_me:$LINENO: WARNING: libxul/mozilla-plugin not found, trying another" >&5
-echo "$as_me: WARNING: libxul/mozilla-plugin not found, trying another" >&2;}
+                { echo "$as_me:$LINENO: WARNING: libxul not found, trying another" >&5
+echo "$as_me: WARNING: libxul not found, trying another" >&2;}
 elif test $pkg_failed = untried; then
-	{ echo "$as_me:$LINENO: WARNING: libxul/mozilla-plugin not found, trying another" >&5
-echo "$as_me: WARNING: libxul/mozilla-plugin not found, trying another" >&2;}
+	{ echo "$as_me:$LINENO: WARNING: libxul not found, trying another" >&5
+echo "$as_me: WARNING: libxul not found, trying another" >&2;}
 else
 	GECKO_CFLAGS=$pkg_cv_GECKO_CFLAGS
 	GECKO_LIBS=$pkg_cv_GECKO_LIBS
