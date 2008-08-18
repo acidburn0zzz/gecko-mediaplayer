@@ -78,8 +78,8 @@ gchar *GetMIMEDescription()
     g_strlcat(MimeTypes, "video/vnd.vivo:viv,vivo:VivoActive;", sizeof(MimeTypes));
 
     // Matroska
-    g_strlcat(MimeTypes, "audio/x-matroska;", sizeof(MimeTypes));
-    g_strlcat(MimeTypes, "video/x-matroska;", sizeof(MimeTypes));
+    g_strlcat(MimeTypes, "audio/x-matroska:mka:Matroska Audio;", sizeof(MimeTypes));
+    g_strlcat(MimeTypes, "video/x-matroska:mkv:Matroska Video;", sizeof(MimeTypes));
 
     // NSV
     g_strlcat(MimeTypes,
