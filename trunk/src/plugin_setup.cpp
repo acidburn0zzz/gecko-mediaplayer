@@ -77,6 +77,16 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
                     instance->controls = g_strdup(parameters->argv[i]);
             }
 
+            if (g_ascii_strcasecmp(parameters->argn[i], "showcontrols") == 0) {
+                if (strstr(parameters->argv[i], "true")
+                    || strstr(parameters->argv[i], "yes")
+                    || strstr(parameters->argv[i], "1")) {
+                    instance->show_controls = 1;
+                } else {
+                    instance->show_controls = 0;
+                }            
+            }
+
             if (g_ascii_strcasecmp(parameters->argn[i], "width") == 0) {
                     sscanf(parameters->argv[i], "%i",&width);
             }
@@ -249,7 +259,8 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
                 }
             }
 
-            if (g_ascii_strcasecmp(parameters->argn[i], "onmediacomplete") == 0) {
+            if (g_ascii_strcasecmp(parameters->argn[i], "onmediacomplete") == 0 
+                || g_ascii_strcasecmp(parameters->argn[i], "onendofstream") == 0) {
                 if (g_ascii_strncasecmp(parameters->argv[i], "javascript:", 11) == 0) {
                     instance->event_mediacomplete = g_strdup_printf("%s", parameters->argv[i]);
                 } else {
