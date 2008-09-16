@@ -121,6 +121,7 @@ cache_size(2048),
 hidden(FALSE),
 autostart(1),
 lastupdate(0),
+show_controls(1),
 name(NULL),
 console(NULL),
 controls(NULL),
@@ -239,6 +240,7 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
         argvn[arg++] = g_strdup_printf("--width=%i", mWidth);
         argvn[arg++] = g_strdup_printf("--height=%i", mHeight);
         argvn[arg++] = g_strdup_printf("--autostart=%i", autostart);
+        argvn[arg++] = g_strdup_printf("--showcontrols=%i", show_controls);
         if (disable_context_menu == TRUE)
             argvn[arg++] = g_strdup_printf("--disablecontextmenu");
         if (disable_fullscreen == TRUE)

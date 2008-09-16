@@ -160,6 +160,7 @@ class nsPluginInstance:public nsPluginInstanceBase {
     gboolean disable_context_menu;
     gboolean disable_fullscreen;
     gboolean debug;
+    gint show_controls;
     gchar *name;
     gchar *console;
     gchar *controls;
