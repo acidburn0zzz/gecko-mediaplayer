@@ -26,12 +26,6 @@ dnl Add the languages which your application supports here.
 ALL_LINGUAS="es fr pl pt_BR tr"
 AM_GLIB_GNU_GETTEXT
 
-
-
-AM_PROG_LIBTOOL
-
-
-
 PKG_CHECK_MODULES(GLIB, [glib-2.0 ])
 AC_SUBST(GLIB_CFLAGS)
 AC_SUBST(GLIB_LIBS)
@@ -104,6 +98,7 @@ PKG_CHECK_MODULES(DBUS, [dbus-1 >= 0.95 dbus-glib-1 >= 0.70])
 AC_SUBST(DBUS_CFLAGS)
 AC_SUBST(DBUS_LIBS)
 
+AM_GCONF_SOURCE_2
 AC_ARG_WITH([gconf],
     [AS_HELP_STRING([--with-gconf],
         [Use Gconf to store preferences])],
