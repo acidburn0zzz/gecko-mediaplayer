@@ -135,7 +135,7 @@ event_mouseclicked(NULL), event_enterwindow(NULL), event_leavewindow(NULL), debu
 tv_driver(NULL),tv_device(NULL),tv_input(NULL),tv_width(0),tv_height(0)
 {
     GRand *rand;
-    GConfClient *gconf = NULL;
+    gpointer store = NULL;
     
     // generate a random controlid
     rand = g_rand_new();
@@ -148,10 +148,10 @@ tv_driver(NULL),tv_device(NULL),tv_input(NULL),tv_width(0),tv_height(0)
     }
 
     g_type_init();
-    gconf = gconf_client_get_default();
-    if (gconf != NULL) {
-        debug_level = gconf_client_get_int(gconf, DEBUG_LEVEL, NULL);
-        g_object_unref(G_OBJECT(gconf));
+    store = init_preference_store();
+    if (store != NULL) {
+        debug_level = read_preference_int(store, DEBUG_LEVEL);
+        release_preference_store(store);
     }
         
     mScriptablePeer = getScriptablePeer();

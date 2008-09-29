@@ -1,4 +1,6 @@
 Development
+	Make requirement on GCONF optional (--without-gconf on ./configure line)
+0.8.0
 	Add embed 'showcontrols' option and 'onendofstream' event
     	Add mimetypes for matroska audio and video files
 	Remove gthread from the list of requirements
