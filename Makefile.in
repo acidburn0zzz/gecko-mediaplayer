@@ -225,7 +225,7 @@ gecko_mediaplayerdoc_DATA = \
 
 @GCONF_SCHEMAS_INSTALL_TRUE@schemadir = @GCONF_SCHEMA_FILE_DIR@
 @GCONF_SCHEMAS_INSTALL_TRUE@schema_DATA = gecko-mediaplayer.schemas
-EXTRA_DIST = $(gecko_mediaplayerdoc_DATA) gecko-mediaplayer.spec.in
+EXTRA_DIST = $(gecko_mediaplayerdoc_DATA) $(schema_DATA) gecko-mediaplayer.spec.in
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
