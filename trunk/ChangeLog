@@ -1,4 +1,5 @@
 Development
+	Fix make dist so that rpmbuild works again
 	Fix automake rules to allow --disable-schemas-install configure flag
 	Make requirement on GCONF optional (--without-gconf on ./configure line)
 0.8.0
