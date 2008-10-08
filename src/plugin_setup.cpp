@@ -515,7 +515,15 @@ gint read_preference_int(gpointer store, gchar * key)
     value = gconf_client_get_int((GConfClient*)store, full_key, NULL);
     g_free(full_key);
 #else
-    value = g_key_file_get_integer((GKeyFile*)store, "gnome-mplayer", key, NULL);
+    gchar *short_key;
+
+    if (strstr(key, "/")) {
+        short_key = g_strrstr(key, "/") + sizeof(gchar);
+    } else {
+        short_key = g_strdup_printf("%s", key);
+    }
+
+    value = g_key_file_get_integer((GKeyFile*)store, "gnome-mplayer", short_key, NULL);
 #endif
     return value;
 }
