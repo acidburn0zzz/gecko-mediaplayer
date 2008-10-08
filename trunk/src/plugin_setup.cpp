@@ -507,7 +507,11 @@ gint read_preference_int(gpointer store, gchar * key)
 #ifdef HAVE_GCONF
     gchar *full_key = NULL;
 
-    full_key = g_strdup_printf("/apps/gnome-mplayer/preferences/%s", key);
+    if (strstr(key, "/")) {
+        full_key = g_strdup(key);
+    } else {
+        full_key = g_strdup_printf("/apps/gnome-mplayer/preferences/%s", key);
+    }
     value = gconf_client_get_int((GConfClient*)store, full_key, NULL);
     g_free(full_key);
 #else

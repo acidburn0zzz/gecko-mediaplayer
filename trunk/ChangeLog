@@ -1,4 +1,5 @@
 Development
+	Fix preference issue
 	Add feature to ASX parser to add url prefix if missing
 	Fix make dist so that rpmbuild works again
 	Fix automake rules to allow --disable-schemas-install configure flag
