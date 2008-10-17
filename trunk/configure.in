@@ -78,6 +78,12 @@ PKG_CHECK_MODULES(GECKO, [iceape-plugin iceape-xpcom],[
     ],[AC_MSG_WARN([iceape-plugin not found, trying another])])
 fi
 
+PKG_CHECK_MODULES(NSPR, [nspr],[
+    libdir=`$PKG_CONFIG --variable=libdir nspr`
+    ],[AC_MSG_WARN([nspr not found, may not be needed])])
+
+AC_SUBST(libdir)
+
 AC_SUBST(GECKO_CFLAGS)
 AC_SUBST(GECKO_LIBS)
 AC_SUBST(GECKO_HOME)
