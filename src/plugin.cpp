@@ -988,7 +988,7 @@ gchar *gmp_tempname(gchar *path,const gchar *name_template)
 		localpath = g_strdup(path);
 	}
 
-	while(replace = g_strrstr(basename,"X")) {
+	while((replace = g_strrstr(basename,"X"))) {
 		replace[0] = (gchar)g_random_int_range((gint)'a',(gint)'z');
 	}
 
