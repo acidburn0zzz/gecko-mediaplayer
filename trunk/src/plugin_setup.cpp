@@ -474,7 +474,7 @@ gpointer init_preference_store()
     
 }
 
-gboolean read_preference_bool(gpointer store, gchar * key)
+gboolean read_preference_bool(gpointer store, const gchar * key)
 {
     gboolean value = FALSE;
 #ifdef HAVE_GCONF
@@ -501,7 +501,7 @@ gboolean read_preference_bool(gpointer store, gchar * key)
     return value;
 }
 
-gint read_preference_int(gpointer store, gchar * key)
+gint read_preference_int(gpointer store, const gchar * key)
 {
     gint value = 0;
 #ifdef HAVE_GCONF
