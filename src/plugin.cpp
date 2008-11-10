@@ -449,6 +449,8 @@ void nsPluginInstance::URLNotify(const char *url, NPReason reason, void *notifyD
 int32 nsPluginInstance::WriteReady(NPStream * stream)
 {
     ListItem *item;
+    gchar *path;
+    gchar *tmp;
 
     if (!acceptdata) {
         NPN_DestroyStream(mInstance, stream, NPRES_DONE);
@@ -481,7 +483,14 @@ int32 nsPluginInstance::WriteReady(NPStream * stream)
         NPN_DestroyStream(mInstance, stream, NPRES_USER_BREAK);
 
     if (strlen(item->local) == 0) {
-        g_snprintf(item->local, 1024, "%s", tempnam("/tmp", "gecko-mediaplayerXXXXXX"));
+        path = g_strdup_printf("%s/.gnome-mplayer/cache/plugin", getenv("HOME"));
+        if (!g_file_test(path, G_FILE_TEST_IS_DIR)) {
+            g_mkdir_with_parents(path, 0775);
+        }
+        tmp = gmp_tempname(path, "gecko-mediaplayerXXXXXX");
+        g_snprintf(item->local, 1024, "%s", tmp);
+        g_free(tmp);
+        g_free(path);
         if (strstr(mimetype, "midi") != NULL) {
             g_strlcat(item->local, ".mid", 1024);
         }
@@ -960,4 +969,32 @@ nsControlsScriptablePeer *nsPluginInstance::getControlsScriptablePeer()
     // add reference for the caller requesting the object
     NS_ADDREF(mControlsScriptablePeer);
     return mControlsScriptablePeer;
+}
+
+gchar *gmp_tempname(gchar *path,const gchar *name_template)
+{
+	gchar *result;
+	gchar *replace;
+	gchar *basename;
+	gchar *localpath;
+
+	basename = g_strdup(name_template);
+
+	if (path == NULL && getenv("TMPDIR") == NULL) {
+		localpath = g_strdup("/tmp");
+	} else if(path == NULL && getenv("TMPDIR") != NULL) {
+		localpath = g_strdup(getenv("TMPDIR"));
+	} else {
+		localpath = g_strdup(path);
+	}
+
+	while(replace = g_strrstr(basename,"X")) {
+		replace[0] = (gchar)g_random_int_range((gint)'a',(gint)'z');
+	}
+
+	result = g_strdup_printf("%s/%s",localpath,basename);
+	g_free(basename);
+	g_free(localpath);
+
+	return result;
 }
