@@ -212,6 +212,7 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
     gint arg = 0;
     gint ok;
     ListItem *item;
+    gchar *app_name;
 
     if (!acceptdata)
         return NPERR_NO_ERROR;
@@ -234,7 +235,11 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
     }
     
     if (!player_launched && mWidth > 0 && mHeight > 0) {
-        argvn[arg++] = g_strdup_printf("gnome-mplayer");
+        app_name = g_find_program_in_path("gnome-mplayer");
+        if (app_name == NULL)
+            app_name = g_find_program_in_path("gnome-mplayer-minimal");
+
+        argvn[arg++] = g_strdup_printf("%s", app_name);
         argvn[arg++] = g_strdup_printf("--window=%i", (gint)mWindow);
         argvn[arg++] = g_strdup_printf("--controlid=%i", controlid);
         argvn[arg++] = g_strdup_printf("--width=%i", mWidth);
