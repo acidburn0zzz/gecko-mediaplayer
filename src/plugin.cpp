@@ -240,6 +240,7 @@ NPError nsPluginInstance::SetWindow(NPWindow * aWindow)
             app_name = g_find_program_in_path("gnome-mplayer-minimal");
 
         argvn[arg++] = g_strdup_printf("%s", app_name);
+        g_free(app_name);
         argvn[arg++] = g_strdup_printf("--window=%i", (gint)mWindow);
         argvn[arg++] = g_strdup_printf("--controlid=%i", controlid);
         argvn[arg++] = g_strdup_printf("--width=%i", mWidth);
