@@ -464,7 +464,7 @@ gpointer init_preference_store()
     GKeyFile *config;
 
     config = g_key_file_new();
-    filename = g_strdup_printf("%s/.mplayer/gnome-mplayer.conf", getenv("HOME"));
+    filename = g_strdup_printf("%s/gnome-mplayer/gnome-mplayer.conf", g_get_user_config_dir());
     g_key_file_load_from_file(config,
                               filename,
                               (GKeyFileFlags)(G_KEY_FILE_KEEP_COMMENTS | G_KEY_FILE_KEEP_TRANSLATIONS), NULL);
@@ -536,7 +536,7 @@ void release_preference_store(gpointer store)
     gchar *filename;
     gchar *data;
 
-    filename = g_strdup_printf("%s/.mplayer/gnome-mplayer.conf", getenv("HOME"));
+    filename = g_strdup_printf("%s/gnome-mplayer/gnome-mplayer.conf", g_get_user_config_dir());
     data = g_key_file_to_data((GKeyFile*)store, NULL, NULL);
 
     g_file_set_contents(filename, data, -1, NULL);
