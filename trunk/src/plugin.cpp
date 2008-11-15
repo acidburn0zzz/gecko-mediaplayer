@@ -489,7 +489,7 @@ int32 nsPluginInstance::WriteReady(NPStream * stream)
         NPN_DestroyStream(mInstance, stream, NPRES_USER_BREAK);
 
     if (strlen(item->local) == 0) {
-        path = g_strdup_printf("%s/.cache/gnome-mplayer/plugin", getenv("HOME"));
+        path = g_strdup_printf("%s/gnome-mplayer/plugin", g_get_user_cache_dir());
         if (!g_file_test(path, G_FILE_TEST_IS_DIR)) {
             g_mkdir_with_parents(path, 0775);
         }
