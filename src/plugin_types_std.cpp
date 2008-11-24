@@ -61,6 +61,7 @@ gchar *GetMIMEDescription()
               "audio/x-mpegurl:m3u:MPEG url;" "audio/mp3:mp3:MPEG audio;", sizeof(MimeTypes));
     g_strlcat(MimeTypes,
               "application/x-ogg:ogg:Ogg Vorbis Media;" "audio/ogg:ogg:Ogg Vorbis Audio;"
+              "application/ogg:ogg:Ogg Vorbis Media;" "audio/ogg:ogg:Ogg Vorbis Audio;"
               "audio/x-ogg:ogg:Ogg Vorbis Audio;" "application/ogg:ogg,oga:Ogg Vorbis / Ogg Theora;"
               "video/x-ogg:ogg:Ogg Vorbis Video;" "application/ogg:ogg,ogm:Ogg Vorbis / Ogg Theora;",
               sizeof(MimeTypes));
