@@ -1,4 +1,5 @@
 Development
+	More mimetype cleanup
 	Add audio/ogg and video/ogg mimetypes
 	Add mimetype application/ogg
 	Allow compile against xulrunner-sdk
