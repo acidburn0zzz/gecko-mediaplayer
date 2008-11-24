@@ -63,7 +63,9 @@ gchar *GetMIMEDescription()
               "application/x-ogg:ogg:Ogg Vorbis Media;" "audio/ogg:ogg:Ogg Vorbis Audio;"
               "application/ogg:ogg:Ogg Vorbis Media;" "audio/ogg:ogg:Ogg Vorbis Audio;"
               "audio/x-ogg:ogg:Ogg Vorbis Audio;" "application/ogg:ogg,oga:Ogg Vorbis / Ogg Theora;"
-              "video/x-ogg:ogg:Ogg Vorbis Video;" "application/ogg:ogg,ogm:Ogg Vorbis / Ogg Theora;",
+              "video/x-ogg:ogg:Ogg Vorbis Video;" "application/ogg:ogg,ogm:Ogg Vorbis / Ogg Theora;"
+              "audio/ogg:ogg:Ogg Vorbis Audio;" "application/ogg:ogg,oga:Ogg Vorbis / Ogg Theora;"
+              "video/ogg:ogg:Ogg Vorbis Video;" "application/ogg:ogg,ogm:Ogg Vorbis / Ogg Theora;",
               sizeof(MimeTypes));
     // FLAC
     g_strlcat(MimeTypes,
