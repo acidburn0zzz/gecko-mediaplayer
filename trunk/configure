@@ -1357,6 +1357,7 @@ Optional Features:
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
+  --with-xulrunner-sdk    Use xulrunner SDK for build
   --with-gconf-source=sourceaddress      Config database for installing schema files.
   --with-gconf-schema-file-dir=dir        Directory for installing schema files.
   --with-gconf            Use Gconf to store preferences
@@ -8247,6 +8248,20 @@ fi
 
 
 
+# Check whether --with-xulrunner-sdk was given.
+if test "${with_xulrunner_sdk+set}" = set; then
+  withval=$with_xulrunner_sdk;
+	XULRUNNER_SDK_PREFIX=$with_xulrunner_sdk
+	GECKO_CFLAGS="-I$XULRUNNER_SDK_PREFIX/include"
+	GECKO_LIBS="$XULRUNNER_SDK_PREFIX/lib -lxpcomglue_s -lxul -lxpcom -lplds4 -lplc4 -lnspr4 -lpthread -ldl"
+	GECKO_HOME="$XULRUNNER_SDK_PREFIX/bin"
+	GECKO_IDLDIR="$XULRUNNER_SDK_PREFIX/idl"
+
+fi
+
+
+if test "$GECKO_CFLAGS" = ""; then
+
 pkg_failed=no
 { echo "$as_me:$LINENO: checking for GECKO" >&5
 echo $ECHO_N "checking for GECKO... $ECHO_C" >&6; }
@@ -8321,6 +8336,7 @@ echo "${ECHO_T}yes" >&6; }
     GECKO_HOME=`$PKG_CONFIG --variable=libdir mozilla-plugin`
     GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir mozilla-xpcom`
 
+fi
 fi
 
 if test "$GECKO_CFLAGS" = ""; then

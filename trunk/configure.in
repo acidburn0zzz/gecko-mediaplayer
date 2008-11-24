@@ -30,10 +30,24 @@ PKG_CHECK_MODULES(GLIB, [glib-2.0 ])
 AC_SUBST(GLIB_CFLAGS)
 AC_SUBST(GLIB_LIBS)
 
+AC_ARG_WITH([xulrunner-sdk],
+    [AS_HELP_STRING([--with-xulrunner-sdk],
+        [Use xulrunner SDK for build])],
+        [
+	XULRUNNER_SDK_PREFIX=$with_xulrunner_sdk
+	GECKO_CFLAGS="-I$XULRUNNER_SDK_PREFIX/include"
+	GECKO_LIBS="$XULRUNNER_SDK_PREFIX/lib -lxpcomglue_s -lxul -lxpcom -lplds4 -lplc4 -lnspr4 -lpthread -ldl"
+	GECKO_HOME="$XULRUNNER_SDK_PREFIX/bin"
+	GECKO_IDLDIR="$XULRUNNER_SDK_PREFIX/idl"
+	],
+        [])
+
+if test "$GECKO_CFLAGS" = ""; then
 PKG_CHECK_MODULES(GECKO, [mozilla-plugin mozilla-xpcom],[
     GECKO_HOME=`$PKG_CONFIG --variable=libdir mozilla-plugin`
     GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir mozilla-xpcom`
     ],[AC_MSG_WARN([mozilla-plugin not found, trying another])])
+fi
 
 if test "$GECKO_CFLAGS" = ""; then
 PKG_CHECK_MODULES(GECKO, [firefox-plugin firefox-xpcom],[
