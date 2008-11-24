@@ -39,7 +39,7 @@
 
 gchar *GetMIMEDescription()
 {
-    gchar MimeTypes[4000];
+    gchar MimeTypes[8192];
 
     g_strlcpy(MimeTypes,
               "audio/x-mpegurl:m3u:MPEG Playlist"
@@ -54,18 +54,19 @@ gchar *GetMIMEDescription()
               "audio/mp4:mp4:MPEG 4 audio;"
               "audio/x-mp4:mp4:MPEG 4 audio;"
               "video/mp4:mp4:MPEG 4 Video;"
-              "video/x-m4v:m4v:MPEG 4 Video;" "video/3gpp:mp4,3gp:MPEG 4 Video;",
+              "video/x-m4v:m4v:MPEG 4 Video;" 
+              "video/3gpp:mp4,3gp:MPEG 4 Video;",
               sizeof(MimeTypes));
     g_strlcat(MimeTypes,
               "audio/mpeg3:mp3:MPEG audio;" "audio/x-mpeg3:mp3:MPEG audio;"
               "audio/x-mpegurl:m3u:MPEG url;" "audio/mp3:mp3:MPEG audio;", sizeof(MimeTypes));
     g_strlcat(MimeTypes,
-              "application/x-ogg:ogg:Ogg Vorbis Media;" "audio/ogg:ogg:Ogg Vorbis Audio;"
-              "application/ogg:ogg:Ogg Vorbis Media;" "audio/ogg:ogg:Ogg Vorbis Audio;"
-              "audio/x-ogg:ogg:Ogg Vorbis Audio;" "application/ogg:ogg,oga:Ogg Vorbis / Ogg Theora;"
-              "video/x-ogg:ogg:Ogg Vorbis Video;" "application/ogg:ogg,ogm:Ogg Vorbis / Ogg Theora;"
-              "audio/ogg:ogg:Ogg Vorbis Audio;" "application/ogg:ogg,oga:Ogg Vorbis / Ogg Theora;"
-              "video/ogg:ogg:Ogg Vorbis Video;" "application/ogg:ogg,ogm:Ogg Vorbis / Ogg Theora;",
+              "application/x-ogg:ogg,oga,ogm:Ogg Vorbis Media;" 
+              "application/ogg:ogg,oga,ogm:Ogg Vorbis Media;" 
+              "audio/x-ogg:ogg,oga:Ogg Vorbis Audio;" 
+              "audio/ogg:ogg,oga:Ogg Vorbis Audio;" 
+              "video/x-ogg:ogg,ogm:Ogg Vorbis Video;" 
+              "video/ogg:ogg,ogm:Ogg Vorbis Video;", 
               sizeof(MimeTypes));
     // FLAC
     g_strlcat(MimeTypes,
@@ -77,7 +78,8 @@ gchar *GetMIMEDescription()
               "video/x-fli:fli,flc:FLI animation;", sizeof(MimeTypes));
 
     // FLV
-    g_strlcat(MimeTypes, "video/x-flv:flv:Flash Video;", sizeof(MimeTypes));
+    g_strlcat(MimeTypes, "video/x-flv:flv:Flash Video;"
+                         "video/flv:flv:Flash Video;", sizeof(MimeTypes));
 
     // Vivo
     g_strlcat(MimeTypes, "video/vnd.vivo:viv,vivo:VivoActive;", sizeof(MimeTypes));
