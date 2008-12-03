@@ -1,4 +1,5 @@
 Development
+	Fix video/mpeg declaration
 	More mimetype cleanup
 	Add audio/ogg and video/ogg mimetypes
 	Add mimetype application/ogg
