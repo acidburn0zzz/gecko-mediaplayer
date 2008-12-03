@@ -42,7 +42,7 @@ gchar *GetMIMEDescription()
     gchar MimeTypes[8192];
 
     g_strlcpy(MimeTypes,
-              "audio/x-mpegurl:m3u:MPEG Playlist"
+              "audio/x-mpegurl:m3u:MPEG Playlist;"
               "video/mpeg:mpg,mpeg:MPEG;"
               "audio/mpeg:mpg,mpeg:MPEG;"
               "video/x-mpeg:mpg,mpeg:MPEG;"
