@@ -1,4 +1,5 @@
 Development
+	Replace call to getenv with g_getenv
 	Flip to streaming mode when we get a sequence starting with "Content-length"
 	Fix video/mpeg declaration
 	More mimetype cleanup
