@@ -1,4 +1,6 @@
 Development
+	Fix compilation dependancy
+	Now translations work
 	Enable translations hopefully
 	Replace call to getenv with g_getenv
 	Flip to streaming mode when we get a sequence starting with "Content-length"
