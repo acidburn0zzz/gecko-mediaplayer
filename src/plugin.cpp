@@ -581,6 +581,17 @@ int32 nsPluginInstance::Write(NPStream * stream, int32 offset, int32 len, void *
         return -1;
     }
 
+    if (strstr((char *) buffer, "<HTML>") != NULL || item->streaming == TRUE) {
+        item->streaming = TRUE;
+        open_location(this, item, FALSE);
+        item->requested = TRUE;
+        if (item->localfp) {
+            fclose(item->localfp);
+        }
+        NPN_DestroyStream(mInstance, stream, NPRES_DONE);
+        return -1;
+    }
+
     if ((!item->localfp) && (!item->retrieved)) {
         printf("opening %s for localcache\n", item->local);
         item->localfp = fopen(item->local, "w+");
