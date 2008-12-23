@@ -43,10 +43,6 @@
 #include "plugin_dbus.h"
 #include "nsIServiceManager.h"
 #include "nsISupportsUtils.h"   // some usefule macros are defined here
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
-
 
 #define MIME_TYPES_HANDLED  "application/scriptable-plugin"
 #define PLUGIN_NAME         "Scriptable Example Plugin for Mozilla"
