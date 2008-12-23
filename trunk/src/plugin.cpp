@@ -43,6 +43,10 @@
 #include "plugin_dbus.h"
 #include "nsIServiceManager.h"
 #include "nsISupportsUtils.h"   // some usefule macros are defined here
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
+
 
 #define MIME_TYPES_HANDLED  "application/scriptable-plugin"
 #define PLUGIN_NAME         "Scriptable Example Plugin for Mozilla"
@@ -146,6 +150,12 @@ tv_driver(NULL),tv_device(NULL),tv_input(NULL),tv_width(0),tv_height(0)
         path = g_strdup_printf("/control/%i", controlid);
         // printf("using path %s\n",path);
     }
+
+#ifdef ENABLE_NLS
+    bindtextdomain(GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
+    bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+    textdomain(GETTEXT_PACKAGE);
+#endif
 
     g_type_init();
     store = init_preference_store();
