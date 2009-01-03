@@ -8367,6 +8367,36 @@ if test "${with_xulrunner_sdk+set}" = set; then
 	GECKO_LIBS="-L$XULRUNNER_SDK_PREFIX/lib -lxpcomglue_s -lxul -lxpcom -lplds4 -lplc4 -lnspr4 -lpthread -ldl"
 	GECKO_HOME="$XULRUNNER_SDK_PREFIX/bin"
 	GECKO_IDLDIR="$XULRUNNER_SDK_PREFIX/idl"
+	as_ac_File=`$as_echo "ac_cv_file_$XULRUNNER_SDK_PREFIX/include/plugin/npfunctions.h" | $as_tr_sh`
+{ $as_echo "$as_me:$LINENO: checking for $XULRUNNER_SDK_PREFIX/include/plugin/npfunctions.h" >&5
+$as_echo_n "checking for $XULRUNNER_SDK_PREFIX/include/plugin/npfunctions.h... " >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  $as_echo_n "(cached) " >&6
+else
+  test "$cross_compiling" = yes &&
+  { { $as_echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+$as_echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "$XULRUNNER_SDK_PREFIX/include/plugin/npfunctions.h"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+	       { $as_echo "$as_me:$LINENO: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+as_val=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+   if test "x$as_val" = x""yes; then
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_NPFUNCTIONS 1
+_ACEOF
+
+fi
+
 
 fi
 
@@ -8742,6 +8772,37 @@ $as_echo "yes" >&6; }
 
     GECKO_HOME=`$PKG_CONFIG --variable=libdir libxul`
     GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir libxul`
+    GECKO_INCLUDEDIR=`$PKG_CONFIG --variable=includedir libxul`
+    as_ac_File=`$as_echo "ac_cv_file_$GECKO_INCLUDEDIR/plugin/npfunctions.h" | $as_tr_sh`
+{ $as_echo "$as_me:$LINENO: checking for $GECKO_INCLUDEDIR/plugin/npfunctions.h" >&5
+$as_echo_n "checking for $GECKO_INCLUDEDIR/plugin/npfunctions.h... " >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  $as_echo_n "(cached) " >&6
+else
+  test "$cross_compiling" = yes &&
+  { { $as_echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+$as_echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "$GECKO_INCLUDEDIR/plugin/npfunctions.h"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+	       { $as_echo "$as_me:$LINENO: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+as_val=`eval 'as_val=${'$as_ac_File'}
+		 $as_echo "$as_val"'`
+   if test "x$as_val" = x""yes; then
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_NPFUNCTIONS 1
+_ACEOF
+
+fi
+
 
 fi
 fi
