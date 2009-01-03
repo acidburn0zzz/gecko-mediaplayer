@@ -39,6 +39,7 @@ AC_ARG_WITH([xulrunner-sdk],
 	GECKO_LIBS="-L$XULRUNNER_SDK_PREFIX/lib -lxpcomglue_s -lxul -lxpcom -lplds4 -lplc4 -lnspr4 -lpthread -ldl"
 	GECKO_HOME="$XULRUNNER_SDK_PREFIX/bin"
 	GECKO_IDLDIR="$XULRUNNER_SDK_PREFIX/idl"
+	AC_CHECK_FILE([$XULRUNNER_SDK_PREFIX/include/plugin/npfunctions.h],[AC_DEFINE([HAVE_NPFUNCTIONS],[1],[Define to 1 if you have the <npfunctions.h> header file.])])
 	],
         [])
 
@@ -74,6 +75,8 @@ if test "$GECKO_CFLAGS" = ""; then
 PKG_CHECK_MODULES(GECKO, [libxul],[
     GECKO_HOME=`$PKG_CONFIG --variable=libdir libxul`
     GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir libxul`
+    GECKO_INCLUDEDIR=`$PKG_CONFIG --variable=includedir libxul`
+    AC_CHECK_FILE([$GECKO_INCLUDEDIR/plugin/npfunctions.h],[AC_DEFINE([HAVE_NPFUNCTIONS],[1],[Define to 1 if you have the <npfunctions.h> header file.])])
     ],[AC_MSG_WARN([libxul not found, trying another])])
 fi
 
