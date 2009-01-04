@@ -2249,7 +2249,7 @@ fi
 
 # Define the identity of the package.
  PACKAGE=gecko-mediaplayer
- VERSION=0.9.3
+ VERSION=0.9.4
 
 
 cat >>confdefs.h <<_ACEOF
@@ -8773,6 +8773,7 @@ $as_echo "yes" >&6; }
     GECKO_HOME=`$PKG_CONFIG --variable=libdir libxul`
     GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir libxul`
     GECKO_INCLUDEDIR=`$PKG_CONFIG --variable=includedir libxul`
+    GECKO_INCLUDETYPE=`$PKG_CONFIG --variable=includetype libxul`
     as_ac_File=`$as_echo "ac_cv_file_$GECKO_INCLUDEDIR/plugin/npfunctions.h" | $as_tr_sh`
 { $as_echo "$as_me:$LINENO: checking for $GECKO_INCLUDEDIR/plugin/npfunctions.h" >&5
 $as_echo_n "checking for $GECKO_INCLUDEDIR/plugin/npfunctions.h... " >&6; }
@@ -9049,7 +9050,7 @@ else
   ;;
   *)
   as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-as_dummy="$GECKO_HOME:$PATH"
+as_dummy="$GECKO_HOME:$GECKO_HOME/bin:$PATH"
 for as_dir in $as_dummy
 do
   IFS=$as_save_IFS
@@ -9079,8 +9080,8 @@ fi
 
 
 if test "x$GECKO_XPIDL" = "xno"; then
-	{ { $as_echo "$as_me:$LINENO: error: xpidl compiler not found in $GECKO_HOME:$PATH" >&5
-$as_echo "$as_me: error: xpidl compiler not found in $GECKO_HOME:$PATH" >&2;}
+	{ { $as_echo "$as_me:$LINENO: error: xpidl compiler not found in $GECKO_HOME:$GECKO_HOME/bin:$PATH" >&5
+$as_echo "$as_me: error: xpidl compiler not found in $GECKO_HOME:$GECKO_HOME/bin:$PATH" >&2;}
    { (exit 1); exit 1; }; }
 fi
 
@@ -10843,5 +10844,5 @@ $as_echo "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
 fi
 
 
-echo "$GECKO_XPIDL -w -m header -I $GECKO_IDLDIR -I $srcdir -e src/nsIScriptableGeckoMediaPlayer.h src/nsIScriptableGeckoMediaPlayer.idl"
-`$GECKO_XPIDL -w -m header -I $GECKO_IDLDIR -I $srcdir -e src/nsIScriptableGeckoMediaPlayer.h src/nsIScriptableGeckoMediaPlayer.idl`
+echo "$GECKO_XPIDL -w -m header -I $GECKO_IDLDIR -I $GECKO_IDLDIR/$GECKO_INCLUDETYPE -I $srcdir -e src/nsIScriptableGeckoMediaPlayer.h src/nsIScriptableGeckoMediaPlayer.idl"
+`$GECKO_XPIDL -w -m header -I $GECKO_IDLDIR -I $GECKO_IDLDIR/$GECKO_INCLUDETYPE -I $srcdir -e src/nsIScriptableGeckoMediaPlayer.h src/nsIScriptableGeckoMediaPlayer.idl`

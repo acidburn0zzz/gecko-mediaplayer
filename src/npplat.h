@@ -38,12 +38,8 @@
 #ifndef _NPPLAT_H_
 #define _NPPLAT_H_
 
-#include "npapi.h"
-#ifdef HAVE_NPFUNCTIONS
-#include "npfunctions.h"
-#else
+#include <npapi.h>
 #include "npupp.h"
-#endif
 /**************************************************/
 /*                                                */
 /*                   Windows                      */

@@ -4,6 +4,7 @@
 
 EXTRA_DIST = nsIScriptableGeckoMediaPlayer.idl
 
+DEFINES = -DMOZILLA_STRICT_API -DXP_UNIX
 INCLUDES = \
 	-fPIC \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
@@ -13,13 +14,13 @@ INCLUDES = \
 	$(GLIB_CFLAGS) \
 	$(DBUS_CFLAGS) \
 	$(GCONF_CFLAGS) \
-	$(GCONF_DEFINES)
+	$(GCONF_DEFINES) \
+	$(DEFINES)
 
 AM_CFLAGS =\
 	 -Wall \
 	 -g 
 
-DEFINES = -DMOZILLA_STRICT_API -DXP_UNIX
 
 xpt_DATA = \
 	gecko-mediaplayer-dvx.xpt \
@@ -52,6 +53,7 @@ COMMONCODE = \
 	plugin_setup.cpp \
 	plugin_dbus.h \
 	plugin_dbus.cpp \
+	npupp.h \
 	np_entry.cpp \
 	npn_gate.cpp \
 	npp_gate.cpp \
