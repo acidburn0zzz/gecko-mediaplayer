@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 dnl Created by Anjuta application wizard.
 
 AC_INIT(configure.in)
-AM_INIT_AUTOMAKE(gecko-mediaplayer, 0.9.3)
+AM_INIT_AUTOMAKE(gecko-mediaplayer, 0.9.4)
 AM_CONFIG_HEADER(config.h)
 AM_MAINTAINER_MODE
 
@@ -76,6 +76,7 @@ PKG_CHECK_MODULES(GECKO, [libxul],[
     GECKO_HOME=`$PKG_CONFIG --variable=libdir libxul`
     GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir libxul`
     GECKO_INCLUDEDIR=`$PKG_CONFIG --variable=includedir libxul`
+    GECKO_INCLUDETYPE=`$PKG_CONFIG --variable=includetype libxul`
     AC_CHECK_FILE([$GECKO_INCLUDEDIR/plugin/npfunctions.h],[AC_DEFINE([HAVE_NPFUNCTIONS],[1],[Define to 1 if you have the <npfunctions.h> header file.])])
     ],[AC_MSG_WARN([libxul not found, trying another])])
 fi
@@ -105,9 +106,9 @@ AC_SUBST(GECKO_CFLAGS)
 AC_SUBST(GECKO_LIBS)
 AC_SUBST(GECKO_HOME)
 
-AC_PATH_PROG([GECKO_XPIDL], [xpidl], [no], [$GECKO_HOME:$PATH])
+AC_PATH_PROG([GECKO_XPIDL], [xpidl], [no], [$GECKO_HOME:$GECKO_HOME/bin:$PATH])
 if test "x$GECKO_XPIDL" = "xno"; then
-	AC_MSG_ERROR([xpidl compiler not found in $GECKO_HOME:$PATH])
+	AC_MSG_ERROR([xpidl compiler not found in $GECKO_HOME:$GECKO_HOME/bin:$PATH])
 fi
 
 if test "x$GECKO_IDLDIR" = "x"; then
@@ -149,5 +150,5 @@ src/Makefile
 po/Makefile.in
 ])
 
-echo "$GECKO_XPIDL -w -m header -I $GECKO_IDLDIR -I $srcdir -e src/nsIScriptableGeckoMediaPlayer.h src/nsIScriptableGeckoMediaPlayer.idl"
-`$GECKO_XPIDL -w -m header -I $GECKO_IDLDIR -I $srcdir -e src/nsIScriptableGeckoMediaPlayer.h src/nsIScriptableGeckoMediaPlayer.idl`
+echo "$GECKO_XPIDL -w -m header -I $GECKO_IDLDIR -I $GECKO_IDLDIR/$GECKO_INCLUDETYPE -I $srcdir -e src/nsIScriptableGeckoMediaPlayer.h src/nsIScriptableGeckoMediaPlayer.idl"
+`$GECKO_XPIDL -w -m header -I $GECKO_IDLDIR -I $GECKO_IDLDIR/$GECKO_INCLUDETYPE -I $srcdir -e src/nsIScriptableGeckoMediaPlayer.h src/nsIScriptableGeckoMediaPlayer.idl`
