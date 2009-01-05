@@ -648,6 +648,7 @@ DBUS_LIBS
 DBUS_CFLAGS
 GECKO_IDLDIR
 GECKO_XPIDL
+GECKO_INCLUDETYPE
 GECKO_HOME
 NSPR_LIBS
 NSPR_CFLAGS
@@ -9030,6 +9031,7 @@ $as_echo "yes" >&6; }
     libdir=`$PKG_CONFIG --variable=libdir nspr`
 
 fi
+
 
 
 

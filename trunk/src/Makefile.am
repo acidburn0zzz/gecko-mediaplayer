@@ -32,15 +32,15 @@ xpt_DATA = \
 xptdir = $(libdir)/mozilla/plugins
 
 gecko-mediaplayer-dvx.xpt: nsIScriptableGeckoMediaPlayer.idl
-	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(srcdir) -e $@ $<
+	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
 gecko-mediaplayer-qt.xpt: nsIScriptableGeckoMediaPlayer.idl
-	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(srcdir) -e $@ $<
+	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
 gecko-mediaplayer-rm.xpt: nsIScriptableGeckoMediaPlayer.idl
-	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(srcdir) -e $@ $<
+	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
 gecko-mediaplayer.xpt: nsIScriptableGeckoMediaPlayer.idl
-	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(srcdir) -e $@ $<
+	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
 gecko-mediaplayer-wmp.xpt: nsIScriptableGeckoMediaPlayer.idl
-	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(srcdir) -e $@ $<
+	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
 
 COMMONCODE = \
 	../config.h \

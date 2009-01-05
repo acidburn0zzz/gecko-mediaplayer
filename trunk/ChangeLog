@@ -1,4 +1,6 @@
 Development
+	Fix a problem with the dbus path when the side provides and invalid path
+	Fix some compliation issues with xulrunner-sdk 1.9.1
 	Workaround file rename in xulrunner sdk
 0.9.3
 	Make http://everadio.gamingradio.net work
