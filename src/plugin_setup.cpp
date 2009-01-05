@@ -42,7 +42,7 @@
 void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
 {
 
-    gint i;
+    gint i,j;
     gint newwindow = 0;
     gint loop = 0;
     gboolean autohref = FALSE;
@@ -71,6 +71,11 @@ void new_instance(nsPluginInstance * instance, nsPluginCreateData * parameters)
 
             if (g_ascii_strcasecmp(parameters->argn[i], "console") == 0) {
                     instance->console = g_strdup(parameters->argv[i]);
+                    for (j = 0; j < strlen(instance->console); j++) {
+                        if (!g_ascii_isalnum(instance->console[j])) {
+                            instance->console[j] = 'a';
+                        }
+                    }
             }
 
             if (g_ascii_strcasecmp(parameters->argn[i], "controls") == 0) {

@@ -42,7 +42,6 @@
 //
 #include "npplat.h"
 #include "pluginbase.h"
-extern char *NPP_GetMIMEDescription(void);
 
 NPNetscapeFuncs NPNFuncs;
 
