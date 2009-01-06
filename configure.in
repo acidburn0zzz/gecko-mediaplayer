@@ -37,61 +37,42 @@ AC_ARG_WITH([xulrunner-sdk],
 	XULRUNNER_SDK_PREFIX=$with_xulrunner_sdk
 	GECKO_CFLAGS="-I$XULRUNNER_SDK_PREFIX/include -I$XULRUNNER_SDK_PREFIX/include/plugin -I$XULRUNNER_SDK_PREFIX/include/nspr -I$XULRUNNER_SDK_PREFIX/include/xpcom -I$XULRUNNER_SDK_PREFIX/include/string -I$XULRUNNER_SDK_PREFIX/include/java"
 	GECKO_LIBS="-L$XULRUNNER_SDK_PREFIX/lib -lxpcomglue_s -lxul -lxpcom -lplds4 -lplc4 -lnspr4 -lpthread -ldl"
-	GECKO_HOME="$XULRUNNER_SDK_PREFIX/bin"
-	GECKO_IDLDIR="$XULRUNNER_SDK_PREFIX/idl"
-	AC_CHECK_FILE([$XULRUNNER_SDK_PREFIX/include/plugin/npfunctions.h],[AC_DEFINE([HAVE_NPFUNCTIONS],[1],[Define to 1 if you have the <npfunctions.h> header file.])])
 	],
         [])
 
 if test "$GECKO_CFLAGS" = ""; then
 PKG_CHECK_MODULES(GECKO, [mozilla-plugin mozilla-xpcom],[
-    GECKO_HOME=`$PKG_CONFIG --variable=libdir mozilla-plugin`
-    GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir mozilla-xpcom`
     ],[AC_MSG_WARN([mozilla-plugin not found, trying another])])
 fi
 
 if test "$GECKO_CFLAGS" = ""; then
 PKG_CHECK_MODULES(GECKO, [firefox-plugin firefox-xpcom],[
-    GECKO_HOME=`$PKG_CONFIG --variable=libdir firefox-plugin`
-    GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir firefox-xpcom`
     ],[AC_MSG_WARN([firefox-plugin not found, trying another])])
 fi
 
 if test "$GECKO_CFLAGS" = ""; then
 PKG_CHECK_MODULES(GECKO, [seamonkey-plugin seamonkey-xpcom],[
-    GECKO_HOME=`$PKG_CONFIG --variable=libdir seamonkey-plugin`
-    GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir seamonkey-xpcom`
     ],[AC_MSG_WARN([seamokey-plugin not found, trying another])])
 fi
 
 if test "$GECKO_CFLAGS" = ""; then
 PKG_CHECK_MODULES(GECKO, [xulrunner-plugin xulrunner-xpcom],[
-    GECKO_HOME=`$PKG_CONFIG --variable=libdir xulrunner-plugin`
-    GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir xulrunner-xpcom`
     ],[AC_MSG_WARN([xulrunner-plugin not found, trying another])])
 fi
 
 if test "$GECKO_CFLAGS" = ""; then
 PKG_CHECK_MODULES(GECKO, [libxul],[
-    GECKO_HOME=`$PKG_CONFIG --variable=libdir libxul`
-    GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir libxul`
-    GECKO_INCLUDEDIR=`$PKG_CONFIG --variable=includedir libxul`
-    GECKO_INCLUDETYPE=`$PKG_CONFIG --variable=includetype libxul`
     ],[AC_MSG_WARN([libxul not found, trying another])])
 fi
 
 if test "$GECKO_CFLAGS" = ""; then
 PKG_CHECK_MODULES(GECKO, [libxul-unstable],[
-    GECKO_HOME=`$PKG_CONFIG --variable=libdir libxul-unstable`
-    GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir libxul-unstable`
     ],[AC_MSG_WARN([libxul-unstable not found, trying another])])
 fi
 
 
 if test "$GECKO_CFLAGS" = ""; then
 PKG_CHECK_MODULES(GECKO, [iceape-plugin iceape-xpcom],[
-    GECKO_HOME=`$PKG_CONFIG --variable=libdir iceape-plugin`
-    GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir iceape-xpcom`
     ],[AC_MSG_WARN([iceape-plugin not found, trying another])])
 fi
 
@@ -103,19 +84,6 @@ AC_SUBST(libdir)
 
 AC_SUBST(GECKO_CFLAGS)
 AC_SUBST(GECKO_LIBS)
-AC_SUBST(GECKO_HOME)
-
-AC_PATH_PROG([GECKO_XPIDL], [xpidl], [no], [$GECKO_HOME:$GECKO_HOME/bin:$PATH])
-if test "x$GECKO_XPIDL" = "xno"; then
-	AC_MSG_ERROR([xpidl compiler not found in $GECKO_HOME:$GECKO_HOME/bin:$PATH])
-fi
-
-if test "x$GECKO_IDLDIR" = "x"; then
-    GECKO_IDLDIR="`echo $GECKO_HOME | sed -e s!lib!share/idl!`"
-fi
-
-AC_SUBST(GECKO_XPIDL)
-AC_SUBST(GECKO_IDLDIR)
 
 PKG_CHECK_MODULES(DBUS, [dbus-1 >= 0.95 dbus-glib-1 >= 0.70])
 AC_SUBST(DBUS_CFLAGS)
@@ -149,5 +117,3 @@ src/Makefile
 po/Makefile.in
 ])
 
-#echo "$GECKO_XPIDL -w -m header -I $GECKO_IDLDIR -I $GECKO_IDLDIR/$GECKO_INCLUDETYPE -I $srcdir -e src/nsIScriptableGeckoMediaPlayer.h src/nsIScriptableGeckoMediaPlayer.idl"
-#`$GECKO_XPIDL -w -m header -I $GECKO_IDLDIR -I $GECKO_IDLDIR/$GECKO_INCLUDETYPE -I $srcdir -e src/nsIScriptableGeckoMediaPlayer.h src/nsIScriptableGeckoMediaPlayer.idl`

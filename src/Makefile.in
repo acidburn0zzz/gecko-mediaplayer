@@ -14,8 +14,6 @@
 
 @SET_MAKE@
 
-#EXTRA_DIST = nsIScriptableGeckoMediaPlayer.idl
-
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
@@ -144,10 +142,7 @@ GCONF_LIBS = @GCONF_LIBS@
 GCONF_SCHEMA_CONFIG_SOURCE = @GCONF_SCHEMA_CONFIG_SOURCE@
 GCONF_SCHEMA_FILE_DIR = @GCONF_SCHEMA_FILE_DIR@
 GECKO_CFLAGS = @GECKO_CFLAGS@
-GECKO_HOME = @GECKO_HOME@
-GECKO_IDLDIR = @GECKO_IDLDIR@
 GECKO_LIBS = @GECKO_LIBS@
-GECKO_XPIDL = @GECKO_XPIDL@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GLIB_CFLAGS = @GLIB_CFLAGS@
 GLIB_LIBS = @GLIB_LIBS@
@@ -252,26 +247,6 @@ AM_CFLAGS = \
 	 -Wall \
 	 -g 
 
-
-# xpt_DATA = \
-#	gecko-mediaplayer-dvx.xpt \
-#	gecko-mediaplayer-qt.xpt \
-#	gecko-mediaplayer-rm.xpt \
-#	gecko-mediaplayer.xpt \
-#	gecko-mediaplayer-wmp.xpt
-
-#xptdir = $(libdir)/mozilla/plugins
-
-#gecko-mediaplayer-dvx.xpt: nsIScriptableGeckoMediaPlayer.idl
-#	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
-#gecko-mediaplayer-qt.xpt: nsIScriptableGeckoMediaPlayer.idl
-#	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
-#gecko-mediaplayer-rm.xpt: nsIScriptableGeckoMediaPlayer.idl
-#	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
-#gecko-mediaplayer.xpt: nsIScriptableGeckoMediaPlayer.idl
-#	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
-#gecko-mediaplayer-wmp.xpt: nsIScriptableGeckoMediaPlayer.idl
-#	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
 COMMONCODE = \
 	../config.h \
 	plugin.cpp \

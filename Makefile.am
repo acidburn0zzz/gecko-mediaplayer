@@ -27,7 +27,6 @@ dist-hook:
 			cp -p $$specfile $(distdir); \
 		fi \
 	done
-	rm -rf $(distdir)/src/nsIScriptableGeckoMediaPlayer.h
 
 install-schemas: $(schema_DATA)
 	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) gconftool-2 --makefile-install-rule $(schema_DATA) 2>&1 > /dev/null
