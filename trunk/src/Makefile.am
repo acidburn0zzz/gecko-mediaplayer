@@ -55,7 +55,8 @@ COMMONCODE = \
 	plugin_dbus.cpp \
 	np_entry.cpp \
 	npn_gate.cpp \
-	npp_gate.cpp
+	npp_gate.cpp \
+	npupp.h
 
 install_libexecdir = $(libdir)/mozilla/plugins
 install_libexec_PROGRAMS = \
