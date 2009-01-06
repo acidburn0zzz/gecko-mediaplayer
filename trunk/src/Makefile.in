@@ -14,7 +14,6 @@
 
 @SET_MAKE@
 
-
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
@@ -45,14 +44,12 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
-am__installdirs = "$(DESTDIR)$(install_libexecdir)" \
-	"$(DESTDIR)$(xptdir)"
+am__installdirs = "$(DESTDIR)$(install_libexecdir)"
 install_libexecPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(install_libexec_PROGRAMS)
 am__objects_1 = plugin.$(OBJEXT) plugin_list.$(OBJEXT) \
 	plugin_setup.$(OBJEXT) plugin_dbus.$(OBJEXT) \
-	np_entry.$(OBJEXT) npn_gate.$(OBJEXT) npp_gate.$(OBJEXT) \
-	nsScriptablePeer.$(OBJEXT)
+	np_entry.$(OBJEXT) npn_gate.$(OBJEXT) npp_gate.$(OBJEXT)
 am_gecko_mediaplayer_dvx_so_OBJECTS = plugin_types_dvx.$(OBJEXT) \
 	$(am__objects_1)
 gecko_mediaplayer_dvx_so_OBJECTS =  \
@@ -109,14 +106,6 @@ DIST_SOURCES = $(gecko_mediaplayer_dvx_so_SOURCES) \
 	$(gecko_mediaplayer_rm_so_SOURCES) \
 	$(gecko_mediaplayer_wmp_so_SOURCES) \
 	$(gecko_mediaplayer_so_SOURCES)
-am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
-am__vpath_adj = case $$p in \
-    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
-    *) f=$$p;; \
-  esac;
-am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
-xptDATA_INSTALL = $(INSTALL_DATA)
-DATA = $(xpt_DATA)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -155,7 +144,6 @@ GCONF_SCHEMA_FILE_DIR = @GCONF_SCHEMA_FILE_DIR@
 GECKO_CFLAGS = @GECKO_CFLAGS@
 GECKO_HOME = @GECKO_HOME@
 GECKO_IDLDIR = @GECKO_IDLDIR@
-GECKO_INCLUDETYPE = @GECKO_INCLUDETYPE@
 GECKO_LIBS = @GECKO_LIBS@
 GECKO_XPIDL = @GECKO_XPIDL@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
@@ -263,14 +251,26 @@ AM_CFLAGS = \
 	 -Wall \
 	 -g 
 
-xpt_DATA = \
-	gecko-mediaplayer-dvx.xpt \
-	gecko-mediaplayer-qt.xpt \
-	gecko-mediaplayer-rm.xpt \
-	gecko-mediaplayer.xpt \
-	gecko-mediaplayer-wmp.xpt
 
-xptdir = $(libdir)/mozilla/plugins
+# xpt_DATA = \
+#	gecko-mediaplayer-dvx.xpt \
+#	gecko-mediaplayer-qt.xpt \
+#	gecko-mediaplayer-rm.xpt \
+#	gecko-mediaplayer.xpt \
+#	gecko-mediaplayer-wmp.xpt
+
+#xptdir = $(libdir)/mozilla/plugins
+
+#gecko-mediaplayer-dvx.xpt: nsIScriptableGeckoMediaPlayer.idl
+#	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
+#gecko-mediaplayer-qt.xpt: nsIScriptableGeckoMediaPlayer.idl
+#	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
+#gecko-mediaplayer-rm.xpt: nsIScriptableGeckoMediaPlayer.idl
+#	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
+#gecko-mediaplayer.xpt: nsIScriptableGeckoMediaPlayer.idl
+#	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
+#gecko-mediaplayer-wmp.xpt: nsIScriptableGeckoMediaPlayer.idl
+#	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
 COMMONCODE = \
 	../config.h \
 	plugin.cpp \
@@ -282,15 +282,9 @@ COMMONCODE = \
 	plugin_setup.cpp \
 	plugin_dbus.h \
 	plugin_dbus.cpp \
-	npupp.h \
 	np_entry.cpp \
 	npn_gate.cpp \
-	npp_gate.cpp \
-	pluginbase.h \
-	nsScriptablePeer.cpp \
-	nsScriptablePeer.h \
-	nsIScriptableGeckoMediaPlayer.h \
-	npplat.h
+	npp_gate.cpp
 
 install_libexecdir = $(libdir)/mozilla/plugins
 gecko_mediaplayer_so_SOURCES = \
@@ -404,7 +398,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/np_entry.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npn_gate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/npp_gate.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nsScriptablePeer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plugin.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plugin_dbus.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plugin_list.Po@am__quote@
@@ -428,23 +421,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
-install-xptDATA: $(xpt_DATA)
-	@$(NORMAL_INSTALL)
-	test -z "$(xptdir)" || $(MKDIR_P) "$(DESTDIR)$(xptdir)"
-	@list='$(xpt_DATA)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f=$(am__strip_dir) \
-	  echo " $(xptDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(xptdir)/$$f'"; \
-	  $(xptDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(xptdir)/$$f"; \
-	done
-
-uninstall-xptDATA:
-	@$(NORMAL_UNINSTALL)
-	@list='$(xpt_DATA)'; for p in $$list; do \
-	  f=$(am__strip_dir) \
-	  echo " rm -f '$(DESTDIR)$(xptdir)/$$f'"; \
-	  rm -f "$(DESTDIR)$(xptdir)/$$f"; \
-	done
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
@@ -521,9 +497,9 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(PROGRAMS) $(DATA)
+all-am: Makefile $(PROGRAMS)
 installdirs:
-	for dir in "$(DESTDIR)$(install_libexecdir)" "$(DESTDIR)$(xptdir)"; do \
+	for dir in "$(DESTDIR)$(install_libexecdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -570,7 +546,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-xptDATA
+install-data-am:
 
 install-dvi: install-dvi-am
 
@@ -605,7 +581,7 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-install_libexecPROGRAMS uninstall-xptDATA
+uninstall-am: uninstall-install_libexecPROGRAMS
 
 .MAKE: install-am install-strip
 
@@ -617,24 +593,17 @@ uninstall-am: uninstall-install_libexecPROGRAMS uninstall-xptDATA
 	install-exec install-exec-am install-html install-html-am \
 	install-info install-info-am install-install_libexecPROGRAMS \
 	install-man install-pdf install-pdf-am install-ps \
-	install-ps-am install-strip install-xptDATA installcheck \
-	installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic pdf pdf-am ps ps-am tags uninstall \
-	uninstall-am uninstall-install_libexecPROGRAMS \
-	uninstall-xptDATA
+	install-ps-am install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-compile mostlyclean-generic pdf pdf-am \
+	ps ps-am tags uninstall uninstall-am \
+	uninstall-install_libexecPROGRAMS
 
 
-gecko-mediaplayer-dvx.xpt: nsIScriptableGeckoMediaPlayer.idl
-	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
-gecko-mediaplayer-qt.xpt: nsIScriptableGeckoMediaPlayer.idl
-	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
-gecko-mediaplayer-rm.xpt: nsIScriptableGeckoMediaPlayer.idl
-	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
-gecko-mediaplayer.xpt: nsIScriptableGeckoMediaPlayer.idl
-	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
-gecko-mediaplayer-wmp.xpt: nsIScriptableGeckoMediaPlayer.idl
-	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
+indent:
+	indent -kr -l100 -i4 -nut *.cpp
+	indent -kr -l100 -i4 -nut *.h
+	rm *~
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

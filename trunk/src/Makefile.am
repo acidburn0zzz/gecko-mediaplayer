@@ -22,25 +22,25 @@ AM_CFLAGS =\
 	 -g 
 
 
-xpt_DATA = \
-	gecko-mediaplayer-dvx.xpt \
-	gecko-mediaplayer-qt.xpt \
-	gecko-mediaplayer-rm.xpt \
-	gecko-mediaplayer.xpt \
-	gecko-mediaplayer-wmp.xpt
+# xpt_DATA = \
+#	gecko-mediaplayer-dvx.xpt \
+#	gecko-mediaplayer-qt.xpt \
+#	gecko-mediaplayer-rm.xpt \
+#	gecko-mediaplayer.xpt \
+#	gecko-mediaplayer-wmp.xpt
 	
-xptdir = $(libdir)/mozilla/plugins
+#xptdir = $(libdir)/mozilla/plugins
 
-gecko-mediaplayer-dvx.xpt: nsIScriptableGeckoMediaPlayer.idl
-	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
-gecko-mediaplayer-qt.xpt: nsIScriptableGeckoMediaPlayer.idl
-	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
-gecko-mediaplayer-rm.xpt: nsIScriptableGeckoMediaPlayer.idl
-	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
-gecko-mediaplayer.xpt: nsIScriptableGeckoMediaPlayer.idl
-	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
-gecko-mediaplayer-wmp.xpt: nsIScriptableGeckoMediaPlayer.idl
-	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
+#gecko-mediaplayer-dvx.xpt: nsIScriptableGeckoMediaPlayer.idl
+#	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
+#gecko-mediaplayer-qt.xpt: nsIScriptableGeckoMediaPlayer.idl
+#	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
+#gecko-mediaplayer-rm.xpt: nsIScriptableGeckoMediaPlayer.idl
+#	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
+#gecko-mediaplayer.xpt: nsIScriptableGeckoMediaPlayer.idl
+#	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
+#gecko-mediaplayer-wmp.xpt: nsIScriptableGeckoMediaPlayer.idl
+#	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
 
 COMMONCODE = \
 	../config.h \
@@ -53,15 +53,9 @@ COMMONCODE = \
 	plugin_setup.cpp \
 	plugin_dbus.h \
 	plugin_dbus.cpp \
-	npupp.h \
 	np_entry.cpp \
 	npn_gate.cpp \
-	npp_gate.cpp \
-	pluginbase.h \
-	nsScriptablePeer.cpp \
-	nsScriptablePeer.h \
-	nsIScriptableGeckoMediaPlayer.h \
-	npplat.h
+	npp_gate.cpp
 
 install_libexecdir = $(libdir)/mozilla/plugins
 install_libexec_PROGRAMS = \
@@ -106,3 +100,7 @@ gecko_mediaplayer_rm_so_SOURCES = \
 gecko_mediaplayer_rm_so_CFLAGS = -fPIC 
 gecko_mediaplayer_rm_so_LDFLAGS = -shared $(GLIB_LIBS) $(DBUS_LIBS) $(GCONF_LIBS) -fPIC
 
+indent:
+	indent -kr -l100 -i4 -nut *.cpp
+	indent -kr -l100 -i4 -nut *.h
+	rm *~
