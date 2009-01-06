@@ -39,6 +39,7 @@
 #define __PLUGIN_H__
 #include <npapi.h>
 #include <npruntime.h>
+#include "npupp.h"
 #include <X11/Xlib.h>
 #include <dbus/dbus.h>
 #include <dbus/dbus-glib-lowlevel.h>
