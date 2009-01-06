@@ -646,9 +646,6 @@ GCONF_SCHEMA_FILE_DIR
 GCONF_SCHEMA_CONFIG_SOURCE
 DBUS_LIBS
 DBUS_CFLAGS
-GECKO_IDLDIR
-GECKO_XPIDL
-GECKO_HOME
 NSPR_LIBS
 NSPR_CFLAGS
 GECKO_LIBS
@@ -8365,38 +8362,6 @@ if test "${with_xulrunner_sdk+set}" = set; then
 	XULRUNNER_SDK_PREFIX=$with_xulrunner_sdk
 	GECKO_CFLAGS="-I$XULRUNNER_SDK_PREFIX/include -I$XULRUNNER_SDK_PREFIX/include/plugin -I$XULRUNNER_SDK_PREFIX/include/nspr -I$XULRUNNER_SDK_PREFIX/include/xpcom -I$XULRUNNER_SDK_PREFIX/include/string -I$XULRUNNER_SDK_PREFIX/include/java"
 	GECKO_LIBS="-L$XULRUNNER_SDK_PREFIX/lib -lxpcomglue_s -lxul -lxpcom -lplds4 -lplc4 -lnspr4 -lpthread -ldl"
-	GECKO_HOME="$XULRUNNER_SDK_PREFIX/bin"
-	GECKO_IDLDIR="$XULRUNNER_SDK_PREFIX/idl"
-	as_ac_File=`$as_echo "ac_cv_file_$XULRUNNER_SDK_PREFIX/include/plugin/npfunctions.h" | $as_tr_sh`
-{ $as_echo "$as_me:$LINENO: checking for $XULRUNNER_SDK_PREFIX/include/plugin/npfunctions.h" >&5
-$as_echo_n "checking for $XULRUNNER_SDK_PREFIX/include/plugin/npfunctions.h... " >&6; }
-if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
-  $as_echo_n "(cached) " >&6
-else
-  test "$cross_compiling" = yes &&
-  { { $as_echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
-$as_echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
-   { (exit 1); exit 1; }; }
-if test -r "$XULRUNNER_SDK_PREFIX/include/plugin/npfunctions.h"; then
-  eval "$as_ac_File=yes"
-else
-  eval "$as_ac_File=no"
-fi
-fi
-ac_res=`eval 'as_val=${'$as_ac_File'}
-		 $as_echo "$as_val"'`
-	       { $as_echo "$as_me:$LINENO: result: $ac_res" >&5
-$as_echo "$ac_res" >&6; }
-as_val=`eval 'as_val=${'$as_ac_File'}
-		 $as_echo "$as_val"'`
-   if test "x$as_val" = x""yes; then
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_NPFUNCTIONS 1
-_ACEOF
-
-fi
-
 
 fi
 
@@ -8470,8 +8435,6 @@ else
         { $as_echo "$as_me:$LINENO: result: yes" >&5
 $as_echo "yes" >&6; }
 
-    GECKO_HOME=`$PKG_CONFIG --variable=libdir mozilla-plugin`
-    GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir mozilla-xpcom`
 
 fi
 fi
@@ -8545,8 +8508,6 @@ else
         { $as_echo "$as_me:$LINENO: result: yes" >&5
 $as_echo "yes" >&6; }
 
-    GECKO_HOME=`$PKG_CONFIG --variable=libdir firefox-plugin`
-    GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir firefox-xpcom`
 
 fi
 fi
@@ -8620,8 +8581,6 @@ else
         { $as_echo "$as_me:$LINENO: result: yes" >&5
 $as_echo "yes" >&6; }
 
-    GECKO_HOME=`$PKG_CONFIG --variable=libdir seamonkey-plugin`
-    GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir seamonkey-xpcom`
 
 fi
 fi
@@ -8695,8 +8654,6 @@ else
         { $as_echo "$as_me:$LINENO: result: yes" >&5
 $as_echo "yes" >&6; }
 
-    GECKO_HOME=`$PKG_CONFIG --variable=libdir xulrunner-plugin`
-    GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir xulrunner-xpcom`
 
 fi
 fi
@@ -8770,10 +8727,6 @@ else
         { $as_echo "$as_me:$LINENO: result: yes" >&5
 $as_echo "yes" >&6; }
 
-    GECKO_HOME=`$PKG_CONFIG --variable=libdir libxul`
-    GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir libxul`
-    GECKO_INCLUDEDIR=`$PKG_CONFIG --variable=includedir libxul`
-    GECKO_INCLUDETYPE=`$PKG_CONFIG --variable=includetype libxul`
 
 fi
 fi
@@ -8847,8 +8800,6 @@ else
         { $as_echo "$as_me:$LINENO: result: yes" >&5
 $as_echo "yes" >&6; }
 
-    GECKO_HOME=`$PKG_CONFIG --variable=libdir libxul-unstable`
-    GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir libxul-unstable`
 
 fi
 fi
@@ -8923,8 +8874,6 @@ else
         { $as_echo "$as_me:$LINENO: result: yes" >&5
 $as_echo "yes" >&6; }
 
-    GECKO_HOME=`$PKG_CONFIG --variable=libdir iceape-plugin`
-    GECKO_IDLDIR=`$PKG_CONFIG --variable=idldir iceape-xpcom`
 
 fi
 fi
@@ -9002,62 +8951,6 @@ $as_echo "yes" >&6; }
 fi
 
 
-
-
-
-
-
-# Extract the first word of "xpidl", so it can be a program name with args.
-set dummy xpidl; ac_word=$2
-{ $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_GECKO_XPIDL+set}" = set; then
-  $as_echo_n "(cached) " >&6
-else
-  case $GECKO_XPIDL in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_GECKO_XPIDL="$GECKO_XPIDL" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-as_dummy="$GECKO_HOME:$GECKO_HOME/bin:$PATH"
-for as_dir in $as_dummy
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_GECKO_XPIDL="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_GECKO_XPIDL" && ac_cv_path_GECKO_XPIDL="no"
-  ;;
-esac
-fi
-GECKO_XPIDL=$ac_cv_path_GECKO_XPIDL
-if test -n "$GECKO_XPIDL"; then
-  { $as_echo "$as_me:$LINENO: result: $GECKO_XPIDL" >&5
-$as_echo "$GECKO_XPIDL" >&6; }
-else
-  { $as_echo "$as_me:$LINENO: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-if test "x$GECKO_XPIDL" = "xno"; then
-	{ { $as_echo "$as_me:$LINENO: error: xpidl compiler not found in $GECKO_HOME:$GECKO_HOME/bin:$PATH" >&5
-$as_echo "$as_me: error: xpidl compiler not found in $GECKO_HOME:$GECKO_HOME/bin:$PATH" >&2;}
-   { (exit 1); exit 1; }; }
-fi
-
-if test "x$GECKO_IDLDIR" = "x"; then
-    GECKO_IDLDIR="`echo $GECKO_HOME | sed -e s!lib!share/idl!`"
-fi
 
 
 
@@ -10814,5 +10707,3 @@ $as_echo "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
 fi
 
 
-#echo "$GECKO_XPIDL -w -m header -I $GECKO_IDLDIR -I $GECKO_IDLDIR/$GECKO_INCLUDETYPE -I $srcdir -e src/nsIScriptableGeckoMediaPlayer.h src/nsIScriptableGeckoMediaPlayer.idl"
-#`$GECKO_XPIDL -w -m header -I $GECKO_IDLDIR -I $GECKO_IDLDIR/$GECKO_INCLUDETYPE -I $srcdir -e src/nsIScriptableGeckoMediaPlayer.h src/nsIScriptableGeckoMediaPlayer.idl`

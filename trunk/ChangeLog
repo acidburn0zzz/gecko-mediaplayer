@@ -1,4 +1,7 @@
 Development
+	Cleanup configure.in and Makefile.am files
+	Remove unnecessary files from build tree
+	Switch from XPCom to NPRuntime support
 	Fix a problem with the dbus path when the side provides and invalid path
 	Fix some compliation issues with xulrunner-sdk 1.9.1
 	Workaround file rename in xulrunner sdk

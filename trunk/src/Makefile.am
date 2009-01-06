@@ -2,8 +2,6 @@
 
 ## Created by Anjuta
 
-#EXTRA_DIST = nsIScriptableGeckoMediaPlayer.idl
-
 DEFINES = -DMOZILLA_STRICT_API -DXP_UNIX
 INCLUDES = \
 	-fPIC \
@@ -21,26 +19,6 @@ AM_CFLAGS =\
 	 -Wall \
 	 -g 
 
-
-# xpt_DATA = \
-#	gecko-mediaplayer-dvx.xpt \
-#	gecko-mediaplayer-qt.xpt \
-#	gecko-mediaplayer-rm.xpt \
-#	gecko-mediaplayer.xpt \
-#	gecko-mediaplayer-wmp.xpt
-	
-#xptdir = $(libdir)/mozilla/plugins
-
-#gecko-mediaplayer-dvx.xpt: nsIScriptableGeckoMediaPlayer.idl
-#	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
-#gecko-mediaplayer-qt.xpt: nsIScriptableGeckoMediaPlayer.idl
-#	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
-#gecko-mediaplayer-rm.xpt: nsIScriptableGeckoMediaPlayer.idl
-#	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
-#gecko-mediaplayer.xpt: nsIScriptableGeckoMediaPlayer.idl
-#	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
-#gecko-mediaplayer-wmp.xpt: nsIScriptableGeckoMediaPlayer.idl
-#	$(GECKO_XPIDL) -w -m typelib -I $(GECKO_IDLDIR) -I $(GECKO_IDLDIR)/$(GECKO_INCLUDETYPE) -I $(srcdir) -e $@ $<
 
 COMMONCODE = \
 	../config.h \
