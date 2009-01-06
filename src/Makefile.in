@@ -14,6 +14,8 @@
 
 @SET_MAKE@
 
+#EXTRA_DIST = nsIScriptableGeckoMediaPlayer.idl
+
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
@@ -233,7 +235,6 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-EXTRA_DIST = nsIScriptableGeckoMediaPlayer.idl
 DEFINES = -DMOZILLA_STRICT_API -DXP_UNIX
 INCLUDES = \
 	-fPIC \

@@ -2,7 +2,7 @@
 
 ## Created by Anjuta
 
-EXTRA_DIST = nsIScriptableGeckoMediaPlayer.idl
+#EXTRA_DIST = nsIScriptableGeckoMediaPlayer.idl
 
 DEFINES = -DMOZILLA_STRICT_API -DXP_UNIX
 INCLUDES = \
