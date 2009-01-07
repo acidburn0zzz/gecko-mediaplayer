@@ -757,25 +757,18 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
 
             percent = (gdouble) item->localsize / (gdouble) item->mediasize;
             if (difftime(time(NULL), lastupdate) > 0.5) {
-                if (item->opened) {
-
-                    send_signal_with_double(this, item, "SetCachePercent", percent);
-
-                } else {
-
-                    // send_signal_with_double(this, item, "SetPercent", percent);
-                    send_signal_with_double(this, item, "SetCachePercent", percent);
-                    rate =
-                        (gdouble) ((item->localsize -
-                                    item->lastsize) / 1024.0) / (gdouble) difftime(time(NULL),
-                                                                                   lastupdate);
-                    text =
-                        g_strdup_printf(_("Cache fill: %2.2f%% (%0.1f K/s)"), percent * 100.0,
-                                        rate);
-                    send_signal_with_string(this, item, "SetProgressText", text);
+                send_signal_with_double(this, item, "SetCachePercent", percent);
+                rate =
+                    (gdouble) ((item->localsize -
+                                item->lastsize) / 1024.0) / (gdouble) difftime(time(NULL),
+                                                                               lastupdate);
+                text =
+                    g_strdup_printf(_("Cache fill: %2.2f%% (%0.1f K/s)"), percent * 100.0,
+                                    rate);
+                send_signal_with_string(this, item, "SetProgressText", text);
+                if (!item->opened)
                     send_signal_with_string(this, item, "SetURL", item->src);
 
-                }
                 time(&lastupdate);
                 item->lastsize = item->localsize;
             }
@@ -787,7 +780,7 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
                 && (cache_size >= 512))
                 ok_to_play = TRUE;
             if (ok_to_play == FALSE) {
-                if (item->bitrate == 0 && item->bitrate_requests < 5) {
+                if (item->bitrate == 0 && item->bitrate_requests < 5 && ((gint)(percent * 100) > item->bitrate_requests)) {
                     item->bitrate = request_bitrate(this, item, item->local);
                     item->bitrate_requests++;
                 }

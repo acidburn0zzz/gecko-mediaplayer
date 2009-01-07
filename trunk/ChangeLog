@@ -1,4 +1,6 @@
 Development
+	Keep updating progress text until file is completely downloaded
+	Try to get bitrate from media at 1-5% markers
 	Remove gconftool --shutdown from makefile
 	Cleanup configure.in and Makefile.am files
 	Remove unnecessary files from build tree
