@@ -1,4 +1,5 @@
 Development
+	Remove gconftool --shutdown from makefile
 	Cleanup configure.in and Makefile.am files
 	Remove unnecessary files from build tree
 	Switch from XPCom to NPRuntime support
