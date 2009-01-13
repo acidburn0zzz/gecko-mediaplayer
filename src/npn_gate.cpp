@@ -223,6 +223,9 @@ void NPN_ForceRedraw(NPP instance)
 
 NPIdentifier NPN_GetStringIdentifier(const NPUTF8 * name)
 {
+    if (!NPNFuncs.getstringidentifier)
+        return 0;
+
     return NPNFuncs.getstringidentifier(name);
 }
 
