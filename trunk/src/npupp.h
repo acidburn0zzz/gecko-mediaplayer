@@ -587,9 +587,9 @@ typedef struct _NPNetscapeFuncs {
     NPN_SetExceptionUPP setexception;
     NPN_PushPopupsEnabledStateUPP pushpopupsenabledstate;
     NPN_PopPopupsEnabledStateUPP poppopupsenabledstate;
-    NPN_EnumerateUPP enumerate;
-    NPN_PluginThreadAsyncCallUPP pluginthreadasynccall;
-    NPN_ConstructUPP construct;
+    // NPN_EnumerateUPP enumerate;
+    // NPN_PluginThreadAsyncCallUPP pluginthreadasynccall;
+    // NPN_ConstructUPP construct;
 } NPNetscapeFuncs;
 
 
