@@ -1,4 +1,5 @@
 Development
+	Add Italian translation by Francesco Groccia
 	Make gecko-mediaplayer work in Konqueror 4
 	Keep updating progress text until file is completely downloaded
 	Try to get bitrate from media at 1-5% markers
