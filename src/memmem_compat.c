@@ -17,9 +17,13 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
    USA.  */
 
+#include "../config.h"
+
+#ifndef HAVE_MEMMEM
+
+
 #include <stddef.h>
 #include <stdlib.h>
-
 
 
 /* This function implements the Boyer-Moore algorithm.
@@ -131,3 +135,5 @@ void *memmem(const void *haystack, const size_t haystack_len,
 	free(shift_good_suffix);
     return 0;
 }
+
+#endif
