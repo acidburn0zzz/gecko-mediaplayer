@@ -28,8 +28,8 @@
 /* Define to 1 if you have the <locale.h> header file. */
 #define HAVE_LOCALE_H 1
 
-/* Define to 1 if you have the `memmen' function. */
-/* #undef HAVE_MEMMEN */
+/* Define to 1 if you have the `memmem' function. */
+#define HAVE_MEMMEM 1
 
 /* Define to 1 if you have the <memory.h> header file. */
 #define HAVE_MEMORY_H 1
