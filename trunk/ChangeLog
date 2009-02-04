@@ -1,4 +1,4 @@
-Development
+0.9.4
 	Add support for OpenBSD which does not have memmem
 	Add Italian translation by Francesco Groccia
 	Make gecko-mediaplayer work in Konqueror 4

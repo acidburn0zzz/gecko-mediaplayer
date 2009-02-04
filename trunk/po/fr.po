@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gecko-mediaplayer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-06 12:42-0700\n"
+"POT-Creation-Date: 2009-02-04 07:20-0700\n"
 "PO-Revision-Date: 2008-02-06 18:05+0200\n"
 "Last-Translator: Starcrasher <starcrasher1@free.fr>\n"
 "Language-Team: French <fr@li.org>\n"
@@ -26,7 +26,7 @@ msgstr "Mise en mémoire tampon : %2.2f%%"
 msgid "Write unable to write because item is NULL"
 msgstr "Écrire : Écriture impossible; l'objet est de type NULL."
 
-#: src/plugin.cpp:773
+#: src/plugin.cpp:766
 #, c-format
 msgid "Cache fill: %2.2f%% (%0.1f K/s)"
 msgstr "Mise en mémoire tampon : %2.2f%% (%0.1f K/s)"
