@@ -2246,7 +2246,7 @@ fi
 
 # Define the identity of the package.
  PACKAGE=gecko-mediaplayer
- VERSION=0.9.4
+ VERSION=0.9.5
 
 
 cat >>confdefs.h <<_ACEOF
@@ -5804,7 +5804,7 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 
-ALL_LINGUAS="es fr it pl pt_BR tr"
+ALL_LINGUAS="es fr ja it pl pt_BR tr"
 # On IRIX 5.3, sys/types and inttypes.h are conflicting.
 
 
