@@ -1,4 +1,5 @@
 Development
+	Fix problem with memmem on OpenBSD, memmem_compat is now used by all
 	Added Japanese Translation by Munehiro Yamamoto
 	Fixed issue with pt_BR.po file
 0.9.4
