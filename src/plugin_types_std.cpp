@@ -40,6 +40,15 @@
 gchar *GetMIMEDescription()
 {
     gchar MimeTypes[8192];
+    gpointer store = NULL;
+    gboolean midi_disabled = FALSE;
+
+    g_type_init();
+    store = init_preference_store();
+    if (store != NULL) {
+        midi_disabled = read_preference_bool(store, DISABLE_MIDI);
+        release_preference_store(store);
+    }
 
     g_strlcpy(MimeTypes,
               "audio/x-mpegurl:m3u:MPEG Playlist;"
@@ -101,7 +110,8 @@ gchar *GetMIMEDescription()
               "audio/basic:au,snd:Basic Audio File;"
               "audio/x-basic:au,snd:Basic Audio File;", sizeof(MimeTypes));
     // MIDI
-    g_strlcat(MimeTypes, "audio/midi:mid,midi,kar:MIDI Audio;", sizeof(MimeTypes));
+    if (!midi_disabled)
+        g_strlcat(MimeTypes, "audio/midi:mid,midi,kar:MIDI Audio;", sizeof(MimeTypes));
 
     // Playlist
     g_strlcat(MimeTypes, "audio/x-scpls:pls:Shoutcast Playlist;", sizeof(MimeTypes));

@@ -88,7 +88,7 @@ void release_preference_store(gpointer store);
 #define DISABLE_WMP		"/apps/gecko-mediaplayer/preferences/disable_wmp"
 #define DISABLE_DVX		"/apps/gecko-mediaplayer/preferences/disable_dvx"
 #define DEBUG_LEVEL		"/apps/gecko-mediaplayer/preferences/debug_level"
-
+#define DISABLE_MIDI    "/apps/gecko-mediaplayer/preferecnes/disable_midi"
 
 class CPlugin {
   private:
