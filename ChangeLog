@@ -1,3 +1,6 @@
+Development
+	Reuse gm_tempname from libgmlib saving duplicate code
+	Merge in libgmlib, it is pulled from the gnome-mplayer svn
 0.9.5
 	Fix problem with memmem on OpenBSD, memmem_compat is now used by all
 	Added Japanese Translation by Munehiro Yamamoto

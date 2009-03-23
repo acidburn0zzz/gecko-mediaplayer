@@ -640,7 +640,7 @@ int32 CPlugin::WriteReady(NPStream * stream)
         if (!g_file_test(path, G_FILE_TEST_IS_DIR)) {
             g_mkdir_with_parents(path, 0775);
         }
-        tmp = gmp_tempname(path, "gecko-mediaplayerXXXXXX");
+        tmp = gm_tempname(path, "gecko-mediaplayerXXXXXX");
         g_snprintf(item->local, 1024, "%s", tmp);
         g_free(tmp);
         g_free(path);
@@ -1725,30 +1725,4 @@ NPObject *CPlugin::GetScriptableObjectControls()
     return m_pScriptableObjectControls;
 }
 
-gchar *gmp_tempname(gchar * path, const gchar * name_template)
-{
-    gchar *result;
-    gchar *replace;
-    gchar *basename;
-    gchar *localpath;
 
-    basename = g_strdup(name_template);
-
-    if (path == NULL && g_getenv("TMPDIR") == NULL) {
-        localpath = g_strdup("/tmp");
-    } else if (path == NULL && g_getenv("TMPDIR") != NULL) {
-        localpath = g_strdup(g_getenv("TMPDIR"));
-    } else {
-        localpath = g_strdup(path);
-    }
-
-    while ((replace = g_strrstr(basename, "X"))) {
-        replace[0] = (gchar) g_random_int_range((gint) 'a', (gint) 'z');
-    }
-
-    result = g_strdup_printf("%s/%s", localpath, basename);
-    g_free(basename);
-    g_free(localpath);
-
-    return result;
-}
