@@ -40,14 +40,14 @@
 gchar *GetMIMEDescription()
 {
     gchar MimeTypes[8192];
-    gpointer store = NULL;
+    GmPrefStore *store;
     gboolean midi_disabled = FALSE;
 
     g_type_init();
-    store = init_preference_store();
+    store = gm_pref_store_new("gecko-mediaplayer");
     if (store != NULL) {
-        midi_disabled = read_preference_bool(store, DISABLE_MIDI);
-        release_preference_store(store);
+        midi_disabled = gm_pref_store_get_boolean(store, DISABLE_MIDI);
+        gm_pref_store_free(store);
     }
 
     g_strlcpy(MimeTypes,

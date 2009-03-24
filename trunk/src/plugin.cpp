@@ -197,7 +197,7 @@ event_mouseclicked(NULL), event_enterwindow(NULL), event_leavewindow(NULL), debu
 tv_driver(NULL), tv_device(NULL), tv_input(NULL), tv_width(0), tv_height(0)
 {
     GRand *rand;
-    gpointer store = NULL;
+    GmPrefStore *store;
 
     NPN_GetValue(mInstance, NPNVWindowNPObject, &sWindowObj);
 
@@ -278,10 +278,10 @@ tv_driver(NULL), tv_device(NULL), tv_input(NULL), tv_width(0), tv_height(0)
 #endif
 
     g_type_init();
-    store = init_preference_store();
+    store = gm_pref_store_new("gecko-mediaplayer");
     if (store != NULL) {
-        debug_level = read_preference_int(store, DEBUG_LEVEL);
-        release_preference_store(store);
+        debug_level = gm_pref_store_get_int(store, DEBUG_LEVEL);
+        gm_pref_store_free(store);
     }
 
 
