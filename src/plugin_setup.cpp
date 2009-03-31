@@ -57,6 +57,8 @@ void new_instance(CPlugin * instance, int16 argc, char *argn[], char *argv[])
     gchar **parse;
     gint width = 0, height = 0;
     GError *error;
+    NPError nperror;
+    guint32 supportsWindowless = FALSE; // NPBool + padding
 
     if (instance->mode == NP_EMBED) {
         for (i = 0; i < argc; i++) {
@@ -332,10 +334,31 @@ void new_instance(CPlugin * instance, int16 argc, char *argn[], char *argv[])
                 }
             }
 
+            if (g_ascii_strcasecmp(argn[i], "windowless") == 0) {
+                if (g_ascii_strcasecmp(argv[i], "true") == 0
+                    || g_ascii_strcasecmp(argv[i], "yes") == 0
+                    || g_ascii_strcasecmp(argv[i], "1") == 0) {
+                    instance->windowless = TRUE;
+                } else {
+                    instance->windowless = FALSE;
+                }
+            }
+
         };
     } else {
 
     }
+
+    nperror = NPN_GetValue (instance->mInstance, NPNVSupportsWindowless, &supportsWindowless);
+	supportsWindowless = (nperror == NPERR_NO_ERROR) && supportsWindowless;
+	if (instance->windowless) {
+		if (supportsWindowless) {
+			// NPN_SetValue (instance->mInstance, NPPVpluginWindowBool, (void *) FALSE);
+			// NPN_SetValue (instance->mInstance, NPPVpluginTransparentBool, (void *) TRUE);
+		} else {
+			instance->windowless = FALSE;
+		}
+	}
 
     if (src != NULL) {
         if (loop != 0) {

@@ -153,6 +153,7 @@ class CPlugin {
   public:
      Window mWindow;
     NPP mInstance;
+    gboolean windowless;
     gint nextid;
     uint16 mode;
     gchar *mimetype;
