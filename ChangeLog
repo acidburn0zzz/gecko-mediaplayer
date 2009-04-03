@@ -1,4 +1,5 @@
 Development
+	Apply browser id patch to work around site specifically looking for mplayerplug-in
 	Infrastructure to support windowless mode, but it doesn't work
 	Convert internal preference store to gm_pref_store from libgmlib
 	Reuse gm_tempname from libgmlib saving duplicate code
