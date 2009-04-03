@@ -126,7 +126,7 @@ NPError PluginGetValue(NPPVariable variable, void *value)
     // some sites use this description to figure out what formats can be played. So we have to make sure the 
     // description matches the features
     if (variable == NPPVpluginNameString) {
-        *((const char **) value) = "gecko-mediaplayer " VERSION;
+        *((const char **) value) = "mplayerplug-in is now gecko-mediaplayer " VERSION;
     }
     if (variable == NPPVpluginDescriptionString) {
         *((const char **) value) =
