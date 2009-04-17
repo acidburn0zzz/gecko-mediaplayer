@@ -68,6 +68,10 @@ void new_instance(CPlugin * instance, int16 argc, char *argn[], char *argv[])
                 instance->name = g_strdup(argv[i]);
             }
 
+            if (g_ascii_strcasecmp(argn[i], "id") == 0) {
+                instance->id = g_strdup(argv[i]);
+            }
+
             if (g_ascii_strcasecmp(argn[i], "console") == 0) {
                 instance->console = g_strdup(argv[i]);
                     for (j = 0; j < strlen(instance->console); j++) {
@@ -263,6 +267,15 @@ void new_instance(CPlugin * instance, int16 argc, char *argn[], char *argv[])
                 }
             }
 
+            if (g_ascii_strcasecmp(argn[i], "postdomevents") == 0) {
+                if (strstr(argv[i], "true")
+                    || strstr(argv[i], "yes")
+                    || strstr(argv[i], "1")) {
+                    instance->post_dom_events = TRUE;
+                } else {
+                    instance->post_dom_events = FALSE;
+                }
+            }
             if (g_ascii_strcasecmp(argn[i], "onmediacomplete") == 0
                 || g_ascii_strcasecmp(argn[i], "onendofstream") == 0) {
                 if (g_ascii_strncasecmp(argv[i], "javascript:", 11) == 0) {
