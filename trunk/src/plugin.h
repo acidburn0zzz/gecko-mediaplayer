@@ -176,10 +176,12 @@ class CPlugin {
     gboolean debug;
     gint show_controls;
     gchar *name;
+    gchar *id;
     gchar *console;
     gchar *controls;
 
     // events
+    gboolean post_dom_events;
     gchar *event_mediacomplete;
     gchar *event_destroy;
     gchar *event_mousedown;
