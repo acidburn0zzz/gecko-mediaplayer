@@ -1,4 +1,5 @@
 Development
+	Make Copy Location get the entire url
 	Add support for Apple's 'postdomevents' option
 	Apply browser id patch to work around site specifically looking for mplayerplug-in
 	Infrastructure to support windowless mode, but it doesn't work
