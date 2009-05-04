@@ -664,8 +664,13 @@ int32 CPlugin::WriteReady(NPStream * stream)
             NPN_DestroyStream(mInstance, stream, NPRES_DONE);
             return -1;
         }
+    } else {
+        if (g_ascii_strcasecmp(item->src,stream->url) != 0) {
+            g_strlcpy(item->src,stream->url,4096);
+        }
     }
-    //printf("Write Ready item url = %s\n",item->src);
+            
+    // printf("Write Ready item url = %s\n%s\n",item->src,stream->url);
 
     if (item->cancelled)
         NPN_DestroyStream(mInstance, stream, NPRES_USER_BREAK);
