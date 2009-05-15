@@ -660,7 +660,7 @@ int32 CPlugin::WriteReady(NPStream * stream)
             playlist = g_list_append(playlist, item);
             stream->notifyData = item;
         } else {
-            printf("item is null\nstream url %s\n", stream->url);
+            // printf("item is null\nstream url %s\n", stream->url);
             NPN_DestroyStream(mInstance, stream, NPRES_DONE);
             return -1;
         }
@@ -780,7 +780,7 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
     }
 
     if ((!item->localfp) && (!item->retrieved)) {
-        printf("opening %s for localcache\n", item->local);
+        // printf("opening %s for localcache\n", item->local);
         item->localfp = fopen(item->local, "w+");
     }
     // printf("Write item url = %s\n",item->src);
@@ -823,6 +823,7 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
             }
         }
         if (!item->opened) {
+            send_signal_with_integer(this, item, "SetGUIState", PLAYING);
             if ((item->localsize >= (cache_size * 1024)) && (percent >= 0.2))
                 ok_to_play = TRUE;
             if (ok_to_play == FALSE && (item->localsize > (cache_size * 2 * 1024))
