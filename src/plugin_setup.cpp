@@ -362,7 +362,7 @@ void new_instance(CPlugin * instance, int16 argc, char *argn[], char *argv[])
 
     }
 
-    nperror = NPN_GetValue (instance->mInstance, NPNVSupportsWindowless, &supportsWindowless);
+    nperror = NPN_GetValue (instance->mInstance, (NPNVariable) 17 /* NPNVSupportsWindowless */, &supportsWindowless);
 	supportsWindowless = (nperror == NPERR_NO_ERROR) && supportsWindowless;
 	if (instance->windowless) {
 		if (supportsWindowless) {
