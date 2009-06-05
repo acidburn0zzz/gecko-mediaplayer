@@ -2446,7 +2446,7 @@ fi
 
 # Define the identity of the package.
  PACKAGE=gecko-mediaplayer
- VERSION=0.9.5
+ VERSION=0.9.6
 
 
 cat >>confdefs.h <<_ACEOF
