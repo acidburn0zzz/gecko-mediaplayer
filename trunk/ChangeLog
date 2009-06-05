@@ -1,4 +1,4 @@
-Development
+0.9.6
 	Fix constant issue with old xulrunner kits
 	Update GUI while cache is loading
 	Make Copy Location get the entire url
