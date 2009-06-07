@@ -1,3 +1,6 @@
+Development
+	Remove need for LIBTOOL, program should compile cleaner now
+	Patch to correct --as-needed linker flag
 0.9.6
 	Fix constant issue with old xulrunner kits
 	Update GUI while cache is loading
