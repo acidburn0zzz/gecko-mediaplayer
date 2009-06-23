@@ -637,6 +637,9 @@ ac_includes_default="\
 
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
+GIO_DEFINES
+GIO_LIBS
+GIO_CFLAGS
 GCONF_DEFINES
 GCONF_LIBS
 GCONF_CFLAGS
@@ -769,6 +772,7 @@ with_gconf_source
 with_gconf_schema_file_dir
 enable_schemas_install
 with_gconf
+with_gio
 enable_caching
 '
       ac_precious_vars='build_alias
@@ -793,7 +797,9 @@ NSPR_LIBS
 DBUS_CFLAGS
 DBUS_LIBS
 GCONF_CFLAGS
-GCONF_LIBS'
+GCONF_LIBS
+GIO_CFLAGS
+GIO_LIBS'
 
 
 # Initialize some variables set by options.
@@ -1422,7 +1428,8 @@ Optional Features:
 			  (and sometimes confusing) to the casual installer
   --disable-dependency-tracking  speeds up one-time build
   --enable-dependency-tracking   do not reject slow dependency extractors
-  --disable-schemas-install	Disable the schemas installation
+  --disable-schemas-install
+                          Disable the schemas installation
   --disable-caching       Disable caching of remote media to local storage
 
 Optional Packages:
@@ -1434,6 +1441,7 @@ Optional Packages:
   --with-gconf-schema-file-dir=dir
                           Directory for installing schema files.
   --with-gconf            Use Gconf to store preferences
+  --with-gio              Use GIO for file I/O
 
 Some influential environment variables:
   CC          C compiler command
@@ -1459,6 +1467,8 @@ Some influential environment variables:
   GCONF_CFLAGS
               C compiler flags for GCONF, overriding pkg-config
   GCONF_LIBS  linker flags for GCONF, overriding pkg-config
+  GIO_CFLAGS  C compiler flags for GIO, overriding pkg-config
+  GIO_LIBS    linker flags for GIO, overriding pkg-config
 
 Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
@@ -9421,6 +9431,95 @@ $as_echo "yes" >&6; }
 	GCONF_DEFINES="-DHAVE_GCONF"
 cat >>confdefs.h <<\_ACEOF
 #define HAVE_GCONF 1
+_ACEOF
+
+fi
+
+
+
+
+fi
+
+
+
+# Check whether --with-gio was given.
+if test "${with_gio+set}" = set; then
+  withval=$with_gio;
+else
+  with_gio=check
+fi
+
+if test "x$with_gio" != xno; then
+
+pkg_failed=no
+{ $as_echo "$as_me:$LINENO: checking for GIO" >&5
+$as_echo_n "checking for GIO... " >&6; }
+
+if test -n "$GIO_CFLAGS"; then
+    pkg_cv_GIO_CFLAGS="$GIO_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"gio-2.0\"") >&5
+  ($PKG_CONFIG --exists --print-errors "gio-2.0") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_GIO_CFLAGS=`$PKG_CONFIG --cflags "gio-2.0" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$GIO_LIBS"; then
+    pkg_cv_GIO_LIBS="$GIO_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"gio-2.0\"") >&5
+  ($PKG_CONFIG --exists --print-errors "gio-2.0") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_GIO_LIBS=`$PKG_CONFIG --libs "gio-2.0" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        GIO_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "gio-2.0" 2>&1`
+        else
+	        GIO_PKG_ERRORS=`$PKG_CONFIG --print-errors "gio-2.0" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$GIO_PKG_ERRORS" >&5
+
+	{ $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+                { $as_echo "$as_me:$LINENO: WARNING: Compiling without gio support" >&5
+$as_echo "$as_me: WARNING: Compiling without gio support" >&2;}
+elif test $pkg_failed = untried; then
+	{ $as_echo "$as_me:$LINENO: WARNING: Compiling without gio support" >&5
+$as_echo "$as_me: WARNING: Compiling without gio support" >&2;}
+else
+	GIO_CFLAGS=$pkg_cv_GIO_CFLAGS
+	GIO_LIBS=$pkg_cv_GIO_LIBS
+        { $as_echo "$as_me:$LINENO: result: yes" >&5
+$as_echo "yes" >&6; }
+	GIO_DEFINES="-DGIO_ENABLED"
+cat >>confdefs.h <<\_ACEOF
+#define GIO_ENABLED 1
 _ACEOF
 
 fi
