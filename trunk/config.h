@@ -7,6 +7,9 @@
 /* GETTEXT package name */
 #define GETTEXT_PACKAGE "gecko-mediaplayer"
 
+/* Define to 1 if you have GIO support */
+#define GIO_ENABLED 1
+
 /* Define to 1 if you have the `bind_textdomain_codeset' function. */
 #define HAVE_BIND_TEXTDOMAIN_CODESET 1
 

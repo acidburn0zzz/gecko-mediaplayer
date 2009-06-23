@@ -6,6 +6,9 @@
 /* GETTEXT package name */
 #undef GETTEXT_PACKAGE
 
+/* Define to 1 if you have GIO support */
+#undef GIO_ENABLED
+
 /* Define to 1 if you have the `bind_textdomain_codeset' function. */
 #undef HAVE_BIND_TEXTDOMAIN_CODESET
 
