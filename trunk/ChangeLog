@@ -1,4 +1,5 @@
 Development
+	Add Dutch translation
 	Add in check for GIO, enables functionality in libgmlib
 	Remove need for LIBTOOL, program should compile cleaner now
 	Patch to correct --as-needed linker flag
