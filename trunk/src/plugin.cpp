@@ -816,6 +816,7 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
                     send_signal_with_string(this, item, "SetURL", item->src);
                 if (post_dom_events && this->id != NULL) {
                     postDOMEvent(mInstance, this->id, "qt_progress");
+                    postDOMEvent(mInstance, this->id, "qt_durationchange");
                 }
 
                 time(&lastupdate);
@@ -857,6 +858,7 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
             if (item->play) {
                 open_location(this, item, TRUE);
                 if (post_dom_events && this->id != NULL) {
+                    postDOMEvent(mInstance, this->id, "qt_loadedfirstframe");
                     postDOMEvent(mInstance, this->id, "qt_canplay");
                     postDOMEvent(mInstance, this->id, "qt_play");
                 }
