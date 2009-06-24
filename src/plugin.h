@@ -92,6 +92,8 @@ typedef enum {
     QUIT
 } PLAYSTATE;
 
+void postDOMEvent(NPP mInstance, const gchar *id, const gchar *event);
+
 class CPlugin {
   private:
     NPWindow * m_Window;
