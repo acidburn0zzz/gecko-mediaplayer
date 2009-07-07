@@ -1,4 +1,5 @@
 Development
+	Added a RAM parser
 	Added Czech translation by Petr Pisar
 	Add Dutch translation
 	Add in check for GIO, enables functionality in libgmlib

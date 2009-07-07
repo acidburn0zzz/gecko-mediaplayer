@@ -557,6 +557,7 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
             playlist = list_parse_qt(playlist, item);
             playlist = list_parse_asx(playlist, item);
             playlist = list_parse_qml(playlist, item);
+            playlist = list_parse_ram(playlist, item);
             if (item->play) {
                 open_location(this, item, TRUE);
                 if (post_dom_events && this->id != NULL) {
@@ -855,6 +856,7 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
             playlist = list_parse_qt(playlist, item);
             playlist = list_parse_asx(playlist, item);
             playlist = list_parse_qml(playlist, item);
+            playlist = list_parse_ram(playlist, item);
             if (item->play) {
                 open_location(this, item, TRUE);
                 if (post_dom_events && this->id != NULL) {
