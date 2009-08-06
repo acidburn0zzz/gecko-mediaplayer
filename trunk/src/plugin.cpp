@@ -161,13 +161,13 @@ void NS_DestroyPluginInstance(CPlugin * aPlugin)
 
 
 */
-void postDOMEvent(NPP mInstance, const gchar *id, const gchar *event) {
+void postDOMEvent(NPP mInstance, const gchar * id, const gchar * event)
+{
     gchar *jscript;
 
     jscript = g_strdup_printf("javascript:obj=document.getElementById('%s');"
-                                "e=document.createEvent('Events');"
-                                "e.initEvent('%s',true,true);"
-                                "obj.dispatchEvent(e);",id,event);
+                              "e=document.createEvent('Events');"
+                              "e.initEvent('%s',true,true);" "obj.dispatchEvent(e);", id, event);
     NPN_GetURL(mInstance, jscript, NULL);
     g_free(jscript);
 }
@@ -305,7 +305,7 @@ tv_driver(NULL), tv_device(NULL), tv_input(NULL), tv_width(0), tv_height(0)
     if (connection == NULL) {
         connection = dbus_hookup(this);
     }
-    
+
     mInitialized = TRUE;
 }
 
@@ -666,11 +666,11 @@ int32 CPlugin::WriteReady(NPStream * stream)
             return -1;
         }
     } else {
-        if (g_ascii_strcasecmp(item->src,stream->url) != 0) {
-            g_strlcpy(item->src,stream->url,4096);
+        if (g_ascii_strcasecmp(item->src, stream->url) != 0) {
+            g_strlcpy(item->src, stream->url, 4096);
         }
     }
-            
+
     // printf("Write Ready item url = %s\n%s\n",item->src,stream->url);
 
     if (item->cancelled)
@@ -809,9 +809,7 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
                     (gdouble) ((item->localsize -
                                 item->lastsize) / 1024.0) / (gdouble) difftime(time(NULL),
                                                                                lastupdate);
-                text =
-                    g_strdup_printf(_("Cache fill: %2.2f%% (%0.1f K/s)"), percent * 100.0,
-                                    rate);
+                text = g_strdup_printf(_("Cache fill: %2.2f%% (%0.1f K/s)"), percent * 100.0, rate);
                 send_signal_with_string(this, item, "SetProgressText", text);
                 if (!item->opened)
                     send_signal_with_string(this, item, "SetURL", item->src);
@@ -832,7 +830,8 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
                 && (cache_size >= 512))
                 ok_to_play = TRUE;
             if (ok_to_play == FALSE) {
-                if (item->bitrate == 0 && item->bitrate_requests < 5 && ((gint)(percent * 100) > item->bitrate_requests)) {
+                if (item->bitrate == 0 && item->bitrate_requests < 5
+                    && ((gint) (percent * 100) > item->bitrate_requests)) {
                     item->bitrate = request_bitrate(this, item, item->local);
                     item->bitrate_requests++;
                 }
@@ -1155,7 +1154,8 @@ class ScriptablePluginObjectBase:public NPObject {
   public:
     ScriptablePluginObjectBase(NPP npp)
     :mNpp(npp) {
-    } virtual ~ ScriptablePluginObjectBase() {
+    }
+    virtual ~ ScriptablePluginObjectBase() {
     }
 
     // Virtual NPObject hooks called through this base class. Override
@@ -1315,7 +1315,8 @@ class ScriptablePluginObjectControls:public ScriptablePluginObjectBase {
   public:
     ScriptablePluginObjectControls(NPP npp)
     :ScriptablePluginObjectBase(npp) {
-    } virtual bool HasMethod(NPIdentifier name);
+    }
+    virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
     virtual bool InvokeDefault(const NPVariant * args, uint32_t argCount, NPVariant * result);
@@ -1330,7 +1331,8 @@ static NPObject *AllocateScriptablePluginObjectControls(NPP npp, NPClass * aClas
     return new ScriptablePluginObjectControls(npp);
 }
 
-DECLARE_NPOBJECT_CLASS_WITH_BASE(ScriptablePluginObjectControls, AllocateScriptablePluginObjectControls);
+DECLARE_NPOBJECT_CLASS_WITH_BASE(ScriptablePluginObjectControls,
+                                 AllocateScriptablePluginObjectControls);
 
 bool ScriptablePluginObjectControls::HasMethod(NPIdentifier name)
 {
@@ -1338,8 +1340,7 @@ bool ScriptablePluginObjectControls::HasMethod(NPIdentifier name)
         name == controls_pause_id ||
         name == controls_stop_id ||
         name == controls_fastForward_id ||
-        name == controls_fastReverse_id ||
-        name == controls_step_id) {
+        name == controls_fastReverse_id || name == controls_step_id) {
         return true;
     } else {
         return false;
@@ -1347,7 +1348,7 @@ bool ScriptablePluginObjectControls::HasMethod(NPIdentifier name)
 }
 
 bool ScriptablePluginObjectControls::Invoke(NPIdentifier name, const NPVariant * args,
-                                    uint32_t argCount, NPVariant * result)
+                                            uint32_t argCount, NPVariant * result)
 {
     CPlugin *pPlugin = (CPlugin *) mNpp->pdata;
     if (pPlugin == NULL) {
@@ -1374,7 +1375,7 @@ bool ScriptablePluginObjectControls::Invoke(NPIdentifier name, const NPVariant *
 }
 
 bool ScriptablePluginObjectControls::InvokeDefault(const NPVariant * args, uint32_t argCount,
-                                           NPVariant * result)
+                                                   NPVariant * result)
 {
     printf("ScriptablePluginObject default method called!\n");
 
@@ -1405,9 +1406,9 @@ bool ScriptablePluginObjectControls::GetProperty(NPIdentifier name, NPVariant * 
 
     if (name == controls_currentPosition_id) {
         pPlugin->GetTime(&position);
-        DOUBLE_TO_NPVARIANT(position,*result);
+        DOUBLE_TO_NPVARIANT(position, *result);
         return true;
-    }                
+    }
 
     VOID_TO_NPVARIANT(*result);
     return false;
@@ -1424,7 +1425,7 @@ bool ScriptablePluginObjectControls::SetProperty(NPIdentifier name, const NPVari
     if (name == controls_currentPosition_id) {
         pPlugin->Seek(NPVARIANT_TO_DOUBLE(*value));
         return true;
-    }                
+    }
 
     return false;
 }
@@ -1434,7 +1435,8 @@ class ScriptablePluginObject:public ScriptablePluginObjectBase {
   public:
     ScriptablePluginObject(NPP npp)
     :ScriptablePluginObjectBase(npp) {
-    } virtual bool HasMethod(NPIdentifier name);
+    }
+    virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
     virtual bool InvokeDefault(const NPVariant * args, uint32_t argCount, NPVariant * result);
@@ -1454,7 +1456,7 @@ DECLARE_NPOBJECT_CLASS_WITH_BASE(ScriptablePluginObject, AllocateScriptablePlugi
 
 bool ScriptablePluginObject::HasMethod(NPIdentifier name)
 {
-    if (name == Play_id || 
+    if (name == Play_id ||
         name == PlayAt_id ||
         name == Pause_id ||
         name == PlayPause_id ||
@@ -1492,12 +1494,10 @@ bool ScriptablePluginObject::HasMethod(NPIdentifier name)
         name == onMediaComplete_id ||
         name == onMouseUp_id ||
         name == onMouseDown_id ||
-        name == onMouseOut_id ||
-        name == onMouseOver_id ||
-        name == onDestroy_id ) {
-            return true;
+        name == onMouseOut_id || name == onMouseOver_id || name == onDestroy_id) {
+        return true;
     } else {
-            return false;
+        return false;
     }
 }
 
@@ -1518,7 +1518,7 @@ bool ScriptablePluginObject::Invoke(NPIdentifier name, const NPVariant * args,
         pPlugin->Play();
         return PR_TRUE;
     }
-        
+
     if (name == Pause_id || name == DoPause_id) {
         pPlugin->Pause();
         return PR_TRUE;
@@ -1556,7 +1556,7 @@ bool ScriptablePluginObject::Invoke(NPIdentifier name, const NPVariant * args,
 
     if (name == GetFileName_id || name == GetHREF_id || name == GetURL_id) {
         pPlugin->GetFilename(&s);
-        STRINGZ_TO_NPVARIANT(s,*result);
+        STRINGZ_TO_NPVARIANT(s, *result);
         g_free(s);
         return PR_TRUE;
     }
@@ -1568,7 +1568,7 @@ bool ScriptablePluginObject::Invoke(NPIdentifier name, const NPVariant * args,
 
     if (name == GetVolume_id) {
         pPlugin->GetVolume(&d);
-        DOUBLE_TO_NPVARIANT(d,*result);
+        DOUBLE_TO_NPVARIANT(d, *result);
         return PR_TRUE;
     }
 
@@ -1579,37 +1579,37 @@ bool ScriptablePluginObject::Invoke(NPIdentifier name, const NPVariant * args,
 
     if (name == GetIsLooping_id) {
         pPlugin->GetLoop(&b);
-        BOOLEAN_TO_NPVARIANT(b,*result);
+        BOOLEAN_TO_NPVARIANT(b, *result);
         return PR_TRUE;
     }
 
     if (name == SetAutoPlay_id || name == GetAutoPlay_id) {
-            
+
         return PR_TRUE;
     }
 
     if (name == GetMIMEType_id) {
         pPlugin->GetMIMEType(&s);
-        STRINGZ_TO_NPVARIANT(s,*result);
+        STRINGZ_TO_NPVARIANT(s, *result);
         g_free(s);
         return PR_TRUE;
     }
 
-    if (name == getTime_id ) {
+    if (name == getTime_id) {
         pPlugin->GetTime(&d);
-        DOUBLE_TO_NPVARIANT(d,*result);
+        DOUBLE_TO_NPVARIANT(d, *result);
         return PR_TRUE;
     }
 
     if (name == getDuration_id) {
         pPlugin->GetDuration(&d);
-        DOUBLE_TO_NPVARIANT(d,*result);
+        DOUBLE_TO_NPVARIANT(d, *result);
         return PR_TRUE;
     }
 
     if (name == getPercent_id) {
         pPlugin->GetPercent(&d);
-        DOUBLE_TO_NPVARIANT(d,*result);
+        DOUBLE_TO_NPVARIANT(d, *result);
         return PR_TRUE;
     }
 
@@ -1671,9 +1671,7 @@ bool ScriptablePluginObject::HasProperty(NPIdentifier name)
         name == src_id ||
         name == ShowControls_id ||
         name == fullscreen_id ||
-        name == showlogo_id ||
-        name == playState_id ||
-        name == controls_id) {
+        name == showlogo_id || name == playState_id || name == controls_id) {
         return true;
     } else {
         return false;
@@ -1695,36 +1693,36 @@ bool ScriptablePluginObject::GetProperty(NPIdentifier name, NPVariant * result)
 
     if (name == filename_id || name == src_id) {
         pPlugin->GetFilename(&filename);
-        STRINGZ_TO_NPVARIANT(filename,*result);
+        STRINGZ_TO_NPVARIANT(filename, *result);
         return true;
-    }                
+    }
 
     if (name == ShowControls_id) {
         pPlugin->GetShowControls(&setting);
-        BOOLEAN_TO_NPVARIANT(setting,*result);
+        BOOLEAN_TO_NPVARIANT(setting, *result);
         return true;
-    }    
+    }
 
     if (name == fullscreen_id) {
         pPlugin->GetFullScreen(&setting);
-        BOOLEAN_TO_NPVARIANT(setting,*result);
+        BOOLEAN_TO_NPVARIANT(setting, *result);
         return true;
-    }    
+    }
 
     if (name == showlogo_id) {
         setting = true;
-        BOOLEAN_TO_NPVARIANT(setting,*result);
+        BOOLEAN_TO_NPVARIANT(setting, *result);
         return true;
-    }    
+    }
 
     if (name == playState_id) {
         pPlugin->GetPlayState(&state);
-        INT32_TO_NPVARIANT(state,*result);
+        INT32_TO_NPVARIANT(state, *result);
         return true;
-    }    
+    }
 
     if (name == controls_id) {
-        OBJECT_TO_NPVARIANT(pPlugin->GetScriptableObjectControls(),*result);
+        OBJECT_TO_NPVARIANT(pPlugin->GetScriptableObjectControls(), *result);
         return true;
     }
 
@@ -1743,26 +1741,26 @@ bool ScriptablePluginObject::SetProperty(NPIdentifier name, const NPVariant * va
     if (name == filename_id || name == src_id) {
         pPlugin->SetFilename(NPVARIANT_TO_STRING(*value).utf8characters);
         return true;
-    }                
+    }
 
     if (name == ShowControls_id) {
         pPlugin->SetShowControls(NPVARIANT_TO_BOOLEAN(*value));
         return true;
-    }    
+    }
 
     if (name == fullscreen_id) {
         pPlugin->SetFullScreen(NPVARIANT_TO_BOOLEAN(*value));
         return true;
-    }    
+    }
 
     if (name == showlogo_id) {
         return true;
-    }    
+    }
 
     if (name == playState_id) {
         // readonly property
         return true;
-    }    
+    }
 
     return false;
 }
@@ -1794,5 +1792,3 @@ NPObject *CPlugin::GetScriptableObjectControls()
 
     return m_pScriptableObjectControls;
 }
-
-

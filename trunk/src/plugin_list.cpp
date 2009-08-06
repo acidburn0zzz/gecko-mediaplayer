@@ -261,8 +261,12 @@ GList *list_parse_qt(GList * list, ListItem * item)
                 }
 
                 while (p != NULL) {
-                    rdrf = (gchar *) memmem_compat(p, datalen - ((long) nextrmda - (long) p), "rdrf", 4);
-                    rmdr = (gchar *) memmem_compat(p, datalen - ((long) nextrmda - (long) p), "rmdr", 4);
+                    rdrf =
+                        (gchar *) memmem_compat(p, datalen - ((long) nextrmda - (long) p), "rdrf",
+                                                4);
+                    rmdr =
+                        (gchar *) memmem_compat(p, datalen - ((long) nextrmda - (long) p), "rmdr",
+                                                4);
 
                     if (rdrf != NULL) {
                         code = (unsigned int) (rdrf[15]);
@@ -642,12 +646,12 @@ GList *list_parse_ram(GList * list, ListItem * item)
                 parser_item = item;
                 i = 0;
                 while (output != NULL && output[i] != NULL) {
-                    printf("%s\n",output[i]);
+                    // printf("%s\n", output[i]);
                     addline = FALSE;
-                    if (g_ascii_strncasecmp(output[i],"rtsp://",strlen("rtsp://")) == 0) {
+                    if (g_ascii_strncasecmp(output[i], "rtsp://", strlen("rtsp://")) == 0) {
                         addline = TRUE;
                     }
-                    if (g_ascii_strncasecmp(output[i],"http://",strlen("http://")) == 0) {
+                    if (g_ascii_strncasecmp(output[i], "http://", strlen("http://")) == 0) {
                         addline = TRUE;
                     }
                     if (addline) {
@@ -697,4 +701,3 @@ GList *list_parse_ram(GList * list, ListItem * item)
     printf("Exiting list_parse_ram\n");
     return list;
 }
-

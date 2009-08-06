@@ -274,12 +274,12 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                     if (g_ascii_strcasecmp(s, "TimeChanged") == 0) {
                         if (instance->post_dom_events && instance->id != NULL) {
                             postDOMEvent(instance->mInstance, instance->id, "qt_timechanged");
-                        }    
+                        }
                     }
                     if (g_ascii_strcasecmp(s, "Ended") == 0) {
                         if (instance->post_dom_events && instance->id != NULL) {
                             postDOMEvent(instance->mInstance, instance->id, "qt_ended");
-                        }    
+                        }
                     }
                 }
             }
