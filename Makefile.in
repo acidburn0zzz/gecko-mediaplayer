@@ -251,7 +251,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = src po
-gecko_mediaplayerdocdir = ${prefix}/share/doc/gecko-mediaplayer
+gecko_mediaplayerdocdir = ${docdir}
 gecko_mediaplayerdoc_DATA = \
 	README\
 	COPYING\
