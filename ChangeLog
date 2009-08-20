@@ -1,4 +1,4 @@
-Development
+0.9.7
 	Clean up code with 'make indent'
 	Added a RAM parser
 	Added Czech translation by Petr Pisar
