@@ -188,6 +188,7 @@ class CPlugin {
     gchar *id;
     gchar *console;
     gchar *controls;
+    gchar *user_agent;
 
     // events
     gboolean post_dom_events;
@@ -211,5 +212,7 @@ class CPlugin {
 
 
 };
+
+void setPreference(CPlugin * instance, const gchar * name, const gchar * value);
 
 #endif                          // __PLUGIN_H__

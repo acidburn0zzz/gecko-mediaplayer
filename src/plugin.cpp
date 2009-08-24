@@ -177,7 +177,7 @@ void postDOMEvent(NPP mInstance, const gchar * id, const gchar * event)
     g_free(jscript);
 }
 
-void setPreference(const gchar * name, const gchar * value)
+void setPreference(CPlugin * instance, const gchar * name, const gchar * value)
 {
     nsIServiceManager *sm = NULL;
     NPN_GetValue(NULL, NPNVserviceManager, &sm);
@@ -187,15 +187,18 @@ void setPreference(const gchar * name, const gchar * value)
         sm->GetServiceByContractID("@mozilla.org/preferences-service;1", NS_GET_IID(nsIPrefService), (void **)&prefService);
         if (prefService) {
             prefService->GetBranch("", &prefBranch);
-            if (prefBranch)
+            if (prefBranch) {
+                instance->user_agent = g_new0(gchar, 1024);
+                prefBranch->GetCharPref(name, &(instance->user_agent));
                 prefBranch->SetCharPref(name, value);
+            }
         }
         NS_RELEASE(sm);
     }
 
 }
 
-void clearPreference(const gchar * name)
+void clearPreference(CPlugin * instance, const gchar * name)
 {
     nsIServiceManager *sm = NULL;
     NPN_GetValue(NULL, NPNVserviceManager, &sm);
@@ -205,8 +208,14 @@ void clearPreference(const gchar * name)
         sm->GetServiceByContractID("@mozilla.org/preferences-service;1", NS_GET_IID(nsIPrefService), (void **)&prefService);
         if (prefService) {
             prefService->GetBranch("", &prefBranch);
-            if (prefBranch)
-                prefBranch->ClearUserPref(name);
+            if (prefBranch) {
+                if (instance->user_agent == NULL || strlen(instance->user_agent) == 0) {
+                    prefBranch->ClearUserPref(name);
+                } else {
+                    prefBranch->SetCharPref(name, instance->user_agent);
+                }
+                g_free(instance->user_agent);
+            }
         }
         NS_RELEASE(sm);
     }
@@ -345,7 +354,7 @@ tv_driver(NULL), tv_device(NULL), tv_input(NULL), tv_width(0), tv_height(0)
     if (connection == NULL) {
         connection = dbus_hookup(this);
     }
-    setPreference("general.useragent.override","QuickTime/7.6.2");
+    // setPreference("general.useragent.override","QuickTime/7.6.2");
     mInitialized = TRUE;
 }
 
@@ -371,7 +380,7 @@ CPlugin::~CPlugin()
         NS_IF_RELEASE(mControlsScriptablePeer);
     }
 */
-    clearPreference("general.useragent.override");
+    clearPreference(this, "general.useragent.override");
 
     if (m_pScriptableObjectControls) {
         NPN_ReleaseObject(m_pScriptableObjectControls);
