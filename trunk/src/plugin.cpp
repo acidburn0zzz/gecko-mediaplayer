@@ -181,6 +181,7 @@ void setPreference(CPlugin * instance, const gchar * name, const gchar * value)
 {
     nsIServiceManager *sm = NULL;
     NPN_GetValue(NULL, NPNVserviceManager, &sm);
+    PRBool v;
 
     if (sm) {
 
@@ -189,7 +190,9 @@ void setPreference(CPlugin * instance, const gchar * name, const gchar * value)
             prefService->GetBranch("", &prefBranch);
             if (prefBranch) {
                 instance->user_agent = g_new0(gchar, 1024);
-                prefBranch->GetCharPref(name, &(instance->user_agent));
+                prefBranch->PrefHasUserValue(name,&v);
+                if (v)
+                    prefBranch->GetCharPref(name, &(instance->user_agent));
                 prefBranch->SetCharPref(name, value);
             }
         }
