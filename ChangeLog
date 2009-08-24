@@ -1,3 +1,5 @@
+Development
+	Change the user agent to "QuickTime/7.6.2" while the plugin is loaded, makes Apple.com/trailers work again
 0.9.7
 	Clean up code with 'make indent'
 	Added a RAM parser

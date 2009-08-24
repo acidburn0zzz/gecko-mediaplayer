@@ -42,7 +42,12 @@
 #include "plugin_setup.h"
 #include "plugin_types.h"
 #include "plugin_dbus.h"
+#include "nsIPrefBranch.h"
+#include "nsIPrefService.h"
+#include "nsIServiceManager.h"
 
+nsIPrefBranch *prefBranch = NULL;
+nsIPrefService *prefService = NULL;
 static NPObject *sWindowObj;
 
 //#include "nsIServiceManager.h"
@@ -170,6 +175,41 @@ void postDOMEvent(NPP mInstance, const gchar * id, const gchar * event)
                               "e.initEvent('%s',true,true);" "obj.dispatchEvent(e);", id, event);
     NPN_GetURL(mInstance, jscript, NULL);
     g_free(jscript);
+}
+
+void setPreference(const gchar * name, const gchar * value)
+{
+    nsIServiceManager *sm = NULL;
+    NPN_GetValue(NULL, NPNVserviceManager, &sm);
+
+    if (sm) {
+
+        sm->GetServiceByContractID("@mozilla.org/preferences-service;1", NS_GET_IID(nsIPrefService), (void **)&prefService);
+        if (prefService) {
+            prefService->GetBranch("", &prefBranch);
+            if (prefBranch)
+                prefBranch->SetCharPref(name, value);
+        }
+        NS_RELEASE(sm);
+    }
+
+}
+
+void clearPreference(const gchar * name)
+{
+    nsIServiceManager *sm = NULL;
+    NPN_GetValue(NULL, NPNVserviceManager, &sm);
+
+    if (sm) {
+
+        sm->GetServiceByContractID("@mozilla.org/preferences-service;1", NS_GET_IID(nsIPrefService), (void **)&prefService);
+        if (prefService) {
+            prefService->GetBranch("", &prefBranch);
+            if (prefBranch)
+                prefBranch->ClearUserPref(name);
+        }
+        NS_RELEASE(sm);
+    }
 }
 
 ////////////////////////////////////////
@@ -305,7 +345,7 @@ tv_driver(NULL), tv_device(NULL), tv_input(NULL), tv_width(0), tv_height(0)
     if (connection == NULL) {
         connection = dbus_hookup(this);
     }
-
+    setPreference("general.useragent.override","QuickTime/7.6.2");
     mInitialized = TRUE;
 }
 
@@ -331,6 +371,8 @@ CPlugin::~CPlugin()
         NS_IF_RELEASE(mControlsScriptablePeer);
     }
 */
+    clearPreference("general.useragent.override");
+
     if (m_pScriptableObjectControls) {
         NPN_ReleaseObject(m_pScriptableObjectControls);
     }
