@@ -254,6 +254,7 @@ name(NULL),
 id(NULL),
 console(NULL),
 controls(NULL),
+user_agent(NULL),
 disable_context_menu(FALSE),
 disable_fullscreen(FALSE),
 post_dom_events(FALSE),
@@ -357,7 +358,8 @@ tv_driver(NULL), tv_device(NULL), tv_input(NULL), tv_width(0), tv_height(0)
     if (connection == NULL) {
         connection = dbus_hookup(this);
     }
-    setPreference(this, "general.useragent.override", "QuickTime/7.6.2");
+    pluginSpecific(this);
+    
     mInitialized = TRUE;
 }
 
