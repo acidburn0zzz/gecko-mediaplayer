@@ -357,7 +357,7 @@ tv_driver(NULL), tv_device(NULL), tv_input(NULL), tv_width(0), tv_height(0)
     if (connection == NULL) {
         connection = dbus_hookup(this);
     }
-    // setPreference("general.useragent.override","QuickTime/7.6.2");
+    setPreference(this, "general.useragent.override", "QuickTime/7.6.2");
     mInitialized = TRUE;
 }
 

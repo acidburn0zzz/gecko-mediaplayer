@@ -110,8 +110,8 @@ void new_instance(CPlugin * instance, int16 argc, char *argn[], char *argv[])
                 item->streaming = streaming(item->src);
                 item->play = TRUE;
                 item->id = instance->nextid++;
-                if (g_strrstr(argv[i],"apple.com"))
-                    setPreference(instance, "general.useragent.override","QuickTime/7.6.2");
+                //if (g_strrstr(argv[i],"apple.com"))
+                //    setPreference(instance, "general.useragent.override","QuickTime/7.6.2");
                 instance->playlist = g_list_append(instance->playlist, item);
                 src = item;
             }
