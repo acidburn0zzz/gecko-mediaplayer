@@ -213,6 +213,7 @@ class CPlugin {
 
 };
 
+void pluginSpecific(CPlugin * instance);
 void setPreference(CPlugin * instance, const gchar * name, const gchar * value);
 
 #endif                          // __PLUGIN_H__
