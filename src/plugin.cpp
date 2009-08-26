@@ -215,7 +215,11 @@ void clearPreference(CPlugin * instance, const gchar * name)
                 if (instance->user_agent == NULL || strlen(instance->user_agent) == 0) {
                     prefBranch->ClearUserPref(name);
                 } else {
-                    prefBranch->SetCharPref(name, instance->user_agent);
+                    if (g_strrstr(instance->user_agent,"QuickTime/7.6.2")) {
+                        prefBranch->ClearUserPref(name);
+                    } else {
+                        prefBranch->SetCharPref(name, instance->user_agent);
+                    }
                 }
                 g_free(instance->user_agent);
             }
