@@ -346,14 +346,14 @@ void open_location(CPlugin * instance, ListItem * item, gboolean uselocal)
             argvn[arg++] = g_strdup_printf("gnome-mplayer");
             argvn[arg++] = g_strdup_printf("--window=-1");
             argvn[arg++] = g_strdup_printf("--controlid=%i", instance->controlid);
+            argvn[arg++] = g_strdup_printf("--autostart=%i", instance->autostart);
             if (instance->disable_context_menu == TRUE)
                 argvn[arg++] = g_strdup_printf("--disablecontextmenu");
             if (instance->debug == TRUE)
                 argvn[arg++] = g_strdup_printf("--verbose");
 
             argvn[arg++] = g_strdup_printf("%s", file);
-            argvn[arg] = g_strdup("");
-            argvn[arg + 1] = NULL;
+            argvn[arg] = NULL;
             instance->playerready = FALSE;
             ok = g_spawn_async(NULL, argvn, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error);
 

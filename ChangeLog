@@ -1,4 +1,5 @@
 Development
+	Fix the autostart property when then plugin window is hidden
 	Only emulate QuickTime with the qt plugin
 	Change the user agent to "QuickTime/7.6.2" while the plugin is loaded, makes Apple.com/trailers work again
 0.9.7
