@@ -691,6 +691,15 @@ void CPlugin::URLNotify(const char *url, NPReason reason, void *notifyData)
                dbus_message_unref(message);
              */
         }
+    } else {
+        if (item)
+            item->played = TRUE;
+        item = list_find_next_playable(playlist);
+        if (item->retrieved) {
+            open_location(this, item, TRUE);
+        } else {
+            NPN_GetURLNotify(mInstance, item->src, NULL, item);
+        }
     }
 }
 
