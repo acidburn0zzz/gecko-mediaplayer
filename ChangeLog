@@ -1,4 +1,5 @@
 Development
+	Add in new type of qt parser, make videos at PBS.org work
 	Move on to the next item in the playlist, when the an open item gives an error
 	Fix the autostart property when then plugin window is hidden
 	Only emulate QuickTime with the qt plugin

@@ -615,6 +615,7 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
             ready = item->playerready;
             newwindow = item->newwindow;
             playlist = list_parse_qt(playlist, item);
+            playlist = list_parse_qt2(playlist, item);
             playlist = list_parse_asx(playlist, item);
             playlist = list_parse_qml(playlist, item);
             playlist = list_parse_ram(playlist, item);
@@ -695,10 +696,12 @@ void CPlugin::URLNotify(const char *url, NPReason reason, void *notifyData)
         if (item)
             item->played = TRUE;
         item = list_find_next_playable(playlist);
-        if (item->retrieved) {
-            open_location(this, item, TRUE);
-        } else {
-            NPN_GetURLNotify(mInstance, item->src, NULL, item);
+        if (item) {
+            if (item->retrieved) {
+                open_location(this, item, TRUE);
+            } else {
+                NPN_GetURLNotify(mInstance, item->src, NULL, item);
+            }
         }
     }
 }
