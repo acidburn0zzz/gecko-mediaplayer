@@ -271,7 +271,6 @@ tv_driver(NULL), tv_device(NULL), tv_input(NULL), tv_width(0), tv_height(0)
 {
     GRand *rand;
     GmPrefStore *store;
-    gchar *jscript;
 
     NPN_GetValue(mInstance, NPNVWindowNPObject, &sWindowObj);
 
@@ -670,8 +669,8 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
 void CPlugin::URLNotify(const char *url, NPReason reason, void *notifyData)
 {
     ListItem *item = (ListItem *) notifyData;
-    DBusMessage *message;
-    const char *file;
+    //DBusMessage *message;
+    //const char *file;
 
     printf("URL Notify %s\n,%i = %i\n%s\n%s\n%s\n", url, reason, NPRES_DONE, item->src, item->local,
            path);

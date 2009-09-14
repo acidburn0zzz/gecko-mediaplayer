@@ -46,7 +46,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
     int message_type;
     gchar *s = NULL;
     DBusError error;
-    DBusMessage *reply_message;
+    // DBusMessage *reply_message;
     gchar *path;
     CPlugin *instance;
     ListItem *item = NULL;
