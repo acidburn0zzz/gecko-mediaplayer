@@ -43,7 +43,7 @@
 void new_instance(CPlugin * instance, int16 argc, char *argn[], char *argv[])
 {
 
-    gint i, j;
+    guint i, j;
     gint newwindow = 0;
     gint loop = 0;
     gboolean autohref = FALSE;
