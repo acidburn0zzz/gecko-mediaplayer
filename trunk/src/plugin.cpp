@@ -694,12 +694,14 @@ void CPlugin::URLNotify(const char *url, NPReason reason, void *notifyData)
     } else {
         if (item)
             item->played = TRUE;
-        item = list_find_next_playable(playlist);
-        if (item) {
-            if (item->retrieved) {
-                open_location(this, item, TRUE);
-            } else {
-                NPN_GetURLNotify(mInstance, item->src, NULL, item);
+        if (!item->streaming) {
+            item = list_find_next_playable(playlist);
+            if (item) {
+                if (item->retrieved) {
+                    open_location(this, item, TRUE);
+                } else {
+                    NPN_GetURLNotify(mInstance, item->src, NULL, item);
+                }
             }
         }
     }
@@ -826,7 +828,7 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
         if (item->localfp) {
             fclose(item->localfp);
         }
-        NPN_DestroyStream(mInstance, stream, NPRES_DONE);
+        NPN_DestroyStream(mInstance, stream, NPRES_USER_BREAK);
         return -1;
     }
 
