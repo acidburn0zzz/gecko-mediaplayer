@@ -812,32 +812,11 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
     if (item->cancelled || item->retrieved)
         NPN_DestroyStream(mInstance, stream, NPRES_USER_BREAK);
 
-    if (strstr((char *) buffer, "ICY 200 OK") != NULL || item->streaming == TRUE) {
-        item->streaming = TRUE;
-        open_location(this, item, FALSE);
-        item->requested = TRUE;
-        if (item->localfp) {
-            fclose(item->localfp);
-        }
-        NPN_DestroyStream(mInstance, stream, NPRES_DONE);
-        return -1;
-    }
-    // If item is a block of jpeg images, just stream it
-    if (strstr((char *) buffer, "Content-length:") != NULL || item->streaming == TRUE) {
-        item->streaming = TRUE;
-        open_location(this, item, FALSE);
-        if (post_dom_events && this->id != NULL) {
-            postDOMEvent(mInstance, this->id, "qt_play");
-        }
-        item->requested = TRUE;
-        if (item->localfp) {
-            fclose(item->localfp);
-        }
-        NPN_DestroyStream(mInstance, stream, NPRES_DONE);
-        return -1;
-    }
-
-    if (strstr((char *) buffer, "<HTML>") != NULL || item->streaming == TRUE) {
+    if (strstr((char *) buffer, "ICY 200 OK") != NULL 
+        || strstr((char *) buffer, "Content-length:") != NULL // If item is a block of jpeg images, just stream it
+        || strstr((char *) buffer, "<HTML>") != NULL
+        || item->streaming == TRUE
+        || stream->lastmodified == 0) {
         item->streaming = TRUE;
         open_location(this, item, FALSE);
         if (post_dom_events && this->id != NULL) {
