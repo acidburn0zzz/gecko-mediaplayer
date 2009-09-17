@@ -1,4 +1,6 @@
 Development
+	When stream->lastmodified == 0 mark stream as streaming
+		fixes http://www.radioswissclassic.ch/en
 	Various fixes from the mailing list
 	Version bump
 	Add in new type of qt parser, make videos at PBS.org work
