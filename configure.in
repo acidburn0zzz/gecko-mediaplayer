@@ -114,6 +114,13 @@ AS_IF([test "x$with_gio" != xno],
     AC_SUBST(GIO_LIBS)
     ])
 
+AC_ARG_WITH([plugin_dir],
+    [AS_HELP_STRING([--with-plugin-dir=dir],
+        [Directory where plugins are stored])],
+        [plugindir=$withval],
+        [plugindir='$(libdir)/mozilla/plugins'])
+AC_SUBST(plugindir)
+
 AC_ARG_ENABLE(caching,
 	AC_HELP_STRING([--disable-caching],[Disable caching of remote media to local storage]),
 	[usecache=$enableval],[usecache=yes])

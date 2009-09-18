@@ -265,6 +265,7 @@ mandir = @mandir@
 mkdir_p = @mkdir_p@
 oldincludedir = @oldincludedir@
 pdfdir = @pdfdir@
+plugindir = @plugindir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
 psdir = @psdir@
@@ -312,7 +313,7 @@ COMMONCODE = \
 	npp_gate.cpp \
 	npupp.h
 
-install_libexecdir = $(libdir)/mozilla/plugins
+install_libexecdir = $(plugindir)
 gecko_mediaplayer_so_SOURCES = \
 	plugin_types_std.cpp \
 	$(COMMONCODE)
