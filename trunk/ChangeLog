@@ -1,3 +1,5 @@
+Developement
+	plugin-dir patch from Christian.Morales.Vega
 0.9.8
 	When cancelling a stream (USER_BREAK) and the cancelled one is streaming
 		don't automatically load the next item on the playlist

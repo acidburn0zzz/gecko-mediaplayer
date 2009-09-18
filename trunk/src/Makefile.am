@@ -39,7 +39,7 @@ COMMONCODE = \
 	npp_gate.cpp \
 	npupp.h
 
-install_libexecdir = $(libdir)/mozilla/plugins
+install_libexecdir = $(plugindir)
 install_libexec_PROGRAMS = \
 	gecko-mediaplayer.so \
 	gecko-mediaplayer-qt.so \
