@@ -1,4 +1,4 @@
-Development
+0.9.8
 	When cancelling a stream (USER_BREAK) and the cancelled one is streaming
 		don't automatically load the next item on the playlist
 	When stream->lastmodified == 0 mark stream as streaming
