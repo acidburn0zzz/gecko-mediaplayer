@@ -42,9 +42,9 @@
 #include "plugin_setup.h"
 #include "plugin_types.h"
 #include "plugin_dbus.h"
-#include "nsIPrefBranch.h"
-#include "nsIPrefService.h"
-#include "nsIServiceManager.h"
+#include <nsIPrefBranch.h>
+#include <nsIPrefService.h>
+#include <nsIServiceManager.h>
 
 nsIPrefBranch *prefBranch = NULL;
 nsIPrefService *prefService = NULL;
