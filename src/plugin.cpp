@@ -170,9 +170,9 @@ void postDOMEvent(NPP mInstance, const gchar * id, const gchar * event)
 {
     gchar *jscript;
 
-    jscript = g_strdup_printf("javascript:obj=document.getElementById('%s');"
-                              "e=document.createEvent('Events');"
-                              "e.initEvent('%s',true,true);" "obj.dispatchEvent(e);", id, event);
+    jscript = g_strdup_printf("javascript:obj_gmp=document.getElementById('%s');"
+                              "e_gmp=document.createEvent('Events');"
+                              "e_gmp.initEvent('%s',true,true);" "obj_gmp.dispatchEvent(e_gmp);", id, event);
     NPN_GetURL(mInstance, jscript, NULL);
     g_free(jscript);
 }
@@ -259,6 +259,7 @@ id(NULL),
 console(NULL),
 controls(NULL),
 user_agent(NULL),
+player_backend(NULL),
 disable_context_menu(FALSE),
 disable_fullscreen(FALSE),
 post_dom_events(FALSE),
@@ -354,6 +355,8 @@ tv_driver(NULL), tv_device(NULL), tv_input(NULL), tv_width(0), tv_height(0)
     store = gm_pref_store_new("gecko-mediaplayer");
     if (store != NULL) {
         debug_level = gm_pref_store_get_int(store, DEBUG_LEVEL);
+        player_backend = gm_pref_store_get_string(store, PLAYER_BACKEND);
+        printf("Using player backend of '%s'\n",player_backend);
         gm_pref_store_free(store);
     }
 
@@ -458,10 +461,16 @@ NPError CPlugin::SetWindow(NPWindow * aWindow)
     }
 
     if (!player_launched && mWidth > 0 && mHeight > 0) {
-        app_name = g_find_program_in_path("gnome-mplayer");
-        if (app_name == NULL)
-            app_name = g_find_program_in_path("gnome-mplayer-minimal");
-
+        app_name == NULL;
+        if (player_backend != NULL) {
+            app_name = g_find_program_in_path(player_backend);
+        }
+        if (app_name == NULL) {
+            app_name = g_find_program_in_path("gnome-mplayer");
+            if (app_name == NULL)
+                app_name = g_find_program_in_path("gnome-mplayer-minimal");
+        }
+        
         argvn[arg++] = g_strdup_printf("%s", app_name);
         g_free(app_name);
         argvn[arg++] = g_strdup_printf("--window=%i", (gint) mWindow);
@@ -643,6 +652,14 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
             g_free(path);
         }
         //printf("Leaving destroy stream src = %s\n", item->src);
+        
+    } else if (reason == NPRES_NETWORK_ERR) {
+        item = (ListItem *) stream->notifyData;
+        if (item) {
+            printf("Destroy Stream, network error, item is %s\n", item->src);
+        } else {
+            printf("Destory Stream, network error, item is NULL\n");
+        }
     } else {
         item = (ListItem *) stream->notifyData;
         // item = list_find(playlist, (gchar*)stream->url);
@@ -692,9 +709,19 @@ void CPlugin::URLNotify(const char *url, NPReason reason, void *notifyData)
              */
         }
     } else {
-        if (item)
+        if (item) {
             item->played = TRUE;
-        if (!item->streaming) {
+            if (!item->streaming) {
+                item = list_find_next_playable(playlist);
+                if (item) {
+                    if (item->retrieved) {
+                        open_location(this, item, TRUE);
+                    } else {
+                        NPN_GetURLNotify(mInstance, item->src, NULL, item);
+                    }
+                }
+            }
+        } else {
             item = list_find_next_playable(playlist);
             if (item) {
                 if (item->retrieved) {
@@ -703,7 +730,7 @@ void CPlugin::URLNotify(const char *url, NPReason reason, void *notifyData)
                     NPN_GetURLNotify(mInstance, item->src, NULL, item);
                 }
             }
-        }
+        }        
     }
 }
 

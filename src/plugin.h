@@ -84,6 +84,7 @@
 #define DISABLE_DVX		"disable_dvx"
 #define DEBUG_LEVEL		"debug_level"
 #define DISABLE_MIDI    "disable_midi"
+#define PLAYER_BACKEND  "player_backend"
 
 typedef enum {
     PLAYING,
@@ -189,6 +190,7 @@ class CPlugin {
     gchar *console;
     gchar *controls;
     gchar *user_agent;
+    gchar *player_backend;
 
     // events
     gboolean post_dom_events;

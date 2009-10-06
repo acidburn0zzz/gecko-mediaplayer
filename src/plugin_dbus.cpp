@@ -109,6 +109,14 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                 return DBUS_HANDLER_RESULT_HANDLED;
             }
 
+            if (g_ascii_strcasecmp(dbus_message_get_member(message), "ListDump") == 0) {
+                
+                printf("playlist:\n");
+                list_dump(instance->playlist);
+                
+                return DBUS_HANDLER_RESULT_HANDLED;
+            }
+            
             if (g_ascii_strcasecmp(dbus_message_get_member(message), "RequestById") == 0) {
                 dbus_error_init(&error);
                 if (dbus_message_get_args(message, &error, DBUS_TYPE_STRING, &s, DBUS_TYPE_INVALID)) {
@@ -770,6 +778,10 @@ gboolean is_valid_path(CPlugin * instance, const char *message)
         return result;
 
     if (g_ascii_strcasecmp(message, instance->path) == 0) {
+
+        result = TRUE;
+
+    } else if (g_ascii_strcasecmp(message, "/DEBUG") == 0) {
 
         result = TRUE;
 
