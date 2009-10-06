@@ -1,4 +1,9 @@
 Developement
+	Allow for configurable backend (fosfor or gnome-mplayer or something else)
+	Make dom event javascript a little more unique
+	React to Network Errors in DestroyStream differently
+	Added /DEBUG path for debugging purposes
+	Added ListDump dbus method
 	konqueror patch from Christian.Morales.Vega
 	plugin-dir patch from Christian.Morales.Vega
 0.9.8
