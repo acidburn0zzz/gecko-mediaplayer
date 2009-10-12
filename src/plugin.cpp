@@ -461,7 +461,7 @@ NPError CPlugin::SetWindow(NPWindow * aWindow)
     }
 
     if (!player_launched && mWidth > 0 && mHeight > 0) {
-        app_name == NULL;
+        app_name = NULL;
         if (player_backend != NULL) {
             app_name = g_find_program_in_path(player_backend);
         }
