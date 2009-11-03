@@ -1,4 +1,5 @@
 Developement
+	Add new mimetype video/x-ms-asx
 	Allow for configurable backend (fosfor or gnome-mplayer or something else)
 	Make dom event javascript a little more unique
 	React to Network Errors in DestroyStream differently
