@@ -167,6 +167,15 @@ void new_instance(CPlugin * instance, int16 argc, char *argn[], char *argv[])
             }
 
             if (g_ascii_strcasecmp(argn[i], "target") == 0) {
+                item = g_new0(ListItem, 1);
+                g_strlcpy(item->src, argv[i], 4096);
+                // printf("Item href = %s\n",item->src);
+                item->streaming = streaming(item->src);
+                item->play = FALSE;
+                item->id = instance->nextid++;
+                instance->playlist = g_list_append(instance->playlist, item);
+                src = item;
+                instance->show_controls = 0;
                 if (g_ascii_strcasecmp(argv[i], "quicktimeplayer") == 0) {
                     newwindow = TRUE;
                 }
