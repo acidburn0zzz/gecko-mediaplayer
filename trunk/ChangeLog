@@ -1,4 +1,5 @@
 Developement
+	Add support for VLC plugin emulation
 	Add new mimetype video/x-ms-asx
 	Allow for configurable backend (fosfor or gnome-mplayer or something else)
 	Make dom event javascript a little more unique

@@ -75,6 +75,12 @@ gchar *GetMIMEDescription()
               "audio/ogg:ogg,oga:Ogg Vorbis Audio;"
               "video/x-ogg:ogg,ogm:Ogg Vorbis Video;"
               "video/ogg:ogg,ogm:Ogg Vorbis Video;", sizeof(MimeTypes));
+
+    // VLC
+    g_strlcat(MimeTypes,
+              "application/x-vlc-plugin:vlc:VLC plug-in;"
+              "application/x-google-vlc-plugin::Google VLC plug-in;", sizeof(MimeTypes));
+
     // FLAC
     g_strlcat(MimeTypes,
               "audio/flac:flac:FLAC Audio;" "audio/x-flac:flac:FLAC Audio;", sizeof(MimeTypes));
