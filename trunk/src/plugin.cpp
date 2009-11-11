@@ -472,7 +472,6 @@ NPError CPlugin::SetWindow(NPWindow * aWindow)
         }
         
         argvn[arg++] = g_strdup_printf("%s", app_name);
-        g_free(app_name);
         argvn[arg++] = g_strdup_printf("--window=%i", (gint) mWindow);
         argvn[arg++] = g_strdup_printf("--controlid=%i", controlid);
         argvn[arg++] = g_strdup_printf("--width=%i", mWidth);
@@ -515,10 +514,12 @@ NPError CPlugin::SetWindow(NPWindow * aWindow)
         if (ok) {
             player_launched = TRUE;
         } else {
-            printf("Unable to launch gnome-mplayer: %s\n", error->message);
+            printf("Unable to launch %s: %s\n", app_name, error->message);
             g_error_free(error);
             error = NULL;
         }
+
+        g_free(app_name);
 
         if (post_dom_events && id != NULL) {
             postDOMEvent(mInstance, id, "qt_begin");

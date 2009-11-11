@@ -59,6 +59,7 @@ void new_instance(CPlugin * instance, int16 argc, char *argn[], char *argv[])
     GError *error;
     NPError nperror;
     guint32 supportsWindowless = FALSE; // NPBool + padding
+    gchar *app_name;
 
     if (instance->mode == NP_EMBED) {
         for (i = 0; i < argc; i++) {
@@ -445,8 +446,17 @@ void new_instance(CPlugin * instance, int16 argc, char *argn[], char *argv[])
         g_free(tmp);
 
         //list_dump(instance->playlist);
+        app_name = NULL;
+        if (instance->player_backend != NULL) {
+            app_name = g_find_program_in_path(instance->player_backend);
+        }
+        if (app_name == NULL) {
+            app_name = g_find_program_in_path("gnome-mplayer");
+            if (app_name == NULL)
+                app_name = g_find_program_in_path("gnome-mplayer-minimal");
+        }
 
-        arg[i++] = g_strdup("gnome-mplayer");
+        arg[i++] = g_strdup(app_name);
         arg[i++] = g_strdup_printf("--controlid=%i", item->controlid);
         arg[i] = NULL;
         error = NULL;
@@ -456,6 +466,7 @@ void new_instance(CPlugin * instance, int16 argc, char *argn[], char *argv[])
             error = NULL;
         }
         NPN_GetURLNotify(instance->mInstance, href->src, NULL, href);
+        g_free(app_name);
     }
 
 
