@@ -1,4 +1,5 @@
 Developement
+	Use preferred player in all launch cases
 	Add support for VLC plugin emulation
 	Add new mimetype video/x-ms-asx
 	Allow for configurable backend (fosfor or gnome-mplayer or something else)
