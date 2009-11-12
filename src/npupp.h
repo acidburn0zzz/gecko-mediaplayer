@@ -522,7 +522,7 @@ typedef bool(*NP_LOADDS NPN_ConstructUPP) (NPP npp, NPObject * obj, const NPVari
 /******************************************************************************************
  * The actual plugin function table definitions
  *******************************************************************************************/
-
+#ifdef DISABLE_THIS
 typedef struct _NPPluginFuncs {
     uint16 size;
     uint16 version;
@@ -591,7 +591,7 @@ typedef struct _NPNetscapeFuncs {
     // NPN_PluginThreadAsyncCallUPP pluginthreadasynccall;
     // NPN_ConstructUPP construct;
 } NPNetscapeFuncs;
-
+#endif
 
 #ifdef XP_MACOSX
 /******************************************************************************************

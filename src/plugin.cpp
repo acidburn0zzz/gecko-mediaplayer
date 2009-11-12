@@ -37,7 +37,7 @@
 
 
 #include "plugin.h"
-#include "npupp.h"
+//#include "npupp.h"
 #include "plugin_list.h"
 #include "plugin_setup.h"
 #include "plugin_types.h"
@@ -999,12 +999,12 @@ void CPlugin::Seek(double counter)
     send_signal_with_double(this, this->lastopened, "Seek", counter);
 }
 
-void CPlugin::SetShowControls(PRBool value)
+void CPlugin::SetShowControls(bool value)
 {
     send_signal_with_boolean(this, this->lastopened, "SetShowControls", value);
 }
 
-void CPlugin::SetFullScreen(PRBool value)
+void CPlugin::SetFullScreen(bool value)
 {
     send_signal_with_boolean(this, this->lastopened, "SetFullScreen", value);
 }
@@ -1022,12 +1022,12 @@ void CPlugin::GetVolume(double *_retval)
     *_retval = request_double_value(this, this->lastopened, "GetVolume");
 }
 
-void CPlugin::GetFullScreen(PRBool * _retval)
+void CPlugin::GetFullScreen(bool * _retval)
 {
     *_retval = request_boolean_value(this, this->lastopened, "GetFullScreen");
 }
 
-void CPlugin::GetShowControls(PRBool * _retval)
+void CPlugin::GetShowControls(bool * _retval)
 {
     *_retval = request_boolean_value(this, this->lastopened, "GetShowControls");
 }
@@ -1097,17 +1097,17 @@ void CPlugin::GetPlayState(PRInt32 * playstate)
     *playstate = request_int_value(this, this->lastopened, "GetPlayState");
 }
 
-void CPlugin::GetLoop(PRBool * _retval)
+void CPlugin::GetLoop(bool * _retval)
 {
     if (lastopened != NULL) {
-        *_retval = (PRBool) lastopened->loop;
+        *_retval = (bool) lastopened->loop;
     } else {
         *_retval = FALSE;
     }
 
 }
 
-void CPlugin::SetLoop(PRBool value)
+void CPlugin::SetLoop(bool value)
 {
     if (lastopened != NULL) {
         lastopened->loop = (int) value;
@@ -1586,7 +1586,7 @@ bool ScriptablePluginObject::Invoke(NPIdentifier name, const NPVariant * args,
 {
     double d;
     char *s;
-    PRBool b;
+    bool b;
 
     CPlugin *pPlugin = (CPlugin *) mNpp->pdata;
     if (pPlugin == NULL) {
@@ -1761,7 +1761,7 @@ bool ScriptablePluginObject::HasProperty(NPIdentifier name)
 bool ScriptablePluginObject::GetProperty(NPIdentifier name, NPVariant * result)
 {
     char *filename;
-    PRBool setting;
+    bool setting;
     PRInt32 state;
 
     CPlugin *pPlugin = (CPlugin *) mNpp->pdata;

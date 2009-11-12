@@ -39,7 +39,8 @@
 #define _NPPLAT_H_
 
 #include <npapi.h>
-#include "npupp.h"
+#include <npfunctions.h>
+//#include "npupp.h"
 /**************************************************/
 /*                                                */
 /*                   Windows                      */
