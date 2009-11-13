@@ -369,6 +369,27 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
                 }
             }
 
+            if (g_ascii_strncasecmp(argn[i], "qtnext",6) == 0) {
+                parse = g_strsplit_set(argv[i],"<>",0);
+                if (parse[1] != NULL) {
+                    item = g_new0(ListItem, 1);
+                    tmp = g_strrstr(src->src, "/");
+                    if (tmp) {
+                        g_strlcpy(item->src, src->src, 1024);
+                        tmp = g_strrstr(item->src, "/");
+                        tmp[1] = '\0';
+                        g_strlcat(item->src, parse[1], 4096);
+                    } else {
+                        g_strlcpy(item->src, parse[1], 4096);
+                    }
+                    item->streaming = streaming(item->src);
+                    item->play = TRUE;
+                    item->id = instance->nextid++;
+                    instance->playlist = g_list_append(instance->playlist, item);
+                }        
+                g_strfreev(parse);
+            }
+
         };
     } else {
 
