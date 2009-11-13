@@ -31,7 +31,7 @@ AC_SUBST(GLIB_CFLAGS)
 AC_SUBST(GLIB_LIBS)
 
 AC_ARG_WITH([xulrunner-sdk],
-    [AS_HELP_STRING([--with-xulrunner-sdk],
+    [AS_HELP_STRING([--with-xulrunner-sdk=path_to_sdk],
         [Path to xulrunner SDK for build --with-xulrunner-sdk=/path/to/sdk])],
         [
 	XULRUNNER_SDK_PREFIX=$with_xulrunner_sdk

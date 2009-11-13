@@ -1439,7 +1439,8 @@ Optional Features:
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
-  --with-xulrunner-sdk    Path to xulrunner SDK for build
+  --with-xulrunner-sdk=path_to_sdk
+                          Path to xulrunner SDK for build
                           --with-xulrunner-sdk=/path/to/sdk
   --with-gconf-source=sourceaddress
                           Config database for installing schema files.
