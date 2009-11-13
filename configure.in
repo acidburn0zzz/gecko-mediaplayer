@@ -32,7 +32,7 @@ AC_SUBST(GLIB_LIBS)
 
 AC_ARG_WITH([xulrunner-sdk],
     [AS_HELP_STRING([--with-xulrunner-sdk],
-        [Use xulrunner SDK for build])],
+        [Path to xulrunner SDK for build --with-xulrunner-sdk=/path/to/sdk])],
         [
 	XULRUNNER_SDK_PREFIX=$with_xulrunner_sdk
 	GECKO_CFLAGS="-I$XULRUNNER_SDK_PREFIX/include -I$XULRUNNER_SDK_PREFIX/include/plugin -I$XULRUNNER_SDK_PREFIX/include/nspr -I$XULRUNNER_SDK_PREFIX/include/xpcom -I$XULRUNNER_SDK_PREFIX/include/string -I$XULRUNNER_SDK_PREFIX/include/java"
