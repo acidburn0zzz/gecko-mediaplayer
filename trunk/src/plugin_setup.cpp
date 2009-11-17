@@ -104,7 +104,8 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
                 sscanf(argv[i], "%i", &height);
             }
 
-            if (g_ascii_strcasecmp(argn[i], "src") == 0) {
+            if (g_ascii_strcasecmp(argn[i], "src") == 0
+                || g_ascii_strcasecmp(argn[i], "url") == 0) {
                 item = g_new0(ListItem, 1);
                 g_strlcpy(item->src, argv[i], 4096);
                 // printf("Item src = %s\n",item->src);
