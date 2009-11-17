@@ -122,6 +122,9 @@ gchar *GetMIMEDescription()
     // Playlist
     g_strlcat(MimeTypes, "audio/x-scpls:pls:Shoutcast Playlist;", sizeof(MimeTypes));
 
+    // MNG
+    g_strlcat(MimeTypes, "video/x-mng:mng:Multiple-Image Network Graphics;", sizeof(MimeTypes));
+
     return g_strdup(MimeTypes);
 }
 
