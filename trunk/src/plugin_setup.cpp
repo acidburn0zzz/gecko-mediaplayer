@@ -63,6 +63,10 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
 
     if (instance->mode == NP_EMBED) {
         for (i = 0; i < argc; i++) {
+        
+            if (argn[i] == NULL)
+                continue;
+                
             printf("ARG: %s = %s\n", argn[i], argv[i]);
 
             if (g_ascii_strcasecmp(argn[i], "name") == 0) {

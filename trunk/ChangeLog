@@ -1,4 +1,5 @@
 Developement
+	Fix crash on http://itunes.apple.com/us/album/endangered-species-live-at-abbey/id309810246
 	Support the qtnext parameter
 	Rework code to work better with xulrunner 1.9.2
 	Use preferred player in all launch cases
