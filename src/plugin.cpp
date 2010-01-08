@@ -903,12 +903,15 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
             }
         }
         if (!item->opened) {
-            send_signal_with_integer(this, item, "SetGUIState", PLAYING);
-            if ((item->localsize >= (cache_size * 1024)) && (percent >= 0.2))
+            if ((item->localsize >= (cache_size * 1024)) && (percent >= 0.2)) {
+                printf("Setting to play because %i > %i\n",item->localsize, cache_size * 1024);
                 ok_to_play = TRUE;
+            }
             if (ok_to_play == FALSE && (item->localsize > (cache_size * 2 * 1024))
-                && (cache_size >= 512))
+                && (cache_size >= 512)) {
+                printf("Setting to play because %i > %i (double cache)\n",item->localsize, cache_size * 2 * 1024);
                 ok_to_play = TRUE;
+            }
             if (ok_to_play == FALSE) {
                 if (item->bitrate == 0 && item->bitrate_requests < 5
                     && ((gint) (percent * 100) > item->bitrate_requests)) {
@@ -916,7 +919,8 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
                     item->bitrate_requests++;
                 }
                 if (item->bitrate > 0) {
-                    if (item->localsize / item->bitrate >= 10) {
+                    if (item->localsize / item->bitrate >= 10 && (percent >= 0.2)) {
+                        printf("Setting to play becuase %i >= 10\n", item->localsize / item->bitrate);
                         ok_to_play = TRUE;
                         if (post_dom_events && this->id != NULL) {
                             postDOMEvent(mInstance, this->id, "qt_canplay");
@@ -937,6 +941,7 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
             playlist = list_parse_qml(playlist, item);
             playlist = list_parse_ram(playlist, item);
             if (item->play) {
+                send_signal_with_integer(this, item, "SetGUIState", PLAYING);
                 open_location(this, item, TRUE);
                 if (post_dom_events && this->id != NULL) {
                     postDOMEvent(mInstance, this->id, "qt_loadedfirstframe");
