@@ -1635,7 +1635,11 @@ bool ScriptablePluginObject::Invoke(NPIdentifier name, const NPVariant * args,
     }
 
     if (name == Open_id || name == SetFileName_id || name == SetHREF_id || name == SetURL_id) {
+#ifdef HAVE_NEW_XULRUNNER
+        pPlugin->SetFilename(NPVARIANT_TO_STRING(args[0]).UTF8Characters);
+#else
         pPlugin->SetFilename(NPVARIANT_TO_STRING(args[0]).utf8characters);
+#endif
         return PR_TRUE;
     }
 
@@ -1703,37 +1707,65 @@ bool ScriptablePluginObject::Invoke(NPIdentifier name, const NPVariant * args,
     }
 
     if (name == onClick_id) {
+#ifdef HAVE_NEW_XULRUNNER
+        pPlugin->SetOnClick(NPVARIANT_TO_STRING(args[0]).UTF8Characters);
+#else
         pPlugin->SetOnClick(NPVARIANT_TO_STRING(args[0]).utf8characters);
+#endif
         return PR_TRUE;
     }
 
     if (name == onMediaComplete_id) {
+#ifdef HAVE_NEW_XULRUNNER
+        pPlugin->SetOnMediaComplete(NPVARIANT_TO_STRING(args[0]).UTF8Characters);
+#else
         pPlugin->SetOnMediaComplete(NPVARIANT_TO_STRING(args[0]).utf8characters);
+#endif
         return PR_TRUE;
     }
 
     if (name == onMouseUp_id) {
+#ifdef HAVE_NEW_XULRUNNER
+        pPlugin->SetOnMouseUp(NPVARIANT_TO_STRING(args[0]).UTF8Characters);
+#else
         pPlugin->SetOnMouseUp(NPVARIANT_TO_STRING(args[0]).utf8characters);
+#endif
         return PR_TRUE;
     }
 
     if (name == onMouseDown_id) {
+#ifdef HAVE_NEW_XULRUNNER
+        pPlugin->SetOnMouseDown(NPVARIANT_TO_STRING(args[0]).UTF8Characters);
+#else
         pPlugin->SetOnMouseDown(NPVARIANT_TO_STRING(args[0]).utf8characters);
+#endif
         return PR_TRUE;
     }
 
     if (name == onMouseOut_id) {
+#ifdef HAVE_NEW_XULRUNNER
+        pPlugin->SetOnMouseOut(NPVARIANT_TO_STRING(args[0]).UTF8Characters);
+#else
         pPlugin->SetOnMouseOut(NPVARIANT_TO_STRING(args[0]).utf8characters);
+#endif
         return PR_TRUE;
     }
 
     if (name == onMouseOver_id) {
+#ifdef HAVE_NEW_XULRUNNER
+        pPlugin->SetOnMouseOver(NPVARIANT_TO_STRING(args[0]).UTF8Characters);
+#else
         pPlugin->SetOnMouseOver(NPVARIANT_TO_STRING(args[0]).utf8characters);
+#endif
         return PR_TRUE;
     }
 
     if (name == onDestroy_id) {
+#ifdef HAVE_NEW_XULRUNNER
+        pPlugin->SetOnDestroy(NPVARIANT_TO_STRING(args[0]).UTF8Characters);
+#else
         pPlugin->SetOnDestroy(NPVARIANT_TO_STRING(args[0]).utf8characters);
+#endif
         return PR_TRUE;
     }
 
@@ -1824,7 +1856,11 @@ bool ScriptablePluginObject::SetProperty(NPIdentifier name, const NPVariant * va
     }
 
     if (name == filename_id || name == src_id) {
+#ifdef HAVE_NEW_XULRUNNER
+        pPlugin->SetFilename(NPVARIANT_TO_STRING(*value).UTF8Characters);
+#else
         pPlugin->SetFilename(NPVARIANT_TO_STRING(*value).utf8characters);
+#endif
         return true;
     }
 

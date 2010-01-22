@@ -9016,12 +9016,12 @@ if test -n "$GECKO_CFLAGS"; then
     pkg_cv_GECKO_CFLAGS="$GECKO_CFLAGS"
  elif test -n "$PKG_CONFIG"; then
     if test -n "$PKG_CONFIG" && \
-    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libxul\"") >&5
-  ($PKG_CONFIG --exists --print-errors "libxul") 2>&5
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libxul < 1.9.2\"") >&5
+  ($PKG_CONFIG --exists --print-errors "libxul < 1.9.2") 2>&5
   ac_status=$?
   $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; then
-  pkg_cv_GECKO_CFLAGS=`$PKG_CONFIG --cflags "libxul" 2>/dev/null`
+  pkg_cv_GECKO_CFLAGS=`$PKG_CONFIG --cflags "libxul < 1.9.2" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -9032,12 +9032,12 @@ if test -n "$GECKO_LIBS"; then
     pkg_cv_GECKO_LIBS="$GECKO_LIBS"
  elif test -n "$PKG_CONFIG"; then
     if test -n "$PKG_CONFIG" && \
-    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libxul\"") >&5
-  ($PKG_CONFIG --exists --print-errors "libxul") 2>&5
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libxul < 1.9.2\"") >&5
+  ($PKG_CONFIG --exists --print-errors "libxul < 1.9.2") 2>&5
   ac_status=$?
   $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; then
-  pkg_cv_GECKO_LIBS=`$PKG_CONFIG --libs "libxul" 2>/dev/null`
+  pkg_cv_GECKO_LIBS=`$PKG_CONFIG --libs "libxul < 1.9.2" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -9055,26 +9055,104 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        GECKO_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "libxul" 2>&1`
+	        GECKO_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "libxul < 1.9.2" 2>&1`
         else
-	        GECKO_PKG_ERRORS=`$PKG_CONFIG --print-errors "libxul" 2>&1`
+	        GECKO_PKG_ERRORS=`$PKG_CONFIG --print-errors "libxul < 1.9.2" 2>&1`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$GECKO_PKG_ERRORS" >&5
 
 	{ $as_echo "$as_me:$LINENO: result: no" >&5
 $as_echo "no" >&6; }
-                { $as_echo "$as_me:$LINENO: WARNING: libxul not found, trying another" >&5
-$as_echo "$as_me: WARNING: libxul not found, trying another" >&2;}
+                { $as_echo "$as_me:$LINENO: WARNING: libxul < 1.9.2 not found, trying another" >&5
+$as_echo "$as_me: WARNING: libxul < 1.9.2 not found, trying another" >&2;}
 elif test $pkg_failed = untried; then
-	{ $as_echo "$as_me:$LINENO: WARNING: libxul not found, trying another" >&5
-$as_echo "$as_me: WARNING: libxul not found, trying another" >&2;}
+	{ $as_echo "$as_me:$LINENO: WARNING: libxul < 1.9.2 not found, trying another" >&5
+$as_echo "$as_me: WARNING: libxul < 1.9.2 not found, trying another" >&2;}
+else
+	GECKO_CFLAGS=$pkg_cv_GECKO_CFLAGS
+	GECKO_LIBS=$pkg_cv_GECKO_LIBS
+        { $as_echo "$as_me:$LINENO: result: yes" >&5
+$as_echo "yes" >&6; }
+	 { $as_echo "$as_me:$LINENO: libxul < 1.9.2 found" >&5
+$as_echo "$as_me: libxul < 1.9.2 found" >&6;}
+
+fi
+fi
+if test "$GECKO_CFLAGS" = ""; then
+
+pkg_failed=no
+{ $as_echo "$as_me:$LINENO: checking for GECKO" >&5
+$as_echo_n "checking for GECKO... " >&6; }
+
+if test -n "$GECKO_CFLAGS"; then
+    pkg_cv_GECKO_CFLAGS="$GECKO_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libxul >= 1.9.2\"") >&5
+  ($PKG_CONFIG --exists --print-errors "libxul >= 1.9.2") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_GECKO_CFLAGS=`$PKG_CONFIG --cflags "libxul >= 1.9.2" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$GECKO_LIBS"; then
+    pkg_cv_GECKO_LIBS="$GECKO_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libxul >= 1.9.2\"") >&5
+  ($PKG_CONFIG --exists --print-errors "libxul >= 1.9.2") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_GECKO_LIBS=`$PKG_CONFIG --libs "libxul >= 1.9.2" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        GECKO_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "libxul >= 1.9.2" 2>&1`
+        else
+	        GECKO_PKG_ERRORS=`$PKG_CONFIG --print-errors "libxul >= 1.9.2" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$GECKO_PKG_ERRORS" >&5
+
+	{ $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+                { $as_echo "$as_me:$LINENO: libxul >= 1.9.2 not found, trying another" >&5
+$as_echo "$as_me: libxul >= 1.9.2 not found, trying another" >&6;}
+elif test $pkg_failed = untried; then
+	{ $as_echo "$as_me:$LINENO: libxul >= 1.9.2 not found, trying another" >&5
+$as_echo "$as_me: libxul >= 1.9.2 not found, trying another" >&6;}
 else
 	GECKO_CFLAGS=$pkg_cv_GECKO_CFLAGS
 	GECKO_LIBS=$pkg_cv_GECKO_LIBS
         { $as_echo "$as_me:$LINENO: result: yes" >&5
 $as_echo "yes" >&6; }
 
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_NEW_XULRUNNER 1
+_ACEOF
+ { $as_echo "$as_me:$LINENO: libxul >= 1.9.2 found" >&5
+$as_echo "$as_me: libxul >= 1.9.2 found" >&6;}
 
 fi
 fi
@@ -9666,6 +9744,8 @@ fi
 if test $usecache != yes; then
 	GECKO_CFLAGS="$GECKO_CFLAGS -DDISABLE_CACHE"
 fi
+
+
 
 ac_config_files="$ac_config_files Makefile gecko-mediaplayer.spec src/Makefile src/libgmlib/Makefile po/Makefile.in"
 

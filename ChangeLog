@@ -1,4 +1,5 @@
 Developement
+	Fix compile with libxul 1.9.2 and higher
 	Fix crash on http://itunes.apple.com/us/album/endangered-species-live-at-abbey/id309810246
 	Support the qtnext parameter
 	Rework code to work better with xulrunner 1.9.2

@@ -61,8 +61,12 @@ PKG_CHECK_MODULES(GECKO, [xulrunner-plugin xulrunner-xpcom],[
 fi
 
 if test "$GECKO_CFLAGS" = ""; then
-PKG_CHECK_MODULES(GECKO, [libxul],[
-    ],[AC_MSG_WARN([libxul not found, trying another])])
+PKG_CHECK_MODULES(GECKO, [libxul < 1.9.2],[ AC_MSG_NOTICE([libxul < 1.9.2 found])
+    ],[AC_MSG_WARN([libxul < 1.9.2 not found, trying another])])
+fi
+if test "$GECKO_CFLAGS" = ""; then
+PKG_CHECK_MODULES(GECKO, [libxul >= 1.9.2],[ AC_DEFINE([HAVE_NEW_XULRUNNER],[1],[Define to 1 if using libxul 1.9.2 or higher]) AC_MSG_NOTICE([libxul >= 1.9.2 found])
+    ],[AC_MSG_NOTICE([libxul >= 1.9.2 not found, trying another])])
 fi
 
 if test "$GECKO_CFLAGS" = ""; then
@@ -128,6 +132,8 @@ AC_ARG_ENABLE(caching,
 if test $usecache != yes; then
 	GECKO_CFLAGS="$GECKO_CFLAGS -DDISABLE_CACHE"
 fi
+
+
 
 AC_OUTPUT([
 Makefile
