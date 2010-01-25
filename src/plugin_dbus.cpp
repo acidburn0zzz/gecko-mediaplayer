@@ -396,14 +396,12 @@ void open_location(CPlugin * instance, ListItem * item, gboolean uselocal)
         return;
 
     } else {
-
         while (!(instance->playerready)) {
             g_main_context_iteration(NULL, FALSE);
         }
-
         if (item->controlid != 0) {
             while (!(item->playerready)) {
-                g_main_context_iteration(NULL, FALSE);
+               g_main_context_iteration(NULL, FALSE);
             }
         }
     }
