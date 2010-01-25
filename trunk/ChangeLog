@@ -1,4 +1,6 @@
 Developement
+	Use correct controlid with launching some apple.com HD videos
+	For apple.com videos change movies.apple.com to www.apple.com
 	Fix compile with libxul 1.9.2 and higher
 	Fix crash on http://itunes.apple.com/us/album/endangered-species-live-at-abbey/id309810246
 	Support the qtnext parameter

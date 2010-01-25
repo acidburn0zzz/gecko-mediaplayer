@@ -595,7 +595,9 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
     gboolean ready;
     gboolean newwindow;
 
-    printf("Entering destroy stream reason = %i for %s\n", reason, stream->url);
+    if (g_strrstr(stream->url, "javascript") == NULL)
+        printf("Entering destroy stream reason = %i for %s\n", reason, stream->url);
+        
     if (reason == NPRES_DONE) {
         item = (ListItem *) stream->notifyData;
         // item = list_find(playlist, (gchar*)stream->url);
@@ -659,7 +661,8 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
         if (item) {
             printf("Destroy Stream, network error, item is %s\n", item->src);
         } else {
-            printf("Destory Stream, network error, item is NULL\n");
+            if (g_strrstr(stream->url, "javascript") == NULL)
+                printf("Destory Stream, network error, item is NULL\n");
         }
     } else {
         item = (ListItem *) stream->notifyData;

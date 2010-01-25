@@ -111,13 +111,21 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
             if (g_ascii_strcasecmp(argn[i], "src") == 0
                 || g_ascii_strcasecmp(argn[i], "url") == 0) {
                 item = g_new0(ListItem, 1);
-                g_strlcpy(item->src, argv[i], 4096);
+                if (g_strrstr(argv[i],"movies.apple.com")) {
+                    tmp = g_strrstr(argv[i], "movies.");
+                    if (tmp != NULL && strlen(tmp) > strlen("movies.")) {
+                        tmp = tmp + strlen("movies.");    
+                        g_snprintf(item->src, 4096, "http://www.%s", tmp);  
+                    } else {
+                        g_strlcpy(item->src, argv[i], 4096);
+                    }               
+                } else {
+                    g_strlcpy(item->src, argv[i], 4096);
+                }
                 // printf("Item src = %s\n",item->src);
                 item->streaming = streaming(item->src);
                 item->play = TRUE;
                 item->id = instance->nextid++;
-                //if (g_strrstr(argv[i],"apple.com"))
-                //    setPreference(instance, "general.useragent.override","QuickTime/7.6.2");
                 instance->playlist = g_list_append(instance->playlist, item);
                 src = item;
             }
@@ -135,7 +143,17 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
 
             if (g_ascii_strcasecmp(argn[i], "href") == 0) {
                 item = g_new0(ListItem, 1);
-                g_strlcpy(item->src, argv[i], 4096);
+                if (g_strrstr(argv[i],"movies.apple.com")) {
+                    tmp = g_strrstr(argv[i], "movies.");
+                    if (tmp != NULL && strlen(tmp) > strlen("movies.")) {
+                        tmp = tmp + strlen("movies.");    
+                        g_snprintf(item->src, 4096, "http://www.%s", tmp);  
+                    } else {
+                        g_strlcpy(item->src, argv[i], 4096);
+                    }               
+                } else {
+                    g_strlcpy(item->src, argv[i], 4096);
+                }
                 // printf("Item href = %s\n",item->src);
                 item->streaming = streaming(item->src);
                 item->play = FALSE;
@@ -359,6 +377,7 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
                     || g_ascii_strcasecmp(argv[i], "yes") == 0
                     || g_ascii_strcasecmp(argv[i], "1") == 0) {
                     instance->debug = TRUE;
+                                                   
                 } else {
                     instance->debug = FALSE;
                 }
@@ -467,7 +486,7 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
         rand = g_rand_new();
         href->controlid = g_rand_int_range(rand, 0, 65535);
         g_rand_free(rand);
-        tmp = g_strdup_printf("/control/%i", item->controlid);
+        tmp = g_strdup_printf("/control/%i", href->controlid);
         g_strlcpy(href->path, tmp, 1024);
         g_free(tmp);
 
@@ -483,7 +502,7 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
         }
 
         arg[i++] = g_strdup(app_name);
-        arg[i++] = g_strdup_printf("--controlid=%i", item->controlid);
+        arg[i++] = g_strdup_printf("--controlid=%i", href->controlid);
         arg[i] = NULL;
         error = NULL;
         if (g_spawn_async(NULL, arg, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error) == FALSE) {
