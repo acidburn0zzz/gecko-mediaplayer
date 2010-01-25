@@ -73,7 +73,7 @@ NPError PluginGetValue(NPPVariable variable, void *value)
     // description matches the features
 
     if (variable == NPPVpluginNameString) {
-        *((const char **) value) = "QuickTime Plug-in 7.4.5";
+        *((const char **) value) = "QuickTime Plug-in 7.6.4";
     }
     if (variable == NPPVpluginDescriptionString) {
         *((const char **) value) =
@@ -100,6 +100,6 @@ NPError PluginGetValue(NPPVariable variable, void *value)
 
 void pluginSpecific(CPlugin * instance)
 {
-    setPreference(instance, "general.useragent.override", "QuickTime/7.6.2");
+    setPreference(instance, "general.useragent.override", "QuickTime/7.6.4");
 }
 
