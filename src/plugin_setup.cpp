@@ -238,6 +238,7 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
             if (g_ascii_strcasecmp(argn[i], "autohref") == 0) {
                 if (strstr(argv[i], "true")
                     || strstr(argv[i], "yes")
+                    || strstr(argv[i], "autohref")
                     || strstr(argv[i], "1")) {
                     autohref = TRUE;
                 } else {

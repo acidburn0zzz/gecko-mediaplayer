@@ -1,4 +1,5 @@
 Developement
+	Fix new apple HD trailers, where trailers is downloaded from the menu
 	Use correct controlid with launching some apple.com HD videos
 	For apple.com videos change movies.apple.com to www.apple.com
 	Fix compile with libxul 1.9.2 and higher
