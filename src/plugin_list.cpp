@@ -292,7 +292,7 @@ GList *list_parse_qt(GList * list, ListItem * item)
                             || code == (unsigned int) -91 || code == (unsigned int) -89) {
                             printf("Skipped URL: %s\n", rdrf);
                         } else {
-                            if (list_find(list, url) == NULL) {
+                            if (list_find(list, url) == NULL && strlen(rdrf) > 0) {
                                 item->play = FALSE;
                                 newitem = g_new0(ListItem, 1);
                                 g_strlcpy(newitem->src, url, 1024);

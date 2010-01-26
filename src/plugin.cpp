@@ -582,7 +582,7 @@ NPBool CPlugin::isInitialized()
 
 NPError CPlugin::NewStream(NPMIMEType type, NPStream * stream, NPBool seekable, uint16 * stype)
 {
-    printf("New Stream Requested\n");
+    printf("New Stream Requested - %s\n", stream->url);
     return NPERR_NO_ERROR;
 }
 
