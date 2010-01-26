@@ -1,4 +1,5 @@
 Developement
+	Revert website change from movies to www at apple.com
 	Fix javascript calls PlayAt, Get/SetAutoPlay
 	Bump QuickTime emulation to 7.6.4
 	Fix new apple HD trailers, where trailers is downloaded from the menu

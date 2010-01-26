@@ -54,6 +54,7 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
     gchar *arg[10];
     GRand *rand;
     gchar *tmp;
+    gchar *tmpsrc;
     gchar **parse;
     gint width = 0, height = 0;
     GError *error;
@@ -111,7 +112,7 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
             if (g_ascii_strcasecmp(argn[i], "src") == 0
                 || g_ascii_strcasecmp(argn[i], "url") == 0) {
                 item = g_new0(ListItem, 1);
-                if (g_strrstr(argv[i],"movies.apple.com")) {
+                if (g_strrstr(argv[i],"XXmovies.apple.com")) {  // tmp disabled, to reenable remove XX
                     tmp = g_strrstr(argv[i], "movies.");
                     if (tmp != NULL && strlen(tmp) > strlen("movies.")) {
                         tmp = tmp + strlen("movies.");    
@@ -143,7 +144,7 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
 
             if (g_ascii_strcasecmp(argn[i], "href") == 0) {
                 item = g_new0(ListItem, 1);
-                if (g_strrstr(argv[i],"movies.apple.com")) {
+                if (g_strrstr(argv[i],"XXmovies.apple.com")) {
                     tmp = g_strrstr(argv[i], "movies.");
                     if (tmp != NULL && strlen(tmp) > strlen("movies.")) {
                         tmp = tmp + strlen("movies.");    
