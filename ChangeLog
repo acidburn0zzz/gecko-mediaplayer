@@ -1,4 +1,5 @@
 Developement
+	Fix javascript calls PlayAt, Get/SetAutoPlay
 	Bump QuickTime emulation to 7.6.4
 	Fix new apple HD trailers, where trailers is downloaded from the menu
 	Use correct controlid with launching some apple.com HD videos
