@@ -1607,6 +1607,12 @@ bool ScriptablePluginObject::Invoke(NPIdentifier name, const NPVariant * args,
         return PR_TRUE;
     }
 
+    if (name == PlayAt_id) {
+        pPlugin->Play();
+        pPlugin->Seek(NPVARIANT_TO_DOUBLE(args[0]));
+        return PR_TRUE;
+    }
+
     if (name == Pause_id || name == DoPause_id) {
         pPlugin->Pause();
         return PR_TRUE;
@@ -1675,8 +1681,13 @@ bool ScriptablePluginObject::Invoke(NPIdentifier name, const NPVariant * args,
         return PR_TRUE;
     }
 
-    if (name == SetAutoPlay_id || name == GetAutoPlay_id) {
+    if (name == SetAutoPlay_id) {
+        pPlugin->autostart = NPVARIANT_TO_BOOLEAN(args[0]);
+        return PR_TRUE;
+    }
 
+    if (name == GetAutoPlay_id) {
+        BOOLEAN_TO_NPVARIANT(pPlugin->autostart, *result);
         return PR_TRUE;
     }
 
