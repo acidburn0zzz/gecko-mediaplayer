@@ -350,6 +350,7 @@ void open_location(CPlugin * instance, ListItem * item, gboolean uselocal)
     gint arg = 0;
     gint ok;
     gchar *app_name;
+    gint count = 0;
 
     //list_dump(instance->playlist);
     //printf("Opening %s to connection %p\n",file, instance->connection);
@@ -396,12 +397,15 @@ void open_location(CPlugin * instance, ListItem * item, gboolean uselocal)
         return;
 
     } else {
-        while (!(instance->playerready)) {
+        while (!(instance->playerready) && count < 1000) {
             g_main_context_iteration(NULL, FALSE);
+            count++;
         }
         if (item->controlid != 0) {
-            while (!(item->playerready)) {
+            count = 0;
+            while (!(item->playerready) && count < 1000) {
                g_main_context_iteration(NULL, FALSE);
+               count++;
             }
         }
     }
