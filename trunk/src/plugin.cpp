@@ -191,9 +191,12 @@ void setPreference(CPlugin * instance, const gchar * name, const gchar * value)
             if (prefBranch) {
                 instance->user_agent = g_new0(gchar, 1024);
                 prefBranch->PrefHasUserValue(name,&v);
-                if (v)
+                if (v) {
                     prefBranch->GetCharPref(name, &(instance->user_agent));
+                    prefBranch->ClearUserPref(name);
+                }
                 prefBranch->SetCharPref(name, value);
+                printf("Set preference %s to %s, old value was '%s'\n", name, value, instance->user_agent);
             }
         }
         NS_RELEASE(sm);
@@ -218,6 +221,7 @@ void clearPreference(CPlugin * instance, const gchar * name)
                     if (g_strrstr(instance->user_agent,"QuickTime/7.6.4")) {
                         prefBranch->ClearUserPref(name);
                     } else {
+                        prefBranch->ClearUserPref(name);
                         prefBranch->SetCharPref(name, instance->user_agent);
                     }
                 }
