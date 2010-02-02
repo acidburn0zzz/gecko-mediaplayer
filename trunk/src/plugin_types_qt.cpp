@@ -100,6 +100,7 @@ NPError PluginGetValue(NPPVariable variable, void *value)
 
 void pluginSpecific(CPlugin * instance)
 {
+    printf("calling pluginSpecific for qt plugin\n");
     setPreference(instance, "general.useragent.override", "QuickTime/7.6.4");
 }
 
