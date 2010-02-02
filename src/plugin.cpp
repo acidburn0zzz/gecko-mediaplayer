@@ -180,11 +180,10 @@ void postDOMEvent(NPP mInstance, const gchar * id, const gchar * event)
 void setPreference(CPlugin * instance, const gchar * name, const gchar * value)
 {
     nsIServiceManager *sm = NULL;
-    NPN_GetValue(NULL, NPNVserviceManager, &sm);
+    NS_GetServiceManager(&sm);
     PRBool v;
 
     if (sm) {
-
         sm->GetServiceByContractID("@mozilla.org/preferences-service;1", NS_GET_IID(nsIPrefService), (void **)&prefService);
         if (prefService) {
             prefService->GetBranch("", &prefBranch);
@@ -207,7 +206,7 @@ void setPreference(CPlugin * instance, const gchar * name, const gchar * value)
 void clearPreference(CPlugin * instance, const gchar * name)
 {
     nsIServiceManager *sm = NULL;
-    NPN_GetValue(NULL, NPNVserviceManager, &sm);
+    NS_GetServiceManager(&sm);
 
     if (sm) {
 
