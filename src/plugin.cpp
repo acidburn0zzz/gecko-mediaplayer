@@ -180,7 +180,13 @@ void postDOMEvent(NPP mInstance, const gchar * id, const gchar * event)
 void setPreference(CPlugin * instance, const gchar * name, const gchar * value)
 {
     nsIServiceManager *sm = NULL;
+    
+#ifdef HAVE_NEW_XULRUNNER
     NS_GetServiceManager(&sm);
+#else
+    NPN_GetValue(NULL, NPNVserviceManager, &sm);
+#endif
+    
     PRBool v;
 
     if (sm) {
@@ -206,7 +212,12 @@ void setPreference(CPlugin * instance, const gchar * name, const gchar * value)
 void clearPreference(CPlugin * instance, const gchar * name)
 {
     nsIServiceManager *sm = NULL;
+
+#ifdef HAVE_NEW_XULRUNNER
     NS_GetServiceManager(&sm);
+#else
+    NPN_GetValue(NULL, NPNVserviceManager, &sm);
+#endif
 
     if (sm) {
 

@@ -43,7 +43,8 @@
 void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
 {
 
-    guint i, j;
+    int16_t i;
+    guint j;
     gint newwindow = 0;
     gint loop = 0;
     gboolean autohref = FALSE;
@@ -54,7 +55,6 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
     gchar *arg[10];
     GRand *rand;
     gchar *tmp;
-    gchar *tmpsrc;
     gchar **parse;
     gint width = 0, height = 0;
     GError *error;
