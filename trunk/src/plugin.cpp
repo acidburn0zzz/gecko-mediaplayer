@@ -180,31 +180,30 @@ void postDOMEvent(NPP mInstance, const gchar * id, const gchar * event)
 void setPreference(CPlugin * instance, const gchar * name, const gchar * value)
 {
     nsIServiceManager *sm = NULL;
+    nsIServiceManager *ServiceManager = NULL;
     
-#ifdef HAVE_NEW_XULRUNNER
-    NS_GetServiceManager(&sm);
-#else
     NPN_GetValue(NULL, NPNVserviceManager, &sm);
-#endif
     
     PRBool v;
 
     if (sm) {
-        sm->GetServiceByContractID("@mozilla.org/preferences-service;1", NS_GET_IID(nsIPrefService), (void **)&prefService);
-        if (prefService) {
-            prefService->GetBranch("", &prefBranch);
-            if (prefBranch) {
-                instance->user_agent = g_new0(gchar, 1024);
-                prefBranch->PrefHasUserValue(name,&v);
-                if (v) {
-                    prefBranch->GetCharPref(name, &(instance->user_agent));
-                    prefBranch->ClearUserPref(name);
-                }
-                prefBranch->SetCharPref(name, value);
-                printf("Set preference %s to %s, old value was '%s'\n", name, value, instance->user_agent);
-            }
-        }
+        sm->QueryInterface(NS_GET_IID(nsIServiceManager), (void **)(&ServiceManager));
         NS_RELEASE(sm);
+    }
+
+    if (ServiceManager) {
+        ServiceManager->GetServiceByContractID(NS_PREFSERVICE_CONTRACTID, NS_GET_IID(nsIPrefBranch), (void **)&prefBranch);
+        if (prefBranch) {
+            instance->user_agent = g_new0(gchar, 1024);
+            prefBranch->PrefHasUserValue(name,&v);
+            if (v) {
+                prefBranch->GetCharPref(name, &(instance->user_agent));
+                prefBranch->ClearUserPref(name);
+            }
+            prefBranch->SetCharPref(name, value);
+            printf("Set preference %s to %s, old value was '%s'\n", name, value, instance->user_agent);
+        }
+        NS_RELEASE(ServiceManager);
     }
 
 }
@@ -212,33 +211,33 @@ void setPreference(CPlugin * instance, const gchar * name, const gchar * value)
 void clearPreference(CPlugin * instance, const gchar * name)
 {
     nsIServiceManager *sm = NULL;
-
-#ifdef HAVE_NEW_XULRUNNER
-    NS_GetServiceManager(&sm);
-#else
+    nsIServiceManager *ServiceManager = NULL;
+    
     NPN_GetValue(NULL, NPNVserviceManager, &sm);
-#endif
+    
+    PRBool v;
 
     if (sm) {
+        sm->QueryInterface(NS_GET_IID(nsIServiceManager), (void **)(&ServiceManager));
+        NS_RELEASE(sm);
+    }
 
-        sm->GetServiceByContractID("@mozilla.org/preferences-service;1", NS_GET_IID(nsIPrefService), (void **)&prefService);
-        if (prefService) {
-            prefService->GetBranch("", &prefBranch);
-            if (prefBranch) {
-                if (instance->user_agent == NULL || strlen(instance->user_agent) == 0) {
+    if (ServiceManager) {
+        ServiceManager->GetServiceByContractID(NS_PREFSERVICE_CONTRACTID, NS_GET_IID(nsIPrefBranch), (void **)&prefBranch);
+        if (prefBranch) {
+            if (instance->user_agent == NULL || strlen(instance->user_agent) == 0) {
+                prefBranch->ClearUserPref(name);
+            } else {
+                if (g_strrstr(instance->user_agent,"QuickTime/7.6.4")) {
                     prefBranch->ClearUserPref(name);
                 } else {
-                    if (g_strrstr(instance->user_agent,"QuickTime/7.6.4")) {
-                        prefBranch->ClearUserPref(name);
-                    } else {
-                        prefBranch->ClearUserPref(name);
-                        prefBranch->SetCharPref(name, instance->user_agent);
-                    }
+                    prefBranch->ClearUserPref(name);
+                    prefBranch->SetCharPref(name, instance->user_agent);
                 }
-                g_free(instance->user_agent);
             }
+            g_free(instance->user_agent);
         }
-        NS_RELEASE(sm);
+        NS_RELEASE(ServiceManager);
     }
 }
 
@@ -596,7 +595,14 @@ NPBool CPlugin::isInitialized()
 
 NPError CPlugin::NewStream(NPMIMEType type, NPStream * stream, NPBool seekable, uint16 * stype)
 {
-    printf("New Stream Requested - %s\n", stream->url);
+    if (g_strrstr(stream->url, "javascript") == NULL ) {
+        printf("New Stream Requested - %s\n", stream->url);
+    }
+    
+    if (stream->notifyData == NULL) {
+        printf("item is NULL\n");
+    }    
+    
     return NPERR_NO_ERROR;
 }
 
@@ -612,7 +618,7 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
     if (g_strrstr(stream->url, "javascript") == NULL)
         printf("Entering destroy stream reason = %i for %s\n", reason, stream->url);
         
-    if (reason == NPRES_DONE) {
+    if (reason == NPERR_NO_ERROR) {
         item = (ListItem *) stream->notifyData;
         // item = list_find(playlist, (gchar*)stream->url);
 
@@ -644,6 +650,11 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
             playlist = list_parse_asx(playlist, item);
             playlist = list_parse_qml(playlist, item);
             playlist = list_parse_ram(playlist, item);
+            
+            // printf("item->play = %i\n",item->play);
+            // printf("item->src = %s\n", item->src);
+            // printf("item->streaming = %i\n", item->streaming);
+            
             if (item->play) {
                 open_location(this, item, TRUE);
                 if (post_dom_events && this->id != NULL) {
@@ -651,18 +662,23 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
                 }
             } else {
                 item = list_find_next_playable(playlist);
-                if (!item->streaming) {
-                    item->controlid = id;
-                    g_strlcpy(item->path, path, 1024);
-                    item->playerready = ready;
-                    item->newwindow = newwindow;
-                    item->cancelled = FALSE;
-                    if (item != NULL)
-                        NPN_GetURLNotify(mInstance, item->src, NULL, item);
-                } else {
-                    open_location(this, item, FALSE);
-                    if (post_dom_events && this->id != NULL) {
-                        postDOMEvent(mInstance, this->id, "qt_play");
+                if (item != NULL) {
+                    // printf("item->play = %i\n",item->play);
+                    // printf("item->src = %s\n", item->src);
+                    // printf("item->streaming = %i\n", item->streaming);
+                    if (!item->streaming) {
+                        item->controlid = id;
+                        g_strlcpy(item->path, path, 1024);
+                        item->playerready = ready;
+                        item->newwindow = newwindow;
+                        item->cancelled = FALSE;
+                        if (item != NULL)
+                            NPN_GetURLNotify(mInstance, item->src, NULL, item);
+                    } else {
+                        open_location(this, item, FALSE);
+                        if (post_dom_events && this->id != NULL) {
+                            postDOMEvent(mInstance, this->id, "qt_play");
+                        }
                     }
                 }
             }
@@ -670,18 +686,20 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
         }
         //printf("Leaving destroy stream src = %s\n", item->src);
         
-    } else if (reason == NPRES_NETWORK_ERR) {
+    } else if (reason == NPERR_INVALID_URL) {
         item = (ListItem *) stream->notifyData;
         if (item) {
-            printf("Destroy Stream, network error, item is %s\n", item->src);
+            printf("Destroy Stream, invalid url, item is %s\n", item->src);
         } else {
-            if (g_strrstr(stream->url, "javascript") == NULL)
-                printf("Destory Stream, network error, item is NULL\n");
+            if (g_strrstr(stream->url, "javascript") == NULL) {
+                printf("Destroy Stream, network error, item is NULL\n");
+            }
         }
     } else {
         item = (ListItem *) stream->notifyData;
         // item = list_find(playlist, (gchar*)stream->url);
-        printf("Exiting destroy stream reason = %i for %s\n", reason, stream->url);
+        if (g_strrstr(stream->url, "javascript") == NULL)
+            printf("Exiting destroy stream reason = %i for %s\n", reason, stream->url);
         if (item == NULL) {
             return NPERR_NO_ERROR;
         } else {
@@ -707,7 +725,7 @@ void CPlugin::URLNotify(const char *url, NPReason reason, void *notifyData)
     //DBusMessage *message;
     //const char *file;
 
-    printf("URL Notify %s\n,%i = %i\n%s\n%s\n%s\n", url, reason, NPRES_DONE, item->src, item->local,
+    printf("URL Notify url = '%s'\nreason = %i\n%s\n%s\n%s\n", url, reason, item->src, item->local,
            path);
     if (reason == NPRES_DONE) {
 
@@ -726,7 +744,7 @@ void CPlugin::URLNotify(const char *url, NPReason reason, void *notifyData)
                dbus_message_unref(message);
              */
         }
-    } else {
+
         if (item) {
             item->played = TRUE;
             if (!item->streaming) {
@@ -738,17 +756,26 @@ void CPlugin::URLNotify(const char *url, NPReason reason, void *notifyData)
                         NPN_GetURLNotify(mInstance, item->src, NULL, item);
                     }
                 }
-            }
+            }    
         } else {
             item = list_find_next_playable(playlist);
             if (item) {
-                if (item->retrieved) {
+                if (item->retrieved || item->streaming) {
                     open_location(this, item, TRUE);
                 } else {
                     NPN_GetURLNotify(mInstance, item->src, NULL, item);
                 }
             }
         }        
+
+
+        
+    } else if (reason == NPRES_NETWORK_ERR) {
+        printf("URL Notify result is Network Error\n");
+    } else if (reason == NPRES_USER_BREAK) {
+        printf("URL Notify result is User Break\n");
+    } else {
+        printf("%i is an invalid reason code in URLNotify\n", reason);
     }
 }
 
@@ -758,9 +785,10 @@ int32 CPlugin::WriteReady(NPStream * stream)
     gchar *path;
     gchar *tmp;
 
-    //printf("WriteReady called\n");
+    // printf("WriteReady called\n");
     if (!acceptdata) {
-        NPN_DestroyStream(mInstance, stream, NPRES_DONE);
+        printf("Not accepting data\n");
+        NPN_DestroyStream(mInstance, stream, NPERR_GENERIC_ERROR);
         return -1;
     }
 
@@ -779,8 +807,8 @@ int32 CPlugin::WriteReady(NPStream * stream)
             playlist = g_list_append(playlist, item);
             stream->notifyData = item;
         } else {
-            // printf("item is null\nstream url %s\n", stream->url);
-            NPN_DestroyStream(mInstance, stream, NPRES_DONE);
+            printf("item is null\nstream url %s\n", stream->url);
+            NPN_DestroyStream(mInstance, stream, NPERR_NO_ERROR);
             return -1;
         }
     } else {
@@ -791,8 +819,11 @@ int32 CPlugin::WriteReady(NPStream * stream)
 
     // printf("Write Ready item url = %s\n%s\n",item->src,stream->url);
 
-    if (item->cancelled)
-        NPN_DestroyStream(mInstance, stream, NPRES_USER_BREAK);
+    if (item->cancelled) {
+        printf("cancelling WriteReady\n");
+        NPN_DestroyStream(mInstance, stream, NPERR_NO_ERROR);
+        return -1;
+    }
 
     if (strlen(item->local) == 0) {
         path = g_strdup_printf("%s/gnome-mplayer/plugin", g_get_user_cache_dir());
@@ -822,7 +853,8 @@ int32 CPlugin::WriteReady(NPStream * stream)
     }
 
     if (item->retrieved) {
-        NPN_DestroyStream(mInstance, stream, NPRES_DONE);
+        printf("Duplicate request, item already retrieved\n");
+        NPN_DestroyStream(mInstance, stream, NPERR_NO_ERROR);
         return -1;
     }
 
@@ -844,26 +876,37 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
 
     // printf("Write Called\n");
     if (!acceptdata) {
-        NPN_DestroyStream(mInstance, stream, NPRES_DONE);
+        printf("not accepting data\n");
+        NPN_DestroyStream(mInstance, stream, NPERR_NO_ERROR);
         return -1;
     }
 
     item = (ListItem *) stream->notifyData;
 
     if (item == NULL) {
-        printf(_("Write unable to write because item is NULL"));
-        NPN_DestroyStream(mInstance, stream, NPRES_DONE);
+        printf("item is NULL\n");
+        printf(_("Write unable to write because item is NULL\n"));
+        NPN_DestroyStream(mInstance, stream, NPERR_GENERIC_ERROR);
         return -1;
     }
 
-    if (item->cancelled || item->retrieved)
-        NPN_DestroyStream(mInstance, stream, NPRES_USER_BREAK);
-
+    if (item->cancelled || item->retrieved) {
+        printf("cancelled\n");
+        NPN_DestroyStream(mInstance, stream, NPERR_NO_ERROR);
+        return -1;
+    }
+    
     if (strstr((char *) buffer, "ICY 200 OK") != NULL 
         || strstr((char *) buffer, "Content-length:") != NULL // If item is a block of jpeg images, just stream it
         || strstr((char *) buffer, "<HTML>") != NULL
-        || item->streaming == TRUE
-        || stream->lastmodified == 0) {
+        || item->streaming == TRUE) {
+        //   || stream->lastmodified == 0) {    this is not valid for many sites
+        
+        // printf("BUFFER='%s'\n", buffer);
+        
+        // printf("item->streaming = %i\n", item->streaming);
+        // printf("stream->lastmodified = %i\n", stream->lastmodified);
+        
         item->streaming = TRUE;
         open_location(this, item, FALSE);
         if (post_dom_events && this->id != NULL) {
@@ -873,7 +916,8 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
         if (item->localfp) {
             fclose(item->localfp);
         }
-        NPN_DestroyStream(mInstance, stream, NPRES_USER_BREAK);
+        printf("Got IceCast Stream, let mplayer stream it\n");
+        NPN_DestroyStream(mInstance, stream, NPERR_NO_ERROR);
         return -1;
     }
 
@@ -885,7 +929,7 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
 
     if (item->localfp == NULL) {
         printf("Local cache file is not open, cannot write data\n");
-        NPN_DestroyStream(mInstance, stream, NPRES_DONE);
+        NPN_DestroyStream(mInstance, stream, NPERR_NO_ERROR);
         return -1;
     }
     fseek(item->localfp, offset, SEEK_SET);
@@ -957,6 +1001,10 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
             playlist = list_parse_asx(playlist, item);
             playlist = list_parse_qml(playlist, item);
             playlist = list_parse_ram(playlist, item);
+            
+            // printf("item->play = %i\n",item->play);
+            // printf("item->src = %i\n", item->src);
+            
             if (item->play) {
                 send_signal_with_integer(this, item, "SetGUIState", PLAYING);
                 open_location(this, item, TRUE);
@@ -973,7 +1021,12 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
                     item->playerready = ready;
                     item->newwindow = newwindow;
                     item->cancelled = FALSE;
-                    NPN_GetURLNotify(mInstance, item->src, NULL, item);
+                    // printf("opening next playable items on the playlist\n");
+                    if (item->streaming) {
+                        open_location(this,item, FALSE);
+                    } else {
+                        NPN_GetURLNotify(mInstance, item->src, NULL, item);
+                    }
                 }
             }
             g_free(path);
