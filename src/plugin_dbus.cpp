@@ -350,7 +350,6 @@ void open_location(CPlugin * instance, ListItem * item, gboolean uselocal)
     gint arg = 0;
     gint ok;
     gchar *app_name;
-    gint count = 0;
 
     //list_dump(instance->playlist);
     //printf("Opening %s to connection %p\n",file, instance->connection);
@@ -397,19 +396,21 @@ void open_location(CPlugin * instance, ListItem * item, gboolean uselocal)
         return;
 
     } else {
-        while (!(instance->playerready) && count < 1000) {
+        //printf("waiting for ready\n");
+        while (!(instance->playerready)) {
             g_main_context_iteration(NULL, FALSE);
-            count++;
         }
+        //printf("got player, waiting for controlid %i\n",item->controlid);
         if (item->controlid != 0) {
-            count = 0;
-            while (!(item->playerready) && count < 1000) {
+            while (!(item->playerready)) {
                g_main_context_iteration(NULL, FALSE);
-               count++;
             }
         }
+        //printf("ready!\n");
     }
-
+    
+    // printf("item %s is opened == %i\n",item->src, item->opened);
+    
     if (!item->opened) {
         if (uselocal && strlen(item->local) > 0) {
             file = g_strdup(item->local);
@@ -423,7 +424,7 @@ void open_location(CPlugin * instance, ListItem * item, gboolean uselocal)
             path = instance->path;
         }
 
-        //printf("Sending Open %s to connection %p\n",file, instance->connection);
+        // printf("Sending Open %s to connection %p item->hrefid = %i\n",file, instance->connection, item->hrefid);
         if (item->hrefid == 0) {
             message = dbus_message_new_signal(path, "com.gnome.mplayer", "Open");
             dbus_message_append_args(message, DBUS_TYPE_STRING, &file, DBUS_TYPE_INVALID);
@@ -441,6 +442,8 @@ void open_location(CPlugin * instance, ListItem * item, gboolean uselocal)
         send_signal_with_string(instance, item, "SetURL", item->src);
         item->opened = TRUE;
         instance->lastopened = item;
+    } else {
+        printf("Item already opened before\n");
     }
 }
 

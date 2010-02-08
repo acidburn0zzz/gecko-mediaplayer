@@ -487,6 +487,7 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
         // generate a random controlid
         rand = g_rand_new();
         href->controlid = g_rand_int_range(rand, 0, 65535);
+        // printf("autohref controlid = %i\n", href->controlid);
         g_rand_free(rand);
         tmp = g_strdup_printf("/control/%i", href->controlid);
         g_strlcpy(href->path, tmp, 1024);
