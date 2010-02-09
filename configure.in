@@ -37,6 +37,14 @@ AC_ARG_WITH([xulrunner-sdk],
 	XULRUNNER_SDK_PREFIX=$with_xulrunner_sdk
 	GECKO_CFLAGS="-I$XULRUNNER_SDK_PREFIX/include -I$XULRUNNER_SDK_PREFIX/include/plugin -I$XULRUNNER_SDK_PREFIX/include/nspr -I$XULRUNNER_SDK_PREFIX/include/xpcom -I$XULRUNNER_SDK_PREFIX/include/string -I$XULRUNNER_SDK_PREFIX/include/java"
 	GECKO_LIBS="-L$XULRUNNER_SDK_PREFIX/lib -lxpcomglue_s -lxul -lxpcom -lplds4 -lplc4 -lnspr4 -lpthread -ldl"
+	AC_ARG_ENABLE(new-libxul,
+		AC_HELP_STRING([--enable-new-libxul],[libxul/xulrunner-sdk is 1.9.2 or higher]),
+		[usenewlibxul=$enableval],[usenewlibxul=no])
+
+	if test $usenewlibxul == yes; then
+		AC_DEFINE([HAVE_NEW_XULRUNNER],[1],[Define to 1 if using libxul 1.9.2 or higher])
+	fi
+	
 	],
         [])
 

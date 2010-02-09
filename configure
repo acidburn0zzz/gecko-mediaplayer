@@ -771,6 +771,7 @@ enable_option_checking
 enable_maintainer_mode
 enable_dependency_tracking
 with_xulrunner_sdk
+enable_new_libxul
 with_gconf
 with_gconf_source
 with_gconf_schema_file_dir
@@ -1432,6 +1433,7 @@ Optional Features:
 			  (and sometimes confusing) to the casual installer
   --disable-dependency-tracking  speeds up one-time build
   --enable-dependency-tracking   do not reject slow dependency extractors
+  --enable-new-libxul     libxul/xulrunner-sdk is 1.9.2 or higher
   --disable-schemas-install
                           Disable the schemas installation
   --disable-caching       Disable caching of remote media to local storage
@@ -8710,6 +8712,22 @@ if test "${with_xulrunner_sdk+set}" = set; then
 	XULRUNNER_SDK_PREFIX=$with_xulrunner_sdk
 	GECKO_CFLAGS="-I$XULRUNNER_SDK_PREFIX/include -I$XULRUNNER_SDK_PREFIX/include/plugin -I$XULRUNNER_SDK_PREFIX/include/nspr -I$XULRUNNER_SDK_PREFIX/include/xpcom -I$XULRUNNER_SDK_PREFIX/include/string -I$XULRUNNER_SDK_PREFIX/include/java"
 	GECKO_LIBS="-L$XULRUNNER_SDK_PREFIX/lib -lxpcomglue_s -lxul -lxpcom -lplds4 -lplc4 -lnspr4 -lpthread -ldl"
+	# Check whether --enable-new-libxul was given.
+if test "${enable_new_libxul+set}" = set; then
+  enableval=$enable_new_libxul; usenewlibxul=$enableval
+else
+  usenewlibxul=no
+fi
+
+
+	if test $usenewlibxul == yes; then
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_NEW_XULRUNNER 1
+_ACEOF
+
+	fi
+
 
 fi
 
