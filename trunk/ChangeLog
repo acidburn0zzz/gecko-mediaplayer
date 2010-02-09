@@ -1,4 +1,5 @@
 Developement
+	Add --enable-new-libxul when using --with-xulrunner-sdk
 	User proper NPERR and NPRES codes in the URLNotify and DestroyStream
 0.9.9
 	Minor changes to the preference setting code
