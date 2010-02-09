@@ -181,10 +181,10 @@ void setPreference(CPlugin * instance, const gchar * name, const gchar * value)
 {
     nsIServiceManager *sm = NULL;
     nsIServiceManager *ServiceManager = NULL;
-    
-    NPN_GetValue(NULL, NPNVserviceManager, &sm);
-    
     PRBool v;
+    
+    //NPN_GetValue(NULL, NPNVserviceManager, &sm);
+    NS_GetServiceManager(&sm);    
 
     if (sm) {
         sm->QueryInterface(NS_GET_IID(nsIServiceManager), (void **)(&ServiceManager));
@@ -212,10 +212,11 @@ void clearPreference(CPlugin * instance, const gchar * name)
 {
     nsIServiceManager *sm = NULL;
     nsIServiceManager *ServiceManager = NULL;
-    
-    NPN_GetValue(NULL, NPNVserviceManager, &sm);
-    
     PRBool v;
+    
+    // NPN_GetValue(NULL, NPNVserviceManager, &sm);
+    
+    NS_GetServiceManager(&sm);    
 
     if (sm) {
         sm->QueryInterface(NS_GET_IID(nsIServiceManager), (void **)(&ServiceManager));
