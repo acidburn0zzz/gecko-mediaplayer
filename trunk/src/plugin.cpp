@@ -655,7 +655,7 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
             // printf("item->play = %i\n",item->play);
             // printf("item->src = %s\n", item->src);
             // printf("item->streaming = %i\n", item->streaming);
-            
+            // printf("calling open_location from DestroyStream\n");
             if (item->play) {
                 open_location(this, item, TRUE);
                 if (post_dom_events && this->id != NULL) {
@@ -1005,7 +1005,7 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
             
             // printf("item->play = %i\n",item->play);
             // printf("item->src = %i\n", item->src);
-            
+            // printf("calling open_location from Write\n"); 
             if (item->play) {
                 send_signal_with_integer(this, item, "SetGUIState", PLAYING);
                 open_location(this, item, TRUE);

@@ -213,6 +213,7 @@ void list_dump(GList * list)
                 printf("src = %s\n", item->src);
                 printf("local = %s\n", item->local);
                 printf("id = %i\n", item->id);
+                printf("hrefid = %i\n", item->hrefid);
                 printf("play = %i\n", item->play);
                 printf("path = %s\n", item->path);
                 printf("controlid = %i\n", item->controlid);
