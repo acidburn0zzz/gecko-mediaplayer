@@ -751,7 +751,7 @@ void CPlugin::URLNotify(const char *url, NPReason reason, void *notifyData)
             if (!item->streaming) {
                 item = list_find_next_playable(playlist);
                 if (item) {
-                    if (item->retrieved) {
+                    if (item->retrieved || item->streaming) {
                         open_location(this, item, TRUE);
                     } else {
                         NPN_GetURLNotify(mInstance, item->src, NULL, item);

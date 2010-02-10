@@ -1,4 +1,5 @@
 Developement
+	Reorder configure.in checks
 	Fix Apple HD Gallery site (target = QuickTime issue)
 	Add --enable-new-libxul when using --with-xulrunner-sdk
 	User proper NPERR and NPRES codes in the URLNotify and DestroyStream
