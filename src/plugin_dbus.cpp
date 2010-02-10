@@ -424,7 +424,7 @@ void open_location(CPlugin * instance, ListItem * item, gboolean uselocal)
             path = instance->path;
         }
 
-        // printf("Sending Open %s to connection %p item->hrefid = %i\n",file, instance->connection, item->hrefid);
+        printf("Sending Open %s to connection %p\nitem->hrefid = %i item->src = %s\n",file, instance->connection, item->hrefid,item->src);
         if (item->hrefid == 0) {
             message = dbus_message_new_signal(path, "com.gnome.mplayer", "Open");
             dbus_message_append_args(message, DBUS_TYPE_STRING, &file, DBUS_TYPE_INVALID);
