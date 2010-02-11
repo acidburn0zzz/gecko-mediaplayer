@@ -555,6 +555,9 @@ gint streaming(gchar * url)
     if (g_ascii_strncasecmp(url, "dvd://", 6) == 0)
         ret = 1;
 
+    if (g_strrstr(url, ".m3u") != NULL)
+        ret = 1;
+
     if (g_ascii_strncasecmp(url, "file://", 7) == 0) {
         p = g_filename_from_uri(url, NULL, NULL);
         if (p != NULL) {

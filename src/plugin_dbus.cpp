@@ -426,6 +426,10 @@ void open_location(CPlugin * instance, ListItem * item, gboolean uselocal)
 
         printf("Sending Open %s to connection %p\nitem->hrefid = %i item->src = %s\n",file, instance->connection, item->hrefid,item->src);
         if (item->hrefid == 0) {
+            if (item->streaming) {
+                send_signal_with_double(instance, item, "SetCachePercent", 0);
+                send_signal_with_string(instance, item, "SetProgressText", "");
+            }
             message = dbus_message_new_signal(path, "com.gnome.mplayer", "Open");
             dbus_message_append_args(message, DBUS_TYPE_STRING, &file, DBUS_TYPE_INVALID);
             dbus_connection_send(instance->connection, message, NULL);

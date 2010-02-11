@@ -646,12 +646,15 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
             path = g_strdup(item->path);
             ready = item->playerready;
             newwindow = item->newwindow;
-            playlist = list_parse_qt(playlist, item);
-            playlist = list_parse_qt2(playlist, item);
-            playlist = list_parse_asx(playlist, item);
-            playlist = list_parse_qml(playlist, item);
-            playlist = list_parse_ram(playlist, item);
-            
+            item->streaming = streaming(item->src);
+            if (!item->streaming) {
+                printf("in Destroy Stream\n");
+                playlist = list_parse_qt(playlist, item);
+                playlist = list_parse_qt2(playlist, item);
+                playlist = list_parse_asx(playlist, item);
+                playlist = list_parse_qml(playlist, item);
+                playlist = list_parse_ram(playlist, item);
+            }            
             // printf("item->play = %i\n",item->play);
             // printf("item->src = %s\n", item->src);
             // printf("item->streaming = %i\n", item->streaming);
@@ -951,7 +954,11 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
                     (gdouble) ((item->localsize -
                                 item->lastsize) / 1024.0) / (gdouble) difftime(time(NULL),
                                                                                lastupdate);
-                text = g_strdup_printf(_("Cache fill: %2.2f%% (%0.1f K/s)"), percent * 100.0, rate);
+                if (percent > 0.99) {
+                    text = g_strdup_printf(_("Caching %iK (%0.1f K/s)"), item->mediasize / 1024, rate);
+                } else {                                                                                
+                    text = g_strdup_printf(_("Cache fill: %2.2f%% (%0.1f K/s)"), percent * 100.0, rate);
+                }
                 send_signal_with_string(this, item, "SetProgressText", text);
                 if (!item->opened)
                     send_signal_with_string(this, item, "SetURL", item->src);
@@ -998,11 +1005,14 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
             path = g_strdup(item->path);
             ready = item->playerready;
             newwindow = item->newwindow;
-            playlist = list_parse_qt(playlist, item);
-            playlist = list_parse_asx(playlist, item);
-            playlist = list_parse_qml(playlist, item);
-            playlist = list_parse_ram(playlist, item);
-            
+            item->streaming = streaming(item->src);
+            if (!item->streaming) {
+                printf("in Write\n");
+                playlist = list_parse_qt(playlist, item);
+                playlist = list_parse_asx(playlist, item);
+                playlist = list_parse_qml(playlist, item);
+                playlist = list_parse_ram(playlist, item);
+            }    
             // printf("item->play = %i\n",item->play);
             // printf("item->src = %i\n", item->src);
             // printf("calling open_location from Write\n"); 
