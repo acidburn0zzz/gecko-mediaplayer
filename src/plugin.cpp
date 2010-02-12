@@ -45,6 +45,7 @@
 #include <nsIPrefBranch.h>
 #include <nsIPrefService.h>
 #include <nsIServiceManager.h>
+#include <nsXPCOM.h>
 
 nsIPrefBranch *prefBranch = NULL;
 nsIPrefService *prefService = NULL;
