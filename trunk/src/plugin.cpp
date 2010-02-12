@@ -600,8 +600,8 @@ NPError CPlugin::NewStream(NPMIMEType type, NPStream * stream, NPBool seekable, 
         printf("New Stream Requested - %s\n", stream->url);
     }
     
-    if (stream->notifyData == NULL) {
-        printf("item is NULL\n");
+    if (g_strrstr(stream->url, "javascript") == NULL && stream->notifyData == NULL) {
+        printf("item is NULL for %s\n", stream->url);
     }    
     
     return NPERR_NO_ERROR;
@@ -660,6 +660,7 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
             // printf("item->streaming = %i\n", item->streaming);
             // printf("calling open_location from DestroyStream\n");
             if (item->play) {
+                item->requested = TRUE;
                 open_location(this, item, TRUE);
                 if (post_dom_events && this->id != NULL) {
                     postDOMEvent(mInstance, this->id, "qt_play");
@@ -676,10 +677,12 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
                         item->playerready = ready;
                         item->newwindow = newwindow;
                         item->cancelled = FALSE;
+                        item->requested = TRUE;
                         if (item != NULL)
                             NPN_GetURLNotify(mInstance, item->src, NULL, item);
                     } else {
                         open_location(this, item, FALSE);
+                        item->requested = TRUE;
                         if (post_dom_events && this->id != NULL) {
                             postDOMEvent(mInstance, this->id, "qt_play");
                         }
@@ -756,8 +759,10 @@ void CPlugin::URLNotify(const char *url, NPReason reason, void *notifyData)
                 if (item) {
                     if (item->retrieved || item->streaming) {
                         open_location(this, item, TRUE);
+                        item->requested = TRUE;
                     } else {
                         NPN_GetURLNotify(mInstance, item->src, NULL, item);
+                        item->requested = TRUE;
                     }
                 }
             }    
@@ -766,8 +771,10 @@ void CPlugin::URLNotify(const char *url, NPReason reason, void *notifyData)
             if (item) {
                 if (item->retrieved || item->streaming) {
                     open_location(this, item, TRUE);
+                    item->requested = TRUE;
                 } else {
                     NPN_GetURLNotify(mInstance, item->src, NULL, item);
+                    item->requested = TRUE;
                 }
             }
         }        
@@ -1019,6 +1026,7 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
             if (item->play) {
                 send_signal_with_integer(this, item, "SetGUIState", PLAYING);
                 open_location(this, item, TRUE);
+                item->requested = TRUE;
                 if (post_dom_events && this->id != NULL) {
                     postDOMEvent(mInstance, this->id, "qt_loadedfirstframe");
                     postDOMEvent(mInstance, this->id, "qt_canplay");
@@ -1035,8 +1043,10 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
                     // printf("opening next playable items on the playlist\n");
                     if (item->streaming) {
                         open_location(this,item, FALSE);
+                        item->requested = TRUE;
                     } else {
                         NPN_GetURLNotify(mInstance, item->src, NULL, item);
+                        item->requested = TRUE;
                     }
                 }
             }

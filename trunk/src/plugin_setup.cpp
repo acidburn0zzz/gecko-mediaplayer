@@ -453,11 +453,6 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
         src->hrefid = href->id;
     }
 	
-    if (src)
-	printf("src->hrefid = %i\n",src->hrefid);
-    if (href)
-	printf("href->id = %i\n", href->id);
-
     // if target is set, set it on the href
     if (href != NULL) {
         href->newwindow = newwindow;

@@ -1,4 +1,5 @@
 Developement
+	Keep requested flag consistent
 	Work better with .m3u playlists
 	Reorder configure.in checks
 	Fix Apple HD Gallery site (target = QuickTime issue)
