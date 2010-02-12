@@ -350,6 +350,7 @@ void open_location(CPlugin * instance, ListItem * item, gboolean uselocal)
     gint arg = 0;
     gint ok;
     gchar *app_name;
+    gchar *nullstr;
 
     //list_dump(instance->playlist);
     //printf("Opening %s to connection %p\n",file, instance->connection);
@@ -428,7 +429,9 @@ void open_location(CPlugin * instance, ListItem * item, gboolean uselocal)
         if (item->hrefid == 0) {
             if (item->streaming) {
                 send_signal_with_double(instance, item, "SetCachePercent", 0);
-                send_signal_with_string(instance, item, "SetProgressText", "");
+                nullstr = g_strdup("");
+                send_signal_with_string(instance, item, "SetProgressText", nullstr);
+                g_free(nullstr);
             }
             message = dbus_message_new_signal(path, "com.gnome.mplayer", "Open");
             dbus_message_append_args(message, DBUS_TYPE_STRING, &file, DBUS_TYPE_INVALID);
