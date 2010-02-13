@@ -44,4 +44,4 @@ gconftool-2 --makefile-install-rule %{_sysconfdir}/gconf/schemas/gecko-mediaplay
 %{_docdir}/%{name}
 %{_libdir}/mozilla
 %{_datadir}/locale
-%config %{_sysconfdir}/gconf/schemas/gecko-mediaplayer.schemas
+%config %{_sysconfdir}
