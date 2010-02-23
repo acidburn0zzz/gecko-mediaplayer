@@ -111,13 +111,13 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
             }
 
             if (g_ascii_strcasecmp(dbus_message_get_member(message), "ListDump") == 0) {
-                
+
                 printf("playlist:\n");
                 list_dump(instance->playlist);
-                
+
                 return DBUS_HANDLER_RESULT_HANDLED;
             }
-            
+
             if (g_ascii_strcasecmp(dbus_message_get_member(message), "RequestById") == 0) {
                 dbus_error_init(&error);
                 if (dbus_message_get_args(message, &error, DBUS_TYPE_STRING, &s, DBUS_TYPE_INVALID)) {
@@ -164,7 +164,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                             if (g_spawn_async(NULL, arg, NULL,
                                               G_SPAWN_SEARCH_PATH, NULL, NULL, NULL,
                                               &gerror) == FALSE) {
-                                printf("Unable to launch %s: %s\n", app_name,gerror->message);
+                                printf("Unable to launch %s: %s\n", app_name, gerror->message);
                                 g_error_free(gerror);
                                 gerror = NULL;
                             }
@@ -404,14 +404,14 @@ void open_location(CPlugin * instance, ListItem * item, gboolean uselocal)
         //printf("got player, waiting for controlid %i\n",item->controlid);
         if (item->controlid != 0) {
             while (!(item->playerready)) {
-               g_main_context_iteration(NULL, FALSE);
+                g_main_context_iteration(NULL, FALSE);
             }
         }
         //printf("ready!\n");
     }
-    
+
     // printf("item %s is opened == %i\n",item->src, item->opened);
-    
+
     if (!item->opened) {
         if (uselocal && strlen(item->local) > 0) {
             file = g_strdup(item->local);
@@ -425,7 +425,8 @@ void open_location(CPlugin * instance, ListItem * item, gboolean uselocal)
             path = instance->path;
         }
 
-        printf("Sending Open %s to connection %p\nitem->hrefid = %i item->src = %s\n",file, instance->connection, item->hrefid,item->src);
+        printf("Sending Open %s to connection %p\nitem->hrefid = %i item->src = %s\n", file,
+               instance->connection, item->hrefid, item->src);
         if (item->hrefid == 0) {
             if (item->streaming) {
                 send_signal_with_double(instance, item, "SetCachePercent", 0);
