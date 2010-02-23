@@ -173,7 +173,8 @@ void postDOMEvent(NPP mInstance, const gchar * id, const gchar * event)
 
     jscript = g_strdup_printf("javascript:obj_gmp=document.getElementById('%s');"
                               "e_gmp=document.createEvent('Events');"
-                              "e_gmp.initEvent('%s',true,true);" "obj_gmp.dispatchEvent(e_gmp);", id, event);
+                              "e_gmp.initEvent('%s',true,true);" "obj_gmp.dispatchEvent(e_gmp);",
+                              id, event);
     NPN_GetURL(mInstance, jscript, NULL);
     g_free(jscript);
 }
@@ -183,26 +184,28 @@ void setPreference(CPlugin * instance, const gchar * name, const gchar * value)
     nsIServiceManager *sm = NULL;
     nsIServiceManager *ServiceManager = NULL;
     PRBool v;
-    
+
     //NPN_GetValue(NULL, NPNVserviceManager, &sm);
-    NS_GetServiceManager(&sm);    
+    NS_GetServiceManager(&sm);
 
     if (sm) {
-        sm->QueryInterface(NS_GET_IID(nsIServiceManager), (void **)(&ServiceManager));
+        sm->QueryInterface(NS_GET_IID(nsIServiceManager), (void **) (&ServiceManager));
         NS_RELEASE(sm);
     }
 
     if (ServiceManager) {
-        ServiceManager->GetServiceByContractID(NS_PREFSERVICE_CONTRACTID, NS_GET_IID(nsIPrefBranch), (void **)&prefBranch);
+        ServiceManager->GetServiceByContractID(NS_PREFSERVICE_CONTRACTID, NS_GET_IID(nsIPrefBranch),
+                                               (void **) &prefBranch);
         if (prefBranch) {
             instance->user_agent = g_new0(gchar, 1024);
-            prefBranch->PrefHasUserValue(name,&v);
+            prefBranch->PrefHasUserValue(name, &v);
             if (v) {
                 prefBranch->GetCharPref(name, &(instance->user_agent));
                 prefBranch->ClearUserPref(name);
             }
             prefBranch->SetCharPref(name, value);
-            printf("Set preference %s to %s, old value was '%s'\n", name, value, instance->user_agent);
+            printf("Set preference %s to %s, old value was '%s'\n", name, value,
+                   instance->user_agent);
         }
         NS_RELEASE(ServiceManager);
     }
@@ -214,23 +217,24 @@ void clearPreference(CPlugin * instance, const gchar * name)
     nsIServiceManager *sm = NULL;
     nsIServiceManager *ServiceManager = NULL;
     PRBool v;
-    
+
     // NPN_GetValue(NULL, NPNVserviceManager, &sm);
-    
-    NS_GetServiceManager(&sm);    
+
+    NS_GetServiceManager(&sm);
 
     if (sm) {
-        sm->QueryInterface(NS_GET_IID(nsIServiceManager), (void **)(&ServiceManager));
+        sm->QueryInterface(NS_GET_IID(nsIServiceManager), (void **) (&ServiceManager));
         NS_RELEASE(sm);
     }
 
     if (ServiceManager) {
-        ServiceManager->GetServiceByContractID(NS_PREFSERVICE_CONTRACTID, NS_GET_IID(nsIPrefBranch), (void **)&prefBranch);
+        ServiceManager->GetServiceByContractID(NS_PREFSERVICE_CONTRACTID, NS_GET_IID(nsIPrefBranch),
+                                               (void **) &prefBranch);
         if (prefBranch) {
             if (instance->user_agent == NULL || strlen(instance->user_agent) == 0) {
                 prefBranch->ClearUserPref(name);
             } else {
-                if (g_strrstr(instance->user_agent,"QuickTime/7.6.4")) {
+                if (g_strrstr(instance->user_agent, "QuickTime/7.6.4")) {
                     prefBranch->ClearUserPref(name);
                 } else {
                     prefBranch->ClearUserPref(name);
@@ -371,7 +375,7 @@ tv_driver(NULL), tv_device(NULL), tv_input(NULL), tv_width(0), tv_height(0)
     if (store != NULL) {
         debug_level = gm_pref_store_get_int(store, DEBUG_LEVEL);
         player_backend = gm_pref_store_get_string(store, PLAYER_BACKEND);
-        printf("Using player backend of '%s'\n",player_backend);
+        printf("Using player backend of '%s'\n", player_backend);
         gm_pref_store_free(store);
     }
 
@@ -380,7 +384,7 @@ tv_driver(NULL), tv_device(NULL), tv_input(NULL), tv_width(0), tv_height(0)
         connection = dbus_hookup(this);
     }
     pluginSpecific(this);
-    
+
     mInitialized = TRUE;
 }
 
@@ -485,7 +489,7 @@ NPError CPlugin::SetWindow(NPWindow * aWindow)
             if (app_name == NULL)
                 app_name = g_find_program_in_path("gnome-mplayer-minimal");
         }
-        
+
         argvn[arg++] = g_strdup_printf("%s", app_name);
         argvn[arg++] = g_strdup_printf("--window=%i", (gint) mWindow);
         argvn[arg++] = g_strdup_printf("--controlid=%i", controlid);
@@ -597,14 +601,14 @@ NPBool CPlugin::isInitialized()
 
 NPError CPlugin::NewStream(NPMIMEType type, NPStream * stream, NPBool seekable, uint16 * stype)
 {
-    if (g_strrstr(stream->url, "javascript") == NULL ) {
+    if (g_strrstr(stream->url, "javascript") == NULL) {
         printf("New Stream Requested - %s\n", stream->url);
     }
-    
+
     if (g_strrstr(stream->url, "javascript") == NULL && stream->notifyData == NULL) {
         printf("item is NULL for %s\n", stream->url);
-    }    
-    
+    }
+
     return NPERR_NO_ERROR;
 }
 
@@ -619,7 +623,7 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
 
     if (g_strrstr(stream->url, "javascript") == NULL)
         printf("Entering destroy stream reason = %i for %s\n", reason, stream->url);
-        
+
     if (reason == NPERR_NO_ERROR) {
         item = (ListItem *) stream->notifyData;
         // item = list_find(playlist, (gchar*)stream->url);
@@ -655,7 +659,7 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
                 playlist = list_parse_asx(playlist, item);
                 playlist = list_parse_qml(playlist, item);
                 playlist = list_parse_ram(playlist, item);
-            }            
+            }
             // printf("item->play = %i\n",item->play);
             // printf("item->src = %s\n", item->src);
             // printf("item->streaming = %i\n", item->streaming);
@@ -693,7 +697,7 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
             g_free(path);
         }
         //printf("Leaving destroy stream src = %s\n", item->src);
-        
+
     } else if (reason == NPERR_INVALID_URL) {
         item = (ListItem *) stream->notifyData;
         if (item) {
@@ -766,7 +770,7 @@ void CPlugin::URLNotify(const char *url, NPReason reason, void *notifyData)
                         item->requested = TRUE;
                     }
                 }
-            }    
+            }
         } else {
             item = list_find_next_playable(playlist);
             if (item) {
@@ -778,10 +782,10 @@ void CPlugin::URLNotify(const char *url, NPReason reason, void *notifyData)
                     item->requested = TRUE;
                 }
             }
-        }        
+        }
 
 
-        
+
     } else if (reason == NPRES_NETWORK_ERR) {
         printf("URL Notify result is Network Error\n");
     } else if (reason == NPRES_USER_BREAK) {
@@ -907,18 +911,16 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
         NPN_DestroyStream(mInstance, stream, NPERR_NO_ERROR);
         return -1;
     }
-    
-    if (strstr((char *) buffer, "ICY 200 OK") != NULL 
-        || strstr((char *) buffer, "Content-length:") != NULL // If item is a block of jpeg images, just stream it
-        || strstr((char *) buffer, "<HTML>") != NULL
-        || item->streaming == TRUE) {
+
+    if (strstr((char *) buffer, "ICY 200 OK") != NULL || strstr((char *) buffer, "Content-length:") != NULL     // If item is a block of jpeg images, just stream it
+        || strstr((char *) buffer, "<HTML>") != NULL || item->streaming == TRUE) {
         //   || stream->lastmodified == 0) {    this is not valid for many sites
-        
+
         // printf("BUFFER='%s'\n", buffer);
-        
+
         // printf("item->streaming = %i\n", item->streaming);
         // printf("stream->lastmodified = %i\n", stream->lastmodified);
-        
+
         item->streaming = TRUE;
         open_location(this, item, FALSE);
         if (post_dom_events && this->id != NULL) {
@@ -963,9 +965,12 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
                                 item->lastsize) / 1024.0) / (gdouble) difftime(time(NULL),
                                                                                lastupdate);
                 if (percent > 0.99) {
-                    text = g_strdup_printf(_("Caching %iK (%0.1f K/s)"), item->mediasize / 1024, rate);
-                } else {                                                                                
-                    text = g_strdup_printf(_("Cache fill: %2.2f%% (%0.1f K/s)"), percent * 100.0, rate);
+                    text =
+                        g_strdup_printf(_("Caching %iK (%0.1f K/s)"), item->mediasize / 1024, rate);
+                } else {
+                    text =
+                        g_strdup_printf(_("Cache fill: %2.2f%% (%0.1f K/s)"), percent * 100.0,
+                                        rate);
                 }
                 send_signal_with_string(this, item, "SetProgressText", text);
                 if (!item->opened)
@@ -981,12 +986,13 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
         }
         if (!item->opened) {
             if ((item->localsize >= (cache_size * 1024)) && (percent >= 0.2)) {
-                printf("Setting to play because %i > %i\n",item->localsize, cache_size * 1024);
+                printf("Setting to play because %i > %i\n", item->localsize, cache_size * 1024);
                 ok_to_play = TRUE;
             }
             if (ok_to_play == FALSE && (item->localsize > (cache_size * 2 * 1024))
                 && (cache_size >= 512)) {
-                printf("Setting to play because %i > %i (double cache)\n",item->localsize, cache_size * 2 * 1024);
+                printf("Setting to play because %i > %i (double cache)\n", item->localsize,
+                       cache_size * 2 * 1024);
                 ok_to_play = TRUE;
             }
             if (ok_to_play == FALSE) {
@@ -997,7 +1003,8 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
                 }
                 if (item->bitrate > 0) {
                     if (item->localsize / item->bitrate >= 10 && (percent >= 0.2)) {
-                        printf("Setting to play becuase %i >= 10\n", item->localsize / item->bitrate);
+                        printf("Setting to play becuase %i >= 10\n",
+                               item->localsize / item->bitrate);
                         ok_to_play = TRUE;
                         if (post_dom_events && this->id != NULL) {
                             postDOMEvent(mInstance, this->id, "qt_canplay");
@@ -1020,7 +1027,7 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
                 playlist = list_parse_asx(playlist, item);
                 playlist = list_parse_qml(playlist, item);
                 playlist = list_parse_ram(playlist, item);
-            }    
+            }
             // printf("item->play = %i\n",item->play);
             // printf("item->src = %i\n", item->src);
             // printf("calling open_location from Write\n"); 
@@ -1043,7 +1050,7 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
                     item->cancelled = FALSE;
                     // printf("opening next playable items on the playlist\n");
                     if (item->streaming) {
-                        open_location(this,item, FALSE);
+                        open_location(this, item, FALSE);
                         item->requested = TRUE;
                     } else {
                         NPN_GetURLNotify(mInstance, item->src, NULL, item);
@@ -1331,8 +1338,7 @@ class ScriptablePluginObjectBase:public NPObject {
   public:
     ScriptablePluginObjectBase(NPP npp)
     :mNpp(npp) {
-    }
-    virtual ~ ScriptablePluginObjectBase() {
+    } virtual ~ ScriptablePluginObjectBase() {
     }
 
     // Virtual NPObject hooks called through this base class. Override
@@ -1492,8 +1498,7 @@ class ScriptablePluginObjectControls:public ScriptablePluginObjectBase {
   public:
     ScriptablePluginObjectControls(NPP npp)
     :ScriptablePluginObjectBase(npp) {
-    }
-    virtual bool HasMethod(NPIdentifier name);
+    } virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
     virtual bool InvokeDefault(const NPVariant * args, uint32_t argCount, NPVariant * result);
@@ -1612,8 +1617,7 @@ class ScriptablePluginObject:public ScriptablePluginObjectBase {
   public:
     ScriptablePluginObject(NPP npp)
     :ScriptablePluginObjectBase(npp) {
-    }
-    virtual bool HasMethod(NPIdentifier name);
+    } virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
     virtual bool InvokeDefault(const NPVariant * args, uint32_t argCount, NPVariant * result);
