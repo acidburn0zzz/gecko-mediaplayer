@@ -45,7 +45,7 @@
 #include <nsIPrefBranch.h>
 #include <nsIPrefService.h>
 #include <nsIServiceManager.h>
-#include <nsXPCOM.h>
+#include <dlfcn.h>
 
 nsIPrefBranch *prefBranch = NULL;
 nsIPrefService *prefService = NULL;
@@ -184,9 +184,14 @@ void setPreference(CPlugin * instance, const gchar * name, const gchar * value)
     nsIServiceManager *sm = NULL;
     nsIServiceManager *ServiceManager = NULL;
     PRBool v;
+    void (*get_sm)(nsIServiceManager**);
 
-    //NPN_GetValue(NULL, NPNVserviceManager, &sm);
-    NS_GetServiceManager(&sm);
+    get_sm = (void (*)(nsIServiceManager**))dlsym(RTLD_DEFAULT,"NS_GetServiceManager");
+    if (get_sm) {
+        (*get_sm)(&sm);
+    } else {
+        NPN_GetValue(NULL, NPNVserviceManager, &sm);
+    }
 
     if (sm) {
         sm->QueryInterface(NS_GET_IID(nsIServiceManager), (void **) (&ServiceManager));
