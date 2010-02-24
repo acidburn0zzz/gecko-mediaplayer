@@ -1,4 +1,5 @@
 Developement
+	Detect and use NS_GetServiceManager dynamically
 	Keep requested flag consistent
 	Work better with .m3u playlists
 	Reorder configure.in checks
