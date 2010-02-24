@@ -23,16 +23,16 @@ msgstr "Naplnění vyrovnávací paměti: %2.2f %%"
 #: src/plugin.cpp:900
 #, fuzzy, c-format
 msgid "Write unable to write because item is NULL\n"
-msgstr "Zápis není možný, protože položka je NULL"
+msgstr "Metoda Write nemůže zapsat, protože položka je NULL\n"
 
 # kibibyes per second
 #: src/plugin.cpp:966
-#, fuzzy, c-format
+#, c-format
 msgid "Caching %iK (%0.1f K/s)"
-msgstr "Naplnění vyrovánací paměti: %2.2f %% (%0.1f KB/s)"
+msgstr "Naplnění vyrovánací paměti: %iK (%0.1f K/s)"
 
 # kibibyes per second
 #: src/plugin.cpp:968
 #, c-format
 msgid "Cache fill: %2.2f%% (%0.1f K/s)"
-msgstr "Naplnění vyrovánací paměti: %2.2f %% (%0.1f KB/s)"
+msgstr "Naplnění vyrovnávací paměti: %2.2f %% (%0.1f KB/s)"
