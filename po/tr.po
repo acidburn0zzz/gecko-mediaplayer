@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-08 14:48-0700\n"
+"POT-Creation-Date: 2010-02-25 14:13-0700\n"
 "PO-Revision-Date: 2010-02-22 23:51+0200\n"
 "Last-Translator: Onur Küçük <onur@pardus.org.tr>\n"
 "Language-Team: Turkish <turkce@pardus.org.tr>\n"
@@ -17,18 +17,22 @@ msgstr ""
 "X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: src/plugin.cpp:635
+#: src/plugin.cpp:650
 #, c-format
 msgid "Cache fill: %2.2f%%"
 msgstr "Önbellek: %2.2f%%"
 
-#: src/plugin.cpp:888
+#: src/plugin.cpp:913
 #, c-format
 msgid "Write unable to write because item is NULL\n"
 msgstr "NULL içerik yazılamıyor\n"
 
-#: src/plugin.cpp:953
+#: src/plugin.cpp:978
+#, fuzzy, c-format
+msgid "Caching %iK (%0.1f K/s)"
+msgstr "Önbellek: %2.2f%% (%0.1f K/s)"
+
+#: src/plugin.cpp:981
 #, c-format
 msgid "Cache fill: %2.2f%% (%0.1f K/s)"
 msgstr "Önbellek: %2.2f%% (%0.1f K/s)"
-

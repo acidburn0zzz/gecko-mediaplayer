@@ -1,4 +1,4 @@
-Developement
+0.9.9.2
 	Detect and use NS_GetServiceManager dynamically
 	Keep requested flag consistent
 	Work better with .m3u playlists
