@@ -168,7 +168,8 @@ ListItem *list_find_next_playable(GList * list)
         item = (ListItem *) iter->data;
         if (item != NULL) {
             if (item->played == FALSE && item->play == TRUE) {
-                //printf("next playable is %s\n",item->src);
+                if (verbose)
+                    printf("next playable is %s\n",item->src);
                 return item;
             }
         }
@@ -215,6 +216,7 @@ void list_dump(GList * list)
                 printf("id = %i\n", item->id);
                 printf("hrefid = %i\n", item->hrefid);
                 printf("play = %i\n", item->play);
+                printf("played = %i\n", item->played);
                 printf("path = %s\n", item->path);
                 printf("controlid = %i\n", item->controlid);
                 printf("playerready = %i\n", item->playerready);
@@ -713,7 +715,7 @@ GList *list_parse_ram(GList * list, ListItem * item)
     if (item->localsize < (16 * 1024)) {
         if (g_file_get_contents(item->local, &data, &datalen, NULL)) {
             if (data != NULL) {
-                output = g_strsplit(data, "\n", 0);
+                output = g_strsplit_set(data, "\n\r", 0);
                 parser_list = list;
                 parser_item = item;
                 i = 0;
@@ -755,7 +757,7 @@ GList *list_parse_ram(GList * list, ListItem * item)
                                 newitem->src[3] = g_ascii_tolower(newitem->src[3]);
                             }
                             newitem->play = TRUE;
-                            newitem->id = entry_id;
+                            newitem->id = ++entry_id;
                             newitem->controlid = parser_item->controlid;
                             g_strlcpy(newitem->path, parser_item->path, 1024);
                             parser_list = g_list_append(parser_list, newitem);
