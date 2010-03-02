@@ -1,3 +1,5 @@
+Development
+	Give each item in the RAM playlist a unique id
 0.9.9.2
 	Detect and use NS_GetServiceManager dynamically
 	Keep requested flag consistent
