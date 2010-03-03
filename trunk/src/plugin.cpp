@@ -921,8 +921,11 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
         return -1;
     }
 
-    if (strstr((char *) buffer, "ICY 200 OK") != NULL || strstr((char *) buffer, "Content-length:") != NULL     // If item is a block of jpeg images, just stream it
-        || strstr((char *) buffer, "<HTML>") != NULL || item->streaming == TRUE) {
+    if (strstr((char *) buffer, "ICY 200 OK") != NULL 
+        || strstr((char *) buffer, "Content-length:") != NULL     // If item is a block of jpeg images, just stream it
+        || strstr((char *) buffer, "<HTML>") != NULL 
+        || item->streaming == TRUE 
+        || g_strrstr(item->src,"stream") != NULL) {
         //   || stream->lastmodified == 0) {    this is not valid for many sites
 
         // printf("BUFFER='%s'\n", buffer);
