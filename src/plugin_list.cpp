@@ -168,8 +168,7 @@ ListItem *list_find_next_playable(GList * list)
         item = (ListItem *) iter->data;
         if (item != NULL) {
             if (item->played == FALSE && item->play == TRUE) {
-                if (verbose)
-                    printf("next playable is %s\n",item->src);
+                // printf("next playable is %s\n",item->src);
                 return item;
             }
         }
