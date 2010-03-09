@@ -1,4 +1,5 @@
 Development
+	Move "stream" test to streaming function, change from int to boolean
 	If url has "stream" in it, mark the url as streaming
 	Give each item in the RAM playlist a unique id
 0.9.9.2
