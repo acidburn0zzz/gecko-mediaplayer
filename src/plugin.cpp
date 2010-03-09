@@ -924,14 +924,14 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
     if (strstr((char *) buffer, "ICY 200 OK") != NULL 
         || strstr((char *) buffer, "Content-length:") != NULL     // If item is a block of jpeg images, just stream it
         || strstr((char *) buffer, "<HTML>") != NULL 
-        || item->streaming == TRUE 
-        || g_strrstr(item->src,"stream") != NULL) {
+        || item->streaming == TRUE ) {
         //   || stream->lastmodified == 0) {    this is not valid for many sites
 
         // printf("BUFFER='%s'\n", buffer);
 
         // printf("item->streaming = %i\n", item->streaming);
         // printf("stream->lastmodified = %i\n", stream->lastmodified);
+        // printf("stream->end = %i\n", stream->end);
 
         item->streaming = TRUE;
         open_location(this, item, FALSE);
