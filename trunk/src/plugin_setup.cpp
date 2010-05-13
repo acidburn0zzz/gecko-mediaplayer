@@ -80,9 +80,11 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
 
             if (g_ascii_strcasecmp(argn[i], "console") == 0) {
                 instance->console = g_strdup(argv[i]);
-                for (j = 0; j < strlen(instance->console); j++) {
-                    if (!g_ascii_isalnum(instance->console[j])) {
-                        instance->console[j] = 'a';
+                if (instance->console != NULL) {
+                    for (j = 0; j < strlen(instance->console); j++) {
+                        if (!g_ascii_isalnum(instance->console[j])) {
+                            instance->console[j] = 'a';
+                        }
                     }
                 }
             }
