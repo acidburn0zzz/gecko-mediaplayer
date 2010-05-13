@@ -1,4 +1,5 @@
 Development
+	Protect against NULL console
 	Added German translation
 	Move "stream" test to streaming function, change from int to boolean
 	If url has "stream" in it, mark the url as streaming
