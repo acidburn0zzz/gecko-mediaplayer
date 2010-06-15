@@ -1,4 +1,6 @@
 Development
+	Mark asx files with ENTRY in them as non-playable
+	Allow separate cache sizes for audio or video data, depends on mimetype identification
 	Protect against NULL console
 	Added German translation
 	Move "stream" test to streaming function, change from int to boolean
