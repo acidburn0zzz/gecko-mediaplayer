@@ -604,6 +604,7 @@ asx_start_element(GMarkupParseContext * context,
         }
     }
     if (g_ascii_strcasecmp(element_name, "ENTRY") == 0) {
+        parser_item->play = 0;
         entry_id = entry_id + 100;
     }
 }

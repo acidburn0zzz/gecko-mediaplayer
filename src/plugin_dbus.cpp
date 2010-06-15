@@ -89,7 +89,11 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                 }
 
                 instance->playerready = TRUE;
-                instance->cache_size = request_int_value(instance, item, "GetCacheSize");
+                if (g_strrstr(instance->mimetype,"audio") != NULL) {
+                    instance->cache_size = request_int_value(instance, item, "GetPluginAudioCacheSize");
+                } else {                 
+                    instance->cache_size = request_int_value(instance, item, "GetPluginVideoCacheSize");
+                }
                 //printf("cache size = %i\n",instance->cache_size);
                 if (instance->cache_size == 0) {
                     item->streaming = 1;
