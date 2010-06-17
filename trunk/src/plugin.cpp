@@ -660,7 +660,8 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
             path = g_strdup(item->path);
             ready = item->playerready;
             newwindow = item->newwindow;
-            item->streaming = streaming(item->src);
+            if (!item->streaming)
+                item->streaming = streaming(item->src);
             if (!item->streaming) {
                 printf("in Destroy Stream\n");
                 playlist = list_parse_qt(playlist, item);
@@ -828,7 +829,8 @@ int32 CPlugin::WriteReady(NPStream * stream)
             g_strlcpy(item->src, stream->url, 1024);
             item->requested = TRUE;
             item->play = TRUE;
-            item->streaming = streaming(item->src);
+            if (!item->streaming)
+                item->streaming = streaming(item->src);
             playlist = g_list_append(playlist, item);
             stream->notifyData = item;
         } else {
@@ -1032,7 +1034,8 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
             path = g_strdup(item->path);
             ready = item->playerready;
             newwindow = item->newwindow;
-            item->streaming = streaming(item->src);
+            if (!item->streaming)
+                item->streaming = streaming(item->src);
             if (!item->streaming) {
                 printf("in Write\n");
                 playlist = list_parse_qt(playlist, item);
