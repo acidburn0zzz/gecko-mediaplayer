@@ -1,4 +1,5 @@
 Development
+	Support qtsrcdontusebrowser option
 	Updated Spanish translation
 	Add WEBM types to plugin
 	Handle nocache=1 better
