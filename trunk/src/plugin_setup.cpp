@@ -52,6 +52,7 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
     ListItem *item = NULL;
     ListItem *src = NULL;
     ListItem *href = NULL;
+    ListItem *qtsrc = NULL;
     gchar *arg[10];
     GRand *rand;
     gchar *tmp;
@@ -61,6 +62,7 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
     NPError nperror;
     guint32 supportsWindowless = FALSE; // NPBool + padding
     gchar *app_name;
+    gboolean usebrowser = TRUE;
 
     if (instance->mode == NP_EMBED) {
         for (i = 0; i < argc; i++) {
@@ -179,6 +181,15 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
                 item->play = TRUE;
                 item->id = instance->nextid++;
                 instance->playlist = g_list_append(instance->playlist, item);
+                qtsrc = item;
+            }
+
+            if (g_ascii_strcasecmp(argn[i], "qtsrcdontusebrowser") == 0) {
+                if (strstr(argv[i], "true")
+                    || strstr(argv[i], "yes")
+                    || strstr(argv[i], "1")) {
+                    usebrowser = FALSE;
+                }               
             }
 
             if (g_ascii_strcasecmp(argn[i], "file") == 0) {
@@ -438,6 +449,11 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
         } else {
             instance->windowless = FALSE;
         }
+    }
+
+    if (usebrowser == FALSE) {
+        src->play = FALSE;
+        src = qtsrc;
     }
 
     if (src != NULL) {
