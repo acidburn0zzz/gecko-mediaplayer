@@ -378,6 +378,7 @@ tv_driver(NULL), tv_device(NULL), tv_input(NULL), tv_width(0), tv_height(0)
     bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
     textdomain(GETTEXT_PACKAGE);
 #endif
+   printf(_("gecko mediaplayer v%s\n"), VERSION);
 
     g_type_init();
     store = gm_pref_store_new("gecko-mediaplayer");
