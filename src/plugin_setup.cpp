@@ -62,7 +62,6 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
     NPError nperror;
     guint32 supportsWindowless = FALSE; // NPBool + padding
     gchar *app_name;
-    gboolean usebrowser = TRUE;
 
     if (instance->mode == NP_EMBED) {
         for (i = 0; i < argc; i++) {
