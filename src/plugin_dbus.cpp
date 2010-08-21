@@ -358,6 +358,8 @@ void open_location(CPlugin * instance, ListItem * item, gboolean uselocal)
 
     //list_dump(instance->playlist);
     //printf("Opening %s to connection %p\n",file, instance->connection);
+    if (item == NULL || instance == NULL)
+        return;
 
     if (!(instance->player_launched)) {
         if (!item->opened) {
