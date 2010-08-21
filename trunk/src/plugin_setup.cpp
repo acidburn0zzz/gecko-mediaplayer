@@ -95,9 +95,9 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
             }
 
             if (g_ascii_strcasecmp(argn[i], "showcontrols") == 0) {
-                if (strstr(argv[i], "true")
-                    || strstr(argv[i], "yes")
-                    || strstr(argv[i], "1")) {
+                if (g_ascii_strcasecmp(argv[i], "true") == 0
+                    || g_ascii_strcasecmp(argv[i], "yes") == 0
+                    || g_ascii_strcasecmp(argv[i], "1") == 0) {
                     instance->show_controls = 1;
                 } else {
                     instance->show_controls = 0;
@@ -215,9 +215,9 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
             }
 
             if (g_ascii_strcasecmp(argn[i], "hidden") == 0) {
-                if (strstr(argv[i], "true")
-                    || strstr(argv[i], "yes")
-                    || strstr(argv[i], "1")) {
+                if (g_ascii_strcasecmp(argv[i], "true") == 0
+                    || g_ascii_strcasecmp(argv[i], "yes") == 0
+                    || g_ascii_strcasecmp(argv[i], "1") == 0) {
                     instance->hidden = TRUE;
                 } else {
                     instance->hidden = FALSE;
@@ -245,10 +245,10 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
             }
 
             if (g_ascii_strcasecmp(argn[i], "autohref") == 0) {
-                if (strstr(argv[i], "true")
-                    || strstr(argv[i], "yes")
-                    || strstr(argv[i], "autohref")
-                    || strstr(argv[i], "1")) {
+                if (g_ascii_strcasecmp(argv[i], "true") == 0
+                    || g_ascii_strcasecmp(argv[i], "yes") == 0
+                    || g_ascii_strcasecmp(argv[i], "autohref") == 0
+                    || g_ascii_strcasecmp(argv[i], "1") == 0) {
                     autohref = TRUE;
                 } else {
                     autohref = FALSE;
@@ -308,9 +308,10 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
 
             if (g_ascii_strcasecmp(argn[i], "nocache") == 0
                 || g_ascii_strcasecmp(argn[i], "qtsrcdontusebrowser") == 0) {
-                if (strstr(argv[i], "true")
-                    || strstr(argv[i], "yes")
-                    || strstr(argv[i], "1")) {
+                if (g_ascii_strcasecmp(argv[i], "true") == 0
+                    || g_ascii_strcasecmp(argv[i], "yes") == 0
+                    || g_ascii_strcasecmp(argv[i], "1") == 0
+                    || g_ascii_strcasecmp(argv[i], "") == 0) {
                     force_streaming = TRUE;
                 } else {
                     force_streaming = FALSE;
@@ -318,9 +319,9 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
             }
 
             if (g_ascii_strcasecmp(argn[i], "postdomevents") == 0) {
-                if (strstr(argv[i], "true")
-                    || strstr(argv[i], "yes")
-                    || strstr(argv[i], "1")) {
+                if (g_ascii_strcasecmp(argv[i], "true") == 0
+                    || g_ascii_strcasecmp(argv[i], "yes") == 0
+                    || g_ascii_strcasecmp(argv[i], "1") == 0) {
                     instance->post_dom_events = TRUE;
                 } else {
                     instance->post_dom_events = FALSE;
