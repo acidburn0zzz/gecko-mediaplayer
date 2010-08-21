@@ -168,6 +168,7 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
 
             if (g_ascii_strcasecmp(argn[i], "qtsrc") == 0) {
                 item = g_new0(ListItem, 1);
+                /*
                 tmp = g_strrstr(src->src, "/");
                 if (tmp) {
                     g_strlcpy(item->src, src->src, 1024);
@@ -177,19 +178,13 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
                 } else {
                     g_strlcpy(item->src, argv[i], 4096);
                 }
+                */
+                g_strlcpy(item->src, argv[i], 4096);
                 item->streaming = streaming(item->src);
                 item->play = TRUE;
                 item->id = instance->nextid++;
                 instance->playlist = g_list_append(instance->playlist, item);
                 qtsrc = item;
-            }
-
-            if (g_ascii_strcasecmp(argn[i], "qtsrcdontusebrowser") == 0) {
-                if (strstr(argv[i], "true")
-                    || strstr(argv[i], "yes")
-                    || strstr(argv[i], "1")) {
-                    usebrowser = FALSE;
-                }               
             }
 
             if (g_ascii_strcasecmp(argn[i], "file") == 0) {
@@ -312,7 +307,8 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
                 }
             }
 
-            if (g_ascii_strcasecmp(argn[i], "nocache") == 0) {
+            if (g_ascii_strcasecmp(argn[i], "nocache") == 0
+                || g_ascii_strcasecmp(argn[i], "qtsrcdontusebrowser") == 0) {
                 if (strstr(argv[i], "true")
                     || strstr(argv[i], "yes")
                     || strstr(argv[i], "1")) {
@@ -451,7 +447,7 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
         }
     }
 
-    if (usebrowser == FALSE) {
+    if (qtsrc != NULL) {
         src->play = FALSE;
         src = qtsrc;
     }
@@ -484,6 +480,7 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
 #else
     if (force_streaming) {
         item->streaming = TRUE;
+        src->streaming = TRUE;
     }
 //    if (g_ascii_strcasecmp(instance->mimetype,"video/x-flv") == 0) {
 //      item->streaming = TRUE;
