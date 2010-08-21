@@ -311,7 +311,8 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
                 if (g_ascii_strcasecmp(argv[i], "true") == 0
                     || g_ascii_strcasecmp(argv[i], "yes") == 0
                     || g_ascii_strcasecmp(argv[i], "1") == 0
-                    || g_ascii_strcasecmp(argv[i], "") == 0) {
+                    || g_ascii_strcasecmp(argv[i], "") == 0
+                    || argv[i] == NULL) {
                     force_streaming = TRUE;
                 } else {
                     force_streaming = FALSE;
