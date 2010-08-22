@@ -300,8 +300,28 @@ tv_driver(NULL), tv_device(NULL), tv_input(NULL), tv_width(0), tv_height(0)
 {
     GRand *rand;
     GmPrefStore *store;
+    gboolean b;
 
     NPN_GetValue(mInstance, NPNVWindowNPObject, &sWindowObj);
+    
+    // get the page plugin was called from 
+    // found at https://developer.mozilla.org/en/Getting_the_page_URL_in_NPAPI_plugin
+    NPIdentifier identifier = NPN_GetStringIdentifier( "location" );
+    // Declare a local variant value.
+    NPVariant variantValue;
+    // Get the location property from the window object (which is another object).
+    b = NPN_GetProperty( mInstance, sWindowObj, identifier, &variantValue );
+    // Get a pointer to the "location" object.
+    NPObject *locationObj = variantValue.value.objectValue;
+    // Create a "href" identifier.
+    identifier = NPN_GetStringIdentifier( "href" );
+    // Get the location property from the location object.
+    b = NPN_GetProperty( mInstance, locationObj, identifier, &variantValue );
+#ifdef HAVE_NEW_XULRUNNER
+    page_url = g_strdup_printf("%s",NPVARIANT_TO_STRING(variantValue).UTF8Characters);
+#else
+    page_url = g_strdup_printf("%s",NPVARIANT_TO_STRING(*value).utf8characters);
+#endif    
 
     // register methods
     Play_id = NPN_GetStringIdentifier("Play");
@@ -557,11 +577,13 @@ NPError CPlugin::SetWindow(NPWindow * aWindow)
 
     if (playlist != NULL) {
         item = (ListItem *) playlist->data;
-        if (item->play == 0)
+        if (!item->play)
             item = list_find_next_playable(playlist);
+        list_dump(playlist);            
         if (!item->requested) {
             item->cancelled = FALSE;
             if (item->streaming) {
+                printf("Calling open_location with item = %p src = %s\n", item, item->src);
                 open_location(this, item, FALSE);
                 item->requested = 1;
             } else {

@@ -1,4 +1,5 @@
 Development
+	Obtain the plugin caller page and use that to resolve streaming urls
 	Fix problem where first item on list is not playable
 	Support qtsrcdontusebrowser option
 	Updated Spanish translation

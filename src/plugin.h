@@ -163,6 +163,7 @@ class CPlugin {
   public:
      Window mWindow;
     NPP mInstance;
+    gchar *page_url;
     gboolean windowless;
     gint nextid;
     uint16_t mode;
