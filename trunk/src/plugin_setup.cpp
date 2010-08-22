@@ -450,7 +450,6 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
 
     if (qtsrc != NULL) {
         src->play = FALSE;
-        src = qtsrc;
     }
 
     if (src != NULL) {

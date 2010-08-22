@@ -557,6 +557,8 @@ NPError CPlugin::SetWindow(NPWindow * aWindow)
 
     if (playlist != NULL) {
         item = (ListItem *) playlist->data;
+        if (item->play == 0)
+            item = list_find_next_playable(playlist);
         if (!item->requested) {
             item->cancelled = FALSE;
             if (item->streaming) {
