@@ -1,4 +1,5 @@
 Development
+	Fix problem where first item on list is not playable
 	Support qtsrcdontusebrowser option
 	Updated Spanish translation
 	Add WEBM types to plugin
