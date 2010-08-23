@@ -56,6 +56,7 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
     gchar *arg[10];
     GRand *rand;
     gchar *tmp;
+    gchar *url;
     gchar **parse;
     gint width = 0, height = 0;
     GError *error;
@@ -167,19 +168,7 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
 
             if (g_ascii_strcasecmp(argn[i], "qtsrc") == 0) {
                 item = g_new0(ListItem, 1);
-                tmp = g_strrstr(argv[i], "://");
-                if (!tmp) {
-                    if (instance->page_url != NULL) {
-                        //printf("page_url = %s\n", instance->page_url);
-                        g_strlcpy(item->src, instance->page_url, 1024);
-                        tmp = g_strrstr(item->src, "/");
-                        tmp[1] = '\0';
-                        //printf("item->src = %s\n", item->src);
-                        g_strlcat(item->src, argv[i], 4096);
-                    }
-                } else {
-                    g_strlcpy(item->src, argv[i], 4096);
-                }
+                g_strlcpy(item->src, argv[i], 4096);
                 item->streaming = streaming(item->src);
                 item->play = TRUE;
                 item->id = instance->nextid++;
@@ -485,6 +474,10 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
         if (qtsrc)
             qtsrc->streaming = TRUE;
     }
+    
+    list_qualify_url(instance->playlist, instance->page_url);
+    
+    
 //    if (g_ascii_strcasecmp(instance->mimetype,"video/x-flv") == 0) {
 //      item->streaming = TRUE;
 //    }
