@@ -287,6 +287,7 @@ id(NULL),
 console(NULL),
 controls(NULL),
 user_agent(NULL),
+page_url(NULL),
 player_backend(NULL),
 disable_context_menu(FALSE),
 disable_fullscreen(FALSE),
@@ -579,7 +580,6 @@ NPError CPlugin::SetWindow(NPWindow * aWindow)
         item = (ListItem *) playlist->data;
         if (!item->play)
             item = list_find_next_playable(playlist);
-        list_dump(playlist);            
         if (!item->requested) {
             item->cancelled = FALSE;
             if (item->streaming) {

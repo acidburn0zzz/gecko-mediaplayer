@@ -176,6 +176,32 @@ ListItem *list_find_next_playable(GList * list)
     return NULL;
 }
 
+void list_qualify_url(GList * list, gchar *page_url)
+{
+    ListItem *item;
+    GList *iter;
+    gchar *tmp;
+    gchar url[4096];
+    
+    for (iter = list; iter != NULL; iter = g_list_next(iter)) {
+        item = (ListItem *) iter->data;
+        if (item != NULL && item->streaming) {
+            tmp = g_strrstr(item->src, "://");
+            if (!tmp) {
+                if (page_url != NULL) {
+                    //printf("page_url = %s\n", instance->page_url);
+                    g_strlcpy(url, item->src, 4096);
+                    g_strlcpy(item->src, page_url, 1024);
+                    tmp = g_strrstr(item->src, "/");
+                    tmp[1] = '\0';
+                    //printf("item->src = %s\n", item->src);
+                    g_strlcat(item->src, url, 4096);
+                }
+           }
+        }
+    }
+}
+
 GList *list_clear(GList * list)
 {
     ListItem *item;

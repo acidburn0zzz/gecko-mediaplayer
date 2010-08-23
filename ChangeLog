@@ -1,4 +1,5 @@
 Development
+	Fully qualify streaming URLs loaded from the embed tag
 	Obtain the plugin caller page and use that to resolve streaming urls
 	Fix problem where first item on list is not playable
 	Support qtsrcdontusebrowser option
