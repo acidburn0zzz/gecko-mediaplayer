@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 dnl Created by Anjuta application wizard.
 
 AC_INIT(configure.in)
-AM_INIT_AUTOMAKE(gecko-mediaplayer, 0.9.9.2)
+AM_INIT_AUTOMAKE(gecko-mediaplayer, 0.9.99.rc2)
 AM_CONFIG_HEADER(config.h)
 AM_MAINTAINER_MODE
 
@@ -47,6 +47,11 @@ AC_ARG_WITH([xulrunner-sdk],
 	
 	],
         [])
+
+if test "$GECKO_CFLAGS" = ""; then
+PKG_CHECK_MODULES(GECKO, [libxul >= 2.0.0],[GECKO_CFLAGS="$GECKO_CFLAGS -DMOZ_NO_MOZALLOC" AC_DEFINE([HAVE_NEW_XULRUNNER],[1],[Define to 1 if using libxul 2.0.0 or higher]) AC_MSG_NOTICE([Using libxul >= 2.0.0])
+    ],[AC_MSG_NOTICE([libxul >= 2.0.0 not found, trying another])])
+fi
 
 if test "$GECKO_CFLAGS" = ""; then
 PKG_CHECK_MODULES(GECKO, [libxul < 1.9.2],[ AC_MSG_NOTICE([Using libxul < 1.9.2])

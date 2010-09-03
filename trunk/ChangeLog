@@ -1,4 +1,6 @@
 Development
+	Apply patch from Onur Kucuk to allow gecko-mediaplayer to compile against 
+		xulrunner 2.0beta5 and higher
 	Fully qualify streaming URLs loaded from the embed tag
 	Obtain the plugin caller page and use that to resolve streaming urls
 	Fix problem where first item on list is not playable
