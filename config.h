@@ -76,6 +76,9 @@
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME ""
 
+/* Define to the home page for this package. */
+#define PACKAGE_URL ""
+
 /* Define to the version of this package. */
 #define PACKAGE_VERSION ""
 
@@ -83,4 +86,4 @@
 #define STDC_HEADERS 1
 
 /* Version number of package */
-#define VERSION "0.9.9.2"
+#define VERSION "0.9.99.rc1"
