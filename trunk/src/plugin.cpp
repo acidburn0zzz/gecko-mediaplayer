@@ -321,7 +321,7 @@ tv_driver(NULL), tv_device(NULL), tv_input(NULL), tv_width(0), tv_height(0)
 #ifdef HAVE_NEW_XULRUNNER
     page_url = g_strdup_printf("%s",NPVARIANT_TO_STRING(variantValue).UTF8Characters);
 #else
-    page_url = g_strdup_printf("%s",NPVARIANT_TO_STRING(*value).utf8characters);
+    page_url = g_strdup_printf("%s",NPVARIANT_TO_STRING(variantValue).utf8characters);
 #endif    
 
     // register methods
