@@ -1,4 +1,6 @@
 Development
+	Change libxul 2.0 check from 2.0b5 to just 2.0
+	Fix incorrect variable
 	Apply patch from Onur Kucuk to allow gecko-mediaplayer to compile against 
 		xulrunner 2.0beta5 and higher
 	Fully qualify streaming URLs loaded from the embed tag

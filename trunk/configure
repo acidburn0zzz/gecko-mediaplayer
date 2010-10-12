@@ -2702,7 +2702,7 @@ fi
 
 # Define the identity of the package.
  PACKAGE=gecko-mediaplayer
- VERSION=0.9.99.rc2
+ VERSION=0.9.99.rc3
 
 
 cat >>confdefs.h <<_ACEOF
@@ -7237,12 +7237,12 @@ if test -n "$GECKO_CFLAGS"; then
     pkg_cv_GECKO_CFLAGS="$GECKO_CFLAGS"
  elif test -n "$PKG_CONFIG"; then
     if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libxul >= 2.0b5\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "libxul >= 2.0b5") 2>&5
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libxul >= 2.0\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "libxul >= 2.0") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  pkg_cv_GECKO_CFLAGS=`$PKG_CONFIG --cflags "libxul >= 2.0b5" 2>/dev/null`
+  pkg_cv_GECKO_CFLAGS=`$PKG_CONFIG --cflags "libxul >= 2.0" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -7253,12 +7253,12 @@ if test -n "$GECKO_LIBS"; then
     pkg_cv_GECKO_LIBS="$GECKO_LIBS"
  elif test -n "$PKG_CONFIG"; then
     if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libxul >= 2.0b5\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "libxul >= 2.0b5") 2>&5
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libxul >= 2.0\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "libxul >= 2.0") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  pkg_cv_GECKO_LIBS=`$PKG_CONFIG --libs "libxul >= 2.0b5" 2>/dev/null`
+  pkg_cv_GECKO_LIBS=`$PKG_CONFIG --libs "libxul >= 2.0" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -7276,9 +7276,9 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        GECKO_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "libxul >= 2.0b5" 2>&1`
+	        GECKO_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "libxul >= 2.0" 2>&1`
         else
-	        GECKO_PKG_ERRORS=`$PKG_CONFIG --print-errors "libxul >= 2.0b5" 2>&1`
+	        GECKO_PKG_ERRORS=`$PKG_CONFIG --print-errors "libxul >= 2.0" 2>&1`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$GECKO_PKG_ERRORS" >&5
