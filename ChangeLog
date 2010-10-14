@@ -1,4 +1,5 @@
 Development
+	Fix problem with javascript seek function where value was coming in as an int where unexpected
 	Change libxul 2.0 check from 2.0b5 to just 2.0
 	Fix incorrect variable
 	Apply patch from Onur Kucuk to allow gecko-mediaplayer to compile against 

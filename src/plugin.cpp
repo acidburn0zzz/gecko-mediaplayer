@@ -1742,7 +1742,11 @@ bool ScriptablePluginObject::Invoke(NPIdentifier name, const NPVariant * args,
 
     if (name == PlayAt_id) {
         pPlugin->Play();
-        pPlugin->Seek(NPVARIANT_TO_DOUBLE(args[0]));
+        if ((int)NPVARIANT_TO_DOUBLE(args[0]) == 0 && NPVARIANT_TO_INT32(args[0]) > 0) {
+            pPlugin->Seek((double)NPVARIANT_TO_INT32(args[0]));
+        } else {
+            pPlugin->Seek(NPVARIANT_TO_DOUBLE(args[0]));
+        }
         return PR_TRUE;
     }
 
@@ -1772,7 +1776,12 @@ bool ScriptablePluginObject::Invoke(NPIdentifier name, const NPVariant * args,
     }
 
     if (name == Seek_id) {
-        pPlugin->Seek(NPVARIANT_TO_DOUBLE(args[0]));
+        
+        if ((int)NPVARIANT_TO_DOUBLE(args[0]) == 0 && NPVARIANT_TO_INT32(args[0]) > 0) {
+            pPlugin->Seek((double)NPVARIANT_TO_INT32(args[0]));
+        } else {
+            pPlugin->Seek(NPVARIANT_TO_DOUBLE(args[0]));
+        }
         return PR_TRUE;
     }
 
