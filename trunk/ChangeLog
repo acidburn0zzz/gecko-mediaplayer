@@ -1,3 +1,5 @@
+Development
+	Bump QuickTime emulated version to 7.6.9
 1.0.0
 	Fix problem with javascript seek function where value was coming in as an int where unexpected
 	Change libxul 2.0 check from 2.0b5 to just 2.0
