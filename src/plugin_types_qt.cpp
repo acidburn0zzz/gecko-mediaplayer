@@ -73,7 +73,7 @@ NPError PluginGetValue(NPPVariable variable, void *value)
     // description matches the features
 
     if (variable == NPPVpluginNameString) {
-        *((const char **) value) = "QuickTime Plug-in 7.6.4";
+        *((const char **) value) = "QuickTime Plug-in 7.6.9";
     }
     if (variable == NPPVpluginDescriptionString) {
         *((const char **) value) =
