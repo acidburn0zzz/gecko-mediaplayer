@@ -112,6 +112,14 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
             if (g_ascii_strcasecmp(argn[i], "height") == 0) {
                 sscanf(argv[i], "%i", &height);
             }
+            
+            if (g_ascii_strcasecmp(argn[i], "style") == 0) {
+                tmp = g_strrstr(argv[i],"width:");
+                sscanf(tmp + strlen("width:"), "%i", &width);
+                tmp = g_strrstr(argv[i],"height:");
+                sscanf(tmp + strlen("height:"), "%i", &height);
+            }
+            
 
             if (g_ascii_strcasecmp(argn[i], "src") == 0 || g_ascii_strcasecmp(argn[i], "url") == 0) {
                 item = g_new0(ListItem, 1);
