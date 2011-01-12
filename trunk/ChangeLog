@@ -1,4 +1,5 @@
 Development
+	Fix spot where QuickTime was not set to 7.6.9 
 	Get width and height from the style attribute if present
 	Bump QuickTime emulated version to 7.6.9
 1.0.0
