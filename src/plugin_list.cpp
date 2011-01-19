@@ -176,13 +176,13 @@ ListItem *list_find_next_playable(GList * list)
     return NULL;
 }
 
-void list_qualify_url(GList * list, gchar *page_url)
+void list_qualify_url(GList * list, gchar * page_url)
 {
     ListItem *item;
     GList *iter;
     gchar *tmp;
     gchar url[4096];
-    
+
     for (iter = list; iter != NULL; iter = g_list_next(iter)) {
         item = (ListItem *) iter->data;
         if (item != NULL && item->streaming) {
@@ -197,7 +197,7 @@ void list_qualify_url(GList * list, gchar *page_url)
                     //printf("item->src = %s\n", item->src);
                     g_strlcat(item->src, url, 4096);
                 }
-           }
+            }
         }
     }
 }
@@ -250,6 +250,7 @@ void list_dump(GList * list)
                 printf("streaming = %i\n", item->streaming);
                 printf("loop = %i\n", item->loop);
                 printf("loopcount = %i\n", item->loopcount);
+                printf("plugin = %p\n", item->plugin);
             }
         }
     }

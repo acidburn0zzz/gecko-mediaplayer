@@ -595,6 +595,9 @@ ac_subst_vars='am__EXEEXT_FALSE
 am__EXEEXT_TRUE
 LTLIBOBJS
 LIBOBJS
+CURL_DEFINES
+CURL_LIBS
+CURL_CFLAGS
 plugindir
 GIO_DEFINES
 GIO_LIBS
@@ -738,6 +741,7 @@ enable_schemas_install
 with_gio
 with_plugin_dir
 enable_caching
+with_libcurl
 '
       ac_precious_vars='build_alias
 host_alias
@@ -765,7 +769,9 @@ DBUS_LIBS
 GCONF_CFLAGS
 GCONF_LIBS
 GIO_CFLAGS
-GIO_LIBS'
+GIO_LIBS
+CURL_CFLAGS
+CURL_LIBS'
 
 
 # Initialize some variables set by options.
@@ -1401,6 +1407,7 @@ Optional Packages:
                           Directory for installing schema files.
   --with-gio              Use GIO for file I/O
   --with-plugin-dir=dir   Directory where plugins are stored
+  --with-libcurl          Add support for libcurl
 
 Some influential environment variables:
   CC          C compiler command
@@ -1432,6 +1439,8 @@ Some influential environment variables:
   GCONF_LIBS  linker flags for GCONF, overriding pkg-config
   GIO_CFLAGS  C compiler flags for GIO, overriding pkg-config
   GIO_LIBS    linker flags for GIO, overriding pkg-config
+  CURL_CFLAGS C compiler flags for CURL, overriding pkg-config
+  CURL_LIBS   linker flags for CURL, overriding pkg-config
 
 Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
@@ -8377,6 +8386,93 @@ if test $usecache != yes; then
 	GECKO_CFLAGS="$GECKO_CFLAGS -DDISABLE_CACHE"
 fi
 
+
+# Check whether --with-libcurl was given.
+if test "${with_libcurl+set}" = set; then :
+  withval=$with_libcurl;
+else
+  with_libcurl=check
+fi
+
+if test "x$with_libcurl" != xno; then :
+
+pkg_failed=no
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for CURL" >&5
+$as_echo_n "checking for CURL... " >&6; }
+
+if test -n "$CURL_CFLAGS"; then
+    pkg_cv_CURL_CFLAGS="$CURL_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libcurl\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "libcurl") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_CURL_CFLAGS=`$PKG_CONFIG --cflags "libcurl" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$CURL_LIBS"; then
+    pkg_cv_CURL_LIBS="$CURL_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libcurl\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "libcurl") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_CURL_LIBS=`$PKG_CONFIG --libs "libcurl" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+   	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        CURL_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "libcurl" 2>&1`
+        else
+	        CURL_PKG_ERRORS=`$PKG_CONFIG --print-errors "libcurl" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$CURL_PKG_ERRORS" >&5
+
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: Compiling without curl support. May disable apple.com sites" >&5
+$as_echo "$as_me: Compiling without curl support. May disable apple.com sites" >&6;}
+elif test $pkg_failed = untried; then
+     	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: Compiling without curl support. May disable apple.com sites" >&5
+$as_echo "$as_me: Compiling without curl support. May disable apple.com sites" >&6;}
+else
+	CURL_CFLAGS=$pkg_cv_CURL_CFLAGS
+	CURL_LIBS=$pkg_cv_CURL_LIBS
+        { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+	CURL_DEFINES="-DHAVE_CURL"
+$as_echo "#define CURL_ENABLED 1" >>confdefs.h
+
+fi
+
+
+
+
+fi
 
 
 ac_config_files="$ac_config_files Makefile gecko-mediaplayer.spec src/Makefile src/libgmlib/Makefile po/Makefile.in"

@@ -146,6 +146,17 @@ if test $usecache != yes; then
 	GECKO_CFLAGS="$GECKO_CFLAGS -DDISABLE_CACHE"
 fi
 
+AC_ARG_WITH([libcurl],
+    [AS_HELP_STRING([--with-libcurl],
+        [Add support for libcurl])],
+        [],
+        [with_libcurl=check])
+AS_IF([test "x$with_libcurl" != xno], 
+    [PKG_CHECK_MODULES(CURL,[libcurl],[CURL_DEFINES="-DHAVE_CURL" AC_DEFINE([CURL_ENABLED],[1],[Define to 1 if you have curl support])],AC_MSG_NOTICE([Compiling without curl support. May disable apple.com sites]))
+    AC_SUBST(CURL_DEFINES)
+    AC_SUBST(CURL_CFLAGS)
+    AC_SUBST(CURL_LIBS)
+    ])    
 
 
 AC_OUTPUT([

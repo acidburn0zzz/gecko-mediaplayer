@@ -60,7 +60,7 @@ gecko_mediaplayer_dvx_so_OBJECTS =  \
 am__DEPENDENCIES_1 =
 gecko_mediaplayer_dvx_so_DEPENDENCIES = libgmlib/libgmlib.a \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 gecko_mediaplayer_dvx_so_LINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
 	$(gecko_mediaplayer_dvx_so_LDFLAGS) $(LDFLAGS) -o $@
 am_gecko_mediaplayer_qt_so_OBJECTS = plugin_types_qt.$(OBJEXT) \
@@ -69,7 +69,7 @@ gecko_mediaplayer_qt_so_OBJECTS =  \
 	$(am_gecko_mediaplayer_qt_so_OBJECTS)
 gecko_mediaplayer_qt_so_DEPENDENCIES = libgmlib/libgmlib.a \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 gecko_mediaplayer_qt_so_LINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
 	$(gecko_mediaplayer_qt_so_LDFLAGS) $(LDFLAGS) -o $@
 am_gecko_mediaplayer_rm_so_OBJECTS = plugin_types_rm.$(OBJEXT) \
@@ -78,7 +78,7 @@ gecko_mediaplayer_rm_so_OBJECTS =  \
 	$(am_gecko_mediaplayer_rm_so_OBJECTS)
 gecko_mediaplayer_rm_so_DEPENDENCIES = libgmlib/libgmlib.a \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 gecko_mediaplayer_rm_so_LINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
 	$(gecko_mediaplayer_rm_so_LDFLAGS) $(LDFLAGS) -o $@
 am_gecko_mediaplayer_wmp_so_OBJECTS = plugin_types_wmp.$(OBJEXT) \
@@ -87,7 +87,7 @@ gecko_mediaplayer_wmp_so_OBJECTS =  \
 	$(am_gecko_mediaplayer_wmp_so_OBJECTS)
 gecko_mediaplayer_wmp_so_DEPENDENCIES = libgmlib/libgmlib.a \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 gecko_mediaplayer_wmp_so_LINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
 	$(gecko_mediaplayer_wmp_so_LDFLAGS) $(LDFLAGS) -o $@
 am_gecko_mediaplayer_so_OBJECTS = plugin_types_std.$(OBJEXT) \
@@ -95,7 +95,7 @@ am_gecko_mediaplayer_so_OBJECTS = plugin_types_std.$(OBJEXT) \
 gecko_mediaplayer_so_OBJECTS = $(am_gecko_mediaplayer_so_OBJECTS)
 gecko_mediaplayer_so_DEPENDENCIES = libgmlib/libgmlib.a \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 gecko_mediaplayer_so_LINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
 	$(gecko_mediaplayer_so_LDFLAGS) $(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
@@ -175,6 +175,9 @@ CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
+CURL_CFLAGS = @CURL_CFLAGS@
+CURL_DEFINES = @CURL_DEFINES@
+CURL_LIBS = @CURL_LIBS@
 CXX = @CXX@
 CXXDEPMODE = @CXXDEPMODE@
 CXXFLAGS = @CXXFLAGS@
@@ -303,7 +306,9 @@ INCLUDES = \
 	$(DBUS_CFLAGS) \
 	$(GCONF_CFLAGS) \
 	$(GCONF_DEFINES) \
-	$(DEFINES)
+	$(DEFINES) \
+	$(CURL_DEFINES) \
+	$(CURL_CFLAGS) 
 
 AM_CFLAGS = \
 	 -Wall \
@@ -334,35 +339,35 @@ gecko_mediaplayer_so_SOURCES = \
 
 gecko_mediaplayer_so_CFLAGS = -fPIC 
 gecko_mediaplayer_so_LDFLAGS = -shared -fPIC
-gecko_mediaplayer_so_LDADD = -ldl libgmlib/libgmlib.a $(GLIB_LIBS) $(DBUS_LIBS) $(GCONF_LIBS)
+gecko_mediaplayer_so_LDADD = -ldl libgmlib/libgmlib.a $(GLIB_LIBS) $(DBUS_LIBS) $(GCONF_LIBS) $(CURL_LIBS)
 gecko_mediaplayer_qt_so_SOURCES = \
 	plugin_types_qt.cpp \
 	$(COMMONCODE)
 
 gecko_mediaplayer_qt_so_CFLAGS = -fPIC 
 gecko_mediaplayer_qt_so_LDFLAGS = -shared -fPIC
-gecko_mediaplayer_qt_so_LDADD = -ldl libgmlib/libgmlib.a $(GLIB_LIBS) $(DBUS_LIBS) $(GCONF_LIBS)
+gecko_mediaplayer_qt_so_LDADD = -ldl libgmlib/libgmlib.a $(GLIB_LIBS) $(DBUS_LIBS) $(GCONF_LIBS) $(CURL_LIBS)
 gecko_mediaplayer_wmp_so_SOURCES = \
 	plugin_types_wmp.cpp \
 	$(COMMONCODE)
 
 gecko_mediaplayer_wmp_so_CFLAGS = -fPIC 
 gecko_mediaplayer_wmp_so_LDFLAGS = -shared -fPIC 
-gecko_mediaplayer_wmp_so_LDADD = -ldl libgmlib/libgmlib.a $(GLIB_LIBS) $(DBUS_LIBS) $(GCONF_LIBS)
+gecko_mediaplayer_wmp_so_LDADD = -ldl libgmlib/libgmlib.a $(GLIB_LIBS) $(DBUS_LIBS) $(GCONF_LIBS) $(CURL_LIBS)
 gecko_mediaplayer_dvx_so_SOURCES = \
 	plugin_types_dvx.cpp \
 	$(COMMONCODE)
 
 gecko_mediaplayer_dvx_so_CFLAGS = -fPIC 
 gecko_mediaplayer_dvx_so_LDFLAGS = -shared -fPIC
-gecko_mediaplayer_dvx_so_LDADD = -ldl libgmlib/libgmlib.a $(GLIB_LIBS) $(DBUS_LIBS) $(GCONF_LIBS)
+gecko_mediaplayer_dvx_so_LDADD = -ldl libgmlib/libgmlib.a $(GLIB_LIBS) $(DBUS_LIBS) $(GCONF_LIBS) $(CURL_LIBS)
 gecko_mediaplayer_rm_so_SOURCES = \
 	plugin_types_rm.cpp \
 	$(COMMONCODE)
 
 gecko_mediaplayer_rm_so_CFLAGS = -fPIC 
 gecko_mediaplayer_rm_so_LDFLAGS = -shared -fPIC
-gecko_mediaplayer_rm_so_LDADD = -ldl libgmlib/libgmlib.a $(GLIB_LIBS) $(DBUS_LIBS) $(GCONF_LIBS)
+gecko_mediaplayer_rm_so_LDADD = -ldl libgmlib/libgmlib.a $(GLIB_LIBS) $(DBUS_LIBS) $(GCONF_LIBS) $(CURL_LIBS)
 all: all-recursive
 
 .SUFFIXES:
