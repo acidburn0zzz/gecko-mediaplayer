@@ -44,7 +44,7 @@
 #include <dbus/dbus.h>
 #include <dbus/dbus-glib-lowlevel.h>
 #ifdef HAVE_CONFIG_H
-#  include <config.h>
+#include <config.h>
 #endif
 #ifdef HAVE_GCONF
 #include <gconf/gconf.h>
@@ -58,6 +58,10 @@
 #include "plugin_list.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
+#endif
+
+#ifdef HAVE_CURL
+#include <curl/curl.h>
 #endif
 
 #include "libgmlib/gmlib.h"
@@ -122,6 +126,7 @@ class CPlugin {
     void URLNotify(const char *url, NPReason reason, void *notifyData);
     int32_t WriteReady(NPStream * stream);
     int32_t Write(NPStream * stream, int32_t offset, int32_t len, void *buffer);
+    NPError GetURLNotify(NPP instance, const char *url, const char *target, void *notifyData);
 
 
 
@@ -192,6 +197,7 @@ class CPlugin {
     gchar *controls;
     gchar *user_agent;
     gchar *player_backend;
+    gboolean quicktime_emulation;
 
     // events
     gboolean post_dom_events;

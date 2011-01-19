@@ -1,6 +1,9 @@
 /* config.h.  Generated from config.h.in by configure.  */
 /* config.h.in.  Generated from configure.in by autoheader.  */
 
+/* Define to 1 if you have curl support */
+#define CURL_ENABLED 1
+
 /* always defined to indicate that i18n is enabled */
 #define ENABLE_NLS 1
 

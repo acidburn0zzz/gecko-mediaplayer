@@ -112,14 +112,14 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
             if (g_ascii_strcasecmp(argn[i], "height") == 0) {
                 sscanf(argv[i], "%i", &height);
             }
-            
+
             if (g_ascii_strcasecmp(argn[i], "style") == 0) {
-                tmp = g_strrstr(argv[i],"width:");
+                tmp = g_strrstr(argv[i], "width:");
                 sscanf(tmp + strlen("width:"), "%i", &width);
-                tmp = g_strrstr(argv[i],"height:");
+                tmp = g_strrstr(argv[i], "height:");
                 sscanf(tmp + strlen("height:"), "%i", &height);
             }
-            
+
 
             if (g_ascii_strcasecmp(argn[i], "src") == 0 || g_ascii_strcasecmp(argn[i], "url") == 0) {
                 item = g_new0(ListItem, 1);
@@ -309,8 +309,7 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
                 if (g_ascii_strcasecmp(argv[i], "true") == 0
                     || g_ascii_strcasecmp(argv[i], "yes") == 0
                     || g_ascii_strcasecmp(argv[i], "1") == 0
-                    || g_ascii_strcasecmp(argv[i], "") == 0
-                    || argv[i] == NULL) {
+                    || g_ascii_strcasecmp(argv[i], "") == 0 || argv[i] == NULL) {
                     force_streaming = TRUE;
                 } else {
                     force_streaming = FALSE;
@@ -482,10 +481,10 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
         if (qtsrc)
             qtsrc->streaming = TRUE;
     }
-    
+
     list_qualify_url(instance->playlist, instance->page_url);
-    
-    
+
+
 //    if (g_ascii_strcasecmp(instance->mimetype,"video/x-flv") == 0) {
 //      item->streaming = TRUE;
 //    }
@@ -499,7 +498,7 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
             item->requested = 1;
         } else {
             item->requested = 1;
-            NPN_GetURLNotify(instance->mInstance, item->src, NULL, item);
+            instance->GetURLNotify(instance->mInstance, item->src, NULL, item);
         }
     }
 
@@ -536,7 +535,7 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
             g_error_free(error);
             error = NULL;
         }
-        NPN_GetURLNotify(instance->mInstance, href->src, NULL, href);
+        instance->GetURLNotify(instance->mInstance, href->src, NULL, href);
         g_free(app_name);
     }
 

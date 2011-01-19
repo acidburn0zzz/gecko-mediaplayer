@@ -89,12 +89,15 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                 }
 
                 instance->playerready = TRUE;
-                if (g_strrstr(instance->mimetype,"audio") != NULL) {
-                    instance->cache_size = request_int_value(instance, item, "GetPluginAudioCacheSize");
-                } else {                 
-                    instance->cache_size = request_int_value(instance, item, "GetPluginVideoCacheSize");
+                if (g_strrstr(instance->mimetype, "audio") != NULL) {
+                    instance->cache_size =
+                        request_int_value(instance, item, "GetPluginAudioCacheSize");
+                } else {
+                    instance->cache_size =
+                        request_int_value(instance, item, "GetPluginVideoCacheSize");
                 }
-                //printf("cache size = %i\n",instance->cache_size);
+                printf("$$$$$$$$$$$$ playerready = %i\n", instance->playerready);
+                printf("cache size = %i\n", instance->cache_size);
                 if (instance->cache_size == 0) {
                     item->streaming = 1;
                 }
@@ -138,7 +141,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                             if (item->streaming) {
                                 send_signal_with_string(instance, item, "Open", item->src);
                             } else {
-                                NPN_GetURLNotify(instance->mInstance, item->src, NULL, item);
+                                instance->GetURLNotify(instance->mInstance, item->src, NULL, item);
                             }
                         } else {
                             i = 0;
@@ -174,7 +177,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                             }
                             g_free(app_name);
                             printf("requesting %s \n", item->src);
-                            NPN_GetURLNotify(instance->mInstance, item->src, NULL, item);
+                            instance->GetURLNotify(instance->mInstance, item->src, NULL, item);
                         }
                         instance->lastopened->played = TRUE;
                         item->requested = TRUE;
@@ -244,7 +247,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                         if (item->retrieved) {
                             open_location(instance, item, TRUE);
                         } else {
-                            NPN_GetURLNotify(instance->mInstance, item->src, NULL, item);
+                            instance->GetURLNotify(instance->mInstance, item->src, NULL, item);
                         }
                     } else {
                         open_location(instance, item, FALSE);
@@ -558,7 +561,7 @@ void send_signal_with_string(CPlugin * instance, ListItem * item, const gchar * 
     const char *localstr;
     gchar *path;
 
-    //printf("Sending %s to connection %p\n", signal, instance->connection);
+    printf("Sending %s to connection %p\n", signal, instance->connection);
     if (instance == NULL)
         return;
 
