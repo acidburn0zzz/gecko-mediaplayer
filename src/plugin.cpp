@@ -643,6 +643,7 @@ void CPlugin::shut()
         for (iter = playlist; iter != NULL; iter = g_list_next(iter)) {
             item = (ListItem *) iter->data;
             if (item != NULL) {
+                item->cancelled = TRUE;
                 if (item->controlid != 0) {
                     send_signal_when_ready(this, item, "Terminate");
                 }
@@ -1413,7 +1414,12 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
 
     // skip divide by zero issues
     if (dltotal == 0)
-        return 0;
+        return 0;   // keeps downloading
+
+    if (item->cancelled) {
+        printf("cancelling download at %f for %s\n", dlnow, item->src);
+        return -1;  // cancels download
+    }
 
     printf("item ready = %i,player ready = %i,%f,%f,%f\n", item->playerready, plugin->playerready,
            dlnow, dltotal, dlnow / dltotal);
@@ -1495,15 +1501,15 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
             if (!item->streaming)
                 item->streaming = streaming(item->src);
             if (!item->streaming) {
-                printf("in Write\n");
+                printf("in progress_callback\n");
                 plugin->playlist = list_parse_qt(plugin->playlist, item);
                 plugin->playlist = list_parse_asx(plugin->playlist, item);
                 plugin->playlist = list_parse_qml(plugin->playlist, item);
                 plugin->playlist = list_parse_ram(plugin->playlist, item);
             }
-            // printf("item->play = %i\n",item->play);
-            // printf("item->src = %i\n", item->src);
-            // printf("calling open_location from Write\n"); 
+            printf("item->play = %i\n",item->play);
+            printf("item->src = %i\n", item->src);
+            printf("calling open_location from progress_callback\n"); 
             if (item->play) {
                 send_signal_with_integer(plugin, item, "SetGUIState", PLAYING);
                 open_location(plugin, item, TRUE);
@@ -1526,8 +1532,10 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
                         open_location(plugin, item, FALSE);
                         item->requested = TRUE;
                     } else {
-                        plugin->GetURLNotify(plugin->mInstance, item->src, NULL, item);
-                        item->requested = TRUE;
+                        if (!item->requested) {
+                            plugin->GetURLNotify(plugin->mInstance, item->src, NULL, item);
+                            item->requested = TRUE;
+                        }
                     }
                 }
             }
@@ -1566,7 +1574,8 @@ gpointer CURLGetURLNotify(gpointer data)
 
                 curl_easy_perform(curl);
                 curl_easy_cleanup(curl);
-                plugin->URLNotify(item->src, NPRES_DONE, item);
+                printf("item retrieved using CURL\n");
+                //plugin->URLNotify(item->src, NPRES_DONE, item);
 
             }
             fclose(local);
@@ -1583,7 +1592,7 @@ gpointer CURLGetURLNotify(gpointer data)
             if (!item->streaming)
                 item->streaming = streaming(item->src);
             if (!item->streaming) {
-                printf("in Write\n");
+                printf("in CURLGetURLNotify\n");
                 plugin->playlist = list_parse_qt(plugin->playlist, item);
                 plugin->playlist = list_parse_asx(plugin->playlist, item);
                 plugin->playlist = list_parse_qml(plugin->playlist, item);
@@ -1614,8 +1623,10 @@ gpointer CURLGetURLNotify(gpointer data)
                         open_location(plugin, item, FALSE);
                         item->requested = TRUE;
                     } else {
-                        plugin->GetURLNotify(plugin->mInstance, item->src, NULL, item);
-                        item->requested = TRUE;
+                        if (!item->requested) {
+                            plugin->GetURLNotify(plugin->mInstance, item->src, NULL, item);
+                            item->requested = TRUE;
+                        }
                     }
                 }
             }
@@ -1637,12 +1648,13 @@ NPError CPlugin::GetURLNotify(NPP instance, const char *url, const char *target,
     gchar *tmp;
 #endif
 
-    if (g_strrstr(url, "apple.com") == 0 && quicktime_emulation == FALSE) {
+    if (g_strrstr(url, "apple.com") == NULL /* && this->quicktime_emulation == 0 */) {
         return NPN_GetURLNotify(instance, url, target, notifyData);
     } else {
 #ifdef HAVE_CURL
         printf("using curl to retrieve data from apple.com site\n");
-
+        printf("quicktime_emulation = %i\n",quicktime_emulation);
+        
         item = (ListItem *) notifyData;
         // item = list_find(playlist, (gchar*)stream->url);
         if (item == NULL) {
