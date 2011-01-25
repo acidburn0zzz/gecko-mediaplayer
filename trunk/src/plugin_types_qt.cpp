@@ -102,5 +102,6 @@ void pluginSpecific(CPlugin * instance)
 {
     //printf("calling pluginSpecific for qt plugin\n");
     //setPreference(instance, "general.useragent.override", "QuickTime/7.6.9");
+    printf("Loading QuickTime compatibility\n");
     instance->quicktime_emulation = TRUE;
 }

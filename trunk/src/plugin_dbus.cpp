@@ -412,7 +412,7 @@ void open_location(CPlugin * instance, ListItem * item, gboolean uselocal)
         }
         //printf("got player, waiting for controlid %i\n",item->controlid);
         if (item->controlid != 0) {
-            while (!(item->playerready)) {
+            while (!(item->playerready) && !item->cancelled) {
                 g_main_context_iteration(NULL, FALSE);
             }
         }

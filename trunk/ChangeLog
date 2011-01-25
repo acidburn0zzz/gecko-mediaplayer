@@ -1,4 +1,6 @@
 Development
+	Fixes to using libcurl
+	Only do list_dump when we process the list
 	Use libcurl to fetch content when running in QuickTime emulation
 	Fix spot where QuickTime was not set to 7.6.9 
 	Get width and height from the style attribute if present
