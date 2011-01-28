@@ -1251,11 +1251,13 @@ void CPlugin::SetFilename(const char *filename)
 
 void CPlugin::GetFilename(char **filename)
 {
-    ListItem *item;
+    ListItem *item = NULL;
+    
     if (this->lastopened != NULL) {
         *filename = g_strdup(this->lastopened->src);
     } else {
-        item = (ListItem *) playlist->data;
+        if (playlist != NULL)
+            item = (ListItem *) playlist->data;
         if (item != NULL) {
             *filename = g_strdup(item->src);
         } else {
@@ -2318,7 +2320,8 @@ bool ScriptablePluginObject::GetProperty(NPIdentifier name, NPVariant * result)
 
     if (name == filename_id || name == src_id) {
         pPlugin->GetFilename(&filename);
-        STRINGZ_TO_NPVARIANT(filename, *result);
+        if (filename != NULL)
+            STRINGZ_TO_NPVARIANT(filename, *result);
         return true;
     }
 
