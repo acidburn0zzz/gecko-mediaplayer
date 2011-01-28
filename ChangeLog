@@ -1,4 +1,5 @@
 Development
+	Work around xulrunner api change Issue #124
 	Fix a couple of NULL pointer errors Issue #123
 	Fixes to using libcurl
 	Only do list_dump when we process the list
