@@ -615,6 +615,11 @@ NSPR_LIBS
 NSPR_CFLAGS
 GECKO_LIBS
 GECKO_CFLAGS
+PULSE_CFLAGS
+ALSA_CFLAGS
+GLIB2_26_DEFINES
+GLIB2_26_LIBS
+GLIB2_26_CFLAGS
 GLIB_LIBS
 GLIB_CFLAGS
 PKG_CONFIG_LIBDIR
@@ -760,6 +765,8 @@ PKG_CONFIG_PATH
 PKG_CONFIG_LIBDIR
 GLIB_CFLAGS
 GLIB_LIBS
+GLIB2_26_CFLAGS
+GLIB2_26_LIBS
 GECKO_CFLAGS
 GECKO_LIBS
 NSPR_CFLAGS
@@ -1427,6 +1434,10 @@ Some influential environment variables:
               path overriding pkg-config's built-in search path
   GLIB_CFLAGS C compiler flags for GLIB, overriding pkg-config
   GLIB_LIBS   linker flags for GLIB, overriding pkg-config
+  GLIB2_26_CFLAGS
+              C compiler flags for GLIB2_26, overriding pkg-config
+  GLIB2_26_LIBS
+              linker flags for GLIB2_26, overriding pkg-config
   GECKO_CFLAGS
               C compiler flags for GECKO, overriding pkg-config
   GECKO_LIBS  linker flags for GECKO, overriding pkg-config
@@ -7228,6 +7239,84 @@ else
 $as_echo "yes" >&6; }
 
 fi
+
+
+
+
+pkg_failed=no
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for GLIB2_26" >&5
+$as_echo_n "checking for GLIB2_26... " >&6; }
+
+if test -n "$GLIB2_26_CFLAGS"; then
+    pkg_cv_GLIB2_26_CFLAGS="$GLIB2_26_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"glib-2.0 >= 2.26.0\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "glib-2.0 >= 2.26.0") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_GLIB2_26_CFLAGS=`$PKG_CONFIG --cflags "glib-2.0 >= 2.26.0" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$GLIB2_26_LIBS"; then
+    pkg_cv_GLIB2_26_LIBS="$GLIB2_26_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"glib-2.0 >= 2.26.0\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "glib-2.0 >= 2.26.0") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_GLIB2_26_LIBS=`$PKG_CONFIG --libs "glib-2.0 >= 2.26.0" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+   	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        GLIB2_26_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "glib-2.0 >= 2.26.0" 2>&1`
+        else
+	        GLIB2_26_PKG_ERRORS=`$PKG_CONFIG --print-errors "glib-2.0 >= 2.26.0" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$GLIB2_26_PKG_ERRORS" >&5
+
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: Using GLIB < 2.26 specific features" >&5
+$as_echo "$as_me: Using GLIB < 2.26 specific features" >&6;}
+elif test $pkg_failed = untried; then
+     	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: Using GLIB < 2.26 specific features" >&5
+$as_echo "$as_me: Using GLIB < 2.26 specific features" >&6;}
+else
+	GLIB2_26_CFLAGS=$pkg_cv_GLIB2_26_CFLAGS
+	GLIB2_26_LIBS=$pkg_cv_GLIB2_26_LIBS
+        { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+	GLIB2_26_DEFINES="-DGLIB2_26_ENABLED"
+$as_echo "#define GLIB2_26_ENABLED 1" >>confdefs.h
+
+fi
+
+
 
 
 
