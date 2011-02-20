@@ -30,6 +30,12 @@ PKG_CHECK_MODULES(GLIB, [glib-2.0 ])
 AC_SUBST(GLIB_CFLAGS)
 AC_SUBST(GLIB_LIBS)
 
+PKG_CHECK_MODULES(GLIB2_26,[glib-2.0 >= 2.26.0],[GLIB2_26_DEFINES="-DGLIB2_26_ENABLED" AC_DEFINE([GLIB2_26_ENABLED],[1],[Define to 1 if you have GLIB 2.26 or higher])],AC_MSG_NOTICE([Using GLIB < 2.26 specific features]))
+AC_SUBST(GLIB2_26_DEFINES)
+AC_SUBST(ALSA_CFLAGS)
+AC_SUBST(PULSE_CFLAGS)
+
+
 AC_ARG_WITH([xulrunner-sdk],
     [AS_HELP_STRING([--with-xulrunner-sdk=path_to_sdk],
         [Path to xulrunner SDK for build --with-xulrunner-sdk=/path/to/sdk])],

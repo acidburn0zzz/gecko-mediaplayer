@@ -13,6 +13,9 @@
 /* Define to 1 if you have GIO support */
 #define GIO_ENABLED 1
 
+/* Define to 1 if you have GLIB 2.26 or higher */
+#define GLIB2_26_ENABLED 1
+
 /* Define to 1 if you have the `bind_textdomain_codeset' function. */
 #define HAVE_BIND_TEXTDOMAIN_CODESET 1
 
