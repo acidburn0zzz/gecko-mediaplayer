@@ -1,4 +1,5 @@
 Development
+	Apply patch from issue #126
 	Updated Turkish translation
 	Work around xulrunner api change Issue #124
 	Fix a couple of NULL pointer errors Issue #123
