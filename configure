@@ -602,6 +602,7 @@ plugindir
 GIO_DEFINES
 GIO_LIBS
 GIO_CFLAGS
+USE_GCONF
 GCONF_DEFINES
 GCONF_SCHEMA_FILE_DIR
 GCONF_SCHEMA_CONFIG_SOURCE
@@ -7311,7 +7312,7 @@ else
 	GLIB2_26_LIBS=$pkg_cv_GLIB2_26_LIBS
         { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
-	GLIB2_26_DEFINES="-DGLIB2_26_ENABLED"
+	with_gconf=no with_gsettings=yes GLIB2_26_DEFINES="-DGLIB2_26_ENABLED"
 $as_echo "#define GLIB2_26_ENABLED 1" >>confdefs.h
 
 fi
@@ -8206,6 +8207,7 @@ fi
 
 
 
+USE_GCONF=0
 
 # Check whether --with-gconf was given.
 if test "${with_gconf+set}" = set; then :
@@ -8354,7 +8356,7 @@ else
   GCONF_SCHEMAS_INSTALL_FALSE=
 fi
 
-
+ USE_GCONF=1
  GCONF_DEFINES="-DHAVE_GCONF"
 $as_echo "#define HAVE_GCONF 1" >>confdefs.h
 
@@ -8364,6 +8366,7 @@ fi
 
 
 fi
+
 
 
 # Check whether --with-gio was given.
