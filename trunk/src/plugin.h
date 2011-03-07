@@ -81,14 +81,13 @@
 #define STATE_RECONNECTING  11
 
 // config settings stored in gconf
-#define CACHE_SIZE		"cache_size"
-#define DISABLE_QT		"disable_qt"
-#define DISABLE_REAL	"disable_real"
-#define DISABLE_WMP		"disable_wmp"
-#define DISABLE_DVX		"disable_dvx"
-#define DEBUG_LEVEL		"debug_level"
-#define DISABLE_MIDI    "disable_midi"
-#define PLAYER_BACKEND  "player_backend"
+#define DISABLE_QT		"disable-qt"
+#define DISABLE_REAL	"disable-real"
+#define DISABLE_WMP		"disable-wmp"
+#define DISABLE_DVX		"disable-dvx"
+#define DEBUG_LEVEL		"debug-level"
+#define DISABLE_MIDI    "disable-midi"
+#define PLAYER_BACKEND  "player-backend"
 
 typedef enum {
     PLAYING,

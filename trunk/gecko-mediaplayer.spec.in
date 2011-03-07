@@ -1,4 +1,5 @@
 %define ver @VERSION@
+%define use_gconf @USE_GCONF@
 
 Name: gecko-mediaplayer
 Summary: Multimedia browser plugin for Gecko based browsers
@@ -36,14 +37,18 @@ rm -rf $buildroot
 
 %post
 update-desktop-database %{_datadir}/applications
+%if %{use_gconf}
 export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
 if [ -e %{_sysconfdir}/gconf/schemas/gecko-mediaplayer.schemas ]; then
 gconftool-2 --makefile-install-rule %{_sysconfdir}/gconf/schemas/gecko-mediaplayer.schemas > /dev/null
 fi 
+%endif
 
 %files
 %defattr(-,root,root,-)
 %{_docdir}/%{name}
 %{_libdir}/mozilla
 %{_datadir}/locale
+%if %{use_gconf}
 %config %{_sysconfdir}
+%endif
