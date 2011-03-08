@@ -26,11 +26,11 @@ dnl Add the languages which your application supports here.
 ALL_LINGUAS="cs de es fr ja it nl pl pt_BR tr"
 AM_GLIB_GNU_GETTEXT
 
-PKG_CHECK_MODULES(GLIB, [glib-2.0 ])
+PKG_CHECK_MODULES(GLIB, [glib-2.0])
 AC_SUBST(GLIB_CFLAGS)
 AC_SUBST(GLIB_LIBS)
 
-PKG_CHECK_MODULES(GLIB2_26,[glib-2.0 >= 2.26.0],[with_gconf=no with_gsettings=yes GLIB2_26_DEFINES="-DGLIB2_26_ENABLED" AC_DEFINE([GLIB2_26_ENABLED],[1],[Define to 1 if you have GLIB 2.26 or higher])],AC_MSG_NOTICE([Using GLIB < 2.26 specific features]))
+PKG_CHECK_MODULES(GLIB2_26,[glib-2.0 >= 2.26.0],[with_gconf=no with_gsettings=yes with_gio=yes GLIB2_26_DEFINES="-DGLIB2_26_ENABLED" AC_DEFINE([GLIB2_26_ENABLED],[1],[Define to 1 if you have GLIB 2.26 or higher])],AC_MSG_NOTICE([Using GLIB < 2.26 specific features]))
 AC_SUBST(GLIB2_26_DEFINES)
 AC_SUBST(ALSA_CFLAGS)
 AC_SUBST(PULSE_CFLAGS)
@@ -57,16 +57,17 @@ AC_ARG_WITH([xulrunner-sdk],
 
 if test "$GECKO_CFLAGS" = ""; then
 PKG_CHECK_MODULES(GECKO, [libxul >= 2],[GECKO_CFLAGS="$GECKO_CFLAGS -DMOZ_NO_MOZALLOC" AC_DEFINE([HAVE_NEW_XULRUNNER],[1],[Define to 1 if using libxul 2.0.0 or higher]) AC_MSG_NOTICE([Using libxul >= 2.0 ])
-    ],[AC_MSG_NOTICE([libxul >= 2])])
+    ],[AC_MSG_NOTICE([libxul >= 2 not found, trying another])])
+fi
+
+if test "$GECKO_CFLAGS" = ""; then
+PKG_CHECK_MODULES(GECKO, [libxul >= 1.9.2],[ AC_DEFINE([HAVE_NEW_XULRUNNER],[1],[Define to 1 if using libxul 1.9.2 or higher]) AC_MSG_NOTICE([Using libxul >= 1.9.2])
+    ],[AC_MSG_NOTICE([libxul >= 1.9.2 not found, trying another])])
 fi
 
 if test "$GECKO_CFLAGS" = ""; then
 PKG_CHECK_MODULES(GECKO, [libxul < 1.9.2],[ AC_MSG_NOTICE([Using libxul < 1.9.2])
     ],[AC_MSG_WARN([libxul < 1.9.2 not found, trying another])])
-fi
-if test "$GECKO_CFLAGS" = ""; then
-PKG_CHECK_MODULES(GECKO, [libxul >= 1.9.2],[ AC_DEFINE([HAVE_NEW_XULRUNNER],[1],[Define to 1 if using libxul 1.9.2 or higher]) AC_MSG_NOTICE([Using libxul >= 1.9.2])
-    ],[AC_MSG_NOTICE([libxul >= 1.9.2 not found, trying another])])
 fi
 
 if test "$GECKO_CFLAGS" = ""; then

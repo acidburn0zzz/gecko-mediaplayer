@@ -1,4 +1,5 @@
 Development
+	Apply changes to fix compiling on Ubuntu
 	Apply config changes to gconf schema
 	Apply changes to make gecko-mediaplayer with with gnome-mplayer 1.0.3beta and higher
 	Apply patch from issue #126
