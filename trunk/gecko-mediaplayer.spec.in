@@ -13,7 +13,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 Requires: gnome-mplayer
 
 %if 0%{?fedora} > 8
-BuildRequires: gcc-c++, pkgconfig, gettext, xulrunner-devel, dbus-devel, dbus-glib-devel, glib2-devel, GConf2-devel, libX11-devel
+BuildRequires: gcc-c++, pkgconfig, gettext, xulrunner-devel, dbus-devel, dbus-glib-devel, glib2-devel, GConf2-devel, libX11-devel libcurl-devel 
 %else
 BuildRequires: gcc-c++, pkgconfig, gettext, firefox-devel, dbus-devel, dbus-glib-devel, glib2-devel, GConf2-devel, libX11-devel
 %endif
