@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-11 10:28-0600\n"
+"POT-Creation-Date: 2011-03-08 10:45-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,27 +17,27 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/plugin.cpp:402
+#: src/plugin.cpp:436
 #, c-format
 msgid "gecko mediaplayer v%s\n"
 msgstr ""
 
-#: src/plugin.cpp:675
+#: src/plugin.cpp:710
 #, c-format
 msgid "Cache fill: %2.2f%%"
 msgstr ""
 
-#: src/plugin.cpp:940
+#: src/plugin.cpp:975
 #, c-format
 msgid "Write unable to write because item is NULL\n"
 msgstr ""
 
-#: src/plugin.cpp:1008
+#: src/plugin.cpp:1041 src/plugin.cpp:1448
 #, c-format
 msgid "Caching %iK (%0.1f K/s)"
 msgstr ""
 
-#: src/plugin.cpp:1011
+#: src/plugin.cpp:1044 src/plugin.cpp:1451
 #, c-format
 msgid "Cache fill: %2.2f%% (%0.1f K/s)"
 msgstr ""
