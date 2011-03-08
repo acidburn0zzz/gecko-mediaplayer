@@ -48,8 +48,6 @@
 #include <nsISupportsPrimitives.h>
 #include <dlfcn.h>
 
-nsIPrefBranch *prefBranch = NULL;
-nsIPrefService *prefService = NULL;
 static NPObject *sWindowObj;
 
 //#include "nsIServiceManager.h"
@@ -182,112 +180,6 @@ void postDOMEvent(NPP mInstance, const gchar * id, const gchar * event)
 
 
 
-void setPreference(CPlugin * instance, const gchar * name, const gchar * value)
-{
-    nsIServiceManager *sm = NULL;
-    nsIServiceManager *ServiceManager = NULL;
-    PRBool v;
-    nsresult(*get_sm) (nsIServiceManager **);
-    nsresult(*init) (nsIServiceManager **, nsIFile *, nsIDirectoryServiceProvider *);
-    nsresult res;
-    gchar *retrieved;
-    nsIPrefBranch *prefBranch;
-
-
-    get_sm = (nsresult(*)(nsIServiceManager **)) dlsym(RTLD_DEFAULT, "NS_GetServiceManager");
-    if (get_sm) {
-        res = (*get_sm) (&sm);
-        if (NS_FAILED(res)) {
-            printf("NS_GetServiceManager Failed\n");
-        }
-
-        if (res == NS_ERROR_NOT_INITIALIZED) {
-            printf("XPCOM not initialized\n");
-            init =
-                (nsresult(*)(nsIServiceManager **, nsIFile *, nsIDirectoryServiceProvider *))
-                dlsym(RTLD_DEFAULT, "NS_InitXPCOM2");
-            if (init) {
-                res = init(&sm, nsnull, nsnull);
-                if (res == NS_OK) {
-                    printf("XPCOM initialized\n");
-                } else {
-                    printf("Initialization failed\n");
-                }
-            } else {
-                printf("Unable to load NS_InitXPCOM2\n");
-            }
-        }
-    } else {
-        NPN_GetValue(NULL, NPNVserviceManager, &sm);
-    }
-
-
-    if (sm) {
-        sm->QueryInterface(NS_GET_IID(nsIServiceManager), (void **) (&ServiceManager));
-        NS_RELEASE(sm);
-    }
-
-    if (ServiceManager) {
-        ServiceManager->GetServiceByContractID(NS_PREFSERVICE_CONTRACTID,
-                                               NS_GET_IID(nsIPrefService), (void **) &prefService);
-        if (prefService) {
-            prefService->ReadUserPrefs(nsnull);
-            prefService->GetBranch("", &prefBranch);
-            instance->user_agent = g_new0(gchar, 1024);
-            prefBranch->PrefHasUserValue(name, &v);
-            if (v) {
-                prefBranch->GetCharPref(name, &(instance->user_agent));
-                prefBranch->ClearUserPref(name);
-            }
-            prefBranch->SetCharPref(name, value);
-            printf("Set preference %s to %s, old value was '%s'\n", name, value,
-                   instance->user_agent);
-        }
-        NS_RELEASE(ServiceManager);
-    }
-
-}
-
-void clearPreference(CPlugin * instance, const gchar * name)
-{
-    nsIServiceManager *sm = NULL;
-    nsIServiceManager *ServiceManager = NULL;
-    PRBool v;
-    void (*get_sm) (nsIServiceManager **);
-
-    get_sm = (void (*)(nsIServiceManager **)) dlsym(RTLD_DEFAULT, "NS_GetServiceManager");
-    if (get_sm) {
-        (*get_sm) (&sm);
-    } else {
-        NPN_GetValue(NULL, NPNVserviceManager, &sm);
-    }
-
-    if (sm) {
-        sm->QueryInterface(NS_GET_IID(nsIServiceManager), (void **) (&ServiceManager));
-        NS_RELEASE(sm);
-    }
-
-    if (ServiceManager) {
-        ServiceManager->GetServiceByContractID(NS_PREFSERVICE_CONTRACTID,
-                                               NS_GET_IID(nsIPrefService), (void **) &prefService);
-        if (prefService) {
-            prefService->ReadUserPrefs(nsnull);
-            prefService->GetBranch("", &prefBranch);
-            if (instance->user_agent == NULL || strlen(instance->user_agent) == 0) {
-                prefBranch->ClearUserPref(name);
-            } else {
-                if (g_strrstr(instance->user_agent, "QuickTime/7.6.9")) {
-                    prefBranch->ClearUserPref(name);
-                } else {
-                    prefBranch->ClearUserPref(name);
-                    prefBranch->SetCharPref(name, instance->user_agent);
-                }
-            }
-            g_free(instance->user_agent);
-        }
-        NS_RELEASE(ServiceManager);
-    }
-}
 
 ////////////////////////////////////////
 //
