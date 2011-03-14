@@ -571,7 +571,10 @@ gboolean streaming(gchar * url)
     if (g_strrstr(url, "stream") != NULL)
         ret = TRUE;
 
-    if (g_ascii_strncasecmp(url, "file://", 7) == 0) {
+    if (g_strrstr(url, "MSWMExt=.asf") != NULL)
+        ret = TRUE;
+
+    if (ret == FALSE && g_ascii_strncasecmp(url, "file://", 7) == 0) {
         p = g_filename_from_uri(url, NULL, NULL);
         if (p != NULL) {
             if (g_file_test(p, G_FILE_TEST_EXISTS)) {
