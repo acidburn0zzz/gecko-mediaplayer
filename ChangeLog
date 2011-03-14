@@ -1,4 +1,6 @@
 Development
+	Mark asf files as streaming
+	Remove code to set the firefox preference
 	Version bump to 1.0.3beta
 	Apply changes to fix compiling on Ubuntu
 	Apply config changes to gconf schema
