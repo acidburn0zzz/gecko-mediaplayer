@@ -1402,7 +1402,7 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
                 plugin->playlist = list_parse_ram(plugin->playlist, item);
             }
             printf("item->play = %i\n",item->play);
-            printf("item->src = %i\n", item->src);
+            printf("item->src = %s\n", item->src);
             printf("calling open_location from progress_callback\n"); 
             if (item->play) {
                 send_signal_with_integer(plugin, item, "SetGUIState", PLAYING);
@@ -1446,7 +1446,6 @@ gpointer CURLGetURLNotify(gpointer data)
     ListItem *item = (ListItem *) data;
     CPlugin *plugin = (CPlugin *) item->plugin;
     gchar *path;
-    gchar *tmp;
     FILE *local;
     CURL *curl;
     gint id;
@@ -1598,7 +1597,7 @@ NPError CPlugin::GetURLNotify(NPP instance, const char *url, const char *target,
 
         g_thread_create(CURLGetURLNotify, item, FALSE, NULL);
 
-
+        return NPERR_NO_ERROR;
 #else
         printf
             ("Unable to set user agent for pulling data from apple.com, request will probably fail\n");
