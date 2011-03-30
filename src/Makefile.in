@@ -109,13 +109,31 @@ am__depfiles_maybe = depfiles
 am__mv = mv -f
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+AM_V_CXX = $(am__v_CXX_$(V))
+am__v_CXX_ = $(am__v_CXX_$(AM_DEFAULT_VERBOSITY))
+am__v_CXX_0 = @echo "  CXX   " $@;
+AM_V_at = $(am__v_at_$(V))
+am__v_at_ = $(am__v_at_$(AM_DEFAULT_VERBOSITY))
+am__v_at_0 = @
 CXXLD = $(CXX)
 CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
 	-o $@
+AM_V_CXXLD = $(am__v_CXXLD_$(V))
+am__v_CXXLD_ = $(am__v_CXXLD_$(AM_DEFAULT_VERBOSITY))
+am__v_CXXLD_0 = @echo "  CXXLD " $@;
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+AM_V_CC = $(am__v_CC_$(V))
+am__v_CC_ = $(am__v_CC_$(AM_DEFAULT_VERBOSITY))
+am__v_CC_0 = @echo "  CC    " $@;
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+AM_V_CCLD = $(am__v_CCLD_$(V))
+am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))
+am__v_CCLD_0 = @echo "  CCLD  " $@;
+AM_V_GEN = $(am__v_GEN_$(V))
+am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
+am__v_GEN_0 = @echo "  GEN   " $@;
 SOURCES = $(gecko_mediaplayer_dvx_so_SOURCES) \
 	$(gecko_mediaplayer_qt_so_SOURCES) \
 	$(gecko_mediaplayer_rm_so_SOURCES) \
@@ -170,6 +188,7 @@ am__relativize = \
 ACLOCAL = @ACLOCAL@
 ALSA_CFLAGS = @ALSA_CFLAGS@
 AMTAR = @AMTAR@
+AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
@@ -453,19 +472,19 @@ clean-install_libexecPROGRAMS:
 	-test -z "$(install_libexec_PROGRAMS)" || rm -f $(install_libexec_PROGRAMS)
 gecko-mediaplayer-dvx.so$(EXEEXT): $(gecko_mediaplayer_dvx_so_OBJECTS) $(gecko_mediaplayer_dvx_so_DEPENDENCIES) 
 	@rm -f gecko-mediaplayer-dvx.so$(EXEEXT)
-	$(gecko_mediaplayer_dvx_so_LINK) $(gecko_mediaplayer_dvx_so_OBJECTS) $(gecko_mediaplayer_dvx_so_LDADD) $(LIBS)
+	$(AM_V_CXXLD)$(gecko_mediaplayer_dvx_so_LINK) $(gecko_mediaplayer_dvx_so_OBJECTS) $(gecko_mediaplayer_dvx_so_LDADD) $(LIBS)
 gecko-mediaplayer-qt.so$(EXEEXT): $(gecko_mediaplayer_qt_so_OBJECTS) $(gecko_mediaplayer_qt_so_DEPENDENCIES) 
 	@rm -f gecko-mediaplayer-qt.so$(EXEEXT)
-	$(gecko_mediaplayer_qt_so_LINK) $(gecko_mediaplayer_qt_so_OBJECTS) $(gecko_mediaplayer_qt_so_LDADD) $(LIBS)
+	$(AM_V_CXXLD)$(gecko_mediaplayer_qt_so_LINK) $(gecko_mediaplayer_qt_so_OBJECTS) $(gecko_mediaplayer_qt_so_LDADD) $(LIBS)
 gecko-mediaplayer-rm.so$(EXEEXT): $(gecko_mediaplayer_rm_so_OBJECTS) $(gecko_mediaplayer_rm_so_DEPENDENCIES) 
 	@rm -f gecko-mediaplayer-rm.so$(EXEEXT)
-	$(gecko_mediaplayer_rm_so_LINK) $(gecko_mediaplayer_rm_so_OBJECTS) $(gecko_mediaplayer_rm_so_LDADD) $(LIBS)
+	$(AM_V_CXXLD)$(gecko_mediaplayer_rm_so_LINK) $(gecko_mediaplayer_rm_so_OBJECTS) $(gecko_mediaplayer_rm_so_LDADD) $(LIBS)
 gecko-mediaplayer-wmp.so$(EXEEXT): $(gecko_mediaplayer_wmp_so_OBJECTS) $(gecko_mediaplayer_wmp_so_DEPENDENCIES) 
 	@rm -f gecko-mediaplayer-wmp.so$(EXEEXT)
-	$(gecko_mediaplayer_wmp_so_LINK) $(gecko_mediaplayer_wmp_so_OBJECTS) $(gecko_mediaplayer_wmp_so_LDADD) $(LIBS)
+	$(AM_V_CXXLD)$(gecko_mediaplayer_wmp_so_LINK) $(gecko_mediaplayer_wmp_so_OBJECTS) $(gecko_mediaplayer_wmp_so_LDADD) $(LIBS)
 gecko-mediaplayer.so$(EXEEXT): $(gecko_mediaplayer_so_OBJECTS) $(gecko_mediaplayer_so_DEPENDENCIES) 
 	@rm -f gecko-mediaplayer.so$(EXEEXT)
-	$(gecko_mediaplayer_so_LINK) $(gecko_mediaplayer_so_OBJECTS) $(gecko_mediaplayer_so_LDADD) $(LIBS)
+	$(AM_V_CXXLD)$(gecko_mediaplayer_so_LINK) $(gecko_mediaplayer_so_OBJECTS) $(gecko_mediaplayer_so_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -488,15 +507,17 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plugin_types_wmp.Po@am__quote@
 
 .cpp.o:
-@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCXX_FALSE@	$(AM_V_CXX) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ $<
 
 .cpp.obj:
-@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCXX_FALSE@	$(AM_V_CXX) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
