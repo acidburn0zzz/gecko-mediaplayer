@@ -56,7 +56,7 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
     gchar *arg[10];
     GRand *rand;
     gchar *tmp;
-    gchar *url;
+    //gchar *url;
     gchar **parse;
     gint width = 0, height = 0;
     GError *error;
