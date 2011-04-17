@@ -96,8 +96,6 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                     instance->cache_size =
                         request_int_value(instance, item, "GetPluginVideoCacheSize");
                 }
-                printf("$$$$$$$$$$$$ playerready = %i\n", instance->playerready);
-                printf("cache size = %i\n", instance->cache_size);
                 if (instance->cache_size == 0) {
                     item->streaming = 1;
                 }

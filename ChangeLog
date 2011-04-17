@@ -1,4 +1,6 @@
 Development
+	Make configure option --with-gconf=yes override use of gsettings
+1.0.3beta
 	Cleanup some compile warnings
 	Try out silent make files
 	Mark asf files as streaming
