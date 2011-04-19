@@ -1,4 +1,5 @@
 Development
+	Always include gecko-mediaplayer.schema in tar file
 	Make configure option --with-gconf=yes override use of gsettings
 1.0.3beta
 	Cleanup some compile warnings
