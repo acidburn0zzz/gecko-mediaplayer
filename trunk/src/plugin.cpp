@@ -777,6 +777,7 @@ int32 CPlugin::WriteReady(NPStream * stream)
 
         if (mode == NP_FULL) {
             // printf("adding new item %s\n",stream->url);
+            /*
             item = g_new0(ListItem, 1);
             g_strlcpy(item->src, stream->url, 1024);
             item->requested = TRUE;
@@ -785,6 +786,8 @@ int32 CPlugin::WriteReady(NPStream * stream)
                 item->streaming = streaming(item->src);
             playlist = g_list_append(playlist, item);
             stream->notifyData = item;
+            */
+            return -1;
         } else {
             printf("item is null\nstream url %s\n", stream->url);
             NPN_DestroyStream(mInstance, stream, NPERR_NO_ERROR);

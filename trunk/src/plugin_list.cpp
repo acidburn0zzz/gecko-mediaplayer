@@ -187,7 +187,7 @@ void list_qualify_url(GList * list, gchar * page_url)
         item = (ListItem *) iter->data;
         if (item != NULL && item->streaming) {
             tmp = g_strrstr(item->src, "://");
-            if (!tmp) {
+            if (!tmp && !g_file_test(item->src, G_FILE_TEST_EXISTS)) {
                 if (page_url != NULL) {
                     //printf("page_url = %s\n", instance->page_url);
                     g_strlcpy(url, item->src, 4096);

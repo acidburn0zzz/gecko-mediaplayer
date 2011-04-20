@@ -430,7 +430,36 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
 
         };
     } else {
+        // printf("Non-Embed Mode\n");
+        for (i = 0; i < argc; i++) {
 
+            if (argn[i] == NULL)
+                continue;
+
+            printf("ARG: %s = %s\n", argn[i], argv[i]);
+
+            if (g_ascii_strcasecmp(argn[i], "src") == 0) {
+                item = g_new0(ListItem, 1);
+                if (g_strrstr(argv[i], "XXmovies.apple.com")) { // tmp disabled, to reenable remove XX
+                    tmp = g_strrstr(argv[i], "movies.");
+                    if (tmp != NULL && strlen(tmp) > strlen("movies.")) {
+                        tmp = tmp + strlen("movies.");
+                        g_snprintf(item->src, 4096, "http://www.%s", tmp);
+                    } else {
+                        g_strlcpy(item->src, argv[i], 4096);
+                    }
+                } else {
+                    g_strlcpy(item->src, argv[i], 4096);
+                }
+                item->streaming = streaming(item->src);
+                printf("this should match %s\n", item->src);
+                item->play = TRUE;
+                item->id = instance->nextid++;
+                instance->playlist = g_list_append(instance->playlist, item);
+                src = item;
+            }
+
+        }
     }
 
     nperror = NPN_GetValue(instance->mInstance, (NPNVariable) 17 /* NPNVSupportsWindowless */ ,
