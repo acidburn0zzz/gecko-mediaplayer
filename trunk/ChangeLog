@@ -1,4 +1,4 @@
-Development
+1.0.3
 	Allow files > 2GB to be loaded in NP_FULL mode
 	Always include gecko-mediaplayer.schema in tar file
 	Make configure option --with-gconf=yes override use of gsettings
