@@ -1,0 +1,43 @@
+# Translation of gecko-mediaplayer to German
+# Copyright (C) 2006-2009 Kevin DeKorte.
+# This file is distributed under the same license as the
+# gecko-mediaplayer package.
+# Chris Leick <c.leick@vollbio.de>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gecko-mediaplayer 0.9.9.2-1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-04-21 09:03-0600\n"
+"PO-Revision-Date: 2010-03-25 18:47+GMT\n"
+"Last-Translator: Chris Leick <c.leick@vollbio.de>\n"
+"Language-Team: German <debian-l10n-german@lists.debian.org>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/plugin.cpp:328
+#, c-format
+msgid "gecko mediaplayer v%s\n"
+msgstr ""
+
+#: src/plugin.cpp:602
+#, c-format
+msgid "Cache fill: %2.2f%%"
+msgstr "Zwischenspeicher-Füllstand: %2.2f%%"
+
+#: src/plugin.cpp:870
+#, c-format
+msgid "Write unable to write because item is NULL\n"
+msgstr "Es kann nicht geschrieben werden, da das Element NULL ist\n"
+
+#: src/plugin.cpp:936 src/plugin.cpp:1343
+#, c-format
+msgid "Caching %iK (%0.1f K/s)"
+msgstr "%i KB (%0.1f KB/s) werden zwischengespeichert"
+
+#: src/plugin.cpp:939 src/plugin.cpp:1346
+#, c-format
+msgid "Cache fill: %2.2f%% (%0.1f K/s)"
+msgstr "Zwischenspeicher-Füllstand: %2.2f%% (%0.1f KB/s)"
