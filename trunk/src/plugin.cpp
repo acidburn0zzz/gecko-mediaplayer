@@ -778,15 +778,15 @@ int32 CPlugin::WriteReady(NPStream * stream)
         if (mode == NP_FULL) {
             // printf("adding new item %s\n",stream->url);
             /*
-            item = g_new0(ListItem, 1);
-            g_strlcpy(item->src, stream->url, 1024);
-            item->requested = TRUE;
-            item->play = TRUE;
-            if (!item->streaming)
-                item->streaming = streaming(item->src);
-            playlist = g_list_append(playlist, item);
-            stream->notifyData = item;
-            */
+               item = g_new0(ListItem, 1);
+               g_strlcpy(item->src, stream->url, 1024);
+               item->requested = TRUE;
+               item->play = TRUE;
+               if (!item->streaming)
+               item->streaming = streaming(item->src);
+               playlist = g_list_append(playlist, item);
+               stream->notifyData = item;
+             */
             return -1;
         } else {
             printf("item is null\nstream url %s\n", stream->url);
@@ -1147,7 +1147,7 @@ void CPlugin::SetFilename(const char *filename)
 void CPlugin::GetFilename(char **filename)
 {
     ListItem *item = NULL;
-    
+
     if (this->lastopened != NULL) {
         *filename = g_strdup(this->lastopened->src);
     } else {
@@ -1311,15 +1311,14 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
 
     // skip divide by zero issues
     if (dltotal == 0)
-        return 0;   // keeps downloading
+        return 0;               // keeps downloading
 
     if (item->cancelled) {
         printf("cancelling download at %f for %s\n", dlnow, item->src);
-        return -1;  // cancels download
+        return -1;              // cancels download
     }
-
-    printf("item ready = %i,player ready = %i,%f,%f,%f\n", item->playerready, plugin->playerready,
-           dlnow, dltotal, dlnow / dltotal);
+    //printf("item ready = %i,player ready = %i,%f,%f,%f\n", item->playerready, plugin->playerready,
+    //       dlnow, dltotal, dlnow / dltotal);
 
     item->localsize = dlnow;
 
@@ -1404,9 +1403,9 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
                 plugin->playlist = list_parse_qml(plugin->playlist, item);
                 plugin->playlist = list_parse_ram(plugin->playlist, item);
             }
-            printf("item->play = %i\n",item->play);
+            printf("item->play = %i\n", item->play);
             printf("item->src = %s\n", item->src);
-            printf("calling open_location from progress_callback\n"); 
+            printf("calling open_location from progress_callback\n");
             if (item->play) {
                 send_signal_with_integer(plugin, item, "SetGUIState", PLAYING);
                 open_location(plugin, item, TRUE);
@@ -1476,6 +1475,7 @@ gpointer CURLGetURLNotify(gpointer data)
             }
             fclose(local);
             printf("fetched %s to %s\n", item->src, item->local);
+            send_signal_with_double(plugin, item, "SetCachePercent", 0.0);
             item->retrieved = TRUE;
         }
 
@@ -1494,9 +1494,9 @@ gpointer CURLGetURLNotify(gpointer data)
                 plugin->playlist = list_parse_qml(plugin->playlist, item);
                 plugin->playlist = list_parse_ram(plugin->playlist, item);
             }
-            // printf("item->play = %i\n",item->play);
+            // printf("item->play = %i\n", item->play);
             // printf("item->src = %i\n", item->src);
-            // printf("calling open_location from Write\n"); 
+            // printf("calling open_location from Write\n");
             if (item->play) {
                 send_signal_with_integer(plugin, item, "SetGUIState", PLAYING);
                 open_location(plugin, item, TRUE);
@@ -1544,13 +1544,13 @@ NPError CPlugin::GetURLNotify(NPP instance, const char *url, const char *target,
     gchar *tmp;
 #endif
 
-    if (g_strrstr(url, "apple.com") == NULL /* && this->quicktime_emulation == 0 */) {
+    if (g_strrstr(url, "apple.com") == NULL /* && this->quicktime_emulation == 0 */ ) {
         return NPN_GetURLNotify(instance, url, target, notifyData);
     } else {
 #ifdef HAVE_CURL
         printf("using curl to retrieve data from apple.com site\n");
-        printf("quicktime_emulation = %i\n",quicktime_emulation);
-        
+        printf("quicktime_emulation = %i\n", quicktime_emulation);
+
         item = (ListItem *) notifyData;
         // item = list_find(playlist, (gchar*)stream->url);
         if (item == NULL) {
@@ -1623,8 +1623,7 @@ class ScriptablePluginObjectBase:public NPObject {
   public:
     ScriptablePluginObjectBase(NPP npp)
     :mNpp(npp) {
-    }
-    virtual ~ ScriptablePluginObjectBase() {
+    } virtual ~ ScriptablePluginObjectBase() {
     }
 
     // Virtual NPObject hooks called through this base class. Override
@@ -1784,8 +1783,7 @@ class ScriptablePluginObjectControls:public ScriptablePluginObjectBase {
   public:
     ScriptablePluginObjectControls(NPP npp)
     :ScriptablePluginObjectBase(npp) {
-    }
-    virtual bool HasMethod(NPIdentifier name);
+    } virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
     virtual bool InvokeDefault(const NPVariant * args, uint32_t argCount, NPVariant * result);
@@ -1904,8 +1902,7 @@ class ScriptablePluginObject:public ScriptablePluginObjectBase {
   public:
     ScriptablePluginObject(NPP npp)
     :ScriptablePluginObjectBase(npp) {
-    }
-    virtual bool HasMethod(NPIdentifier name);
+    } virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
     virtual bool InvokeDefault(const NPVariant * args, uint32_t argCount, NPVariant * result);
