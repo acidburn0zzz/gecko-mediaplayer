@@ -593,7 +593,7 @@ gboolean streaming(gchar * url)
 
     if (g_ascii_strncasecmp(url, "dvd://", 6) == 0)
         ret = TRUE;
- 
+
     if (g_ascii_strncasecmp(url, "udp://", 6) == 0)
         ret = TRUE;
 

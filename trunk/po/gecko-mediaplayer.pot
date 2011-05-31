@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-21 09:03-0600\n"
+"POT-Creation-Date: 2011-05-31 10:02-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,12 +32,12 @@ msgstr ""
 msgid "Write unable to write because item is NULL\n"
 msgstr ""
 
-#: src/plugin.cpp:936 src/plugin.cpp:1343
+#: src/plugin.cpp:936 src/plugin.cpp:1342
 #, c-format
 msgid "Caching %iK (%0.1f K/s)"
 msgstr ""
 
-#: src/plugin.cpp:939 src/plugin.cpp:1346
+#: src/plugin.cpp:939 src/plugin.cpp:1345
 #, c-format
 msgid "Cache fill: %2.2f%% (%0.1f K/s)"
 msgstr ""
