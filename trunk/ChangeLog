@@ -1,4 +1,6 @@
 Development
+	When getting a file from Apple, only play the first media link
+	Add udp as supported streaming format
 	Fix up some issues with apple trailers
 1.0.3
 	Allow files > 2GB to be loaded in NP_FULL mode

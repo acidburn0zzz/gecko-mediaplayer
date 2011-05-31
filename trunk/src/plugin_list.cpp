@@ -269,6 +269,7 @@ GList *list_parse_qt(GList * list, ListItem * item)
     gchar url[1024];
     gchar *ptr;
     unsigned int code = 0;      // some value about the URL
+    gboolean added = FALSE;
 
     printf("Entering list_parse_qt localsize = %i\n", item->localsize);
 
@@ -289,7 +290,7 @@ GList *list_parse_qt(GList * list, ListItem * item)
                     }
                 }
 
-                while (p != NULL) {
+                while (p != NULL && !added) {
                     rdrf =
                         (gchar *) memmem_compat(p, datalen - ((long) nextrmda - (long) p), "rdrf",
                                                 4);
@@ -332,6 +333,7 @@ GList *list_parse_qt(GList * list, ListItem * item)
                                 g_strlcpy(newitem->path, item->path, 1024);
                                 item->id = -1;
                                 list = g_list_append(list, newitem);
+                                added = TRUE;
                             }
                         }
                     }
@@ -374,6 +376,8 @@ GList *list_parse_qt2(GList * list, ListItem * item)
     gchar url[1024];
     gchar *ptr;
     gchar *urlptr;
+    gboolean added = FALSE;
+
     printf("Entering list_parse_qt2 localsize = %i\n", item->localsize);
 
     if (item->localsize < (256 * 1024)) {
@@ -384,7 +388,7 @@ GList *list_parse_qt2(GList * list, ListItem * item)
                 printf("unable to find mmdr in %s\n", item->local);
                 return list;
             } else {
-                while (p != NULL) {
+                while (p != NULL && !added) {
                     urlptr = (gchar *) memmem_compat(p, datalen - (p - data), "url ", 4);
 
 
@@ -413,6 +417,7 @@ GList *list_parse_qt2(GList * list, ListItem * item)
                             g_strlcpy(newitem->path, item->path, 1024);
                             item->id = -1;
                             list = g_list_append(list, newitem);
+                            added = TRUE;
                         }
                         p = (gchar *) memmem_compat(urlptr, datalen - (urlptr - data), "mmdr", 4);
                     }
@@ -689,36 +694,37 @@ qml_start_element(GMarkupParseContext * context,
 
                 if (list_find(parser_list, (gchar *) attribute_values[i])
                     == NULL) {
-                    parser_item->play = FALSE;
-                    newitem = g_new0(ListItem, 1);
-                    value = g_strdup(attribute_values[i]);
-                    unreplace_amp(value);
-                    g_strlcpy(newitem->src, value, 1024);
-                    g_free(value);
-                    newitem->streaming = streaming(newitem->src);
-                    // crappy hack, mplayer needs the protocol in lower case, some sites don't
-                    if (newitem->streaming) {
-                        newitem->src[0] = g_ascii_tolower(newitem->src[0]);
-                        newitem->src[1] = g_ascii_tolower(newitem->src[1]);
-                        newitem->src[2] = g_ascii_tolower(newitem->src[2]);
-                        newitem->src[3] = g_ascii_tolower(newitem->src[3]);
+                    if (parser_item->play) {
+                        parser_item->play = FALSE;
+                        newitem = g_new0(ListItem, 1);
+                        value = g_strdup(attribute_values[i]);
+                        unreplace_amp(value);
+                        g_strlcpy(newitem->src, value, 1024);
+                        g_free(value);
+                        newitem->streaming = streaming(newitem->src);
+                        // crappy hack, mplayer needs the protocol in lower case, some sites don't
+                        if (newitem->streaming) {
+                            newitem->src[0] = g_ascii_tolower(newitem->src[0]);
+                            newitem->src[1] = g_ascii_tolower(newitem->src[1]);
+                            newitem->src[2] = g_ascii_tolower(newitem->src[2]);
+                            newitem->src[3] = g_ascii_tolower(newitem->src[3]);
+                        }
+                        newitem->play = TRUE;
+                        if (entry_id != 0) {
+                            newitem->id = entry_id;
+                        } else {
+                            newitem->id = parser_item->id;
+                            parser_item->id = -1;
+                        }
+                        newitem->controlid = parser_item->controlid;
+                        if (asx_loop != 0) {
+                            newitem->loop = TRUE;
+                            newitem->loopcount = asx_loop;
+                        }
+                        g_strlcpy(newitem->path, parser_item->path, 1024);
+                        parser_list = g_list_append(parser_list, newitem);
                     }
-                    newitem->play = TRUE;
-                    if (entry_id != 0) {
-                        newitem->id = entry_id;
-                    } else {
-                        newitem->id = parser_item->id;
-                        parser_item->id = -1;
-                    }
-                    newitem->controlid = parser_item->controlid;
-                    if (asx_loop != 0) {
-                        newitem->loop = TRUE;
-                        newitem->loopcount = asx_loop;
-                    }
-                    g_strlcpy(newitem->path, parser_item->path, 1024);
-                    parser_list = g_list_append(parser_list, newitem);
                 }
-
             }
             i++;
         }
