@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gecko Mediaplayer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-21 09:03-0600\n"
+"POT-Creation-Date: 2011-05-31 10:02-0600\n"
 "PO-Revision-Date: 2010-08-20 02:34+0100\n"
 "Last-Translator: Cosme Domínguez Díaz <cosme.ddiaz@gmail.com>\n"
 "Language-Team: \n"
@@ -35,12 +35,12 @@ msgstr "Almacenando cache: %2.2f%%"
 msgid "Write unable to write because item is NULL\n"
 msgstr "Es imposible de escribir ya que el objeto es NULL\n"
 
-#: src/plugin.cpp:936 src/plugin.cpp:1343
+#: src/plugin.cpp:936 src/plugin.cpp:1342
 #, c-format
 msgid "Caching %iK (%0.1f K/s)"
 msgstr "Almacenando en cache %iK (%0.1f K/s)"
 
-#: src/plugin.cpp:939 src/plugin.cpp:1346
+#: src/plugin.cpp:939 src/plugin.cpp:1345
 #, c-format
 msgid "Cache fill: %2.2f%% (%0.1f K/s)"
 msgstr "Almacenando cache: %2.2f%% (%0.1f K/s)"

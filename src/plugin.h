@@ -105,6 +105,7 @@ class CPlugin {
     NPBool mInitialized;
     NPObject *m_pScriptableObject;
     NPObject *m_pScriptableObjectControls;
+    NPObject *m_pScriptableObjectSettings;
 
   public:
      CPlugin(NPP pNPInstance);
@@ -117,6 +118,7 @@ class CPlugin {
 
     NPObject *GetScriptableObject();
     NPObject *GetScriptableObjectControls();
+    NPObject *GetScriptableObjectSettings();
 
     NPError GetValue(NPPVariable variable, void *value);
     NPError SetWindow(NPWindow * aWindow);
