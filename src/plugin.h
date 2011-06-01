@@ -149,6 +149,7 @@ class CPlugin {
     void GetTime(double *_retval);
     void GetDuration(double *_retval);
     void GetPercent(double *_retval);
+    void GetBitrate(int *_retval);
     void GetPlayState(int32_t * playstate);
     void SetFilename(const char *filename);
     void GetFilename(char **filename);

@@ -810,6 +810,50 @@ gint request_int_value(CPlugin * instance, ListItem * item, const gchar * member
     return result;
 }
 
+gchar *request_string_value(CPlugin * instance, ListItem * item, const gchar * member)
+{
+    DBusMessage *message;
+    DBusMessage *replymessage;
+    const gchar *localmember;
+    DBusError error;
+    gchar *result = NULL;
+    gchar *path;
+    gchar *dest;
+    gint controlid;
+
+    //printf("Requesting %s to connection %p\n", member, instance->connection);
+    if (instance == NULL)
+        return result;
+
+    if (item != NULL && strlen(item->path) > 0) {
+        path = item->path;
+        controlid = item->controlid;
+    } else {
+        path = instance->path;
+        controlid = instance->controlid;
+    }
+
+    dest = g_strdup_printf("com.gnome.mplayer.cid%i", controlid);
+
+    if (instance->playerready && instance->connection != NULL) {
+        localmember = g_strdup(member);
+        message = dbus_message_new_method_call(dest, path, "com.gnome.mplayer", localmember);
+        dbus_error_init(&error);
+        replymessage =
+            dbus_connection_send_with_reply_and_block(instance->connection, message, -1, &error);
+        if (dbus_error_is_set(&error)) {
+            printf("Error message = %s\n", error.message);
+        }
+        dbus_message_get_args(replymessage, &error, DBUS_TYPE_STRING, &result, DBUS_TYPE_INVALID);
+        dbus_message_unref(message);
+        dbus_message_unref(replymessage);
+    }
+    g_free(dest);
+
+    return result;
+}
+
+
 gboolean is_valid_path(CPlugin * instance, const char *message)
 {
     gboolean result = FALSE;

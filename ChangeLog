@@ -1,4 +1,6 @@
 Development
+	Add .media.getItemInfo title,url, bitrate to WMP Javascript emulation
+	Add .URL to WMP Javascript emulation
 	Updated Polish translation
 	Add .media.duration to WMP Javascript emulation
 	Add .settings.volume to WMP Javascript emulation
