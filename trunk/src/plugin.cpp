@@ -92,6 +92,7 @@ static NPIdentifier GetMIMEType_id;
 static NPIdentifier getTime_id;
 static NPIdentifier getDuration_id;
 static NPIdentifier getPercent_id;
+static NPIdentifier getBitrate_id;
 static NPIdentifier isplaying_id;
 static NPIdentifier playlistAppend_id;
 static NPIdentifier playlistClear_id;
@@ -124,6 +125,7 @@ static NPIdentifier controls_id;
 static NPIdentifier media_id;
 static NPIdentifier settings_id;
 
+static NPIdentifier URL_id;
 static NPIdentifier controls_currentPosition_id;
 static NPIdentifier media_duration_id;
 static NPIdentifier settings_volume_id;
@@ -290,6 +292,7 @@ tv_driver(NULL), tv_device(NULL), tv_input(NULL), tv_width(0), tv_height(0)
     getTime_id = NPN_GetStringIdentifier("getTime");
     getDuration_id = NPN_GetStringIdentifier("getDuration");
     getPercent_id = NPN_GetStringIdentifier("getPercent");
+    getBitrate_id = NPN_GetStringIdentifier("getBitrate");
     isplaying_id = NPN_GetStringIdentifier("isplaying");
     playlistAppend_id = NPN_GetStringIdentifier("playlistAppend");
     playlistClear_id = NPN_GetStringIdentifier("playlistClear");
@@ -321,6 +324,7 @@ tv_driver(NULL), tv_device(NULL), tv_input(NULL), tv_width(0), tv_height(0)
     media_id = NPN_GetStringIdentifier("media");
     settings_id = NPN_GetStringIdentifier("settings");
 
+    URL_id = NPN_GetStringIdentifier("URL");
     controls_currentPosition_id = NPN_GetStringIdentifier("currentPosition");
     media_duration_id = NPN_GetStringIdentifier("duration");
     settings_volume_id = NPN_GetStringIdentifier("volume");
@@ -1133,6 +1137,12 @@ void CPlugin::GetPercent(double *_retval)
     *_retval = request_double_value(this, this->lastopened, "GetPercent");
 }
 
+void CPlugin::GetBitrate(int *_retval)
+{
+    *_retval = request_int_value(this, this->lastopened, "GetBitrate");
+}
+
+
 void CPlugin::SetFilename(const char *filename)
 {
     ListItem *item;
@@ -1637,7 +1647,8 @@ class ScriptablePluginObjectBase:public NPObject {
   public:
     ScriptablePluginObjectBase(NPP npp)
     :mNpp(npp) {
-    } virtual ~ ScriptablePluginObjectBase() {
+    }
+    virtual ~ ScriptablePluginObjectBase() {
     }
 
     // Virtual NPObject hooks called through this base class. Override
@@ -1797,7 +1808,8 @@ class ScriptablePluginObjectControls:public ScriptablePluginObjectBase {
   public:
     ScriptablePluginObjectControls(NPP npp)
     :ScriptablePluginObjectBase(npp) {
-    } virtual bool HasMethod(NPIdentifier name);
+    }
+    virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
     virtual bool InvokeDefault(const NPVariant * args, uint32_t argCount, NPVariant * result);
@@ -1915,7 +1927,8 @@ class ScriptablePluginObjectMedia:public ScriptablePluginObjectBase {
   public:
     ScriptablePluginObjectMedia(NPP npp)
     :ScriptablePluginObjectBase(npp) {
-    } virtual bool HasMethod(NPIdentifier name);
+    }
+    virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
     virtual bool InvokeDefault(const NPVariant * args, uint32_t argCount, NPVariant * result);
@@ -1934,16 +1947,48 @@ DECLARE_NPOBJECT_CLASS_WITH_BASE(ScriptablePluginObjectMedia, AllocateScriptable
 
 bool ScriptablePluginObjectMedia::HasMethod(NPIdentifier name)
 {
-    return false;
+    if (name == media_getItemInfo_id) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 bool ScriptablePluginObjectMedia::Invoke(NPIdentifier name, const NPVariant * args,
                                          uint32_t argCount, NPVariant * result)
 {
     CPlugin *pPlugin = (CPlugin *) mNpp->pdata;
+    gchar *arg;
+    int i;
+
     if (pPlugin == NULL) {
         printf("Can't find plugin pointer\n");
         return PR_FALSE;
+    }
+
+    if (name == media_getItemInfo_id) {
+#ifdef HAVE_NEW_XULRUNNER
+        arg = g_strdup(NPVARIANT_TO_STRING(args[0]).UTF8Characters);
+#else
+        arg = g_strdup(NPVARIANT_TO_STRING(args[0]).utf8characters);
+#endif
+
+        if (g_strcasecmp(arg, "title") == 0) {
+            STRINGZ_TO_NPVARIANT(strdup
+                                 (request_string_value(pPlugin, pPlugin->lastopened, "GetTitle")),
+                                 *result);
+        } else if (g_strcasecmp(arg, "uri") == 0) {
+            STRINGZ_TO_NPVARIANT(strdup
+                                 (request_string_value(pPlugin, pPlugin->lastopened, "GetURI")),
+                                 *result);
+        } else if (g_strcasecmp(arg, "bitrate") == 0) {
+            pPlugin->GetBitrate(&i);
+            INT32_TO_NPVARIANT(i, *result);
+        } else {
+            STRINGZ_TO_NPVARIANT(strdup("Unknown"), *result);
+        }
+
+        return true;
     }
 
     return false;
@@ -2008,7 +2053,8 @@ class ScriptablePluginObjectSettings:public ScriptablePluginObjectBase {
   public:
     ScriptablePluginObjectSettings(NPP npp)
     :ScriptablePluginObjectBase(npp) {
-    } virtual bool HasMethod(NPIdentifier name);
+    }
+    virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
     virtual bool InvokeDefault(const NPVariant * args, uint32_t argCount, NPVariant * result);
@@ -2103,7 +2149,8 @@ class ScriptablePluginObject:public ScriptablePluginObjectBase {
   public:
     ScriptablePluginObject(NPP npp)
     :ScriptablePluginObjectBase(npp) {
-    } virtual bool HasMethod(NPIdentifier name);
+    }
+    virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
     virtual bool InvokeDefault(const NPVariant * args, uint32_t argCount, NPVariant * result);
@@ -2154,6 +2201,7 @@ bool ScriptablePluginObject::HasMethod(NPIdentifier name)
         name == getTime_id ||
         name == getDuration_id ||
         name == getPercent_id ||
+        name == getBitrate_id ||
         name == isplaying_id ||
         name == playlistAppend_id ||
         name == playlistClear_id ||
@@ -2174,6 +2222,7 @@ bool ScriptablePluginObject::Invoke(NPIdentifier name, const NPVariant * args,
     double d;
     char *s;
     bool b;
+    int i;
 
     CPlugin *pPlugin = (CPlugin *) mNpp->pdata;
     if (pPlugin == NULL) {
@@ -2304,6 +2353,12 @@ bool ScriptablePluginObject::Invoke(NPIdentifier name, const NPVariant * args,
         return PR_TRUE;
     }
 
+    if (name == getBitrate_id) {
+        pPlugin->GetBitrate(&i);
+        INT32_TO_NPVARIANT(i, *result);
+        return PR_TRUE;
+    }
+
     if (name == isplaying_id || name == playlistAppend_id || name == playlistClear_id) {
         return PR_TRUE;
     }
@@ -2391,7 +2446,7 @@ bool ScriptablePluginObject::HasProperty(NPIdentifier name)
         name == ShowControls_id ||
         name == fullscreen_id ||
         name == showlogo_id || name == playState_id || name == controls_id || name == media_id
-        || name == settings_id) {
+        || name == settings_id || name == URL_id) {
         return true;
     } else {
         return false;
@@ -2411,7 +2466,7 @@ bool ScriptablePluginObject::GetProperty(NPIdentifier name, NPVariant * result)
         return false;
     }
 
-    if (name == filename_id || name == src_id) {
+    if (name == filename_id || name == src_id || name == URL_id) {
         pPlugin->GetFilename(&filename);
         if (filename != NULL)
             STRINGZ_TO_NPVARIANT(filename, *result);
@@ -2469,7 +2524,7 @@ bool ScriptablePluginObject::SetProperty(NPIdentifier name, const NPVariant * va
         return false;
     }
 
-    if (name == filename_id || name == src_id) {
+    if (name == filename_id || name == src_id || name == URL_id) {
 #ifdef HAVE_NEW_XULRUNNER
         pPlugin->SetFilename(NPVARIANT_TO_STRING(*value).UTF8Characters);
 #else
