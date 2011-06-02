@@ -1,4 +1,5 @@
 Development
+	Call javascript function OnDSPlayStateChange if it is exists
 	Add .media.getItemInfo title,url, bitrate to WMP Javascript emulation
 	Add .URL to WMP Javascript emulation
 	Updated Polish translation
