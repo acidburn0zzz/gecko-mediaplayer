@@ -1,4 +1,5 @@
 Development
+	Remove a couple of state change callbacks to stop fork bomb
 	Call javascript function OnDSPlayStateChange if it is exists
 	Add .media.getItemInfo title,url, bitrate to WMP Javascript emulation
 	Add .URL to WMP Javascript emulation

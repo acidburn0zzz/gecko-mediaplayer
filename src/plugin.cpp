@@ -528,7 +528,7 @@ NPError CPlugin::SetWindow(NPWindow * aWindow)
         if (post_dom_events && id != NULL) {
             postDOMEvent(mInstance, id, "qt_begin");
         }
-        postPlayStateChange(mInstance, STATE_READY);
+        //postPlayStateChange(mInstance, STATE_READY);
     }
 
     if (playlist != NULL) {
@@ -1010,7 +1010,7 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
                         if (post_dom_events && this->id != NULL) {
                             postDOMEvent(mInstance, this->id, "qt_canplay");
                         }
-                        postPlayStateChange(mInstance, STATE_READY);
+                        //postPlayStateChange(mInstance, STATE_READY);
                     }
                 }
             }
@@ -1435,7 +1435,7 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
                         if (plugin->post_dom_events && plugin->id != NULL) {
                             postDOMEvent(plugin->mInstance, plugin->id, "qt_canplay");
                         }
-                        postPlayStateChange(plugin->mInstance, STATE_READY);
+                        //postPlayStateChange(plugin->mInstance, STATE_READY);
                     }
                 }
             }
