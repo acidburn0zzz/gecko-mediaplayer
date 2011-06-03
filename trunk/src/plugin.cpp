@@ -662,7 +662,7 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
                 if (post_dom_events && this->id != NULL) {
                     postDOMEvent(mInstance, this->id, "qt_play");
                 }
-                postPlayStateChange(mInstance, STATE_PLAYING);
+                //postPlayStateChange(mInstance, STATE_PLAYING);
             } else {
                 item = list_find_next_playable(playlist);
                 if (item != NULL) {
@@ -684,7 +684,7 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
                         if (post_dom_events && this->id != NULL) {
                             postDOMEvent(mInstance, this->id, "qt_play");
                         }
-                        postPlayStateChange(mInstance, STATE_PLAYING);
+                        //postPlayStateChange(mInstance, STATE_PLAYING);
                     }
                 }
             }
@@ -712,7 +712,7 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
             if (post_dom_events && this->id != NULL) {
                 postDOMEvent(mInstance, this->id, "qt_load");
             }
-            postPlayStateChange(mInstance, STATE_TRANSITIONING);
+            //postPlayStateChange(mInstance, STATE_TRANSITIONING);
         }
 
         if (item->localfp) {
@@ -1043,7 +1043,7 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
                     postDOMEvent(mInstance, this->id, "qt_canplay");
                     postDOMEvent(mInstance, this->id, "qt_play");
                 }
-                postPlayStateChange(mInstance, STATE_PLAYING);
+                //postPlayStateChange(mInstance, STATE_PLAYING);
             } else {
                 item = list_find_next_playable(playlist);
                 if (item != NULL) {
@@ -1277,7 +1277,6 @@ void CPlugin::SetOnMediaComplete(const char *event)
     } else {
         event_mediacomplete = g_strdup_printf("javascript:%s", event);
     }
-    postPlayStateChange(mInstance, STATE_MEDIAENDED);
 
 }
 
@@ -1468,7 +1467,7 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
                     postDOMEvent(plugin->mInstance, plugin->id, "qt_canplay");
                     postDOMEvent(plugin->mInstance, plugin->id, "qt_play");
                 }
-                postPlayStateChange(plugin->mInstance, STATE_PLAYING);
+                //postPlayStateChange(plugin->mInstance, STATE_PLAYING);
             } else {
                 item = list_find_next_playable(plugin->playlist);
                 if (item != NULL) {
@@ -1560,7 +1559,7 @@ gpointer CURLGetURLNotify(gpointer data)
                     postDOMEvent(plugin->mInstance, plugin->id, "qt_canplay");
                     postDOMEvent(plugin->mInstance, plugin->id, "qt_play");
                 }
-                postPlayStateChange(plugin->mInstance, STATE_PLAYING);
+                //postPlayStateChange(plugin->mInstance, STATE_PLAYING);
             } else {
                 item = list_find_next_playable(plugin->playlist);
                 if (item != NULL) {
@@ -2169,7 +2168,11 @@ bool ScriptablePluginObjectSettings::SetProperty(NPIdentifier name, const NPVari
     }
 
     if (name == settings_volume_id) {
-        pPlugin->SetVolume(NPVARIANT_TO_DOUBLE(*value));
+        if ((int) NPVARIANT_TO_DOUBLE(*value) == 0 && NPVARIANT_TO_INT32(*value) > 0) {
+            pPlugin->SetVolume((double) NPVARIANT_TO_INT32(*value));
+        } else {
+            pPlugin->SetVolume(NPVARIANT_TO_DOUBLE(*value));
+        }
         return true;
     }
 
@@ -2328,7 +2331,11 @@ bool ScriptablePluginObject::Invoke(NPIdentifier name, const NPVariant * args,
     }
 
     if (name == SetVolume_id) {
-        pPlugin->SetVolume(NPVARIANT_TO_DOUBLE(args[0]));
+        if ((int) NPVARIANT_TO_DOUBLE(args[0]) == 0 && NPVARIANT_TO_INT32(args[0]) > 0) {
+            pPlugin->SetVolume((double) NPVARIANT_TO_INT32(args[0]));
+        } else {
+            pPlugin->SetVolume(NPVARIANT_TO_DOUBLE(args[0]));
+        }
         return PR_TRUE;
     }
 

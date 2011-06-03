@@ -89,6 +89,8 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                 }
 
                 instance->playerready = TRUE;
+                postPlayStateChange(instance->mInstance, STATE_READY);
+
                 if (g_strrstr(instance->mimetype, "audio") != NULL) {
                     instance->cache_size =
                         request_int_value(instance, item, "GetPluginAudioCacheSize");
@@ -190,6 +192,8 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
 
             if (g_ascii_strcasecmp(dbus_message_get_member(message), "Next") == 0) {
 
+                postPlayStateChange(instance->mInstance, STATE_TRANSITIONING);
+
                 if (instance->lastopened != NULL && instance->lastopened->loop == FALSE) {
                     list_mark_id_played(instance->playlist, instance->lastopened->id);
                     instance->lastopened->played = TRUE;
@@ -265,6 +269,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                         if (instance->event_mediacomplete != NULL) {
                             NPN_GetURL(instance->mInstance, instance->event_mediacomplete, NULL);
                         }
+                        postPlayStateChange(instance->mInstance, STATE_MEDIAENDED);
                     }
                     if (g_ascii_strcasecmp(s, "MouseClicked") == 0) {
                         if (instance->event_mouseclicked != NULL) {
@@ -304,6 +309,24 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                         if (instance->post_dom_events && instance->id != NULL) {
                             postDOMEvent(instance->mInstance, instance->id, "qt_ended");
                         }
+                    }
+                    if (g_ascii_strcasecmp(s, "MediaStopped") == 0) {
+                        if (instance->post_dom_events && instance->id != NULL) {
+                            postDOMEvent(instance->mInstance, instance->id, "qt_ended");
+                        }
+                        postPlayStateChange(instance->mInstance, STATE_STOPPED);
+                    }
+                    if (g_ascii_strcasecmp(s, "MediaPlaying") == 0) {
+                        if (instance->post_dom_events && instance->id != NULL) {
+                            postDOMEvent(instance->mInstance, instance->id, "qt_play");
+                        }
+                        postPlayStateChange(instance->mInstance, STATE_PLAYING);
+                    }
+                    if (g_ascii_strcasecmp(s, "MediaPaused") == 0) {
+                        if (instance->post_dom_events && instance->id != NULL) {
+                            postDOMEvent(instance->mInstance, instance->id, "qt_pause");
+                        }
+                        postPlayStateChange(instance->mInstance, STATE_PAUSED);
                     }
                 }
             }

@@ -97,6 +97,7 @@ typedef enum {
 } PLAYSTATE;
 
 void postDOMEvent(NPP mInstance, const gchar * id, const gchar * event);
+void postPlayStateChange(NPP mInstance, const gint state);
 
 class CPlugin {
   private:
