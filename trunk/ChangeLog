@@ -1,4 +1,7 @@
 Development
+	Align PlayStateChanges similar to WMP
+	Rework how media events are handled
+	Fix problems with SetVolume
 	Remove a couple of state change callbacks to stop fork bomb
 	Call javascript function OnDSPlayStateChange if it is exists
 	Add .media.getItemInfo title,url, bitrate to WMP Javascript emulation

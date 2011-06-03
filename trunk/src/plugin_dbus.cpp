@@ -89,7 +89,8 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                 }
 
                 instance->playerready = TRUE;
-                postPlayStateChange(instance->mInstance, STATE_READY);
+                // disable this as WMP doesn't do this
+                //postPlayStateChange(instance->mInstance, STATE_READY);
 
                 if (g_strrstr(instance->mimetype, "audio") != NULL) {
                     instance->cache_size =
@@ -384,6 +385,8 @@ void open_location(CPlugin * instance, ListItem * item, gboolean uselocal)
     //printf("Opening %s to connection %p\n",file, instance->connection);
     if (item == NULL || instance == NULL)
         return;
+
+    postPlayStateChange(instance->mInstance, STATE_PLAYING);
 
     if (!(instance->player_launched)) {
         if (!item->opened) {

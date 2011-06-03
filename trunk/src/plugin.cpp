@@ -631,10 +631,6 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
             text = g_strdup_printf(_("Cache fill: %2.2f%%"), 100.0);
             send_signal_with_string(this, item, "SetProgressText", text);
             g_free(text);
-            if (post_dom_events && this->id != NULL) {
-                postDOMEvent(mInstance, this->id, "qt_progress");
-            }
-            postPlayStateChange(mInstance, STATE_BUFFERING);
         }
 
         if (!item->opened && item->play) {
@@ -662,7 +658,6 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
                 if (post_dom_events && this->id != NULL) {
                     postDOMEvent(mInstance, this->id, "qt_play");
                 }
-                //postPlayStateChange(mInstance, STATE_PLAYING);
             } else {
                 item = list_find_next_playable(playlist);
                 if (item != NULL) {
@@ -684,7 +679,6 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
                         if (post_dom_events && this->id != NULL) {
                             postDOMEvent(mInstance, this->id, "qt_play");
                         }
-                        //postPlayStateChange(mInstance, STATE_PLAYING);
                     }
                 }
             }
@@ -712,7 +706,7 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
             if (post_dom_events && this->id != NULL) {
                 postDOMEvent(mInstance, this->id, "qt_load");
             }
-            //postPlayStateChange(mInstance, STATE_TRANSITIONING);
+            postPlayStateChange(mInstance, STATE_TRANSITIONING);
         }
 
         if (item->localfp) {
@@ -864,7 +858,6 @@ int32 CPlugin::WriteReady(NPStream * stream)
         if (strstr(mimetype, "flac") != NULL) {
             g_strlcat(item->local, ".flac", 1024);
         }
-
     }
 
     if (item->retrieved) {
@@ -1010,7 +1003,6 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
                         if (post_dom_events && this->id != NULL) {
                             postDOMEvent(mInstance, this->id, "qt_canplay");
                         }
-                        //postPlayStateChange(mInstance, STATE_READY);
                     }
                 }
             }
@@ -1025,7 +1017,6 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
             if (!item->streaming)
                 item->streaming = streaming(item->src);
             if (!item->streaming) {
-                printf("in Write\n");
                 playlist = list_parse_qt(playlist, item);
                 playlist = list_parse_asx(playlist, item);
                 playlist = list_parse_qml(playlist, item);
@@ -1043,7 +1034,6 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
                     postDOMEvent(mInstance, this->id, "qt_canplay");
                     postDOMEvent(mInstance, this->id, "qt_play");
                 }
-                //postPlayStateChange(mInstance, STATE_PLAYING);
             } else {
                 item = list_find_next_playable(playlist);
                 if (item != NULL) {
@@ -1077,7 +1067,6 @@ void CPlugin::Play()
     if (post_dom_events && this->id != NULL) {
         postDOMEvent(mInstance, this->id, "qt_play");
     }
-    postPlayStateChange(mInstance, STATE_PLAYING);
 }
 
 void CPlugin::Pause()
@@ -1086,13 +1075,11 @@ void CPlugin::Pause()
     if (post_dom_events && this->id != NULL) {
         postDOMEvent(mInstance, this->id, "qt_pause");
     }
-    postPlayStateChange(mInstance, STATE_PAUSED);
 }
 
 void CPlugin::Stop()
 {
     send_signal(this, this->lastopened, "Stop");
-    postPlayStateChange(mInstance, STATE_STOPPED);
 }
 
 void CPlugin::FastForward()
@@ -1243,12 +1230,10 @@ void CPlugin::PlayPause()
     state = request_int_value(this, this->lastopened, "GetPlayState");
     if (state == STATE_PAUSED) {
         send_signal(this, this->lastopened, "Play");
-        postPlayStateChange(this->mInstance, state);
     }
 
     if (state == STATE_PLAYING) {
         send_signal(this, this->lastopened, "Pause");
-        postPlayStateChange(this->mInstance, state);
     }
 }
 
@@ -1434,7 +1419,6 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
                         if (plugin->post_dom_events && plugin->id != NULL) {
                             postDOMEvent(plugin->mInstance, plugin->id, "qt_canplay");
                         }
-                        //postPlayStateChange(plugin->mInstance, STATE_READY);
                     }
                 }
             }
@@ -1467,7 +1451,6 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
                     postDOMEvent(plugin->mInstance, plugin->id, "qt_canplay");
                     postDOMEvent(plugin->mInstance, plugin->id, "qt_play");
                 }
-                //postPlayStateChange(plugin->mInstance, STATE_PLAYING);
             } else {
                 item = list_find_next_playable(plugin->playlist);
                 if (item != NULL) {
@@ -1559,7 +1542,6 @@ gpointer CURLGetURLNotify(gpointer data)
                     postDOMEvent(plugin->mInstance, plugin->id, "qt_canplay");
                     postDOMEvent(plugin->mInstance, plugin->id, "qt_play");
                 }
-                //postPlayStateChange(plugin->mInstance, STATE_PLAYING);
             } else {
                 item = list_find_next_playable(plugin->playlist);
                 if (item != NULL) {
