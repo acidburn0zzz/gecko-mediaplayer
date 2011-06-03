@@ -521,7 +521,6 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
     // list_dump(instance->playlist);
 
     if (instance->hidden == TRUE || ((width == 0 || height == 0) && instance->mode != NP_FULL)) {
-
         if (item->streaming) {
             open_location(instance, item, FALSE);
             item->requested = 1;
