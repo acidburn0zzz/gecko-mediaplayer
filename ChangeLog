@@ -1,4 +1,5 @@
 Development
+	Add in some more WMP javascript emulation
 	Align PlayStateChanges similar to WMP
 	Rework how media events are handled
 	Fix problems with SetVolume
