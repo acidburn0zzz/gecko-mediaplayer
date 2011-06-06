@@ -126,6 +126,7 @@ static NPIdentifier media_id;
 static NPIdentifier settings_id;
 static NPIdentifier error_id;
 
+static NPIdentifier status_id;
 static NPIdentifier URL_id;
 static NPIdentifier versionInfo_id;
 static NPIdentifier controls_currentPosition_id;
@@ -341,6 +342,7 @@ tv_driver(NULL), tv_device(NULL), tv_input(NULL), tv_width(0), tv_height(0)
     settings_id = NPN_GetStringIdentifier("settings");
     error_id = NPN_GetStringIdentifier("error");
 
+    status_id = NPN_GetStringIdentifier("status");
     URL_id = NPN_GetStringIdentifier("URL");
     versionInfo_id = NPN_GetStringIdentifier("versionInfo");
     controls_currentPosition_id = NPN_GetStringIdentifier("currentPosition");
@@ -2580,6 +2582,7 @@ bool ScriptablePluginObject::HasProperty(NPIdentifier name)
         || name == playState_id
         || name == URL_id
         || name == versionInfo_id
+        || name == status_id
         || name == controls_id || name == media_id || name == settings_id || name == error_id) {
         return true;
     } else {
@@ -2591,6 +2594,7 @@ bool ScriptablePluginObject::GetProperty(NPIdentifier name, NPVariant * result)
 {
     char *filename;
     char *version;
+    char *status;
     bool setting;
     PRInt32 state;
 
@@ -2635,6 +2639,22 @@ bool ScriptablePluginObject::GetProperty(NPIdentifier name, NPVariant * result)
     if (name == playState_id) {
         pPlugin->GetPlayState(&state);
         INT32_TO_NPVARIANT(state, *result);
+        return true;
+    }
+
+    if (name == status_id) {
+        pPlugin->GetPlayState(&state);
+        switch(state) {
+            case STATE_PLAYING:
+                status = g_strdup("Playing");
+                break;
+            case STATE_PAUSED:
+                status = g_strdup("Paused");
+                break;
+            default:
+                status = g_strdup("Unknown Status");
+        }
+        STRINGZ_TO_NPVARIANT(status, *result);
         return true;
     }
 
