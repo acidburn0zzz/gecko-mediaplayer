@@ -127,6 +127,7 @@ static NPIdentifier settings_id;
 static NPIdentifier error_id;
 
 static NPIdentifier URL_id;
+static NPIdentifier versionInfo_id;
 static NPIdentifier controls_currentPosition_id;
 static NPIdentifier controls_currentItem_id;
 static NPIdentifier media_duration_id;
@@ -341,6 +342,7 @@ tv_driver(NULL), tv_device(NULL), tv_input(NULL), tv_width(0), tv_height(0)
     error_id = NPN_GetStringIdentifier("error");
 
     URL_id = NPN_GetStringIdentifier("URL");
+    versionInfo_id = NPN_GetStringIdentifier("versionInfo");
     controls_currentPosition_id = NPN_GetStringIdentifier("currentPosition");
     media_duration_id = NPN_GetStringIdentifier("duration");
     settings_volume_id = NPN_GetStringIdentifier("volume");
@@ -1666,7 +1668,8 @@ class ScriptablePluginObjectBase:public NPObject {
   public:
     ScriptablePluginObjectBase(NPP npp)
     :mNpp(npp) {
-    } virtual ~ ScriptablePluginObjectBase() {
+    }
+    virtual ~ ScriptablePluginObjectBase() {
     }
 
     // Virtual NPObject hooks called through this base class. Override
@@ -1826,7 +1829,8 @@ class ScriptablePluginObjectControls:public ScriptablePluginObjectBase {
   public:
     ScriptablePluginObjectControls(NPP npp)
     :ScriptablePluginObjectBase(npp) {
-    } virtual bool HasMethod(NPIdentifier name);
+    }
+    virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
     virtual bool InvokeDefault(const NPVariant * args, uint32_t argCount, NPVariant * result);
@@ -1949,7 +1953,8 @@ class ScriptablePluginObjectMedia:public ScriptablePluginObjectBase {
   public:
     ScriptablePluginObjectMedia(NPP npp)
     :ScriptablePluginObjectBase(npp) {
-    } virtual bool HasMethod(NPIdentifier name);
+    }
+    virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
     virtual bool InvokeDefault(const NPVariant * args, uint32_t argCount, NPVariant * result);
@@ -2074,7 +2079,8 @@ class ScriptablePluginObjectSettings:public ScriptablePluginObjectBase {
   public:
     ScriptablePluginObjectSettings(NPP npp)
     :ScriptablePluginObjectBase(npp) {
-    } virtual bool HasMethod(NPIdentifier name);
+    }
+    virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
     virtual bool InvokeDefault(const NPVariant * args, uint32_t argCount, NPVariant * result);
@@ -2173,7 +2179,8 @@ class ScriptablePluginObjectError:public ScriptablePluginObjectBase {
   public:
     ScriptablePluginObjectError(NPP npp)
     :ScriptablePluginObjectBase(npp) {
-    } virtual bool HasMethod(NPIdentifier name);
+    }
+    virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
     virtual bool InvokeDefault(const NPVariant * args, uint32_t argCount, NPVariant * result);
@@ -2269,7 +2276,8 @@ class ScriptablePluginObject:public ScriptablePluginObjectBase {
   public:
     ScriptablePluginObject(NPP npp)
     :ScriptablePluginObjectBase(npp) {
-    } virtual bool HasMethod(NPIdentifier name);
+    }
+    virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
     virtual bool InvokeDefault(const NPVariant * args, uint32_t argCount, NPVariant * result);
@@ -2564,12 +2572,15 @@ bool ScriptablePluginObject::InvokeDefault(const NPVariant * args, uint32_t argC
 
 bool ScriptablePluginObject::HasProperty(NPIdentifier name)
 {
-    if (name == filename_id ||
-        name == src_id ||
-        name == ShowControls_id ||
-        name == fullscreen_id ||
-        name == showlogo_id || name == playState_id || name == controls_id || name == media_id
-        || name == settings_id || name == URL_id || name == error_id) {
+    if (name == filename_id
+        || name == src_id
+        || name == ShowControls_id
+        || name == fullscreen_id
+        || name == showlogo_id
+        || name == playState_id
+        || name == URL_id
+        || name == versionInfo_id
+        || name == controls_id || name == media_id || name == settings_id || name == error_id) {
         return true;
     } else {
         return false;
@@ -2579,6 +2590,7 @@ bool ScriptablePluginObject::HasProperty(NPIdentifier name)
 bool ScriptablePluginObject::GetProperty(NPIdentifier name, NPVariant * result)
 {
     char *filename;
+    char *version;
     bool setting;
     PRInt32 state;
 
@@ -2593,6 +2605,12 @@ bool ScriptablePluginObject::GetProperty(NPIdentifier name, NPVariant * result)
         pPlugin->GetFilename(&filename);
         if (filename != NULL)
             STRINGZ_TO_NPVARIANT(filename, *result);
+        return true;
+    }
+
+    if (name == versionInfo_id) {
+        version = g_strdup("7.0.0.7777");
+        STRINGZ_TO_NPVARIANT(version, *result);
         return true;
     }
 
