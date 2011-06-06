@@ -90,7 +90,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
 
                 instance->playerready = TRUE;
                 // disable this as WMP doesn't do this
-                //postPlayStateChange(instance->mInstance, STATE_READY);
+                // postPlayStateChange(instance->mInstance, STATE_READY);
 
                 if (g_strrstr(instance->mimetype, "audio") != NULL) {
                     instance->cache_size =
