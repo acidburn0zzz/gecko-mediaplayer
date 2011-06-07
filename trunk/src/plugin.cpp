@@ -2651,6 +2651,9 @@ bool ScriptablePluginObject::GetProperty(NPIdentifier name, NPVariant * result)
             case STATE_PAUSED:
                 status = g_strdup(_("Paused"));
                 break;
+            case STATE_STOPPED:
+                status = g_strdup(_("Stopped"));
+                break;
             case STATE_BUFFERING:
                 status = g_strdup_printf(_("Buffering %2.1lf%%"), request_double_value(pPlugin, pPlugin->lastopened, "GetCachePercent") * 100.0);
                 break;
