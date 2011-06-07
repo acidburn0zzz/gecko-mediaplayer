@@ -1,4 +1,5 @@
 Development
+	Disable Windows OnDSPlayStateChangeEvt callback
 	Emulate WMP status
 	Emulate WMP versionInfo
 	Add in some more WMP javascript emulation

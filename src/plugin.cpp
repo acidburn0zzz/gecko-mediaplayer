@@ -198,7 +198,7 @@ void postPlayStateChange(NPP mInstance, const gint state)
 
     jscript = g_strdup_printf("javascript:if (typeof OnDSPlayStateChangeEvt == 'function') {"
                               "OnDSPlayStateChangeEvt(%i);}", state);
-    NPN_GetURL(mInstance, jscript, NULL);
+    //NPN_GetURL(mInstance, jscript, NULL);
     g_free(jscript);
 }
 
