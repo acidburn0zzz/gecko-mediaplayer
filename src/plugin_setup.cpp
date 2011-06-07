@@ -603,8 +603,10 @@ gboolean streaming(gchar * url)
     if (g_strrstr(url, ".m3u") != NULL)
         ret = TRUE;
 
-    if (g_strrstr(url, "stream") != NULL)
-        ret = TRUE;
+    if (g_strrstr(url, "stream") != NULL) {
+        if (g_strrstr(url, "http://") == NULL)
+            ret = TRUE;
+    }
 
     if (g_strrstr(url, "MSWMExt=.asf") != NULL)
         ret = TRUE;
