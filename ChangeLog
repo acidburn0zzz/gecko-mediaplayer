@@ -1,4 +1,5 @@
 Development
+	Get status messages looking better, requires gnome-mplayer from SVN on same date
 	Disable Windows OnDSPlayStateChangeEvt callback
 	Emulate WMP status
 	Emulate WMP versionInfo

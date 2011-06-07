@@ -2646,14 +2646,18 @@ bool ScriptablePluginObject::GetProperty(NPIdentifier name, NPVariant * result)
         pPlugin->GetPlayState(&state);
         switch(state) {
             case STATE_PLAYING:
-                status = g_strdup("Playing");
+                status = g_strdup(_("Playing"));
                 break;
             case STATE_PAUSED:
-                status = g_strdup("Paused");
+                status = g_strdup(_("Paused"));
+                break;
+            case STATE_BUFFERING:
+                status = g_strdup_printf(_("Buffering %2.1lf%%"), request_double_value(pPlugin, pPlugin->lastopened, "GetCachePercent") * 100.0);
                 break;
             default:
-                status = g_strdup("Unknown Status");
+                status = g_strdup(_("Unknown Status"));
         }
+        // printf("Status = %s\n", status);
         STRINGZ_TO_NPVARIANT(status, *result);
         return true;
     }
