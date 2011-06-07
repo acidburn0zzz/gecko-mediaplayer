@@ -485,7 +485,11 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
         } else {
             loop = FALSE;
         }
+    } else {
+        // Having this event fire creates several instances of gmp at some websites
+        // postPlayStateChange(instance->mInstance, STATE_TRANSITIONING);
     }
+
     // link up src to href objects by id
     if (href != NULL && src != NULL) {
         src->hrefid = href->id;
