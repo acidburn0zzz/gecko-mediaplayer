@@ -150,35 +150,9 @@ void NS_PluginShutdown()
 // get values per plugin
 NPError NS_PluginGetValue(NPPVariable aVariable, void *aValue)
 {
-
     return PluginGetValue(aVariable, aValue);
 }
 
-
-/////////////////////////////////////////////////////////////
-//
-// construction and destruction of our plugin instance object
-//
-/*
-CPlugin *NS_NewPluginInstance(nsPluginCreateData * aCreateDataStruct)
-{
-    if (!aCreateDataStruct)
-        return NULL;
-
-    CPlugin *plugin = new CPlugin(aCreateDataStruct->instance);
-
-    new_instance(plugin, aCreateDataStruct);
-    return plugin;
-}
-
-void NS_DestroyPluginInstance(CPlugin * aPlugin)
-{
-    if (aPlugin)
-        delete(CPlugin *) aPlugin;
-}
-
-
-*/
 void postDOMEvent(NPP mInstance, const gchar * id, const gchar * event)
 {
     gchar *jscript;
@@ -191,7 +165,7 @@ void postDOMEvent(NPP mInstance, const gchar * id, const gchar * event)
     g_free(jscript);
 }
 
-
+// disabled for now due to problems with certain sites
 void postPlayStateChange(NPP mInstance, const gint state)
 {
     gchar *jscript;
@@ -201,8 +175,6 @@ void postPlayStateChange(NPP mInstance, const gint state)
     //NPN_GetURL(mInstance, jscript, NULL);
     g_free(jscript);
 }
-
-
 
 ////////////////////////////////////////
 //
