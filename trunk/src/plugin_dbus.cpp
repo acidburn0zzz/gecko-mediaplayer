@@ -471,6 +471,9 @@ void open_location(CPlugin * instance, ListItem * item, gboolean uselocal)
             dbus_message_append_args(message, DBUS_TYPE_STRING, &file, DBUS_TYPE_INVALID);
             dbus_connection_send(instance->connection, message, NULL);
             dbus_message_unref(message);
+            if (item->retrieved == TRUE)
+                send_signal_with_double(instance, item, "SetCachePercent", 1.0);
+
         } else {
             // ok, not done here yet, may need a new window for Apple HD video
             id = g_strdup_printf("%i", item->hrefid);
