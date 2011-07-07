@@ -1366,6 +1366,7 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
                 send_signal_with_string(plugin, item, "SetProgressText", text);
                 if (!item->opened) {
                     //open_location (plugin, item, TRUE);
+                    //item->opened = TRUE;
                     //send_signal_with_string(plugin, item, "SetURL", item->src);
                 }
                 if (plugin->post_dom_events && plugin->id != NULL) {
@@ -1378,7 +1379,7 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
                 item->lastsize = item->localsize;
             }
         }
-        /*
+        
         if (!item->opened) {
             if ((item->localsize >= (plugin->cache_size * 1024)) && (percent >= 0.2)) {
                 printf("Setting to play because %i > %i\n", item->localsize,
@@ -1394,7 +1395,7 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
             if (ok_to_play == FALSE) {
                 if (item->bitrate == 0 && item->bitrate_requests < 5
                     && ((gint) (percent * 100) > item->bitrate_requests)) {
-                    item->bitrate = request_bitrate(plugin, item, item->local);
+                    //item->bitrate = request_bitrate(plugin, item, item->local);
                     item->bitrate_requests++;
                 }
                 if (item->bitrate > 0) {
@@ -1410,9 +1411,8 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
             }
 
         }
-        */
+        
         // if not opened, over cache level and not an href target then try and open it
-        /*
         if ((!item->opened) && ok_to_play == TRUE) {
             id = item->controlid;
             path = g_strdup(item->path);
@@ -1462,7 +1462,7 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
             }
             g_free(path);
         }
-        */
+        
 
     }
 
@@ -1501,6 +1501,7 @@ gpointer CURLGetURLNotify(gpointer data)
             }
             fclose(local);
             printf("fetched %s to %s opened = %i\n", item->src, item->local, item->opened);
+            send_signal_with_double(plugin, item, "SetCachePercent", 1.0);
             send_signal_with_double(plugin, item, "SetCachePercent", 0.0);
             item->retrieved = TRUE;
         }
