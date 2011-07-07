@@ -1,3 +1,5 @@
+Development
+    Fix regression at apple.com/trailers, side effect of fully caching the file for now
 1.0.4
 	Fix problem where file is downloaded before gnome-mplayer is started (locally cached)
 	Added Portuguese translation
