@@ -1320,7 +1320,7 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
     ListItem *item = (ListItem *) clientp;
     gdouble percent, rate;
     gchar *text;
-    gboolean ok_to_play;
+    gboolean ok_to_play = FALSE;
     gint id;
     gboolean ready;
     gboolean newwindow;
@@ -1364,8 +1364,10 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
                                         rate);
                 }
                 send_signal_with_string(plugin, item, "SetProgressText", text);
-                if (!item->opened)
-                    send_signal_with_string(plugin, item, "SetURL", item->src);
+                if (!item->opened) {
+                    //open_location (plugin, item, TRUE);
+                    //send_signal_with_string(plugin, item, "SetURL", item->src);
+                }
                 if (plugin->post_dom_events && plugin->id != NULL) {
                     postDOMEvent(plugin->mInstance, plugin->id, "qt_progress");
                     postDOMEvent(plugin->mInstance, plugin->id, "qt_durationchange");
@@ -1376,6 +1378,7 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
                 item->lastsize = item->localsize;
             }
         }
+        /*
         if (!item->opened) {
             if ((item->localsize >= (plugin->cache_size * 1024)) && (percent >= 0.2)) {
                 printf("Setting to play because %i > %i\n", item->localsize,
@@ -1407,7 +1410,9 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
             }
 
         }
+        */
         // if not opened, over cache level and not an href target then try and open it
+        /*
         if ((!item->opened) && ok_to_play == TRUE) {
             id = item->controlid;
             path = g_strdup(item->path);
@@ -1418,6 +1423,7 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
             if (!item->streaming) {
                 printf("in progress_callback\n");
                 plugin->playlist = list_parse_qt(plugin->playlist, item);
+                plugin->playlist = list_parse_qt2(plugin->playlist, item);
                 plugin->playlist = list_parse_asx(plugin->playlist, item);
                 plugin->playlist = list_parse_qml(plugin->playlist, item);
                 plugin->playlist = list_parse_ram(plugin->playlist, item);
@@ -1456,6 +1462,7 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
             }
             g_free(path);
         }
+        */
 
     }
 
@@ -1493,13 +1500,13 @@ gpointer CURLGetURLNotify(gpointer data)
 
             }
             fclose(local);
-            printf("fetched %s to %s\n", item->src, item->local);
+            printf("fetched %s to %s opened = %i\n", item->src, item->local, item->opened);
             send_signal_with_double(plugin, item, "SetCachePercent", 0.0);
             item->retrieved = TRUE;
         }
 
 
-        if ((!item->opened)) {
+        if (!item->opened) {
             id = item->controlid;
             path = g_strdup(item->path);
             ready = item->playerready;
@@ -1509,13 +1516,14 @@ gpointer CURLGetURLNotify(gpointer data)
             if (!item->streaming) {
                 printf("in CURLGetURLNotify\n");
                 plugin->playlist = list_parse_qt(plugin->playlist, item);
+                plugin->playlist = list_parse_qt2(plugin->playlist, item);
                 plugin->playlist = list_parse_asx(plugin->playlist, item);
                 plugin->playlist = list_parse_qml(plugin->playlist, item);
                 plugin->playlist = list_parse_ram(plugin->playlist, item);
             }
             // printf("item->play = %i\n", item->play);
             // printf("item->src = %i\n", item->src);
-            // printf("calling open_location from Write\n");
+            // printf("calling open_location from CURLGetURLNotify\n");
             if (item->play) {
                 send_signal_with_integer(plugin, item, "SetGUIState", PLAYING);
                 open_location(plugin, item, TRUE);
