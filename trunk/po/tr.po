@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-01 10:40-0600\n"
+"POT-Creation-Date: 2011-07-13 14:11-0600\n"
 "PO-Revision-Date: 2011-06-13 14:09+0300\n"
 "Last-Translator: Onur Küçük <onur@pardus.org.tr>\n"
 "Language-Team: Turkish <turkce@pardus.org.tr>\n"
@@ -43,23 +43,23 @@ msgstr "Önbellek %iK (%0.1f K/s)"
 msgid "Cache fill: %2.2f%% (%0.1f K/s)"
 msgstr "Önbellek: %2.2f%% (%0.1f K/s)"
 
-#: src/plugin.cpp:2621
+#: src/plugin.cpp:2630
 msgid "Playing"
 msgstr "Oynatılıyor"
 
-#: src/plugin.cpp:2624
+#: src/plugin.cpp:2633
 msgid "Paused"
 msgstr "Durakladı"
 
-#: src/plugin.cpp:2627
+#: src/plugin.cpp:2636
 msgid "Stopped"
 msgstr "Durdu"
 
-#: src/plugin.cpp:2630
+#: src/plugin.cpp:2639
 #, c-format
 msgid "Buffering %2.1lf%%"
 msgstr "Önbellek %2.1lf%%"
 
-#: src/plugin.cpp:2633
+#: src/plugin.cpp:2642
 msgid "Unknown Status"
 msgstr "Bilinmeyen Durum"
