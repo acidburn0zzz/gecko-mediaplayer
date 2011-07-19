@@ -15,7 +15,7 @@ gecko_mediaplayerdoc_DATA = \
 
 if GCONF_SCHEMAS_INSTALL
 schemadir   = @GCONF_SCHEMA_FILE_DIR@
-schema_DATA = gecko-mediaplayer.schemas
+schema_DATA = gnome-mplayer.schemas
 endif
 
 EXTRA_DIST = $(gecko_mediaplayerdoc_DATA) $(schema_DATA) gecko-mediaplayer.spec.in gecko-mediaplayer.schemas
@@ -32,7 +32,7 @@ install-schemas: $(schema_DATA)
 	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) gconftool-2 --makefile-install-rule $(schema_DATA) 2>&1 > /dev/null
 
 if GCONF_SCHEMAS_INSTALL
-install-data-hook: install-schemas
+install-data-hook: install-schemas 
 else
 install-data-hook:
 endif

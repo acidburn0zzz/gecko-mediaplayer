@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gecko-mediaplayer 0.9.9.2-1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-01 10:40-0600\n"
+"POT-Creation-Date: 2011-07-13 14:11-0600\n"
 "PO-Revision-Date: 2010-03-25 18:47+GMT\n"
 "Last-Translator: Chris Leick <c.leick@vollbio.de>\n"
 "Language-Team: German <debian-l10n-german@lists.debian.org>\n"
@@ -42,23 +42,23 @@ msgstr "%i KB (%0.1f KB/s) werden zwischengespeichert"
 msgid "Cache fill: %2.2f%% (%0.1f K/s)"
 msgstr "Zwischenspeicher-Füllstand: %2.2f%% (%0.1f KB/s)"
 
-#: src/plugin.cpp:2621
+#: src/plugin.cpp:2630
 msgid "Playing"
 msgstr ""
 
-#: src/plugin.cpp:2624
+#: src/plugin.cpp:2633
 msgid "Paused"
 msgstr ""
 
-#: src/plugin.cpp:2627
+#: src/plugin.cpp:2636
 msgid "Stopped"
 msgstr ""
 
-#: src/plugin.cpp:2630
+#: src/plugin.cpp:2639
 #, c-format
 msgid "Buffering %2.1lf%%"
 msgstr ""
 
-#: src/plugin.cpp:2633
+#: src/plugin.cpp:2642
 msgid "Unknown Status"
 msgstr ""

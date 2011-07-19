@@ -1,4 +1,5 @@
 Development
+    Conversion to using libgmtk as separate library
     Improvements to the apple.com/trailers fix, caching now works properly
     Fix regression at apple.com/trailers, side effect of fully caching the file for now
 1.0.4

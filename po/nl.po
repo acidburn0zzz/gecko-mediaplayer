@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gecko-mediaplayer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-01 10:40-0600\n"
+"POT-Creation-Date: 2011-07-13 14:11-0600\n"
 "PO-Revision-Date: 2009-06-24 13:53+0100\n"
 "Last-Translator: Mark Huijgen <mark.sf.net@huijgen.tk>\n"
 "Language-Team: Mark Huijgen <mark.sf.net@huijgen.tk>\n"
@@ -42,23 +42,23 @@ msgstr "Buffer niveau: %2.2f%% (%0.1f K/s)"
 msgid "Cache fill: %2.2f%% (%0.1f K/s)"
 msgstr "Buffer niveau: %2.2f%% (%0.1f K/s)"
 
-#: src/plugin.cpp:2621
+#: src/plugin.cpp:2630
 msgid "Playing"
 msgstr ""
 
-#: src/plugin.cpp:2624
+#: src/plugin.cpp:2633
 msgid "Paused"
 msgstr ""
 
-#: src/plugin.cpp:2627
+#: src/plugin.cpp:2636
 msgid "Stopped"
 msgstr ""
 
-#: src/plugin.cpp:2630
+#: src/plugin.cpp:2639
 #, c-format
 msgid "Buffering %2.1lf%%"
 msgstr ""
 
-#: src/plugin.cpp:2633
+#: src/plugin.cpp:2642
 msgid "Unknown Status"
 msgstr ""

@@ -46,11 +46,6 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
-#ifdef HAVE_GCONF
-#include <gconf/gconf.h>
-#include <gconf/gconf-client.h>
-#include <gconf/gconf-value.h>
-#endif
 
 #include <glib.h>
 #include <glib/gstdio.h>
@@ -64,7 +59,7 @@
 #include <curl/curl.h>
 #endif
 
-#include "libgmlib/gmlib.h"
+#include <gmlib.h>
 
 // JavaScript Playstates
 #define STATE_UNDEFINED     0
