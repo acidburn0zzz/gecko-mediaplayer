@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gecko-mediaplayer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-13 14:11-0600\n"
-"PO-Revision-Date: 2009-06-24 13:53+0100\n"
+"POT-Creation-Date: 2011-07-01 10:40-0600\n"
+"PO-Revision-Date: 2011-07-22 13:53+0200\n"
 "Last-Translator: Mark Huijgen <mark.sf.net@huijgen.tk>\n"
 "Language-Team: Mark Huijgen <mark.sf.net@huijgen.tk>\n"
 "Language: \n"
@@ -28,37 +28,37 @@ msgid "Cache fill: %2.2f%%"
 msgstr "Buffer niveau: %2.2f%%"
 
 #: src/plugin.cpp:879
-#, fuzzy, c-format
+#, c-format
 msgid "Write unable to write because item is NULL\n"
-msgstr "Schrijven niet mogelijk omdat item NULL is"
+msgstr "Schrijven niet mogelijk omdat item NULL is\n"
 
 #: src/plugin.cpp:945 src/plugin.cpp:1360
-#, fuzzy, c-format
+#, c-format
 msgid "Caching %iK (%0.1f K/s)"
-msgstr "Buffer niveau: %2.2f%% (%0.1f K/s)"
+msgstr "Bufferen %iK (%0.1f K/s)"
 
 #: src/plugin.cpp:948 src/plugin.cpp:1363
 #, c-format
 msgid "Cache fill: %2.2f%% (%0.1f K/s)"
 msgstr "Buffer niveau: %2.2f%% (%0.1f K/s)"
 
-#: src/plugin.cpp:2630
+#: src/plugin.cpp:2621
 msgid "Playing"
-msgstr ""
+msgstr "Afspelen"
 
-#: src/plugin.cpp:2633
+#: src/plugin.cpp:2624
 msgid "Paused"
-msgstr ""
+msgstr "Gepauzeerd"
 
-#: src/plugin.cpp:2636
+#: src/plugin.cpp:2627
 msgid "Stopped"
-msgstr ""
+msgstr "Gestopt"
 
-#: src/plugin.cpp:2639
+#: src/plugin.cpp:2630
 #, c-format
 msgid "Buffering %2.1lf%%"
-msgstr ""
+msgstr "Bufferen %2.1lf%%"
 
-#: src/plugin.cpp:2642
+#: src/plugin.cpp:2633
 msgid "Unknown Status"
-msgstr ""
+msgstr "Onbekende status"
