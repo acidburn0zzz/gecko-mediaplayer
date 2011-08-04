@@ -1,4 +1,5 @@
 Development
+    Fix Issue #150, return value for function that says it will
     Updated Dutch translation
     Conversion to using libgmtk as separate library
     Improvements to the apple.com/trailers fix, caching now works properly
