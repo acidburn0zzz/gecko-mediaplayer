@@ -1558,6 +1558,7 @@ gpointer CURLGetURLNotify(gpointer data)
 
         }
     }
+    return NULL;
 }
 
 
