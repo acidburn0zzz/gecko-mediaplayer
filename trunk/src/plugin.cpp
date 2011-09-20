@@ -887,8 +887,11 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
         return -1;
     }
 
-    if (strstr((char *) buffer, "ICY 200 OK") != NULL || strstr((char *) buffer, "Content-length:") != NULL     // If item is a block of jpeg images, just stream it
-        || strstr((char *) buffer, "<HTML>") != NULL || item->streaming == TRUE) {
+    if (strstr((char *) buffer, "ICY 200 OK") != NULL
+        || strstr((char *) buffer, "Content-length:") != NULL
+        || strstr((char *) buffer, "<HTML>") != NULL || item->streaming == TRUE
+        || strstr(item->src, "file://") != NULL) {
+        // If item is a block of jpeg images, just stream it
         //   || stream->lastmodified == 0) {    this is not valid for many sites
 
         // printf("BUFFER='%s'\n", buffer);
@@ -1379,7 +1382,7 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
                 item->lastsize = item->localsize;
             }
         }
-        
+
         if (!item->opened) {
             if ((item->localsize >= (plugin->cache_size * 1024)) && (percent >= 0.2)) {
                 printf("Setting to play because %i > %i\n", item->localsize,
@@ -1411,7 +1414,6 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
             }
 
         }
-        
         // if not opened, over cache level and not an href target then try and open it
         if ((!item->opened) && ok_to_play == TRUE) {
             id = item->controlid;
@@ -1462,7 +1464,7 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
             }
             g_free(path);
         }
-        
+
 
     }
 
@@ -1652,8 +1654,7 @@ class ScriptablePluginObjectBase:public NPObject {
   public:
     ScriptablePluginObjectBase(NPP npp)
     :mNpp(npp) {
-    }
-    virtual ~ ScriptablePluginObjectBase() {
+    } virtual ~ ScriptablePluginObjectBase() {
     }
 
     // Virtual NPObject hooks called through this base class. Override
@@ -1813,8 +1814,7 @@ class ScriptablePluginObjectControls:public ScriptablePluginObjectBase {
   public:
     ScriptablePluginObjectControls(NPP npp)
     :ScriptablePluginObjectBase(npp) {
-    }
-    virtual bool HasMethod(NPIdentifier name);
+    } virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
     virtual bool InvokeDefault(const NPVariant * args, uint32_t argCount, NPVariant * result);
@@ -1937,8 +1937,7 @@ class ScriptablePluginObjectMedia:public ScriptablePluginObjectBase {
   public:
     ScriptablePluginObjectMedia(NPP npp)
     :ScriptablePluginObjectBase(npp) {
-    }
-    virtual bool HasMethod(NPIdentifier name);
+    } virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
     virtual bool InvokeDefault(const NPVariant * args, uint32_t argCount, NPVariant * result);
@@ -2063,8 +2062,7 @@ class ScriptablePluginObjectSettings:public ScriptablePluginObjectBase {
   public:
     ScriptablePluginObjectSettings(NPP npp)
     :ScriptablePluginObjectBase(npp) {
-    }
-    virtual bool HasMethod(NPIdentifier name);
+    } virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
     virtual bool InvokeDefault(const NPVariant * args, uint32_t argCount, NPVariant * result);
@@ -2163,8 +2161,7 @@ class ScriptablePluginObjectError:public ScriptablePluginObjectBase {
   public:
     ScriptablePluginObjectError(NPP npp)
     :ScriptablePluginObjectBase(npp) {
-    }
-    virtual bool HasMethod(NPIdentifier name);
+    } virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
     virtual bool InvokeDefault(const NPVariant * args, uint32_t argCount, NPVariant * result);
@@ -2260,8 +2257,7 @@ class ScriptablePluginObject:public ScriptablePluginObjectBase {
   public:
     ScriptablePluginObject(NPP npp)
     :ScriptablePluginObjectBase(npp) {
-    }
-    virtual bool HasMethod(NPIdentifier name);
+    } virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
     virtual bool InvokeDefault(const NPVariant * args, uint32_t argCount, NPVariant * result);
@@ -2626,21 +2622,24 @@ bool ScriptablePluginObject::GetProperty(NPIdentifier name, NPVariant * result)
 
     if (name == status_id) {
         pPlugin->GetPlayState(&state);
-        switch(state) {
-            case STATE_PLAYING:
-                status = g_strdup(_("Playing"));
-                break;
-            case STATE_PAUSED:
-                status = g_strdup(_("Paused"));
-                break;
-            case STATE_STOPPED:
-                status = g_strdup(_("Stopped"));
-                break;
-            case STATE_BUFFERING:
-                status = g_strdup_printf(_("Buffering %2.1lf%%"), request_double_value(pPlugin, pPlugin->lastopened, "GetCachePercent") * 100.0);
-                break;
-            default:
-                status = g_strdup(_("Unknown Status"));
+        switch (state) {
+        case STATE_PLAYING:
+            status = g_strdup(_("Playing"));
+            break;
+        case STATE_PAUSED:
+            status = g_strdup(_("Paused"));
+            break;
+        case STATE_STOPPED:
+            status = g_strdup(_("Stopped"));
+            break;
+        case STATE_BUFFERING:
+            status =
+                g_strdup_printf(_("Buffering %2.1lf%%"),
+                                request_double_value(pPlugin, pPlugin->lastopened,
+                                                     "GetCachePercent") * 100.0);
+            break;
+        default:
+            status = g_strdup(_("Unknown Status"));
         }
         // printf("Status = %s\n", status);
         STRINGZ_TO_NPVARIANT(status, *result);
