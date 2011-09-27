@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-13 14:11-0600\n"
+"POT-Creation-Date: 2011-09-27 09:50-0600\n"
 "PO-Revision-Date: 2011-06-13 14:09+0300\n"
 "Last-Translator: Onur Küçük <onur@pardus.org.tr>\n"
 "Language-Team: Turkish <turkce@pardus.org.tr>\n"
@@ -33,29 +33,29 @@ msgstr "Önbellek: %2.2f%%"
 msgid "Write unable to write because item is NULL\n"
 msgstr "NULL içerik yazılamıyor\n"
 
-#: src/plugin.cpp:945 src/plugin.cpp:1360
+#: src/plugin.cpp:948 src/plugin.cpp:1363
 #, c-format
 msgid "Caching %iK (%0.1f K/s)"
 msgstr "Önbellek %iK (%0.1f K/s)"
 
-#: src/plugin.cpp:948 src/plugin.cpp:1363
+#: src/plugin.cpp:951 src/plugin.cpp:1366
 #, c-format
 msgid "Cache fill: %2.2f%% (%0.1f K/s)"
 msgstr "Önbellek: %2.2f%% (%0.1f K/s)"
 
-#: src/plugin.cpp:2630
+#: src/plugin.cpp:2627
 msgid "Playing"
 msgstr "Oynatılıyor"
 
-#: src/plugin.cpp:2633
+#: src/plugin.cpp:2630
 msgid "Paused"
 msgstr "Durakladı"
 
-#: src/plugin.cpp:2636
+#: src/plugin.cpp:2633
 msgid "Stopped"
 msgstr "Durdu"
 
-#: src/plugin.cpp:2639
+#: src/plugin.cpp:2637
 #, c-format
 msgid "Buffering %2.1lf%%"
 msgstr "Önbellek %2.1lf%%"
