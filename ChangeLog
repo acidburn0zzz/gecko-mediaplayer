@@ -1,4 +1,6 @@
 Development
+    Updated Italian translation
+1.0.5b1
     When uri is a file:// uri, just play it directly
     Switch from AM_MAINTAINER_MODE to AM_MAINTAINER_MODE([enable]) in configure.in
     Fix Issue #150, return value for function that says it will
