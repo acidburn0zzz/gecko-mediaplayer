@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: gecko-mediaplayer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-09-27 09:50-0600\n"
-"PO-Revision-Date: 2009-02-07 17:07+0900\n"
+"PO-Revision-Date: 2011-10-15 17:29+0900\n"
 "Last-Translator: Munehiro Yamamoto <munepixyz@gmail.com>\n"
 "Language-Team: munepi <munepixyz@gmail.com>\n"
 "Language: \n"
@@ -44,21 +44,21 @@ msgstr "キャッシュ中: %2.2f%% (%0.1f K/s)"
 
 #: src/plugin.cpp:2627
 msgid "Playing"
-msgstr ""
+msgstr "再生"
 
 #: src/plugin.cpp:2630
 msgid "Paused"
-msgstr ""
+msgstr "一時停止"
 
 #: src/plugin.cpp:2633
 msgid "Stopped"
-msgstr ""
+msgstr "停止"
 
 #: src/plugin.cpp:2637
 #, c-format
 msgid "Buffering %2.1lf%%"
-msgstr ""
+msgstr "バッファ中 %2.1lf%%"
 
 #: src/plugin.cpp:2642
 msgid "Unknown Status"
-msgstr ""
+msgstr "不明なステータス"
