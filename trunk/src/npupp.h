@@ -684,7 +684,7 @@ extern "C" {
 
     NPError OSCALL NP_Shutdown();
 
-    char *NP_GetMIMEDescription();
+    const char *NP_GetMIMEDescription();
 
 #ifdef __cplusplus
 }
@@ -700,7 +700,7 @@ extern "C" {
 
 /* plugin meta member functions */
 
-    NP_EXPORT(char *) NP_GetMIMEDescription(void);
+    NP_EXPORT(const char *) NP_GetMIMEDescription(void);
      NP_EXPORT(NPError) NP_Initialize(NPNetscapeFuncs *, NPPluginFuncs *);
      NP_EXPORT(NPError) NP_Shutdown(void);
      NP_EXPORT(NPError) NP_GetValue(void *future, NPPVariable aVariable, void *aValue);
