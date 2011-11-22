@@ -44,7 +44,7 @@
 #include "plugin_types.h"
 #include "plugin_setup.h"
 
-char *NPP_GetMIMEDescription(void)
+const char *NPP_GetMIMEDescription(void)
 {
     return GetMIMEDescription();
 }

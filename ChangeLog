@@ -1,4 +1,5 @@
 Development
+    Fix up some const casting so that compilers do not complain Issue #158
     Updated Japanese translation
     Updated Italian translation
 1.0.5b1
