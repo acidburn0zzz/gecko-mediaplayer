@@ -8057,6 +8057,86 @@ $as_echo "$as_me: Using iceape" >&6;}
 fi
 fi
 
+if test "$GECKO_CFLAGS" = ""; then
+
+pkg_failed=no
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for GECKO" >&5
+$as_echo_n "checking for GECKO... " >&6; }
+
+if test -n "$GECKO_CFLAGS"; then
+    pkg_cv_GECKO_CFLAGS="$GECKO_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"npapi-sdk\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "npapi-sdk") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_GECKO_CFLAGS=`$PKG_CONFIG --cflags "npapi-sdk" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$GECKO_LIBS"; then
+    pkg_cv_GECKO_LIBS="$GECKO_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"npapi-sdk\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "npapi-sdk") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_GECKO_LIBS=`$PKG_CONFIG --libs "npapi-sdk" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+   	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        GECKO_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "npapi-sdk" 2>&1`
+        else
+	        GECKO_PKG_ERRORS=`$PKG_CONFIG --print-errors "npapi-sdk" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$GECKO_PKG_ERRORS" >&5
+
+	as_fn_error $? "npapi-sdk not found, all out ot tries" "$LINENO" 5
+elif test $pkg_failed = untried; then
+     	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+	as_fn_error $? "npapi-sdk not found, all out ot tries" "$LINENO" 5
+else
+	GECKO_CFLAGS=$pkg_cv_GECKO_CFLAGS
+	GECKO_LIBS=$pkg_cv_GECKO_LIBS
+        { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+	 { $as_echo "$as_me:${as_lineno-$LINENO}: Using npapi-sdk" >&5
+$as_echo "$as_me: Using npapi-sdk" >&6;}
+
+$as_echo "#define HAVE_NEW_XULRUNNER 1" >>confdefs.h
+
+
+fi
+
+$as_echo "#define HAVE_NSPR 1" >>confdefs.h
+
+fi
+
 
 pkg_failed=no
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for NSPR" >&5
