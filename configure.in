@@ -100,6 +100,14 @@ PKG_CHECK_MODULES(GECKO, [iceape-plugin iceape-xpcom],[ AC_MSG_NOTICE([Using ice
     ],[AC_MSG_WARN([iceape-plugin not found, trying another])])
 fi
 
+if test "$GECKO_CFLAGS" = ""; then
+PKG_CHECK_MODULES(GECKO, [npapi-sdk],[ AC_MSG_NOTICE([Using npapi-sdk])
+    AC_DEFINE([HAVE_NEW_XULRUNNER],[1],[Define to 1 if using libxul 1.9.2 or higher])
+    ],[AC_MSG_ERROR([npapi-sdk not found, all out ot tries])])
+    AC_DEFINE([HAVE_NSPR],[1],[Define to 1 if using nspr])
+fi
+    
+dnl Locate where the plugins should go
 PKG_CHECK_MODULES(NSPR, [nspr],[
     libdir=`$PKG_CONFIG --variable=libdir nspr`
     AC_SUBST(libdir)

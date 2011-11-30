@@ -42,10 +42,14 @@
 #include "plugin_setup.h"
 #include "plugin_types.h"
 #include "plugin_dbus.h"
+#ifdef HAVE_NSPR
+#include <nspr/nspr.h>
+#else
 #include <nsIPrefBranch.h>
 #include <nsIPrefService.h>
 #include <nsIServiceManager.h>
 #include <nsISupportsPrimitives.h>
+#endif
 #include <dlfcn.h>
 
 static NPObject *sWindowObj;
