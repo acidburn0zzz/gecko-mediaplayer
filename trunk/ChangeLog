@@ -1,4 +1,6 @@
 Development
+    Fix support for older xulrunners, Issue #160, issue caused by patch from
+    Issue #158
     Support nsapi-sdk, based on patch from Issue #159
     Fix up some const casting so that compilers do not complain Issue #158
     Updated Japanese translation
