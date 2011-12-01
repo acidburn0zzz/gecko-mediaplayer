@@ -44,11 +44,17 @@
 #include "plugin_types.h"
 #include "plugin_setup.h"
 
+#if NP_VERSION_MAJOR == 0 && NP_VERSION_MINOR > 23
 const char *NPP_GetMIMEDescription(void)
 {
     return GetMIMEDescription();
 }
-
+#else
+char *NPP_GetMIMEDescription(void)
+{
+    return GetMIMEDescription();
+}
+#endif
 
 NPError NPP_Initialize(void)
 {

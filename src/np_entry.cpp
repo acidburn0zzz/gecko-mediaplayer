@@ -80,12 +80,21 @@ NPError OSCALL NP_GetEntryPoints(NPPluginFuncs * pFuncs)
 
 #endif                          /* XP_WIN */
 
+#if NP_VERSION_MAJOR == 0 && NP_VERSION_MINOR > 23
 const char *NPP_GetMIMEDescription();
 
 const char *NP_GetMIMEDescription()
 {
     return NPP_GetMIMEDescription();
 }
+#else
+char *NPP_GetMIMEDescription();
+
+char *NP_GetMIMEDescription()
+{
+    return NPP_GetMIMEDescription();
+}
+#endif
 
 NPError NP_GetValue(void *future, NPPVariable variable, void *value)
 {
