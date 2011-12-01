@@ -699,8 +699,11 @@ extern "C" {
 #endif
 
 /* plugin meta member functions */
-
+#if NP_VERSION_MAJOR == 0 && NP_VERSION_MINOR > 23
     NP_EXPORT(const char *) NP_GetMIMEDescription(void);
+#else
+    NP_EXPORT(char *) NP_GetMIMEDescription(void);
+#endif
      NP_EXPORT(NPError) NP_Initialize(NPNetscapeFuncs *, NPPluginFuncs *);
      NP_EXPORT(NPError) NP_Shutdown(void);
      NP_EXPORT(NPError) NP_GetValue(void *future, NPPVariable aVariable, void *aValue);
