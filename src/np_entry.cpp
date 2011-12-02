@@ -43,6 +43,10 @@
 #include <npfunctions.h>
 #include "npupp.h"
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #ifndef HIBYTE
 #define HIBYTE(x) ((((uint32_t)(x)) & 0xff00) >> 8)
 #endif
@@ -80,7 +84,7 @@ NPError OSCALL NP_GetEntryPoints(NPPluginFuncs * pFuncs)
 
 #endif                          /* XP_WIN */
 
-#if NP_VERSION_MAJOR == 0 && NP_VERSION_MINOR > 23
+#ifdef NPAPI_USE_CONSTCHARS
 const char *NPP_GetMIMEDescription();
 
 const char *NP_GetMIMEDescription()

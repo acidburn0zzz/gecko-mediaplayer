@@ -8132,10 +8132,36 @@ $as_echo "#define HAVE_NEW_XULRUNNER 1" >>confdefs.h
 
 
 fi
+    require_nspr="yes"
+fi
 
-$as_echo "#define HAVE_NSPR 1" >>confdefs.h
+oCFLAGS=$CFLAGS
+CFLAGS=$GECKO_CFLAGS
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+#include <npapi.h>
+const char*NPP_GetMIMEDescription(void) {
+  return "test";
+}
+
+int
+main ()
+{
+
+const char *f=NPP_GetMIMEDescription();
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"; then :
+
+$as_echo "#define NPAPI_USE_CONSTCHARS 1" >>confdefs.h
 
 fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+CFLAGS=$oCFLAGS
 
 
 pkg_failed=no
@@ -8194,13 +8220,21 @@ fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$NSPR_PKG_ERRORS" >&5
 
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: nspr not found, may not be needed" >&5
+	if test "$require_nspr" = "yes"; then
+      as_fn_error $? "nspr not found, required by detected gecko" "$LINENO" 5
+    else
+      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: nspr not found, may not be needed" >&5
 $as_echo "$as_me: WARNING: nspr not found, may not be needed" >&2;}
+    fi
 elif test $pkg_failed = untried; then
      	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: nspr not found, may not be needed" >&5
+	if test "$require_nspr" = "yes"; then
+      as_fn_error $? "nspr not found, required by detected gecko" "$LINENO" 5
+    else
+      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: nspr not found, may not be needed" >&5
 $as_echo "$as_me: WARNING: nspr not found, may not be needed" >&2;}
+    fi
 else
 	NSPR_CFLAGS=$pkg_cv_NSPR_CFLAGS
 	NSPR_LIBS=$pkg_cv_NSPR_LIBS
@@ -8209,7 +8243,12 @@ $as_echo "yes" >&6; }
 
     libdir=`$PKG_CONFIG --variable=libdir nspr`
 
+    if test "$require_nspr" = "yes"; then
 
+$as_echo "#define HAVE_NSPR 1" >>confdefs.h
+
+      GECKO_CFLAGS="$GECKO_CFLAGS $NSPR_CFLAGS"
+    fi
 fi
 
 

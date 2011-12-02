@@ -45,6 +45,10 @@
 #ifndef _NPUPP_H_
 #define _NPUPP_H_
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #if defined(__OS2__)
 #pragma pack(1)
 #endif
@@ -684,7 +688,11 @@ extern "C" {
 
     NPError OSCALL NP_Shutdown();
 
+#ifdef NPAPI_USE_CONSTCHARS
     const char *NP_GetMIMEDescription();
+#else
+    char *NP_GetMIMEDescription();
+#endif
 
 #ifdef __cplusplus
 }
@@ -699,7 +707,7 @@ extern "C" {
 #endif
 
 /* plugin meta member functions */
-#if NP_VERSION_MAJOR == 0 && NP_VERSION_MINOR > 23
+#ifdef NPAPI_USE_CONSTCHARS
     NP_EXPORT(const char *) NP_GetMIMEDescription(void);
 #else
     NP_EXPORT(char *) NP_GetMIMEDescription(void);
