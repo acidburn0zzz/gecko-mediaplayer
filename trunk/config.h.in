@@ -60,6 +60,9 @@
 /* Define to 1 if your C compiler doesn't accept -c and -o together. */
 #undef NO_MINUS_C_MINUS_O
 
+/* Define if NPAPI declares NPP_GetMIMEDescription as a const char* */
+#undef NPAPI_USE_CONSTCHARS
+
 /* Name of package */
 #undef PACKAGE
 

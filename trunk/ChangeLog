@@ -1,4 +1,5 @@
 Development
+    Fix Issue #161, improvements over last patch because NPAPI not properly bumped
     Fix support for older xulrunners, Issue #160, issue caused by patch from
     Issue #158
     Support nsapi-sdk, based on patch from Issue #159

@@ -104,14 +104,33 @@ if test "$GECKO_CFLAGS" = ""; then
 PKG_CHECK_MODULES(GECKO, [npapi-sdk],[ AC_MSG_NOTICE([Using npapi-sdk])
     AC_DEFINE([HAVE_NEW_XULRUNNER],[1],[Define to 1 if using libxul 1.9.2 or higher])
     ],[AC_MSG_ERROR([npapi-sdk not found, all out ot tries])])
-    AC_DEFINE([HAVE_NSPR],[1],[Define to 1 if using nspr])
+    require_nspr="yes"
 fi
+
+oCFLAGS=$CFLAGS
+CFLAGS=$GECKO_CFLAGS
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
+#include <npapi.h>
+const char*NPP_GetMIMEDescription(void) {
+  return "test";
+}
+],[
+const char *f=NPP_GetMIMEDescription();
+])],[AC_DEFINE([NPAPI_USE_CONSTCHARS],[1],[Define if NPAPI declares NPP_GetMIMEDescription as a const char*])])
+CFLAGS=$oCFLAGS
     
 dnl Locate where the plugins should go
 PKG_CHECK_MODULES(NSPR, [nspr],[
     libdir=`$PKG_CONFIG --variable=libdir nspr`
     AC_SUBST(libdir)
-    ],[AC_MSG_WARN([nspr not found, may not be needed])])
+    if test "$require_nspr" = "yes"; then
+      AC_DEFINE([HAVE_NSPR],[1],[Define to 1 if using nspr])
+      GECKO_CFLAGS="$GECKO_CFLAGS $NSPR_CFLAGS"
+    fi],[if test "$require_nspr" = "yes"; then
+      AC_MSG_ERROR([nspr not found, required by detected gecko])
+    else
+      AC_MSG_WARN([nspr not found, may not be needed])
+    fi])
 
 
 AC_SUBST(GECKO_CFLAGS)

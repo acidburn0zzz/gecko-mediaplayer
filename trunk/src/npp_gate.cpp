@@ -44,7 +44,11 @@
 #include "plugin_types.h"
 #include "plugin_setup.h"
 
-#if NP_VERSION_MAJOR == 0 && NP_VERSION_MINOR > 23
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
+#ifdef NPAPI_USE_CONSTCHARS
 const char *NPP_GetMIMEDescription(void)
 {
     return GetMIMEDescription();
