@@ -1,4 +1,6 @@
 Development
+1.0.5b2
+    Simpifying const check until something better comes along Issue #162
     Fix Issue #161, improvements over last patch because NPAPI not properly bumped
     Fix support for older xulrunners, Issue #160, issue caused by patch from
     Issue #158

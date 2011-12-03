@@ -2731,7 +2731,7 @@ fi
 
 # Define the identity of the package.
  PACKAGE=gecko-mediaplayer
- VERSION=1.0.5b1
+ VERSION=1.0.5b2
 
 
 cat >>confdefs.h <<_ACEOF
@@ -8136,20 +8136,19 @@ fi
 fi
 
 oCFLAGS=$CFLAGS
-CFLAGS=$GECKO_CFLAGS
+CFLAGS="$GECKO_CFLAGS -Wall -Werror"
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
 #include <npapi.h>
-const char*NPP_GetMIMEDescription(void) {
-  return "test";
-}
+#if NP_VERSION_MAJOR == 0 &&  NP_VERSION_MINOR < 27
+#error
+#endif
 
 int
 main ()
 {
 
-const char *f=NPP_GetMIMEDescription();
 
   ;
   return 0;

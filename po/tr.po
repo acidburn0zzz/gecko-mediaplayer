@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-27 09:50-0600\n"
+"POT-Creation-Date: 2011-12-02 15:09-0700\n"
 "PO-Revision-Date: 2011-06-13 14:09+0300\n"
 "Last-Translator: Onur Küçük <onur@pardus.org.tr>\n"
 "Language-Team: Turkish <turkce@pardus.org.tr>\n"
@@ -18,48 +18,48 @@ msgstr ""
 "X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: src/plugin.cpp:339
+#: src/plugin.cpp:343
 #, c-format
 msgid "gecko mediaplayer v%s\n"
 msgstr "gecko mediaplayer %s\n"
 
-#: src/plugin.cpp:614
+#: src/plugin.cpp:618
 #, c-format
 msgid "Cache fill: %2.2f%%"
 msgstr "Önbellek: %2.2f%%"
 
-#: src/plugin.cpp:879
+#: src/plugin.cpp:883
 #, c-format
 msgid "Write unable to write because item is NULL\n"
 msgstr "NULL içerik yazılamıyor\n"
 
-#: src/plugin.cpp:948 src/plugin.cpp:1363
+#: src/plugin.cpp:952 src/plugin.cpp:1367
 #, c-format
 msgid "Caching %iK (%0.1f K/s)"
 msgstr "Önbellek %iK (%0.1f K/s)"
 
-#: src/plugin.cpp:951 src/plugin.cpp:1366
+#: src/plugin.cpp:955 src/plugin.cpp:1370
 #, c-format
 msgid "Cache fill: %2.2f%% (%0.1f K/s)"
 msgstr "Önbellek: %2.2f%% (%0.1f K/s)"
 
-#: src/plugin.cpp:2627
+#: src/plugin.cpp:2631
 msgid "Playing"
 msgstr "Oynatılıyor"
 
-#: src/plugin.cpp:2630
+#: src/plugin.cpp:2634
 msgid "Paused"
 msgstr "Durakladı"
 
-#: src/plugin.cpp:2633
+#: src/plugin.cpp:2637
 msgid "Stopped"
 msgstr "Durdu"
 
-#: src/plugin.cpp:2637
+#: src/plugin.cpp:2641
 #, c-format
 msgid "Buffering %2.1lf%%"
 msgstr "Önbellek %2.1lf%%"
 
-#: src/plugin.cpp:2642
+#: src/plugin.cpp:2646
 msgid "Unknown Status"
 msgstr "Bilinmeyen Durum"
