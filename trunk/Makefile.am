@@ -15,7 +15,7 @@ gecko_mediaplayerdoc_DATA = \
 
 if GCONF_SCHEMAS_INSTALL
 schemadir   = @GCONF_SCHEMA_FILE_DIR@
-schema_DATA = gnome-mplayer.schemas
+schema_DATA = gecko-mediaplayer.schemas
 endif
 
 EXTRA_DIST = $(gecko_mediaplayerdoc_DATA) $(schema_DATA) gecko-mediaplayer.spec.in gecko-mediaplayer.schemas
