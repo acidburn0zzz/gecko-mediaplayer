@@ -107,15 +107,31 @@ PKG_CHECK_MODULES(GECKO, [npapi-sdk],[ AC_MSG_NOTICE([Using npapi-sdk])
     require_nspr="yes"
 fi
 
+AC_MSG_CHECKING([for const return value of NPP_GetMIMEDescription])
 oCFLAGS=$CFLAGS
-CFLAGS="$GECKO_CFLAGS -Wall -Werror"
+CFLAGS="$GECKO_CFLAGS"
+AC_LANG_PUSH([C])
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
+#ifndef XP_UNIX
+#define XP_UNIX 1
+#endif
 #include <npapi.h>
-#if NP_VERSION_MAJOR == 0 &&  NP_VERSION_MINOR < 27
+#if NP_VERSION_MAJOR == 0 && NP_VERSION_MINOR < 27
 #error
+#else
+const char*NPP_GetMIMEDescription(void) {
+  return "test";
+}
 #endif
 ],[
-])],[AC_DEFINE([NPAPI_USE_CONSTCHARS],[1],[Define if NPAPI declares NPP_GetMIMEDescription as a const char*])])
+const char *f=NPP_GetMIMEDescription();
+])],[
+    AC_MSG_RESULT([yes])
+    AC_DEFINE([NPAPI_USE_CONSTCHARS],[1],[Define if NPAPI declares NPP_GetMIMEDescription as a const char*])
+],[
+    AC_MSG_RESULT([no])
+])
+AC_LANG_POP([C])
 CFLAGS=$oCFLAGS
     
 dnl Locate where the plugins should go
