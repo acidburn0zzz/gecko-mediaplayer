@@ -275,7 +275,7 @@ gecko_mediaplayerdoc_DATA = \
 	DOCS/tech/javascript.txt
 
 @GCONF_SCHEMAS_INSTALL_TRUE@schemadir = @GCONF_SCHEMA_FILE_DIR@
-@GCONF_SCHEMAS_INSTALL_TRUE@schema_DATA = gnome-mplayer.schemas
+@GCONF_SCHEMAS_INSTALL_TRUE@schema_DATA = gecko-mediaplayer.schemas
 EXTRA_DIST = $(gecko_mediaplayerdoc_DATA) $(schema_DATA) gecko-mediaplayer.spec.in gecko-mediaplayer.schemas
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive

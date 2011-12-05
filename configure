@@ -8156,7 +8156,7 @@ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 #define XP_UNIX 1
 #endif
 #include <npapi.h>
-#if NP_VERSION_MAJOR == 0 &&  NP_VERSION_MINOR < 27
+#if NP_VERSION_MAJOR == 0 && NP_VERSION_MINOR < 27
 #error
 #else
 const char*NPP_GetMIMEDescription(void) {
