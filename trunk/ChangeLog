@@ -1,4 +1,5 @@
 Development
+    Use better const check from Issue #161, patch from i.stakenvicius
 1.0.5b2
     Simpifying const check until something better comes along Issue #162
     Fix Issue #161, improvements over last patch because NPAPI not properly bumped

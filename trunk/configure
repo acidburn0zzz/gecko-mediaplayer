@@ -6915,6 +6915,10 @@ else
 fi
 
 	    ;;
+	    *-*-openbsd*)
+	    CATOBJEXT=.mo
+            DATADIRNAME=share
+	    ;;
 	    *)
 	    CATOBJEXT=.mo
             DATADIRNAME=lib
@@ -8135,20 +8139,36 @@ fi
     require_nspr="yes"
 fi
 
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for const return value of NPP_GetMIMEDescription" >&5
+$as_echo_n "checking for const return value of NPP_GetMIMEDescription... " >&6; }
 oCFLAGS=$CFLAGS
-CFLAGS="$GECKO_CFLAGS -Wall -Werror"
+CFLAGS="$GECKO_CFLAGS"
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
+#ifndef XP_UNIX
+#define XP_UNIX 1
+#endif
 #include <npapi.h>
 #if NP_VERSION_MAJOR == 0 &&  NP_VERSION_MINOR < 27
 #error
+#else
+const char*NPP_GetMIMEDescription(void) {
+  return "test";
+}
 #endif
 
 int
 main ()
 {
 
+const char *f=NPP_GetMIMEDescription();
 
   ;
   return 0;
@@ -8156,10 +8176,25 @@ main ()
 _ACEOF
 if ac_fn_c_try_compile "$LINENO"; then :
 
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+
 $as_echo "#define NPAPI_USE_CONSTCHARS 1" >>confdefs.h
+
+
+else
+
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
 
 fi
 rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
 CFLAGS=$oCFLAGS
 
 
