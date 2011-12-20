@@ -1,4 +1,5 @@
 Development
+    Disable playing of partially cached apple.com files, mplayer seems to crash on these files
     Use the right schema file, can't believe this one has slipped by so long.
     Use better const check from Issue #161, patch from i.stakenvicius
 1.0.5b2
