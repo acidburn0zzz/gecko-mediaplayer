@@ -1387,16 +1387,18 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
             }
         }
 
+        // Disable playing of partially cached apple.com files, mplayer seems to crash on these files
+        /*
         if (!item->opened) {
             if ((item->localsize >= (plugin->cache_size * 1024)) && (percent >= 0.2)) {
-                printf("Setting to play because %i > %i\n", item->localsize,
-                       plugin->cache_size * 1024);
+                //printf("Setting to play because %i > %i\n", item->localsize,
+                //       plugin->cache_size * 1024);
                 ok_to_play = TRUE;
             }
             if (ok_to_play == FALSE && (item->localsize > (plugin->cache_size * 2 * 1024))
                 && (plugin->cache_size >= 512)) {
-                printf("Setting to play because %i > %i (double cache)\n", item->localsize,
-                       plugin->cache_size * 2 * 1024);
+                //printf("Setting to play because %i > %i (double cache)\n", item->localsize,
+                //       plugin->cache_size * 2 * 1024);
                 ok_to_play = TRUE;
             }
             if (ok_to_play == FALSE) {
@@ -1418,6 +1420,11 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
             }
 
         }
+        */
+        
+        // try downloading entire file
+        ok_to_play = FALSE;
+        
         // if not opened, over cache level and not an href target then try and open it
         if ((!item->opened) && ok_to_play == TRUE) {
             id = item->controlid;
