@@ -1,0 +1,64 @@
+# Dutch translation of Gecko Media Player.
+# Copyright (C) 2007 Kevin DeKorte
+# This file is distributed under the same license as the GNOME MPlayer package.
+# Kevin DeKorte <kdekorte@gmail.com> 2007.
+#
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gecko-mediaplayer\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-12-29 07:33-0700\n"
+"PO-Revision-Date: 2011-07-22 13:53+0200\n"
+"Last-Translator: Mark Huijgen <mark.sf.net@huijgen.tk>\n"
+"Language-Team: Mark Huijgen <mark.sf.net@huijgen.tk>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/plugin.cpp:343
+#, c-format
+msgid "gecko mediaplayer v%s\n"
+msgstr ""
+
+#: src/plugin.cpp:618
+#, c-format
+msgid "Cache fill: %2.2f%%"
+msgstr "Buffer niveau: %2.2f%%"
+
+#: src/plugin.cpp:883
+#, c-format
+msgid "Write unable to write because item is NULL\n"
+msgstr "Schrijven niet mogelijk omdat item NULL is\n"
+
+#: src/plugin.cpp:952 src/plugin.cpp:1367
+#, c-format
+msgid "Caching %iK (%0.1f K/s)"
+msgstr "Bufferen %iK (%0.1f K/s)"
+
+#: src/plugin.cpp:955 src/plugin.cpp:1370
+#, c-format
+msgid "Cache fill: %2.2f%% (%0.1f K/s)"
+msgstr "Buffer niveau: %2.2f%% (%0.1f K/s)"
+
+#: src/plugin.cpp:2638
+msgid "Playing"
+msgstr "Afspelen"
+
+#: src/plugin.cpp:2641
+msgid "Paused"
+msgstr "Gepauzeerd"
+
+#: src/plugin.cpp:2644
+msgid "Stopped"
+msgstr "Gestopt"
+
+#: src/plugin.cpp:2648
+#, c-format
+msgid "Buffering %2.1lf%%"
+msgstr "Bufferen %2.1lf%%"
+
+#: src/plugin.cpp:2653
+msgid "Unknown Status"
+msgstr "Onbekende status"
