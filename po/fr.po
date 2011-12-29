@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gecko-mediaplayer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-02 15:09-0700\n"
+"POT-Creation-Date: 2011-12-29 07:33-0700\n"
 "PO-Revision-Date: 2011-06-08 16:04+0100\n"
 "Last-Translator: Alexandre Bedot <alexandre.bedot@free.fr>\n"
 "Language-Team: French <fr@li.org>\n"
@@ -43,23 +43,23 @@ msgstr "Mise en mémoire tampon : %iK (%0.1f K/s)"
 msgid "Cache fill: %2.2f%% (%0.1f K/s)"
 msgstr "Mise en mémoire tampon : %2.2f%% (%0.1f K/s)"
 
-#: src/plugin.cpp:2631
+#: src/plugin.cpp:2638
 msgid "Playing"
 msgstr "Lecture en cours"
 
-#: src/plugin.cpp:2634
+#: src/plugin.cpp:2641
 msgid "Paused"
 msgstr "En pause"
 
-#: src/plugin.cpp:2637
+#: src/plugin.cpp:2644
 msgid "Stopped"
 msgstr "Arrêté"
 
-#: src/plugin.cpp:2641
+#: src/plugin.cpp:2648
 #, c-format
 msgid "Buffering %2.1lf%%"
 msgstr "État du tampon %2.1lf%%"
 
-#: src/plugin.cpp:2646
+#: src/plugin.cpp:2653
 msgid "Unknown Status"
 msgstr "État inconnu"

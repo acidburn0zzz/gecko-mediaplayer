@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gecko-mediaplayer 0.5.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-02 15:09-0700\n"
+"POT-Creation-Date: 2011-12-29 07:33-0700\n"
 "PO-Revision-Date: 2011-06-15 21:50+0200\n"
 "Last-Translator: Julian Sikorski <belegdol@gmail.com>\n"
 "Language-Team: Polish <gnomepl@pandora.info.bielsko.pl>\n"
@@ -46,23 +46,23 @@ msgstr "Buforowanie: %iK (%0.1f K/s)"
 msgid "Cache fill: %2.2f%% (%0.1f K/s)"
 msgstr "Zapełnienie bufora: %2.2f%% (%0.1f K/s)"
 
-#: src/plugin.cpp:2631
+#: src/plugin.cpp:2638
 msgid "Playing"
 msgstr "Odtwarzanie "
 
-#: src/plugin.cpp:2634
+#: src/plugin.cpp:2641
 msgid "Paused"
 msgstr "Wstrzymano"
 
-#: src/plugin.cpp:2637
+#: src/plugin.cpp:2644
 msgid "Stopped"
 msgstr "Zatrzymano"
 
-#: src/plugin.cpp:2641
+#: src/plugin.cpp:2648
 #, c-format
 msgid "Buffering %2.1lf%%"
 msgstr "Buforowanie %2.1lf%%"
 
-#: src/plugin.cpp:2646
+#: src/plugin.cpp:2653
 msgid "Unknown Status"
 msgstr "Stan nieznany"
