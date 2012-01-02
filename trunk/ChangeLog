@@ -1,4 +1,5 @@
 Development
+    Fix spelling mistake, but then comment out as not needed for normal usage Issue #163
 1.0.5
     Disable playing of partially cached apple.com files, mplayer seems to crash on these files
     Use the right schema file, can't believe this one has slipped by so long.

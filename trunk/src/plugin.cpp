@@ -970,13 +970,13 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
         }
         if (!item->opened) {
             if ((item->localsize >= (cache_size * 1024)) && (percent >= 0.2)) {
-                printf("Setting to play because %i > %i\n", item->localsize, cache_size * 1024);
+                // printf("Setting to play because %i > %i\n", item->localsize, cache_size * 1024);
                 ok_to_play = TRUE;
             }
             if (ok_to_play == FALSE && (item->localsize > (cache_size * 2 * 1024))
                 && (cache_size >= 512)) {
-                printf("Setting to play because %i > %i (double cache)\n", item->localsize,
-                       cache_size * 2 * 1024);
+                // printf("Setting to play because %i > %i (double cache)\n", item->localsize,
+                //        cache_size * 2 * 1024);
                 ok_to_play = TRUE;
             }
             if (ok_to_play == FALSE) {
@@ -987,8 +987,8 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
                 }
                 if (item->bitrate > 0) {
                     if (item->localsize / item->bitrate >= 10 && (percent >= 0.2)) {
-                        printf("Setting to play becuase %i >= 10\n",
-                               item->localsize / item->bitrate);
+                        // printf("Setting to play because %i >= 10\n",
+                        //        item->localsize / item->bitrate);
                         ok_to_play = TRUE;
                         if (post_dom_events && this->id != NULL) {
                             postDOMEvent(mInstance, this->id, "qt_canplay");
