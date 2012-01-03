@@ -43,25 +43,17 @@ AC_ARG_WITH([xulrunner-sdk],
 	XULRUNNER_SDK_PREFIX=$with_xulrunner_sdk
 	GECKO_CFLAGS="-I$XULRUNNER_SDK_PREFIX/include -I$XULRUNNER_SDK_PREFIX/include/plugin -I$XULRUNNER_SDK_PREFIX/include/nspr -I$XULRUNNER_SDK_PREFIX/include/xpcom -I$XULRUNNER_SDK_PREFIX/include/string -I$XULRUNNER_SDK_PREFIX/include/java"
 	GECKO_LIBS="-L$XULRUNNER_SDK_PREFIX/lib -lxpcomglue_s -lxul -lxpcom -lplds4 -lplc4 -lnspr4 -lpthread -ldl"
-	AC_ARG_ENABLE(new-libxul,
-		AC_HELP_STRING([--enable-new-libxul],[libxul/xulrunner-sdk is 1.9.2 or higher]),
-		[usenewlibxul=$enableval],[usenewlibxul=no])
-
-	if test "$usenewlibxul" = "yes"; then
-		GECKO_CFLAGS="$GECKO_CFLAGS -DMOZ_NO_MOZALLOC"
-		AC_DEFINE([HAVE_NEW_XULRUNNER],[1],[Define to 1 if using libxul 1.9.2 or higher])
-	fi
-	
 	],
         [])
 
 if test "$GECKO_CFLAGS" = ""; then
-PKG_CHECK_MODULES(GECKO, [libxul >= 2],[GECKO_CFLAGS="$GECKO_CFLAGS -DMOZ_NO_MOZALLOC" AC_DEFINE([HAVE_NEW_XULRUNNER],[1],[Define to 1 if using libxul 2.0.0 or higher]) AC_MSG_NOTICE([Using libxul >= 2.0 ])
+PKG_CHECK_MODULES(GECKO, [libxul >= 2],[GECKO_CFLAGS="$GECKO_CFLAGS -DMOZ_NO_MOZALLOC"
+        AC_MSG_NOTICE([Using libxul >= 2.0 ]) 
     ],[AC_MSG_NOTICE([libxul >= 2 not found, trying another])])
 fi
 
 if test "$GECKO_CFLAGS" = ""; then
-PKG_CHECK_MODULES(GECKO, [libxul >= 1.9.2],[ AC_DEFINE([HAVE_NEW_XULRUNNER],[1],[Define to 1 if using libxul 1.9.2 or higher]) AC_MSG_NOTICE([Using libxul >= 1.9.2])
+PKG_CHECK_MODULES(GECKO, [libxul >= 1.9.2],[ AC_MSG_NOTICE([Using libxul >= 1.9.2])
     ],[AC_MSG_NOTICE([libxul >= 1.9.2 not found, trying another])])
 fi
 
@@ -102,7 +94,6 @@ fi
 
 if test "$GECKO_CFLAGS" = ""; then
 PKG_CHECK_MODULES(GECKO, [npapi-sdk],[ AC_MSG_NOTICE([Using npapi-sdk])
-    AC_DEFINE([HAVE_NEW_XULRUNNER],[1],[Define to 1 if using libxul 1.9.2 or higher])
     ],[AC_MSG_ERROR([npapi-sdk not found, all out ot tries])])
     require_nspr="yes"
 fi
@@ -133,6 +124,29 @@ const char *f=NPP_GetMIMEDescription();
 ])
 AC_LANG_POP([C])
 CFLAGS=$oCFLAGS
+
+AC_MSG_CHECKING([for usage of UTF8Characters])
+oCFLAGS=$CFLAGS
+CFLAGS="$GECKO_CFLAGS"
+AC_LANG_PUSH([C])
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
+#ifndef XP_UNIX
+#define XP_UNIX 1
+#endif
+#include <npapi.h>
+#include <npruntime.h>
+],[
+NPString s;
+s.UTF8Characters = "Testing";
+])],[
+    AC_MSG_RESULT([yes])
+    AC_DEFINE([NPAPI_USE_UPPERCASE_UTF8],[1],[Define if NPAPI declares NPString with an uppercase UTF8])
+],[
+    AC_MSG_RESULT([no])
+])
+AC_LANG_POP([C])
+CFLAGS=$oCFLAGS
+
     
 dnl Locate where the plugins should go
 PKG_CHECK_MODULES(NSPR, [nspr],[

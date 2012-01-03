@@ -30,9 +30,6 @@
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
 
-/* Define to 1 if using libxul 1.9.2 or higher */
-#undef HAVE_NEW_XULRUNNER
-
 /* Define to 1 if using nspr */
 #undef HAVE_NSPR
 
@@ -62,6 +59,9 @@
 
 /* Define if NPAPI declares NPP_GetMIMEDescription as a const char* */
 #undef NPAPI_USE_CONSTCHARS
+
+/* Define if NPAPI declares NPString with an uppercase UTF8 */
+#undef NPAPI_USE_UPPERCASE_UTF8
 
 /* Name of package */
 #undef PACKAGE
