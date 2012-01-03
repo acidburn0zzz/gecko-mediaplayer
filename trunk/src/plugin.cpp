@@ -246,7 +246,7 @@ tv_driver(NULL), tv_device(NULL), tv_input(NULL), tv_width(0), tv_height(0)
     identifier = NPN_GetStringIdentifier("href");
     // Get the location property from the location object.
     b = NPN_GetProperty(mInstance, locationObj, identifier, &variantValue);
-#ifdef HAVE_NEW_XULRUNNER
+#ifdef NPAPI_USE_UPPERCASE_UTF8
     page_url = g_strdup_printf("%s", NPVARIANT_TO_STRING(variantValue).UTF8Characters);
 #else
     page_url = g_strdup_printf("%s", NPVARIANT_TO_STRING(variantValue).utf8characters);
@@ -1987,7 +1987,7 @@ bool ScriptablePluginObjectMedia::Invoke(NPIdentifier name, const NPVariant * ar
     }
 
     if (name == media_getItemInfo_id) {
-#ifdef HAVE_NEW_XULRUNNER
+#ifdef NPAPI_USE_UPPERCASE_UTF8
         arg = g_strdup(NPVARIANT_TO_STRING(args[0]).UTF8Characters);
 #else
         arg = g_strdup(NPVARIANT_TO_STRING(args[0]).utf8characters);
@@ -2399,7 +2399,7 @@ bool ScriptablePluginObject::Invoke(NPIdentifier name, const NPVariant * args,
     }
 
     if (name == Open_id || name == SetFileName_id || name == SetHREF_id || name == SetURL_id) {
-#ifdef HAVE_NEW_XULRUNNER
+#ifdef NPAPI_USE_UPPERCASE_UTF8
         pPlugin->SetFilename(NPVARIANT_TO_STRING(args[0]).UTF8Characters);
 #else
         pPlugin->SetFilename(NPVARIANT_TO_STRING(args[0]).utf8characters);
@@ -2486,7 +2486,7 @@ bool ScriptablePluginObject::Invoke(NPIdentifier name, const NPVariant * args,
     }
 
     if (name == onClick_id) {
-#ifdef HAVE_NEW_XULRUNNER
+#ifdef NPAPI_USE_UPPERCASE_UTF8
         pPlugin->SetOnClick(NPVARIANT_TO_STRING(args[0]).UTF8Characters);
 #else
         pPlugin->SetOnClick(NPVARIANT_TO_STRING(args[0]).utf8characters);
@@ -2495,7 +2495,7 @@ bool ScriptablePluginObject::Invoke(NPIdentifier name, const NPVariant * args,
     }
 
     if (name == onMediaComplete_id) {
-#ifdef HAVE_NEW_XULRUNNER
+#ifdef NPAPI_USE_UPPERCASE_UTF8
         pPlugin->SetOnMediaComplete(NPVARIANT_TO_STRING(args[0]).UTF8Characters);
 #else
         pPlugin->SetOnMediaComplete(NPVARIANT_TO_STRING(args[0]).utf8characters);
@@ -2504,7 +2504,7 @@ bool ScriptablePluginObject::Invoke(NPIdentifier name, const NPVariant * args,
     }
 
     if (name == onMouseUp_id) {
-#ifdef HAVE_NEW_XULRUNNER
+#ifdef NPAPI_USE_UPPERCASE_UTF8
         pPlugin->SetOnMouseUp(NPVARIANT_TO_STRING(args[0]).UTF8Characters);
 #else
         pPlugin->SetOnMouseUp(NPVARIANT_TO_STRING(args[0]).utf8characters);
@@ -2513,7 +2513,7 @@ bool ScriptablePluginObject::Invoke(NPIdentifier name, const NPVariant * args,
     }
 
     if (name == onMouseDown_id) {
-#ifdef HAVE_NEW_XULRUNNER
+#ifdef NPAPI_USE_UPPERCASE_UTF8
         pPlugin->SetOnMouseDown(NPVARIANT_TO_STRING(args[0]).UTF8Characters);
 #else
         pPlugin->SetOnMouseDown(NPVARIANT_TO_STRING(args[0]).utf8characters);
@@ -2522,7 +2522,7 @@ bool ScriptablePluginObject::Invoke(NPIdentifier name, const NPVariant * args,
     }
 
     if (name == onMouseOut_id) {
-#ifdef HAVE_NEW_XULRUNNER
+#ifdef NPAPI_USE_UPPERCASE_UTF8
         pPlugin->SetOnMouseOut(NPVARIANT_TO_STRING(args[0]).UTF8Characters);
 #else
         pPlugin->SetOnMouseOut(NPVARIANT_TO_STRING(args[0]).utf8characters);
@@ -2531,7 +2531,7 @@ bool ScriptablePluginObject::Invoke(NPIdentifier name, const NPVariant * args,
     }
 
     if (name == onMouseOver_id) {
-#ifdef HAVE_NEW_XULRUNNER
+#ifdef NPAPI_USE_UPPERCASE_UTF8
         pPlugin->SetOnMouseOver(NPVARIANT_TO_STRING(args[0]).UTF8Characters);
 #else
         pPlugin->SetOnMouseOver(NPVARIANT_TO_STRING(args[0]).utf8characters);
@@ -2540,7 +2540,7 @@ bool ScriptablePluginObject::Invoke(NPIdentifier name, const NPVariant * args,
     }
 
     if (name == onDestroy_id) {
-#ifdef HAVE_NEW_XULRUNNER
+#ifdef NPAPI_USE_UPPERCASE_UTF8
         pPlugin->SetOnDestroy(NPVARIANT_TO_STRING(args[0]).UTF8Characters);
 #else
         pPlugin->SetOnDestroy(NPVARIANT_TO_STRING(args[0]).utf8characters);
@@ -2690,7 +2690,7 @@ bool ScriptablePluginObject::SetProperty(NPIdentifier name, const NPVariant * va
     }
 
     if (name == filename_id || name == src_id || name == URL_id) {
-#ifdef HAVE_NEW_XULRUNNER
+#ifdef NPAPI_USE_UPPERCASE_UTF8
         pPlugin->SetFilename(NPVARIANT_TO_STRING(*value).UTF8Characters);
 #else
         pPlugin->SetFilename(NPVARIANT_TO_STRING(*value).utf8characters);

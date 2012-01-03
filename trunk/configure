@@ -743,7 +743,6 @@ enable_maintainer_mode
 enable_silent_rules
 enable_dependency_tracking
 with_xulrunner_sdk
-enable_new_libxul
 with_plugin_dir
 enable_caching
 with_libcurl
@@ -1398,7 +1397,6 @@ Optional Features:
   --disable-silent-rules         verbose build output (undo: `make V=0')
   --disable-dependency-tracking  speeds up one-time build
   --enable-dependency-tracking   do not reject slow dependency extractors
-  --enable-new-libxul     libxul/xulrunner-sdk is 1.9.2 or higher
   --disable-caching       Disable caching of remote media to local storage
   --disable-schemas-install
                           Disable the schemas installation
@@ -7354,21 +7352,6 @@ if test "${with_xulrunner_sdk+set}" = set; then :
 	XULRUNNER_SDK_PREFIX=$with_xulrunner_sdk
 	GECKO_CFLAGS="-I$XULRUNNER_SDK_PREFIX/include -I$XULRUNNER_SDK_PREFIX/include/plugin -I$XULRUNNER_SDK_PREFIX/include/nspr -I$XULRUNNER_SDK_PREFIX/include/xpcom -I$XULRUNNER_SDK_PREFIX/include/string -I$XULRUNNER_SDK_PREFIX/include/java"
 	GECKO_LIBS="-L$XULRUNNER_SDK_PREFIX/lib -lxpcomglue_s -lxul -lxpcom -lplds4 -lplc4 -lnspr4 -lpthread -ldl"
-	# Check whether --enable-new-libxul was given.
-if test "${enable_new_libxul+set}" = set; then :
-  enableval=$enable_new_libxul; usenewlibxul=$enableval
-else
-  usenewlibxul=no
-fi
-
-
-	if test "$usenewlibxul" = "yes"; then
-		GECKO_CFLAGS="$GECKO_CFLAGS -DMOZ_NO_MOZALLOC"
-
-$as_echo "#define HAVE_NEW_XULRUNNER 1" >>confdefs.h
-
-	fi
-
 
 fi
 
@@ -7444,8 +7427,7 @@ else
         { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
 	GECKO_CFLAGS="$GECKO_CFLAGS -DMOZ_NO_MOZALLOC"
-$as_echo "#define HAVE_NEW_XULRUNNER 1" >>confdefs.h
- { $as_echo "$as_me:${as_lineno-$LINENO}: Using libxul >= 2.0 " >&5
+        { $as_echo "$as_me:${as_lineno-$LINENO}: Using libxul >= 2.0 " >&5
 $as_echo "$as_me: Using libxul >= 2.0 " >&6;}
 
 fi
@@ -7521,9 +7503,7 @@ else
 	GECKO_LIBS=$pkg_cv_GECKO_LIBS
         { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
-
-$as_echo "#define HAVE_NEW_XULRUNNER 1" >>confdefs.h
- { $as_echo "$as_me:${as_lineno-$LINENO}: Using libxul >= 1.9.2" >&5
+	 { $as_echo "$as_me:${as_lineno-$LINENO}: Using libxul >= 1.9.2" >&5
 $as_echo "$as_me: Using libxul >= 1.9.2" >&6;}
 
 fi
@@ -8132,9 +8112,6 @@ $as_echo "yes" >&6; }
 	 { $as_echo "$as_me:${as_lineno-$LINENO}: Using npapi-sdk" >&5
 $as_echo "$as_me: Using npapi-sdk" >&6;}
 
-$as_echo "#define HAVE_NEW_XULRUNNER 1" >>confdefs.h
-
-
 fi
     require_nspr="yes"
 fi
@@ -8196,6 +8173,60 @@ ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 CFLAGS=$oCFLAGS
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for usage of UTF8Characters" >&5
+$as_echo_n "checking for usage of UTF8Characters... " >&6; }
+oCFLAGS=$CFLAGS
+CFLAGS="$GECKO_CFLAGS"
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+#ifndef XP_UNIX
+#define XP_UNIX 1
+#endif
+#include <npapi.h>
+#include <npruntime.h>
+
+int
+main ()
+{
+
+NPString s;
+s.UTF8Characters = "Testing";
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"; then :
+
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+
+$as_echo "#define NPAPI_USE_UPPERCASE_UTF8 1" >>confdefs.h
+
+
+else
+
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+CFLAGS=$oCFLAGS
+
 
 
 pkg_failed=no

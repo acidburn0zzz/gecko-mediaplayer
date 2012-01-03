@@ -1,4 +1,6 @@
 Development
+    Change HAVE_NEW_XULRUNNER to NPAPI_USE_UPPERCASE_UTF8
+    Drop --enable_new_libxul configure flag as it is autodetected now
     Fix spelling mistake, but then comment out as not needed for normal usage Issue #163
 1.0.5
     Disable playing of partially cached apple.com files, mplayer seems to crash on these files
