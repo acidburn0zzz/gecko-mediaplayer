@@ -6,7 +6,7 @@ SUBDIRS =
 DEFINES = -DMOZILLA_STRICT_API -DXP_UNIX
 INCLUDES = \
 	-fPIC \
-	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
+	-DPACKAGE_LOCALE_DIR=\""$(localedir)"\" \
 	-DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
 	$(GECKO_CFLAGS) \
