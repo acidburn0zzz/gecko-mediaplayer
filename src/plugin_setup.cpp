@@ -591,6 +591,9 @@ gboolean streaming(gchar * url)
     if (g_ascii_strncasecmp(url, "rtsp://", 7) == 0)
         ret = TRUE;
 
+    if (g_ascii_strncasecmp(url, "rtp://", 6) == 0)
+        ret = TRUE;
+
     if (g_ascii_strncasecmp(url, "tv://", 5) == 0)
         ret = TRUE;
 
