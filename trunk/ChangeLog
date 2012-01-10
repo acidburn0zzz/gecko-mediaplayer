@@ -1,4 +1,5 @@
 Development
+    Add rtp to the list of streaming uris
     Set PACKAGE_LOCALE_DIR based on --localedir from configure
     Change HAVE_NEW_XULRUNNER to NPAPI_USE_UPPERCASE_UTF8
     Drop --enable_new_libxul configure flag as it is autodetected now
