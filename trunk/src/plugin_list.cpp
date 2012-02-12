@@ -355,7 +355,7 @@ GList *list_parse_qt(GList * list, ListItem * item)
         } else {
             // printf("Unable to open %s \n",item->local); 
         }
-        list_dump(list);
+        // list_dump(list);
 
     } else {
         // if file is over 16K it is probably not a playlist
@@ -429,7 +429,7 @@ GList *list_parse_qt2(GList * list, ListItem * item)
         } else {
             // printf("Unable to open %s \n",item->local); 
         }
-        list_dump(list);
+        // list_dump(list);
 
     } else {
         // if file is over 256K it is probably not a playlist
@@ -516,7 +516,7 @@ GList *list_parse_asx(GList * list, ListItem * item)
             parser_item = NULL;
             parser_list = NULL;
         }
-        list_dump(list);
+        // list_dump(list);
     }
     printf("Exiting list_parse_asx\n");
     return list;
@@ -672,7 +672,7 @@ GList *list_parse_qml(GList * list, ListItem * item)
             parser_item = NULL;
             parser_list = NULL;
         }
-        list_dump(list);
+        // list_dump(list);
     }
     printf("Exiting list_parse_qml\n");
     return list;
@@ -803,7 +803,7 @@ GList *list_parse_ram(GList * list, ListItem * item)
                 parser_item = NULL;
             }
         }
-        list_dump(list);
+        // list_dump(list);
     }
     printf("Exiting list_parse_ram\n");
     return list;
