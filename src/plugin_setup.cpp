@@ -65,12 +65,20 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
     gchar *app_name;
 
     if (instance->mode == NP_EMBED) {
+
+        /*
+        printf("argc = %i\n", argc);
         for (i = 0; i < argc; i++) {
+            printf("ARG[%i]: %s = %s\n", i, argn[i], argv[i]);
+        }
+        */ 
+        
+        for (i = 0; i < argc; i++) {
+
+            printf("ARG[%i]: %s = %s\n", i, argn[i], argv[i]);
 
             if (argn[i] == NULL)
                 continue;
-
-            printf("ARG: %s = %s\n", argn[i], argv[i]);
 
             if (g_ascii_strcasecmp(argn[i], "name") == 0) {
                 instance->name = g_strdup(argv[i]);
@@ -115,9 +123,12 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
 
             if (g_ascii_strcasecmp(argn[i], "style") == 0) {
                 tmp = g_strrstr(argv[i], "width:");
-                sscanf(tmp + strlen("width:"), "%i", &width);
+                if (tmp)
+                    sscanf(tmp + strlen("width:"), "%i", &width);
                 tmp = g_strrstr(argv[i], "height:");
-                sscanf(tmp + strlen("height:"), "%i", &height);
+                if (tmp)
+                    sscanf(tmp + strlen("height:"), "%i", &height);
+                printf("done with style\n");
             }
 
 
