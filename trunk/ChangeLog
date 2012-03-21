@@ -1,4 +1,5 @@
 Development
+	Fix a problem in the style parser, was looking at a null pointer
 	Added WMP plugin properties enabled and enableContextMenu
     Suppress list display
     Add rtp to the list of streaming uris

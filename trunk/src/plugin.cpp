@@ -2602,8 +2602,11 @@ bool ScriptablePluginObject::GetProperty(NPIdentifier name, NPVariant * result)
 
     if (name == filename_id || name == src_id || name == URL_id) {
         pPlugin->GetFilename(&filename);
-        if (filename != NULL)
+        if (filename != NULL) {
             STRINGZ_TO_NPVARIANT(filename, *result);
+        } else {
+            STRINGZ_TO_NPVARIANT("", *result);
+        }            
         return true;
     }
 
