@@ -2605,7 +2605,7 @@ bool ScriptablePluginObject::GetProperty(NPIdentifier name, NPVariant * result)
         if (filename != NULL) {
             STRINGZ_TO_NPVARIANT(filename, *result);
         } else {
-            STRINGZ_TO_NPVARIANT("", *result);
+            STRINGZ_TO_NPVARIANT(strdup(""), *result);
         }            
         return true;
     }
