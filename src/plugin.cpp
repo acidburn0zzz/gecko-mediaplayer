@@ -133,6 +133,8 @@ static NPIdentifier error_id;
 static NPIdentifier status_id;
 static NPIdentifier URL_id;
 static NPIdentifier versionInfo_id;
+static NPIdentifier enabled_id;
+static NPIdentifier enableContextMenu_id;
 static NPIdentifier controls_currentPosition_id;
 static NPIdentifier controls_currentItem_id;
 static NPIdentifier media_duration_id;
@@ -321,6 +323,8 @@ tv_driver(NULL), tv_device(NULL), tv_input(NULL), tv_width(0), tv_height(0)
     status_id = NPN_GetStringIdentifier("status");
     URL_id = NPN_GetStringIdentifier("URL");
     versionInfo_id = NPN_GetStringIdentifier("versionInfo");
+    enabled_id = NPN_GetStringIdentifier("enabled");
+    enableContextMenu_id = NPN_GetStringIdentifier("enableContextMenu");
     controls_currentPosition_id = NPN_GetStringIdentifier("currentPosition");
     media_duration_id = NPN_GetStringIdentifier("duration");
     settings_volume_id = NPN_GetStringIdentifier("volume");
@@ -1386,45 +1390,44 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
                 item->lastsize = item->localsize;
             }
         }
-
         // Disable playing of partially cached apple.com files, mplayer seems to crash on these files
         /*
-        if (!item->opened) {
-            if ((item->localsize >= (plugin->cache_size * 1024)) && (percent >= 0.2)) {
-                //printf("Setting to play because %i > %i\n", item->localsize,
-                //       plugin->cache_size * 1024);
-                ok_to_play = TRUE;
-            }
-            if (ok_to_play == FALSE && (item->localsize > (plugin->cache_size * 2 * 1024))
-                && (plugin->cache_size >= 512)) {
-                //printf("Setting to play because %i > %i (double cache)\n", item->localsize,
-                //       plugin->cache_size * 2 * 1024);
-                ok_to_play = TRUE;
-            }
-            if (ok_to_play == FALSE) {
-                if (item->bitrate == 0 && item->bitrate_requests < 5
-                    && ((gint) (percent * 100) > item->bitrate_requests)) {
-                    //item->bitrate = request_bitrate(plugin, item, item->local);
-                    item->bitrate_requests++;
-                }
-                if (item->bitrate > 0) {
-                    if (item->localsize / item->bitrate >= 10 && (percent >= 0.2)) {
-                        printf("Setting to play becuase %i >= 10\n",
-                               item->localsize / item->bitrate);
-                        ok_to_play = TRUE;
-                        if (plugin->post_dom_events && plugin->id != NULL) {
-                            postDOMEvent(plugin->mInstance, plugin->id, "qt_canplay");
-                        }
-                    }
-                }
-            }
+           if (!item->opened) {
+           if ((item->localsize >= (plugin->cache_size * 1024)) && (percent >= 0.2)) {
+           //printf("Setting to play because %i > %i\n", item->localsize,
+           //       plugin->cache_size * 1024);
+           ok_to_play = TRUE;
+           }
+           if (ok_to_play == FALSE && (item->localsize > (plugin->cache_size * 2 * 1024))
+           && (plugin->cache_size >= 512)) {
+           //printf("Setting to play because %i > %i (double cache)\n", item->localsize,
+           //       plugin->cache_size * 2 * 1024);
+           ok_to_play = TRUE;
+           }
+           if (ok_to_play == FALSE) {
+           if (item->bitrate == 0 && item->bitrate_requests < 5
+           && ((gint) (percent * 100) > item->bitrate_requests)) {
+           //item->bitrate = request_bitrate(plugin, item, item->local);
+           item->bitrate_requests++;
+           }
+           if (item->bitrate > 0) {
+           if (item->localsize / item->bitrate >= 10 && (percent >= 0.2)) {
+           printf("Setting to play becuase %i >= 10\n",
+           item->localsize / item->bitrate);
+           ok_to_play = TRUE;
+           if (plugin->post_dom_events && plugin->id != NULL) {
+           postDOMEvent(plugin->mInstance, plugin->id, "qt_canplay");
+           }
+           }
+           }
+           }
 
-        }
-        */
-        
+           }
+         */
+
         // try downloading entire file
         ok_to_play = FALSE;
-        
+
         // if not opened, over cache level and not an href target then try and open it
         if ((!item->opened) && ok_to_play == TRUE) {
             id = item->controlid;
@@ -2572,7 +2575,10 @@ bool ScriptablePluginObject::HasProperty(NPIdentifier name)
         || name == URL_id
         || name == versionInfo_id
         || name == status_id
-        || name == controls_id || name == media_id || name == settings_id || name == error_id) {
+        || name == controls_id
+        || name == media_id
+        || name == settings_id
+        || name == error_id || name == enabled_id || name == enableContextMenu_id) {
         return true;
     } else {
         return false;
@@ -2657,6 +2663,16 @@ bool ScriptablePluginObject::GetProperty(NPIdentifier name, NPVariant * result)
         return true;
     }
 
+    if (name == enabled_id) {
+        BOOLEAN_TO_NPVARIANT(true, *result);
+        return true;
+    }
+
+    if (name == enableContextMenu_id) {
+        BOOLEAN_TO_NPVARIANT(!(pPlugin->disable_context_menu), *result);
+        return true;
+    }
+
     if (name == controls_id) {
         OBJECT_TO_NPVARIANT(pPlugin->GetScriptableObjectControls(), *result);
         return true;
@@ -2714,6 +2730,15 @@ bool ScriptablePluginObject::SetProperty(NPIdentifier name, const NPVariant * va
 
     if (name == playState_id) {
         // readonly property
+        return true;
+    }
+
+    if (name == enabled_id) {
+        return true;
+    }
+
+    if (name == enableContextMenu_id) {
+        pPlugin->disable_context_menu = !(NPVARIANT_TO_BOOLEAN(*value));
         return true;
     }
 

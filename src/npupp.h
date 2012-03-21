@@ -710,7 +710,7 @@ extern "C" {
 #ifdef NPAPI_USE_CONSTCHARS
     NP_EXPORT(const char *) NP_GetMIMEDescription(void);
 #else
-    NP_EXPORT(char *) NP_GetMIMEDescription(void);
+     NP_EXPORT(char *) NP_GetMIMEDescription(void);
 #endif
      NP_EXPORT(NPError) NP_Initialize(NPNetscapeFuncs *, NPPluginFuncs *);
      NP_EXPORT(NPError) NP_Shutdown(void);
