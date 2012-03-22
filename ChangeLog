@@ -1,6 +1,7 @@
 Development
-	Fix a problem in the style parser, was looking at a null pointer
-	Added WMP plugin properties enabled and enableContextMenu
+1.0.6b1
+    Fix a problem in the style parser, was looking at a null pointer
+    Added WMP plugin properties enabled and enableContextMenu
     Suppress list display
     Add rtp to the list of streaming uris
     Set PACKAGE_LOCALE_DIR based on --localedir from configure
