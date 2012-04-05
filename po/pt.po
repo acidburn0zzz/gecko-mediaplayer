@@ -1,14 +1,13 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Portuguese translation for gecko-mplayer
+# This file is distributed under the same license as the gecko-mplayer package.
+# Sérgio Marques <smarquespt@gmail.com>, 2012
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gecko-mediaplayer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-21 21:31-0600\n"
-"PO-Revision-Date: 2011-06-15 18:25-0000\n"
+"PO-Revision-Date: 2012-04-05 10:56-0000\n"
 "Last-Translator: Sérgio Marques <smarquespt@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -33,12 +32,14 @@ msgstr "Preenchimento de cache: %2.2f%%"
 msgid "Write unable to write because item is NULL\n"
 msgstr "Não é possível escrever pois o item é NULL\n"
 
-#: src/plugin.cpp:956 src/plugin.cpp:1371
+#: src/plugin.cpp:956
+#: src/plugin.cpp:1371
 #, c-format
 msgid "Caching %iK (%0.1f K/s)"
 msgstr "A colocar em cache %iK (%0.1f K/s)"
 
-#: src/plugin.cpp:959 src/plugin.cpp:1374
+#: src/plugin.cpp:959
+#: src/plugin.cpp:1374
 #, c-format
 msgid "Cache fill: %2.2f%% (%0.1f K/s)"
 msgstr "Preenchimento de cache: %2.2f%% (%0.1f K/s)"
@@ -58,8 +59,9 @@ msgstr "Parado"
 #: src/plugin.cpp:2657
 #, c-format
 msgid "Buffering %2.1lf%%"
-msgstr "A colocar em mémoria %2.1lf%%"
+msgstr "A processar %2.1lf%%"
 
 #: src/plugin.cpp:2662
 msgid "Unknown Status"
 msgstr "Estado desconhecido"
+
