@@ -1,4 +1,5 @@
 Development
+	Updated Japanese translation
 1.0.6b1
     Fix a problem in the style parser, was looking at a null pointer
     Added WMP plugin properties enabled and enableContextMenu
