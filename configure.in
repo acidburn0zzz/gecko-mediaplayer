@@ -79,7 +79,7 @@ fi
 
 if test "$GECKO_CFLAGS" = ""; then
 PKG_CHECK_MODULES(GECKO, [seamonkey-plugin seamonkey-xpcom],[ AC_MSG_NOTICE([Using seamonkey])
-    ],[AC_MSG_WARN([seamokey-plugin not found, trying another])])
+    ],[AC_MSG_WARN([seamonkey-plugin not found, trying another])])
 fi
 
 if test "$GECKO_CFLAGS" = ""; then
@@ -94,7 +94,7 @@ fi
 
 if test "$GECKO_CFLAGS" = ""; then
 PKG_CHECK_MODULES(GECKO, [npapi-sdk],[ AC_MSG_NOTICE([Using npapi-sdk])
-    ],[AC_MSG_ERROR([npapi-sdk not found, all out ot tries])])
+    ],[AC_MSG_ERROR([npapi-sdk not found, all out of tries])])
     require_nspr="yes"
 fi
 
