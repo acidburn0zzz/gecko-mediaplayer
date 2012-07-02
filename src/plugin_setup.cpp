@@ -67,15 +67,16 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
     if (instance->mode == NP_EMBED) {
 
         /*
-        printf("argc = %i\n", argc);
-        for (i = 0; i < argc; i++) {
-            printf("ARG[%i]: %s = %s\n", i, argn[i], argv[i]);
-        }
-        */ 
-        
+           printf("argc = %i\n", argc);
+           for (i = 0; i < argc; i++) {
+           printf("ARG[%i]: %s = %s\n", i, argn[i], argv[i]);
+           }
+         */
+
         for (i = 0; i < argc; i++) {
 
-            printf("ARG[%i]: %s = %s\n", i, argn[i], argv[i]);
+            gm_log(instance->debug_level, G_LOG_LEVEL_INFO, "ARG[%i]: %s = %s\n", i, argn[i],
+                   argv[i]);
 
             if (argn[i] == NULL)
                 continue;
@@ -128,7 +129,7 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
                 tmp = g_strrstr(argv[i], "height:");
                 if (tmp)
                     sscanf(tmp + strlen("height:"), "%i", &height);
-                printf("done with style\n");
+                gm_log(instance->debug_level, G_LOG_LEVEL_DEBUG, "done with style\n");
             }
 
 
@@ -447,7 +448,7 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
             if (argn[i] == NULL)
                 continue;
 
-            printf("ARG: %s = %s\n", argn[i], argv[i]);
+            gm_log(instance->debug_level, G_LOG_LEVEL_INFO, "ARG: %s = %s\n", argn[i], argv[i]);
 
             if (g_ascii_strcasecmp(argn[i], "src") == 0) {
                 item = g_new0(ListItem, 1);
@@ -463,7 +464,8 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
                     g_strlcpy(item->src, argv[i], 4096);
                 }
                 item->streaming = streaming(item->src);
-                printf("this should match %s\n", item->src);
+                gm_log(instance->debug_level, G_LOG_LEVEL_DEBUG, "this should match %s\n",
+                       item->src);
                 item->play = TRUE;
                 item->id = instance->nextid++;
                 instance->playlist = g_list_append(instance->playlist, item);
@@ -574,7 +576,7 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
         arg[i] = NULL;
         error = NULL;
         if (g_spawn_async(NULL, arg, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error) == FALSE) {
-            printf("Unable to launch: %s\n", error->message);
+            gm_log(TRUE, G_LOG_LEVEL_INFO, "Unable to launch: %s\n", error->message);
             g_error_free(error);
             error = NULL;
         }

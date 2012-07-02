@@ -97,5 +97,5 @@ NPError PluginGetValue(NPPVariable variable, void *value)
 
 void pluginSpecific(CPlugin * instance)
 {
-
+    instance->quicktime_emulation = FALSE;
 }

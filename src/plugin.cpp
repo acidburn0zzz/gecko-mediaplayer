@@ -351,7 +351,8 @@ tv_driver(NULL), tv_device(NULL), tv_input(NULL), tv_width(0), tv_height(0)
     if (store != NULL) {
         debug_level = gm_pref_store_get_int(store, DEBUG_LEVEL);
         player_backend = gm_pref_store_get_string(store, PLAYER_BACKEND);
-        printf("Using player backend of '%s'\n", player_backend);
+        gm_log(debug_level, G_LOG_LEVEL_INFO, "Using player backend of '%s'\n",
+               (player_backend == NULL) ? "gnome-mplayer" : player_backend);
         gm_pref_store_free(store);
     }
 
@@ -509,7 +510,8 @@ NPError CPlugin::SetWindow(NPWindow * aWindow)
         if (ok) {
             player_launched = TRUE;
         } else {
-            printf("Unable to launch %s: %s\n", app_name, error->message);
+            gm_log(debug_level, G_LOG_LEVEL_INFO, "Unable to launch %s: %s\n", app_name,
+                   error->message);
             g_error_free(error);
             error = NULL;
         }
@@ -529,12 +531,14 @@ NPError CPlugin::SetWindow(NPWindow * aWindow)
         if (item && !item->requested) {
             item->cancelled = FALSE;
             if (item->streaming) {
-                printf("Calling open_location with item = %p src = %s\n", item, item->src);
+                gm_log(debug_level, G_LOG_LEVEL_INFO,
+                       "Calling open_location with item = %p src = %s\n", item, item->src);
                 open_location(this, item, FALSE);
                 item->requested = 1;
             } else {
                 item->requested = 1;
-                printf("Calling GetURLNotify with item = %p src = %s\n", item, item->src);
+                gm_log(debug_level, G_LOG_LEVEL_INFO,
+                       "Calling GetURLNotify with item = %p src = %s\n", item, item->src);
                 this->GetURLNotify(mInstance, item->src, NULL, item);
             }
         }
@@ -583,11 +587,11 @@ NPBool CPlugin::isInitialized()
 NPError CPlugin::NewStream(NPMIMEType type, NPStream * stream, NPBool seekable, uint16 * stype)
 {
     if (g_strrstr(stream->url, "javascript") == NULL) {
-        printf("New Stream Requested - %s\n", stream->url);
+        gm_log(debug_level, G_LOG_LEVEL_DEBUG, "New Stream Requested - %s\n", stream->url);
     }
 
     if (g_strrstr(stream->url, "javascript") == NULL && stream->notifyData == NULL) {
-        printf("item is NULL for %s\n", stream->url);
+        gm_log(debug_level, G_LOG_LEVEL_DEBUG, "item is NULL for %s\n", stream->url);
     }
 
     return NPERR_NO_ERROR;
@@ -603,14 +607,15 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
     gboolean newwindow;
 
     if (g_strrstr(stream->url, "javascript") == NULL)
-        printf("Entering destroy stream reason = %i for %s\n", reason, stream->url);
+        gm_log(debug_level, G_LOG_LEVEL_DEBUG, "Entering destroy stream reason = %i for %s\n",
+               reason, stream->url);
 
     if (reason == NPERR_NO_ERROR) {
         item = (ListItem *) stream->notifyData;
         // item = list_find(playlist, (gchar*)stream->url);
 
         if (item == NULL) {
-            printf("Leaving destroy stream - item not found\n");
+            gm_log(debug_level, G_LOG_LEVEL_DEBUG, "Leaving destroy stream - item not found\n");
             return NPERR_NO_ERROR;
         }
 
@@ -632,7 +637,7 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
             if (!item->streaming)
                 item->streaming = streaming(item->src);
             if (!item->streaming) {
-                printf("in Destroy Stream\n");
+                gm_log(debug_level, G_LOG_LEVEL_DEBUG, "in Destroy Stream\n");
                 playlist = list_parse_qt(playlist, item);
                 playlist = list_parse_qt2(playlist, item);
                 playlist = list_parse_asx(playlist, item);
@@ -680,17 +685,20 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
     } else if (reason == NPERR_INVALID_URL) {
         item = (ListItem *) stream->notifyData;
         if (item) {
-            printf("Destroy Stream, invalid url, item is %s\n", item->src);
+            gm_log(debug_level, G_LOG_LEVEL_INFO, "Destroy Stream, invalid url, item is %s\n",
+                   item->src);
         } else {
             if (g_strrstr(stream->url, "javascript") == NULL) {
-                printf("Destroy Stream, network error, item is NULL\n");
+                gm_log(debug_level, G_LOG_LEVEL_INFO,
+                       "Destroy Stream, network error, item is NULL\n");
             }
         }
     } else {
         item = (ListItem *) stream->notifyData;
         // item = list_find(playlist, (gchar*)stream->url);
         if (g_strrstr(stream->url, "javascript") == NULL)
-            printf("Exiting destroy stream reason = %i for %s\n", reason, stream->url);
+            gm_log(debug_level, G_LOG_LEVEL_DEBUG, "Exiting destroy stream reason = %i for %s\n",
+                   reason, stream->url);
         if (item == NULL) {
             return NPERR_NO_ERROR;
         } else {
@@ -717,8 +725,8 @@ void CPlugin::URLNotify(const char *url, NPReason reason, void *notifyData)
     //DBusMessage *message;
     //const char *file;
 
-    printf("URL Notify url = '%s'\nreason = %i\n%s\n%s\n%s\n", url, reason, item->src, item->local,
-           path);
+    gm_log(debug_level, G_LOG_LEVEL_DEBUG, "URL Notify url = '%s'\nreason = %i\n%s\n%s\n%s\n", url,
+           reason, item->src, item->local, path);
     if (reason == NPRES_DONE) {
 
         if (!item->opened) {
@@ -767,11 +775,12 @@ void CPlugin::URLNotify(const char *url, NPReason reason, void *notifyData)
 
 
     } else if (reason == NPRES_NETWORK_ERR) {
-        printf("URL Notify result is Network Error\n");
+        gm_log(debug_level, G_LOG_LEVEL_INFO, "URL Notify result is Network Error\n");
     } else if (reason == NPRES_USER_BREAK) {
-        printf("URL Notify result is User Break\n");
+        gm_log(debug_level, G_LOG_LEVEL_INFO, "URL Notify result is User Break\n");
     } else {
-        printf("%i is an invalid reason code in URLNotify\n", reason);
+        gm_log(debug_level, G_LOG_LEVEL_INFO, "%i is an invalid reason code in URLNotify\n",
+               reason);
     }
 }
 
@@ -783,7 +792,7 @@ int32 CPlugin::WriteReady(NPStream * stream)
 
     // printf("WriteReady called\n");
     if (!acceptdata) {
-        printf("Not accepting data\n");
+        gm_log(debug_level, G_LOG_LEVEL_INFO, "Not accepting data\n");
         NPN_DestroyStream(mInstance, stream, NPERR_GENERIC_ERROR);
         return -1;
     }
@@ -807,7 +816,7 @@ int32 CPlugin::WriteReady(NPStream * stream)
              */
             return -1;
         } else {
-            printf("item is null\nstream url %s\n", stream->url);
+            gm_log(debug_level, G_LOG_LEVEL_INFO, "item is null\nstream url %s\n", stream->url);
             NPN_DestroyStream(mInstance, stream, NPERR_NO_ERROR);
             return -1;
         }
@@ -820,7 +829,7 @@ int32 CPlugin::WriteReady(NPStream * stream)
     // printf("Write Ready item url = %s\n%s\n",item->src,stream->url);
 
     if (item->cancelled) {
-        printf("cancelling WriteReady\n");
+        gm_log(debug_level, G_LOG_LEVEL_INFO, "cancelling WriteReady\n");
         NPN_DestroyStream(mInstance, stream, NPERR_NO_ERROR);
         return -1;
     }
@@ -852,7 +861,7 @@ int32 CPlugin::WriteReady(NPStream * stream)
     }
 
     if (item->retrieved) {
-        printf("Duplicate request, item already retrieved\n");
+        gm_log(debug_level, G_LOG_LEVEL_INFO, "Duplicate request, item already retrieved\n");
         NPN_DestroyStream(mInstance, stream, NPERR_NO_ERROR);
         return -1;
     }
@@ -873,9 +882,9 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
     gboolean newwindow;
     gboolean ok_to_play = FALSE;
 
-    // printf("Write Called\n");
+    gm_log(debug_level, G_LOG_LEVEL_DEBUG, "Write Called\n");
     if (!acceptdata) {
-        printf("not accepting data\n");
+        gm_log(debug_level, G_LOG_LEVEL_INFO, "not accepting data\n");
         NPN_DestroyStream(mInstance, stream, NPERR_NO_ERROR);
         return -1;
     }
@@ -883,14 +892,14 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
     item = (ListItem *) stream->notifyData;
 
     if (item == NULL) {
-        printf("item is NULL\n");
-        printf(_("Write unable to write because item is NULL\n"));
+        gm_log(debug_level, G_LOG_LEVEL_DEBUG, "item is NULL\n");
+        gm_log(debug_level, G_LOG_LEVEL_INFO, _("Write unable to write because item is NULL\n"));
         NPN_DestroyStream(mInstance, stream, NPERR_GENERIC_ERROR);
         return -1;
     }
 
     if (item->cancelled || item->retrieved) {
-        printf("cancelled\n");
+        gm_log(debug_level, G_LOG_LEVEL_DEBUG, "cancelled\n");
         NPN_DestroyStream(mInstance, stream, NPERR_NO_ERROR);
         return -1;
     }
@@ -917,19 +926,19 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
         if (item->localfp) {
             fclose(item->localfp);
         }
-        printf("Got IceCast Stream, let mplayer stream it\n");
+        gm_log(debug_level, G_LOG_LEVEL_INFO, "Got IceCast Stream, let mplayer stream it\n");
         NPN_DestroyStream(mInstance, stream, NPERR_NO_ERROR);
         return -1;
     }
 
     if ((!item->localfp) && (!item->retrieved)) {
-        // printf("opening %s for localcache\n", item->local);
+        gm_log(debug_level, G_LOG_LEVEL_DEBUG, "opening %s for localcache\n", item->local);
         item->localfp = fopen(item->local, "w+");
     }
-    // printf("Write item url = %s\n",item->src);
+    gm_log(debug_level, G_LOG_LEVEL_DEBUG, "Write item url = %s\n", item->src);
 
     if (item->localfp == NULL) {
-        printf("Local cache file is not open, cannot write data\n");
+        gm_log(debug_level, G_LOG_LEVEL_INFO, "Local cache file is not open, cannot write data\n");
         NPN_DestroyStream(mInstance, stream, NPERR_NO_ERROR);
         return -1;
     }
@@ -974,7 +983,8 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
         }
         if (!item->opened) {
             if ((item->localsize >= (cache_size * 1024)) && (percent >= 0.2)) {
-                // printf("Setting to play because %i > %i\n", item->localsize, cache_size * 1024);
+                gm_log(debug_level, G_LOG_LEVEL_DEBUG, "Setting to play because %i > %i\n",
+                       item->localsize, cache_size * 1024);
                 ok_to_play = TRUE;
             }
             if (ok_to_play == FALSE && (item->localsize > (cache_size * 2 * 1024))
@@ -1036,7 +1046,8 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
                     item->playerready = ready;
                     item->newwindow = newwindow;
                     item->cancelled = FALSE;
-                    // printf("opening next playable items on the playlist\n");
+                    gm_log(debug_level, G_LOG_LEVEL_DEBUG,
+                           "opening next playable items on the playlist\n");
                     if (item->streaming) {
                         open_location(this, item, FALSE);
                         item->requested = TRUE;
@@ -1343,7 +1354,8 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
         return 0;               // keeps downloading
 
     if (item->cancelled) {
-        printf("cancelling download at %f for %s\n", dlnow, item->src);
+        gm_log(plugin->debug_level, G_LOG_LEVEL_DEBUG, "cancelling download at %f for %s\n", dlnow,
+               item->src);
         return -1;              // cancels download
     }
     //printf("item ready = %i,player ready = %i,%f,%f,%f\n", item->playerready, plugin->playerready,
@@ -1360,7 +1372,8 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
 
             percent = (gdouble) item->localsize / (gdouble) item->mediasize;
             if (difftime(time(NULL), plugin->lastupdate) > 0.5) {
-                printf("updating display id = %i\n", item->id);
+                gm_log(plugin->debug_level, G_LOG_LEVEL_INFO, "updating display id = %i\n",
+                       item->id);
                 send_signal_with_double(plugin, item, "SetCachePercent", percent);
                 rate =
                     (gdouble) ((item->localsize -
@@ -1437,16 +1450,17 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
             if (!item->streaming)
                 item->streaming = streaming(item->src);
             if (!item->streaming) {
-                printf("in progress_callback\n");
+                gm_log(plugin->debug_level, G_LOG_LEVEL_INFO, "in progress_callback\n");
                 plugin->playlist = list_parse_qt(plugin->playlist, item);
                 plugin->playlist = list_parse_qt2(plugin->playlist, item);
                 plugin->playlist = list_parse_asx(plugin->playlist, item);
                 plugin->playlist = list_parse_qml(plugin->playlist, item);
                 plugin->playlist = list_parse_ram(plugin->playlist, item);
             }
-            printf("item->play = %i\n", item->play);
-            printf("item->src = %s\n", item->src);
-            printf("calling open_location from progress_callback\n");
+            gm_log(plugin->debug_level, G_LOG_LEVEL_INFO, "item->play = %i\n", item->play);
+            gm_log(plugin->debug_level, G_LOG_LEVEL_INFO, "item->src = %s\n", item->src);
+            gm_log(plugin->debug_level, G_LOG_LEVEL_INFO,
+                   "calling open_location from progress_callback\n");
             if (item->play) {
                 send_signal_with_integer(plugin, item, "SetGUIState", PLAYING);
                 open_location(plugin, item, TRUE);
@@ -1511,12 +1525,13 @@ gpointer CURLGetURLNotify(gpointer data)
 
                 curl_easy_perform(curl);
                 curl_easy_cleanup(curl);
-                printf("item retrieved using CURL\n");
+                gm_log(plugin->debug_level, G_LOG_LEVEL_INFO, "item retrieved using CURL\n");
                 //plugin->URLNotify(item->src, NPRES_DONE, item);
 
             }
             fclose(local);
-            printf("fetched %s to %s opened = %i\n", item->src, item->local, item->opened);
+            gm_log(plugin->debug_level, G_LOG_LEVEL_DEBUG, "fetched %s to %s opened = %i\n",
+                   item->src, item->local, item->opened);
             send_signal_with_double(plugin, item, "SetCachePercent", 1.0);
             send_signal_with_double(plugin, item, "SetCachePercent", 0.0);
             item->retrieved = TRUE;
@@ -1531,7 +1546,7 @@ gpointer CURLGetURLNotify(gpointer data)
             if (!item->streaming)
                 item->streaming = streaming(item->src);
             if (!item->streaming) {
-                printf("in CURLGetURLNotify\n");
+                gm_log(plugin->debug_level, G_LOG_LEVEL_DEBUG, "in CURLGetURLNotify\n");
                 plugin->playlist = list_parse_qt(plugin->playlist, item);
                 plugin->playlist = list_parse_qt2(plugin->playlist, item);
                 plugin->playlist = list_parse_asx(plugin->playlist, item);
@@ -1593,8 +1608,8 @@ NPError CPlugin::GetURLNotify(NPP instance, const char *url, const char *target,
         return NPN_GetURLNotify(instance, url, target, notifyData);
     } else {
 #ifdef HAVE_CURL
-        printf("using curl to retrieve data from apple.com site\n");
-        printf("quicktime_emulation = %i\n", quicktime_emulation);
+        gm_log(debug_level, G_LOG_LEVEL_DEBUG, "using curl to retrieve data from apple.com site\n");
+        gm_log(debug_level, G_LOG_LEVEL_DEBUG, "quicktime_emulation = %i\n", quicktime_emulation);
 
         item = (ListItem *) notifyData;
         // item = list_find(playlist, (gchar*)stream->url);
@@ -1611,7 +1626,7 @@ NPError CPlugin::GetURLNotify(NPP instance, const char *url, const char *target,
                 playlist = g_list_append(playlist, item);
                 notifyData = item;
             } else {
-                printf("item is null\nstream url %s\n", url);
+                gm_log(debug_level, G_LOG_LEVEL_DEBUG, "item is null\nstream url %s\n", url);
                 return -1;
             }
         } else {
@@ -1621,7 +1636,7 @@ NPError CPlugin::GetURLNotify(NPP instance, const char *url, const char *target,
         }
 
         if (item->cancelled) {
-            printf("item has been cancelled\n");
+            gm_log(debug_level, G_LOG_LEVEL_DEBUG, "item has been cancelled\n");
             return -1;
         }
 
@@ -1637,7 +1652,7 @@ NPError CPlugin::GetURLNotify(NPP instance, const char *url, const char *target,
         }
 
         if (item->retrieved) {
-            printf("item is already retrieved\n");
+            gm_log(debug_level, G_LOG_LEVEL_DEBUG, "item is already retrieved\n");
             return -1;
         }
 
@@ -1668,7 +1683,8 @@ class ScriptablePluginObjectBase:public NPObject {
   public:
     ScriptablePluginObjectBase(NPP npp)
     :mNpp(npp) {
-    } virtual ~ ScriptablePluginObjectBase() {
+    }
+    virtual ~ ScriptablePluginObjectBase() {
     }
 
     // Virtual NPObject hooks called through this base class. Override
@@ -1828,7 +1844,8 @@ class ScriptablePluginObjectControls:public ScriptablePluginObjectBase {
   public:
     ScriptablePluginObjectControls(NPP npp)
     :ScriptablePluginObjectBase(npp) {
-    } virtual bool HasMethod(NPIdentifier name);
+    }
+    virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
     virtual bool InvokeDefault(const NPVariant * args, uint32_t argCount, NPVariant * result);
@@ -1864,7 +1881,7 @@ bool ScriptablePluginObjectControls::Invoke(NPIdentifier name, const NPVariant *
 {
     CPlugin *pPlugin = (CPlugin *) mNpp->pdata;
     if (pPlugin == NULL) {
-        printf("Can't find plugin pointer\n");
+        gm_log(pPlugin->debug_level, G_LOG_LEVEL_DEBUG, "Can't find plugin pointer\n");
         return PR_FALSE;
     }
 
@@ -1889,7 +1906,11 @@ bool ScriptablePluginObjectControls::Invoke(NPIdentifier name, const NPVariant *
 bool ScriptablePluginObjectControls::InvokeDefault(const NPVariant * args, uint32_t argCount,
                                                    NPVariant * result)
 {
-    printf("ScriptablePluginObject default method called!\n");
+    CPlugin *pPlugin = (CPlugin *) mNpp->pdata;
+    if (pPlugin == NULL) {
+        gm_log(pPlugin->debug_level, G_LOG_LEVEL_DEBUG,
+               "ScriptablePluginObjectControls default method called!\n");
+    }
 
     STRINGZ_TO_NPVARIANT(strdup("default method return val"), *result);
 
@@ -1911,7 +1932,7 @@ bool ScriptablePluginObjectControls::GetProperty(NPIdentifier name, NPVariant * 
 
     CPlugin *pPlugin = (CPlugin *) mNpp->pdata;
     if (pPlugin == NULL) {
-        printf("Can't find plugin pointer\n");
+        gm_log(pPlugin->debug_level, G_LOG_LEVEL_DEBUG, "Can't find plugin pointer\n");
         VOID_TO_NPVARIANT(*result);
         return false;
     }
@@ -1935,7 +1956,7 @@ bool ScriptablePluginObjectControls::SetProperty(NPIdentifier name, const NPVari
 {
     CPlugin *pPlugin = (CPlugin *) mNpp->pdata;
     if (pPlugin == NULL) {
-        printf("Can't find plugin pointer\n");
+        gm_log(pPlugin->debug_level, G_LOG_LEVEL_DEBUG, "Can't find plugin pointer\n");
         return false;
     }
 
@@ -1951,7 +1972,8 @@ class ScriptablePluginObjectMedia:public ScriptablePluginObjectBase {
   public:
     ScriptablePluginObjectMedia(NPP npp)
     :ScriptablePluginObjectBase(npp) {
-    } virtual bool HasMethod(NPIdentifier name);
+    }
+    virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
     virtual bool InvokeDefault(const NPVariant * args, uint32_t argCount, NPVariant * result);
@@ -1985,7 +2007,7 @@ bool ScriptablePluginObjectMedia::Invoke(NPIdentifier name, const NPVariant * ar
     int i;
 
     if (pPlugin == NULL) {
-        printf("Can't find plugin pointer\n");
+        gm_log(pPlugin->debug_level, G_LOG_LEVEL_DEBUG, "Can't find plugin pointer\n");
         return PR_FALSE;
     }
 
@@ -2020,8 +2042,11 @@ bool ScriptablePluginObjectMedia::Invoke(NPIdentifier name, const NPVariant * ar
 bool ScriptablePluginObjectMedia::InvokeDefault(const NPVariant * args, uint32_t argCount,
                                                 NPVariant * result)
 {
-    printf("ScriptablePluginObject default method called!\n");
-
+    CPlugin *pPlugin = (CPlugin *) mNpp->pdata;
+    if (pPlugin == NULL) {
+        gm_log(pPlugin->debug_level, G_LOG_LEVEL_DEBUG,
+               "ScriptablePluginObjectMedia default method called!\n");
+    }
     STRINGZ_TO_NPVARIANT(strdup("default method return val"), *result);
 
     return PR_TRUE;
@@ -2042,7 +2067,7 @@ bool ScriptablePluginObjectMedia::GetProperty(NPIdentifier name, NPVariant * res
 
     CPlugin *pPlugin = (CPlugin *) mNpp->pdata;
     if (pPlugin == NULL) {
-        printf("Can't find plugin pointer\n");
+        gm_log(pPlugin->debug_level, G_LOG_LEVEL_DEBUG, "Can't find plugin pointer\n");
         VOID_TO_NPVARIANT(*result);
         return false;
     }
@@ -2061,7 +2086,7 @@ bool ScriptablePluginObjectMedia::SetProperty(NPIdentifier name, const NPVariant
 {
     CPlugin *pPlugin = (CPlugin *) mNpp->pdata;
     if (pPlugin == NULL) {
-        printf("Can't find plugin pointer\n");
+        gm_log(pPlugin->debug_level, G_LOG_LEVEL_DEBUG, "Can't find plugin pointer\n");
         return false;
     }
 
@@ -2076,7 +2101,8 @@ class ScriptablePluginObjectSettings:public ScriptablePluginObjectBase {
   public:
     ScriptablePluginObjectSettings(NPP npp)
     :ScriptablePluginObjectBase(npp) {
-    } virtual bool HasMethod(NPIdentifier name);
+    }
+    virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
     virtual bool InvokeDefault(const NPVariant * args, uint32_t argCount, NPVariant * result);
@@ -2104,7 +2130,7 @@ bool ScriptablePluginObjectSettings::Invoke(NPIdentifier name, const NPVariant *
 {
     CPlugin *pPlugin = (CPlugin *) mNpp->pdata;
     if (pPlugin == NULL) {
-        printf("Can't find plugin pointer\n");
+        gm_log(pPlugin->debug_level, G_LOG_LEVEL_DEBUG, "Can't find plugin pointer\n");
         return PR_FALSE;
     }
 
@@ -2114,8 +2140,11 @@ bool ScriptablePluginObjectSettings::Invoke(NPIdentifier name, const NPVariant *
 bool ScriptablePluginObjectSettings::InvokeDefault(const NPVariant * args, uint32_t argCount,
                                                    NPVariant * result)
 {
-    printf("ScriptablePluginObject default method called!\n");
-
+    CPlugin *pPlugin = (CPlugin *) mNpp->pdata;
+    if (pPlugin == NULL) {
+        gm_log(pPlugin->debug_level, G_LOG_LEVEL_DEBUG,
+               "ScriptablePluginObjectSettings default method called!\n");
+    }
     STRINGZ_TO_NPVARIANT(strdup("default method return val"), *result);
 
     return PR_TRUE;
@@ -2136,7 +2165,7 @@ bool ScriptablePluginObjectSettings::GetProperty(NPIdentifier name, NPVariant * 
 
     CPlugin *pPlugin = (CPlugin *) mNpp->pdata;
     if (pPlugin == NULL) {
-        printf("Can't find plugin pointer\n");
+        gm_log(pPlugin->debug_level, G_LOG_LEVEL_DEBUG, "Can't find plugin pointer\n");
         VOID_TO_NPVARIANT(*result);
         return false;
     }
@@ -2155,7 +2184,7 @@ bool ScriptablePluginObjectSettings::SetProperty(NPIdentifier name, const NPVari
 {
     CPlugin *pPlugin = (CPlugin *) mNpp->pdata;
     if (pPlugin == NULL) {
-        printf("Can't find plugin pointer\n");
+        gm_log(pPlugin->debug_level, G_LOG_LEVEL_DEBUG, "Can't find plugin pointer\n");
         return false;
     }
 
@@ -2175,7 +2204,8 @@ class ScriptablePluginObjectError:public ScriptablePluginObjectBase {
   public:
     ScriptablePluginObjectError(NPP npp)
     :ScriptablePluginObjectBase(npp) {
-    } virtual bool HasMethod(NPIdentifier name);
+    }
+    virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
     virtual bool InvokeDefault(const NPVariant * args, uint32_t argCount, NPVariant * result);
@@ -2202,7 +2232,7 @@ bool ScriptablePluginObjectError::Invoke(NPIdentifier name, const NPVariant * ar
 {
     CPlugin *pPlugin = (CPlugin *) mNpp->pdata;
     if (pPlugin == NULL) {
-        printf("Can't find plugin pointer\n");
+        gm_log(pPlugin->debug_level, G_LOG_LEVEL_DEBUG, "Can't find plugin pointer\n");
         return PR_FALSE;
     }
 
@@ -2212,8 +2242,11 @@ bool ScriptablePluginObjectError::Invoke(NPIdentifier name, const NPVariant * ar
 bool ScriptablePluginObjectError::InvokeDefault(const NPVariant * args, uint32_t argCount,
                                                 NPVariant * result)
 {
-    printf("ScriptablePluginObject default method called!\n");
-
+    CPlugin *pPlugin = (CPlugin *) mNpp->pdata;
+    if (pPlugin == NULL) {
+        gm_log(pPlugin->debug_level, G_LOG_LEVEL_DEBUG,
+               "ScriptablePluginObjectError default method called!\n");
+    }
     STRINGZ_TO_NPVARIANT(strdup("default method return val"), *result);
 
     return PR_TRUE;
@@ -2232,7 +2265,7 @@ bool ScriptablePluginObjectError::GetProperty(NPIdentifier name, NPVariant * res
 {
     CPlugin *pPlugin = (CPlugin *) mNpp->pdata;
     if (pPlugin == NULL) {
-        printf("Can't find plugin pointer\n");
+        gm_log(pPlugin->debug_level, G_LOG_LEVEL_DEBUG, "Can't find plugin pointer\n");
         VOID_TO_NPVARIANT(*result);
         return false;
     }
@@ -2250,7 +2283,7 @@ bool ScriptablePluginObjectError::SetProperty(NPIdentifier name, const NPVariant
 {
     CPlugin *pPlugin = (CPlugin *) mNpp->pdata;
     if (pPlugin == NULL) {
-        printf("Can't find plugin pointer\n");
+        gm_log(pPlugin->debug_level, G_LOG_LEVEL_DEBUG, "Can't find plugin pointer\n");
         return false;
     }
 
@@ -2271,7 +2304,8 @@ class ScriptablePluginObject:public ScriptablePluginObjectBase {
   public:
     ScriptablePluginObject(NPP npp)
     :ScriptablePluginObjectBase(npp) {
-    } virtual bool HasMethod(NPIdentifier name);
+    }
+    virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
     virtual bool InvokeDefault(const NPVariant * args, uint32_t argCount, NPVariant * result);
@@ -2347,7 +2381,7 @@ bool ScriptablePluginObject::Invoke(NPIdentifier name, const NPVariant * args,
 
     CPlugin *pPlugin = (CPlugin *) mNpp->pdata;
     if (pPlugin == NULL) {
-        printf("Can't find plugin pointer\n");
+        gm_log(pPlugin->debug_level, G_LOG_LEVEL_DEBUG, "Can't find plugin pointer\n");
         return PR_FALSE;
     }
 
@@ -2557,7 +2591,11 @@ bool ScriptablePluginObject::Invoke(NPIdentifier name, const NPVariant * args,
 bool ScriptablePluginObject::InvokeDefault(const NPVariant * args, uint32_t argCount,
                                            NPVariant * result)
 {
-    printf("ScriptablePluginObject default method called!\n");
+    CPlugin *pPlugin = (CPlugin *) mNpp->pdata;
+    if (pPlugin == NULL) {
+        gm_log(pPlugin->debug_level, G_LOG_LEVEL_DEBUG,
+               "ScriptablePluginObject default method called!\n");
+    }
 
     STRINGZ_TO_NPVARIANT(strdup("default method return val"), *result);
 
@@ -2595,7 +2633,7 @@ bool ScriptablePluginObject::GetProperty(NPIdentifier name, NPVariant * result)
 
     CPlugin *pPlugin = (CPlugin *) mNpp->pdata;
     if (pPlugin == NULL) {
-        printf("Can't find plugin pointer\n");
+        gm_log(pPlugin->debug_level, G_LOG_LEVEL_DEBUG, "Can't find plugin pointer\n");
         VOID_TO_NPVARIANT(*result);
         return false;
     }
@@ -2606,7 +2644,7 @@ bool ScriptablePluginObject::GetProperty(NPIdentifier name, NPVariant * result)
             STRINGZ_TO_NPVARIANT(filename, *result);
         } else {
             STRINGZ_TO_NPVARIANT(strdup(""), *result);
-        }            
+        }
         return true;
     }
 
@@ -2704,7 +2742,7 @@ bool ScriptablePluginObject::SetProperty(NPIdentifier name, const NPVariant * va
 {
     CPlugin *pPlugin = (CPlugin *) mNpp->pdata;
     if (pPlugin == NULL) {
-        printf("Can't find plugin pointer\n");
+        gm_log(pPlugin->debug_level, G_LOG_LEVEL_DEBUG, "Can't find plugin pointer\n");
         return false;
     }
 
