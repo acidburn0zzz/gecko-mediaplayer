@@ -42,6 +42,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "memmem_compat.h"
+#include <gmlib.h>
 
 typedef struct _ListItem {
     gchar src[4096];

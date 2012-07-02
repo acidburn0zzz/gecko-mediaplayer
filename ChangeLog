@@ -1,4 +1,5 @@
 Development
+    Convert plugin_list to use gm_log
     Convert the majority of the code to use gm_log instead of printf
 1.0.6
     Updated Portuguese translation

@@ -235,22 +235,22 @@ void list_dump(GList * list)
         for (iter = list; iter != NULL; iter = g_list_next(iter)) {
             item = (ListItem *) iter->data;
             if (item != NULL) {
-                printf("Item \n");
-                printf("src = %s\n", item->src);
-                printf("local = %s\n", item->local);
-                printf("id = %i\n", item->id);
-                printf("hrefid = %i\n", item->hrefid);
-                printf("play = %i\n", item->play);
-                printf("played = %i\n", item->played);
-                printf("path = %s\n", item->path);
-                printf("controlid = %i\n", item->controlid);
-                printf("playerready = %i\n", item->playerready);
-                printf("newwindow = %i\n", item->newwindow);
-                printf("cancelled = %i\n", item->cancelled);
-                printf("streaming = %i\n", item->streaming);
-                printf("loop = %i\n", item->loop);
-                printf("loopcount = %i\n", item->loopcount);
-                printf("plugin = %p\n", item->plugin);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "Item \n");
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "src = %s\n", item->src);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "local = %s\n", item->local);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "id = %i\n", item->id);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "hrefid = %i\n", item->hrefid);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "play = %i\n", item->play);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "played = %i\n", item->played);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "path = %s\n", item->path);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "controlid = %i\n", item->controlid);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "playerready = %i\n", item->playerready);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "newwindow = %i\n", item->newwindow);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "cancelled = %i\n", item->cancelled);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "streaming = %i\n", item->streaming);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "loop = %i\n", item->loop);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "loopcount = %i\n", item->loopcount);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "plugin = %p\n", item->plugin);
             }
         }
     }
@@ -271,14 +271,14 @@ GList *list_parse_qt(GList * list, ListItem * item)
     unsigned int code = 0;      // some value about the URL
     gboolean added = FALSE;
 
-    printf("Entering list_parse_qt localsize = %i\n", item->localsize);
+    // printf("Entering list_parse_qt localsize = %i\n", item->localsize);
 
     if (item->localsize < (16 * 1024)) {
         if (g_file_get_contents(item->local, &data, &datalen, NULL)) {
             //printf("read %i bytes from %s\n",datalen, item->local);
             p = (gchar *) memmem_compat(data, datalen, "rmda", 4);
             if (p == NULL) {
-                printf("unable to find rmda in %s\n", item->local);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "unable to find rmda in %s\n", item->local);
                 return list;
             } else {
                 if (datalen > 4) {
@@ -320,7 +320,7 @@ GList *list_parse_qt(GList * list, ListItem * item)
                         if (code == 163 || code == 165 || code == 167
                             || code == (unsigned int) -93
                             || code == (unsigned int) -91 || code == (unsigned int) -89) {
-                            printf("Skipped URL: %s\n", rdrf);
+                            gm_log(TRUE, G_LOG_LEVEL_INFO, "Skipped URL: %s\n", rdrf);
                         } else {
                             if (list_find(list, url) == NULL && strlen(rdrf) > 0) {
                                 item->play = FALSE;
@@ -362,7 +362,7 @@ GList *list_parse_qt(GList * list, ListItem * item)
         // so skip parsing it.
         //printf("file not parsed > 16K actual size is %i\n",item->localsize);
     }
-    printf("Exiting list_parse_qt\n");
+    // printf("Exiting list_parse_qt\n");
     return list;
 
 }
@@ -378,14 +378,14 @@ GList *list_parse_qt2(GList * list, ListItem * item)
     gchar *urlptr;
     gboolean added = FALSE;
 
-    printf("Entering list_parse_qt2 localsize = %i\n", item->localsize);
+    // printf("Entering list_parse_qt2 localsize = %i\n", item->localsize);
 
     if (item->localsize < (256 * 1024)) {
         if (g_file_get_contents(item->local, &data, &datalen, NULL)) {
             //printf("read %i bytes from %s\n",datalen, item->local);
             p = (gchar *) memmem_compat(data, datalen, "mmdr", 4);
             if (p == NULL) {
-                printf("unable to find mmdr in %s\n", item->local);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "unable to find mmdr in %s\n", item->local);
                 return list;
             } else {
                 while (p != NULL && !added) {
@@ -436,7 +436,7 @@ GList *list_parse_qt2(GList * list, ListItem * item)
         // so skip parsing it.
         //printf("file not parsed > 256K actual size is %i\n",item->localsize);
     }
-    printf("Exiting list_parse_qt2\n");
+    // printf("Exiting list_parse_qt2\n");
     return list;
 
 }
@@ -500,7 +500,7 @@ GList *list_parse_asx(GList * list, ListItem * item)
     gchar *data;
     gsize datalen;
 
-    printf("Entering list_parse_asx localsize = %i\n", item->localsize);
+    // printf("Entering list_parse_asx localsize = %i\n", item->localsize);
 
     if (item->localsize < (16 * 1024)) {
         if (g_file_get_contents(item->local, &data, &datalen, NULL)) {
@@ -518,7 +518,7 @@ GList *list_parse_asx(GList * list, ListItem * item)
         }
         // list_dump(list);
     }
-    printf("Exiting list_parse_asx\n");
+    // printf("Exiting list_parse_asx\n");
     return list;
 }
 
@@ -656,7 +656,7 @@ GList *list_parse_qml(GList * list, ListItem * item)
     gchar *data;
     gsize datalen;
 
-    printf("Entering list_parse_qml localsize = %i\n", item->localsize);
+    // printf("Entering list_parse_qml localsize = %i\n", item->localsize);
 
     if (item->localsize < (16 * 1024)) {
         if (g_file_get_contents(item->local, &data, &datalen, NULL)) {
@@ -674,7 +674,7 @@ GList *list_parse_qml(GList * list, ListItem * item)
         }
         // list_dump(list);
     }
-    printf("Exiting list_parse_qml\n");
+    // printf("Exiting list_parse_qml\n");
     return list;
 }
 
@@ -743,7 +743,7 @@ GList *list_parse_ram(GList * list, ListItem * item)
     gchar *ptr;
     gchar url[1024];
 
-    printf("Entering list_parse_ram localsize = %i\n", item->localsize);
+    // printf("Entering list_parse_ram localsize = %i\n", item->localsize);
 
     if (item->localsize < (16 * 1024)) {
         if (g_file_get_contents(item->local, &data, &datalen, NULL)) {
@@ -805,6 +805,6 @@ GList *list_parse_ram(GList * list, ListItem * item)
         }
         // list_dump(list);
     }
-    printf("Exiting list_parse_ram\n");
+    // printf("Exiting list_parse_ram\n");
     return list;
 }
