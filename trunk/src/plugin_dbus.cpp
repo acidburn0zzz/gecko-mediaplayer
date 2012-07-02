@@ -120,7 +120,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
 
             if (g_ascii_strcasecmp(dbus_message_get_member(message), "ListDump") == 0) {
 
-                printf("playlist:\n");
+                gm_log(instance->debug_level, G_LOG_LEVEL_INFO, "playlist:\n");
                 list_dump(instance->playlist);
 
                 return DBUS_HANDLER_RESULT_HANDLED;
@@ -129,14 +129,16 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
             if (g_ascii_strcasecmp(dbus_message_get_member(message), "RequestById") == 0) {
                 dbus_error_init(&error);
                 if (dbus_message_get_args(message, &error, DBUS_TYPE_STRING, &s, DBUS_TYPE_INVALID)) {
-                    printf("Got id %s\n", s);
+                    gm_log(instance->debug_level, G_LOG_LEVEL_INFO, "Got id %s\n", s);
                     item = list_find_by_id(instance->playlist, (gint) g_strtod(s, NULL));
                     if (item != NULL) {
                         item->play = TRUE;
                         item->cancelled = FALSE;
                         item->retrieved = FALSE;
-                        printf("id %s has url of %s\n", s, item->src);
-                        printf("id %s has newwindow = %i\n", s, item->newwindow);
+                        gm_log(instance->debug_level, G_LOG_LEVEL_INFO, "id %s has url of %s\n", s,
+                               item->src);
+                        gm_log(instance->debug_level, G_LOG_LEVEL_INFO,
+                               "id %s has newwindow = %i\n", s, item->newwindow);
                         if (item->newwindow == 0) {
                             send_signal_with_boolean(instance, item, "SetShowControls", TRUE);
                             if (item->streaming) {
@@ -172,12 +174,14 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                             if (g_spawn_async(NULL, arg, NULL,
                                               G_SPAWN_SEARCH_PATH, NULL, NULL, NULL,
                                               &gerror) == FALSE) {
-                                printf("Unable to launch %s: %s\n", app_name, gerror->message);
+                                gm_log(instance->debug_level, G_LOG_LEVEL_INFO,
+                                       "Unable to launch %s: %s\n", app_name, gerror->message);
                                 g_error_free(gerror);
                                 gerror = NULL;
                             }
                             g_free(app_name);
-                            printf("requesting %s \n", item->src);
+                            gm_log(instance->debug_level, G_LOG_LEVEL_INFO, "requesting %s \n",
+                                   item->src);
                             instance->GetURLNotify(instance->mInstance, item->src, NULL, item);
                         }
                         instance->lastopened->played = TRUE;
@@ -352,7 +356,8 @@ DBusConnection *dbus_hookup(CPlugin * instance)
     dbus_bus_add_match(connection, "type='signal',interface='com.gecko.mediaplayer'", NULL);
     dbus_connection_add_filter(connection, filter_func, instance, NULL);
 
-    printf("DBUS connection created\nListening to path %s\n", instance->path);
+    gm_log(instance->debug_level, G_LOG_LEVEL_INFO,
+           "DBUS connection created\nListening to path %s\n", instance->path);
 
     return connection;
 }
@@ -458,7 +463,8 @@ void open_location(CPlugin * instance, ListItem * item, gboolean uselocal)
             path = instance->path;
         }
 
-        printf("Sending Open %s to connection %p\nitem->hrefid = %i item->src = %s\n", file,
+        gm_log(instance->debug_level, G_LOG_LEVEL_INFO,
+               "Sending Open %s to connection %p\nitem->hrefid = %i item->src = %s\n", file,
                instance->connection, item->hrefid, item->src);
         if (item->hrefid == 0) {
             if (item->streaming) {
@@ -487,7 +493,7 @@ void open_location(CPlugin * instance, ListItem * item, gboolean uselocal)
         item->opened = TRUE;
         instance->lastopened = item;
     } else {
-        printf("Item already opened before\n");
+        gm_log(instance->debug_level, G_LOG_LEVEL_INFO, "Item already opened before\n");
     }
 }
 
@@ -588,9 +594,10 @@ void send_signal_with_string(CPlugin * instance, ListItem * item, const gchar * 
     const char *localstr;
     gchar *path;
 
-    printf("Sending %s to connection %p\n", signal, instance->connection);
     if (instance == NULL)
         return;
+    gm_log(instance->debug_level, G_LOG_LEVEL_INFO, "Sending %s to connection %p\n", signal,
+           instance->connection);
 
     if (instance->console != NULL) {
         path = g_strdup_printf("/console/%s", instance->console);
@@ -620,9 +627,11 @@ void send_signal_with_double(CPlugin * instance, ListItem * item, const gchar * 
     const char *localsignal;
     gchar *path;
 
-    //printf("Sending %s to connection %p\n", signal, instance->connection);
     if (instance == NULL)
         return;
+
+    gm_log(instance->debug_level, G_LOG_LEVEL_INFO, "Sending %s to connection %p\n", signal,
+           instance->connection);
 
     if (instance->console != NULL) {
         path = g_strdup_printf("/console/%s", instance->console);
@@ -741,7 +750,7 @@ gboolean request_boolean_value(CPlugin * instance, ListItem * item, const gchar 
         replymessage =
             dbus_connection_send_with_reply_and_block(instance->connection, message, -1, &error);
         if (dbus_error_is_set(&error)) {
-            printf("Error message = %s\n", error.message);
+            gm_log(instance->debug_level, G_LOG_LEVEL_INFO, "Error message = %s\n", error.message);
         }
         dbus_message_get_args(replymessage, &error, DBUS_TYPE_BOOLEAN, &result, DBUS_TYPE_INVALID);
         dbus_message_unref(message);
@@ -784,7 +793,7 @@ gdouble request_double_value(CPlugin * instance, ListItem * item, const gchar * 
         replymessage =
             dbus_connection_send_with_reply_and_block(instance->connection, message, -1, &error);
         if (dbus_error_is_set(&error)) {
-            printf("Error message = %s\n", error.message);
+            gm_log(instance->debug_level, G_LOG_LEVEL_INFO, "Error message = %s\n", error.message);
         }
         dbus_message_get_args(replymessage, &error, DBUS_TYPE_DOUBLE, &result, DBUS_TYPE_INVALID);
         dbus_message_unref(message);
@@ -828,7 +837,7 @@ gint request_int_value(CPlugin * instance, ListItem * item, const gchar * member
         replymessage =
             dbus_connection_send_with_reply_and_block(instance->connection, message, -1, &error);
         if (dbus_error_is_set(&error)) {
-            printf("Error message = %s\n", error.message);
+            gm_log(instance->debug_level, G_LOG_LEVEL_INFO, "Error message = %s\n", error.message);
         }
         dbus_message_get_args(replymessage, &error, DBUS_TYPE_INT32, &result, DBUS_TYPE_INVALID);
         dbus_message_unref(message);
@@ -871,7 +880,7 @@ gchar *request_string_value(CPlugin * instance, ListItem * item, const gchar * m
         replymessage =
             dbus_connection_send_with_reply_and_block(instance->connection, message, -1, &error);
         if (dbus_error_is_set(&error)) {
-            printf("Error message = %s\n", error.message);
+            gm_log(instance->debug_level, G_LOG_LEVEL_INFO, "Error message = %s\n", error.message);
         }
         dbus_message_get_args(replymessage, &error, DBUS_TYPE_STRING, &result, DBUS_TYPE_INVALID);
         dbus_message_unref(message);
@@ -953,7 +962,7 @@ gint request_bitrate(CPlugin * instance, ListItem * item, gchar * name)
         replymessage =
             dbus_connection_send_with_reply_and_block(instance->connection, message, -1, &error);
         if (dbus_error_is_set(&error)) {
-            printf("Error message = %s\n", error.message);
+            gm_log(instance->debug_level, G_LOG_LEVEL_INFO, "Error message = %s\n", error.message);
         }
         if (replymessage != NULL) {
             dbus_message_get_args(replymessage, &error, DBUS_TYPE_INT32, &result,

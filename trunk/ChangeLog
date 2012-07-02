@@ -1,6 +1,8 @@
 Development
-	Updated Portuguese translation
-	Updated Japanese translation
+    Convert the majority of the code to use gm_log instead of printf
+1.0.6
+    Updated Portuguese translation
+    Updated Japanese translation
 1.0.6b1
     Fix a problem in the style parser, was looking at a null pointer
     Added WMP plugin properties enabled and enableContextMenu
