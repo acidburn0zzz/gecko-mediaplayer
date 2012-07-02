@@ -1681,11 +1681,10 @@ NPError CPlugin::GetURLNotify(NPP instance, const char *url, const char *target,
 // in the bin/components folder
 class ScriptablePluginObjectBase:public NPObject {
   public:
-    ScriptablePluginObjectBase(NPP npp)
-    :mNpp(npp) {
-    }
+    ScriptablePluginObjectBase(NPP npp):mNpp(npp) {
+    };
     virtual ~ ScriptablePluginObjectBase() {
-    }
+    };
 
     // Virtual NPObject hooks called through this base class. Override
     // as you see fit.
@@ -1842,9 +1841,8 @@ bool ScriptablePluginObjectBase::_RemoveProperty(NPObject * npobj, NPIdentifier 
 
 class ScriptablePluginObjectControls:public ScriptablePluginObjectBase {
   public:
-    ScriptablePluginObjectControls(NPP npp)
-    :ScriptablePluginObjectBase(npp) {
-    }
+    ScriptablePluginObjectControls(NPP npp):ScriptablePluginObjectBase(npp) {
+    };
     virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
@@ -1970,9 +1968,8 @@ bool ScriptablePluginObjectControls::SetProperty(NPIdentifier name, const NPVari
 
 class ScriptablePluginObjectMedia:public ScriptablePluginObjectBase {
   public:
-    ScriptablePluginObjectMedia(NPP npp)
-    :ScriptablePluginObjectBase(npp) {
-    }
+    ScriptablePluginObjectMedia(NPP npp):ScriptablePluginObjectBase(npp) {
+    };
     virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
@@ -2099,9 +2096,8 @@ bool ScriptablePluginObjectMedia::SetProperty(NPIdentifier name, const NPVariant
 
 class ScriptablePluginObjectSettings:public ScriptablePluginObjectBase {
   public:
-    ScriptablePluginObjectSettings(NPP npp)
-    :ScriptablePluginObjectBase(npp) {
-    }
+    ScriptablePluginObjectSettings(NPP npp):ScriptablePluginObjectBase(npp) {
+    };
     virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
@@ -2202,9 +2198,8 @@ bool ScriptablePluginObjectSettings::SetProperty(NPIdentifier name, const NPVari
 
 class ScriptablePluginObjectError:public ScriptablePluginObjectBase {
   public:
-    ScriptablePluginObjectError(NPP npp)
-    :ScriptablePluginObjectBase(npp) {
-    }
+    ScriptablePluginObjectError(NPP npp):ScriptablePluginObjectBase(npp) {
+    };
     virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
@@ -2302,9 +2297,8 @@ bool ScriptablePluginObjectError::SetProperty(NPIdentifier name, const NPVariant
 
 class ScriptablePluginObject:public ScriptablePluginObjectBase {
   public:
-    ScriptablePluginObject(NPP npp)
-    :ScriptablePluginObjectBase(npp) {
-    }
+    ScriptablePluginObject(NPP npp):ScriptablePluginObjectBase(npp) {
+    };
     virtual bool HasMethod(NPIdentifier name);
     virtual bool Invoke(NPIdentifier name, const NPVariant * args,
                         uint32_t argCount, NPVariant * result);
