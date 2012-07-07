@@ -2015,15 +2015,15 @@ bool ScriptablePluginObjectMedia::Invoke(NPIdentifier name, const NPVariant * ar
         arg = g_strdup(NPVARIANT_TO_STRING(args[0]).utf8characters);
 #endif
 
-        if (g_strcasecmp(arg, "title") == 0) {
+        if (g_ascii_strcasecmp(arg, "title") == 0) {
             STRINGZ_TO_NPVARIANT(strdup
                                  (request_string_value(pPlugin, pPlugin->lastopened, "GetTitle")),
                                  *result);
-        } else if (g_strcasecmp(arg, "uri") == 0) {
+        } else if (g_ascii_strcasecmp(arg, "uri") == 0) {
             STRINGZ_TO_NPVARIANT(strdup
                                  (request_string_value(pPlugin, pPlugin->lastopened, "GetURI")),
                                  *result);
-        } else if (g_strcasecmp(arg, "bitrate") == 0) {
+        } else if (g_ascii_strcasecmp(arg, "bitrate") == 0) {
             pPlugin->GetBitrate(&i);
             INT32_TO_NPVARIANT(i, *result);
         } else {
