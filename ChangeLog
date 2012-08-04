@@ -1,4 +1,5 @@
 Development
+    Switch plugin to streaming mode with #EXTM3U is found in the file
     Clean up some depreciated symbol warnings
     Convert plugin_list to use gm_log
     Convert the majority of the code to use gm_log instead of printf
