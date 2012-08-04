@@ -1,4 +1,5 @@
 Development
+    Add ASX to the list of types that should be streamed, and fix the code so that it is case insensitive
     Switch plugin to streaming mode with #EXTM3U is found in the file
     Clean up some depreciated symbol warnings
     Convert plugin_list to use gm_log

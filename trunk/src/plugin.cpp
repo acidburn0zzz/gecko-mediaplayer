@@ -885,6 +885,7 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
     gboolean ready;
     gboolean newwindow;
     gboolean ok_to_play = FALSE;
+    gchar *upper = NULL;
 
     gm_log(debug_level, G_LOG_LEVEL_DEBUG, "Write Called\n");
     if (!acceptdata) {
@@ -908,10 +909,13 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
         return -1;
     }
 
+    upper = g_ascii_strup((char *) buffer, len);
     if (strstr((char *) buffer, "ICY 200 OK") != NULL
         || strstr((char *) buffer, "Content-length:") != NULL
-        || strstr((char *) buffer, "<HTML>") != NULL || item->streaming == TRUE
-        || strstr(item->src, "file://") != NULL || strstr((char *) buffer, "#EXTM3U") != NULL) {
+        || (upper != NULL && strstr(upper, "<HTML>") != NULL) || item->streaming == TRUE
+        || strstr(item->src, "file://") != NULL
+        || (upper != NULL && strstr(upper, "#EXTM3U") != NULL)
+        || (upper != NULL && strstr(upper, "<ASX") != NULL)) {
         // If item is a block of jpeg images, just stream it
         //   || stream->lastmodified == 0) {    this is not valid for many sites
 
@@ -933,6 +937,10 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
         gm_log(debug_level, G_LOG_LEVEL_INFO, "Got IceCast Stream, let mplayer stream it\n");
         NPN_DestroyStream(mInstance, stream, NPERR_NO_ERROR);
         return -1;
+    }
+    if (upper != NULL) {
+        g_free(upper);
+        upper = NULL;
     }
 
     if ((!item->localfp) && (!item->retrieved)) {
