@@ -350,10 +350,14 @@ tv_driver(NULL), tv_device(NULL), tv_input(NULL), tv_width(0), tv_height(0)
     store = gm_pref_store_new("gecko-mediaplayer");
     if (store != NULL) {
         debug_level = gm_pref_store_get_int(store, DEBUG_LEVEL);
+        gm_log(debug_level, G_LOG_LEVEL_INFO, "debug_level = %i", debug_level);
         player_backend = gm_pref_store_get_string(store, PLAYER_BACKEND);
         gm_log(debug_level, G_LOG_LEVEL_INFO, "Using player backend of '%s'\n",
                (player_backend == NULL) ? "gnome-mplayer" : player_backend);
         gm_pref_store_free(store);
+    } else {
+        gm_log(TRUE, G_LOG_LEVEL_INFO, "Unable to find preference store, setting debug_level to 1");
+        debug_level = 1;
     }
 
 
@@ -907,7 +911,7 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
     if (strstr((char *) buffer, "ICY 200 OK") != NULL
         || strstr((char *) buffer, "Content-length:") != NULL
         || strstr((char *) buffer, "<HTML>") != NULL || item->streaming == TRUE
-        || strstr(item->src, "file://") != NULL) {
+        || strstr(item->src, "file://") != NULL || strstr((char *) buffer, "#EXTM3U") != NULL) {
         // If item is a block of jpeg images, just stream it
         //   || stream->lastmodified == 0) {    this is not valid for many sites
 
