@@ -93,6 +93,8 @@ typedef enum {
 
 void postDOMEvent(NPP mInstance, const gchar * id, const gchar * event);
 void postPlayStateChange(NPP mInstance, const gint state);
+const gchar *NPErrorToString(NPError error);
+const gchar *NPReasonToString(NPReason reason);
 
 class CPlugin {
   private:
