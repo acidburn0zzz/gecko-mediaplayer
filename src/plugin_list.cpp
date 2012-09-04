@@ -40,6 +40,7 @@ gint asx_loop;
 gint entry_id = 0;
 GList *parser_list;
 ListItem *parser_item;
+gboolean global_detect_only;
 extern gint streaming(gchar * url);
 
 ListItem *list_find(GList * list, gchar * url)
@@ -55,11 +56,6 @@ ListItem *list_find(GList * list, gchar * url)
                 // printf("found %s at %p\n",url,item);
                 return item;
             }
-//            if (g_strrstr(url, item->src) != NULL && item->play == TRUE) {
-//                // printf("found %s at %p\n",url,item);
-//                return item;
-//            }
-
         }
     }
 
@@ -176,6 +172,62 @@ ListItem *list_find_next_playable(GList * list)
     return NULL;
 }
 
+ListItem *list_find_next_playable_after_listitem(GList * list, ListItem * find)
+{
+    ListItem *item;
+    GList *iter;
+    ListItem *found = NULL;
+
+    if (list != NULL && find != NULL) {
+        for (iter = g_list_last(list); iter != NULL; iter = g_list_previous(iter)) {
+            item = (ListItem *) iter->data;
+            if (item != NULL) {
+                if (g_ascii_strcasecmp(find->src, item->src) == 0) {
+                    return found;
+                }
+                if (item->played == FALSE && item->play == TRUE) {
+                    found = item;
+                }
+            }
+        }
+    }
+    return NULL;
+}
+
+ListItem *list_find_first_playable(GList * list)
+{
+    ListItem *item;
+    GList *iter;
+
+    for (iter = list; iter != NULL; iter = g_list_next(iter)) {
+        item = (ListItem *) iter->data;
+        if (item != NULL) {
+            if (item->play == TRUE) {
+                return item;
+            }
+        }
+    }
+    return NULL;
+}
+
+gboolean list_item_opened(GList * list)
+{
+    ListItem *item;
+    GList *iter;
+
+    for (iter = list; iter != NULL; iter = g_list_next(iter)) {
+        item = (ListItem *) iter->data;
+        if (item != NULL) {
+            if (item->opened == TRUE) {
+                return TRUE;
+            }
+        }
+    }
+    return FALSE;
+}
+
+
+
 void list_qualify_url(GList * list, gchar * page_url)
 {
     ListItem *item;
@@ -230,34 +282,43 @@ void list_dump(GList * list)
 {
     ListItem *item;
     GList *iter;
+    gint count = 1;
 
     if (list != NULL) {
         for (iter = list; iter != NULL; iter = g_list_next(iter)) {
             item = (ListItem *) iter->data;
             if (item != NULL) {
-                gm_log(TRUE, G_LOG_LEVEL_INFO, "Item \n");
-                gm_log(TRUE, G_LOG_LEVEL_INFO, "src = %s\n", item->src);
-                gm_log(TRUE, G_LOG_LEVEL_INFO, "local = %s\n", item->local);
-                gm_log(TRUE, G_LOG_LEVEL_INFO, "id = %i\n", item->id);
-                gm_log(TRUE, G_LOG_LEVEL_INFO, "hrefid = %i\n", item->hrefid);
-                gm_log(TRUE, G_LOG_LEVEL_INFO, "play = %i\n", item->play);
-                gm_log(TRUE, G_LOG_LEVEL_INFO, "played = %i\n", item->played);
-                gm_log(TRUE, G_LOG_LEVEL_INFO, "path = %s\n", item->path);
-                gm_log(TRUE, G_LOG_LEVEL_INFO, "controlid = %i\n", item->controlid);
-                gm_log(TRUE, G_LOG_LEVEL_INFO, "playerready = %i\n", item->playerready);
-                gm_log(TRUE, G_LOG_LEVEL_INFO, "newwindow = %i\n", item->newwindow);
-                gm_log(TRUE, G_LOG_LEVEL_INFO, "cancelled = %i\n", item->cancelled);
-                gm_log(TRUE, G_LOG_LEVEL_INFO, "streaming = %i\n", item->streaming);
-                gm_log(TRUE, G_LOG_LEVEL_INFO, "loop = %i\n", item->loop);
-                gm_log(TRUE, G_LOG_LEVEL_INFO, "loopcount = %i\n", item->loopcount);
-                gm_log(TRUE, G_LOG_LEVEL_INFO, "plugin = %p\n", item->plugin);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "----- Item %i -----", count++);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "src = %s", item->src);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "local = %s", item->local);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "id = %i", item->id);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "localsize = %i", item->localsize);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "lastsize = %i", item->lastsize);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "hrefid = %i", item->hrefid);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "requested = %i", item->requested);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "retrieved = %i", item->retrieved);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "cancelled = %i", item->cancelled);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "streaming = %i", item->streaming);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "opened = %i", item->opened);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "oktoplay = %i", item->oktoplay);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "queuedtoplay = %i", item->queuedtoplay);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "play = %i", item->play);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "played = %i", item->played);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "playlist = %i", item->playlist);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "path = %s", item->path);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "controlid = %i", item->controlid);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "playerready = %i", item->playerready);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "newwindow = %i", item->newwindow);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "loop = %i", item->loop);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "loopcount = %i", item->loopcount);
+                gm_log(TRUE, G_LOG_LEVEL_INFO, "plugin = %p", item->plugin);
             }
         }
     }
 }
 
 
-GList *list_parse_qt(GList * list, ListItem * item)
+GList *list_parse_qt(GList * list, ListItem * item, gboolean detect_only)
 {
     ListItem *newitem;
     gchar *data;
@@ -278,7 +339,7 @@ GList *list_parse_qt(GList * list, ListItem * item)
             //printf("read %i bytes from %s\n",datalen, item->local);
             p = (gchar *) memmem_compat(data, datalen, "rmda", 4);
             if (p == NULL) {
-                gm_log(TRUE, G_LOG_LEVEL_INFO, "unable to find rmda in %s\n", item->local);
+                gm_log(TRUE, G_LOG_LEVEL_DEBUG, "unable to find rmda in %s", item->local);
                 return list;
             } else {
                 if (datalen > 4) {
@@ -323,16 +384,18 @@ GList *list_parse_qt(GList * list, ListItem * item)
                             gm_log(TRUE, G_LOG_LEVEL_INFO, "Skipped URL: %s\n", rdrf);
                         } else {
                             if (list_find(list, url) == NULL && strlen(rdrf) > 0) {
-                                item->play = FALSE;
-                                newitem = g_new0(ListItem, 1);
-                                g_strlcpy(newitem->src, url, 1024);
-                                // newitem->streaming = streaming(newitem->src);
-                                newitem->play = TRUE;
-                                newitem->id = item->id;
-                                newitem->controlid = item->controlid;
-                                g_strlcpy(newitem->path, item->path, 1024);
-                                item->id = -1;
-                                list = g_list_append(list, newitem);
+                                if (!detect_only) {
+                                    item->play = FALSE;
+                                    newitem = g_new0(ListItem, 1);
+                                    g_strlcpy(newitem->src, url, 1024);
+                                    // newitem->streaming = streaming(newitem->src);
+                                    newitem->play = TRUE;
+                                    newitem->id = item->id;
+                                    newitem->controlid = item->controlid;
+                                    g_strlcpy(newitem->path, item->path, 1024);
+                                    item->id = -1;
+                                    list = g_list_append(list, newitem);
+                                }
                                 added = TRUE;
                             }
                         }
@@ -363,11 +426,14 @@ GList *list_parse_qt(GList * list, ListItem * item)
         //printf("file not parsed > 16K actual size is %i\n",item->localsize);
     }
     // printf("Exiting list_parse_qt\n");
+    if (added) {
+        item->playlist = TRUE;
+    }
     return list;
 
 }
 
-GList *list_parse_qt2(GList * list, ListItem * item)
+GList *list_parse_qt2(GList * list, ListItem * item, gboolean detect_only)
 {
     ListItem *newitem;
     gchar *data;
@@ -385,7 +451,7 @@ GList *list_parse_qt2(GList * list, ListItem * item)
             //printf("read %i bytes from %s\n",datalen, item->local);
             p = (gchar *) memmem_compat(data, datalen, "mmdr", 4);
             if (p == NULL) {
-                gm_log(TRUE, G_LOG_LEVEL_INFO, "unable to find mmdr in %s\n", item->local);
+                gm_log(TRUE, G_LOG_LEVEL_DEBUG, "unable to find mmdr in %s", item->local);
                 return list;
             } else {
                 while (p != NULL && !added) {
@@ -407,16 +473,18 @@ GList *list_parse_qt2(GList * list, ListItem * item)
                         }
 
                         if (list_find(list, url) == NULL) {
-                            item->play = FALSE;
-                            newitem = g_new0(ListItem, 1);
-                            g_strlcpy(newitem->src, url, 1024);
-                            // newitem->streaming = streaming(newitem->src);
-                            newitem->play = TRUE;
-                            newitem->id = item->id;
-                            newitem->controlid = item->controlid;
-                            g_strlcpy(newitem->path, item->path, 1024);
-                            item->id = -1;
-                            list = g_list_append(list, newitem);
+                            if (!detect_only) {
+                                item->play = FALSE;
+                                newitem = g_new0(ListItem, 1);
+                                g_strlcpy(newitem->src, url, 1024);
+                                // newitem->streaming = streaming(newitem->src);
+                                newitem->play = TRUE;
+                                newitem->id = item->id;
+                                newitem->controlid = item->controlid;
+                                g_strlcpy(newitem->path, item->path, 1024);
+                                item->id = -1;
+                                list = g_list_append(list, newitem);
+                            }
                             added = TRUE;
                         }
                         p = (gchar *) memmem_compat(urlptr, datalen - (urlptr - data), "mmdr", 4);
@@ -437,6 +505,9 @@ GList *list_parse_qt2(GList * list, ListItem * item)
         //printf("file not parsed > 256K actual size is %i\n",item->localsize);
     }
     // printf("Exiting list_parse_qt2\n");
+    if (added) {
+        item->playlist = TRUE;
+    }
     return list;
 
 }
@@ -494,7 +565,7 @@ void unreplace_amp(gchar * data)
 
 }
 
-GList *list_parse_asx(GList * list, ListItem * item)
+GList *list_parse_asx(GList * list, ListItem * item, gboolean detect_only)
 {
     GMarkupParseContext *context;
     gchar *data;
@@ -506,6 +577,7 @@ GList *list_parse_asx(GList * list, ListItem * item)
         if (g_file_get_contents(item->local, &data, &datalen, NULL)) {
             parser_list = list;
             parser_item = item;
+            global_detect_only = detect_only;
             asx_loop = 0;
             strip_unicode(data, datalen);
             replace_amp(data);
@@ -513,6 +585,7 @@ GList *list_parse_asx(GList * list, ListItem * item)
             context = g_markup_parse_context_new(&asx_parser, (GMarkupParseFlags) 0, data, NULL);
             g_markup_parse_context_parse(context, data, datalen, NULL);
             g_markup_parse_context_free(context);
+            global_detect_only = FALSE;
             parser_item = NULL;
             parser_list = NULL;
         }
@@ -541,45 +614,48 @@ asx_start_element(GMarkupParseContext * context,
                 if (list_find(parser_list, (gchar *) attribute_values[i])
                     == NULL) {
                     parser_item->play = FALSE;
-                    newitem = g_new0(ListItem, 1);
-                    value = g_strdup(attribute_values[i]);
-                    unreplace_amp(value);
-                    ptr = g_strrstr(value, "/");
-                    if (ptr == NULL) {
-                        g_strlcpy(url, parser_item->src, 1024);
-                        ptr = g_strrstr(url, "/");
-                        if (ptr != NULL) {
-                            ptr[1] = (char) NULL;
-                            g_strlcpy(newitem->src, url, 1024);
-                            g_strlcat(newitem->src, value, 1024);
+                    parser_item->playlist = TRUE;
+                    if (!global_detect_only) {
+                        newitem = g_new0(ListItem, 1);
+                        value = g_strdup(attribute_values[i]);
+                        unreplace_amp(value);
+                        ptr = g_strrstr(value, "/");
+                        if (ptr == NULL) {
+                            g_strlcpy(url, parser_item->src, 1024);
+                            ptr = g_strrstr(url, "/");
+                            if (ptr != NULL) {
+                                ptr[1] = (char) NULL;
+                                g_strlcpy(newitem->src, url, 1024);
+                                g_strlcat(newitem->src, value, 1024);
+                            }
+                        } else {
+                            g_strlcpy(newitem->src, value, 1024);
                         }
-                    } else {
-                        g_strlcpy(newitem->src, value, 1024);
-                    }
 
-                    g_free(value);
-                    newitem->streaming = streaming(newitem->src);
-                    // crappy hack, mplayer needs the protocol in lower case, some sites don't
-                    if (newitem->streaming) {
-                        newitem->src[0] = g_ascii_tolower(newitem->src[0]);
-                        newitem->src[1] = g_ascii_tolower(newitem->src[1]);
-                        newitem->src[2] = g_ascii_tolower(newitem->src[2]);
-                        newitem->src[3] = g_ascii_tolower(newitem->src[3]);
+                        g_free(value);
+                        newitem->streaming = streaming(newitem->src);
+                        // crappy hack, mplayer needs the protocol in lower case, some sites don't
+                        if (newitem->streaming) {
+                            newitem->src[0] = g_ascii_tolower(newitem->src[0]);
+                            newitem->src[1] = g_ascii_tolower(newitem->src[1]);
+                            newitem->src[2] = g_ascii_tolower(newitem->src[2]);
+                            newitem->src[3] = g_ascii_tolower(newitem->src[3]);
+                        }
+                        newitem->play = TRUE;
+                        if (entry_id != 0) {
+                            newitem->id = entry_id;
+                        } else {
+                            newitem->id = parser_item->id;
+                            parser_item->id = -1;
+                        }
+                        newitem->controlid = parser_item->controlid;
+                        if (asx_loop != 0) {
+                            newitem->loop = TRUE;
+                            newitem->loopcount = asx_loop;
+                        }
+                        g_strlcpy(newitem->path, parser_item->path, 1024);
+                        parser_list = g_list_append(parser_list, newitem);
                     }
-                    newitem->play = TRUE;
-                    if (entry_id != 0) {
-                        newitem->id = entry_id;
-                    } else {
-                        newitem->id = parser_item->id;
-                        parser_item->id = -1;
-                    }
-                    newitem->controlid = parser_item->controlid;
-                    if (asx_loop != 0) {
-                        newitem->loop = TRUE;
-                        newitem->loopcount = asx_loop;
-                    }
-                    g_strlcpy(newitem->path, parser_item->path, 1024);
-                    parser_list = g_list_append(parser_list, newitem);
                 }
 
             }
@@ -596,6 +672,7 @@ asx_start_element(GMarkupParseContext * context,
                 if (list_find(parser_list, (gchar *) attribute_values[i])
                     == NULL) {
                     parser_item->play = FALSE;
+                    parser_item->playlist = TRUE;
                     newitem = g_new0(ListItem, 1);
                     value = g_strdup(attribute_values[i]);
                     unreplace_amp(value);
@@ -650,7 +727,7 @@ asx_end_element(GMarkupParseContext * context,
 
 }
 
-GList *list_parse_qml(GList * list, ListItem * item)
+GList *list_parse_qml(GList * list, ListItem * item, gboolean detect_only)
 {
     GMarkupParseContext *context;
     gchar *data;
@@ -662,6 +739,7 @@ GList *list_parse_qml(GList * list, ListItem * item)
         if (g_file_get_contents(item->local, &data, &datalen, NULL)) {
             parser_list = list;
             parser_item = item;
+            global_detect_only = detect_only;
             asx_loop = 0;
             strip_unicode(data, datalen);
             replace_amp(data);
@@ -671,6 +749,7 @@ GList *list_parse_qml(GList * list, ListItem * item)
             g_markup_parse_context_free(context);
             parser_item = NULL;
             parser_list = NULL;
+            global_detect_only = FALSE;
         }
         // list_dump(list);
     }
@@ -696,33 +775,36 @@ qml_start_element(GMarkupParseContext * context,
                     == NULL) {
                     if (parser_item->play) {
                         parser_item->play = FALSE;
-                        newitem = g_new0(ListItem, 1);
-                        value = g_strdup(attribute_values[i]);
-                        unreplace_amp(value);
-                        g_strlcpy(newitem->src, value, 1024);
-                        g_free(value);
-                        newitem->streaming = streaming(newitem->src);
-                        // crappy hack, mplayer needs the protocol in lower case, some sites don't
-                        if (newitem->streaming) {
-                            newitem->src[0] = g_ascii_tolower(newitem->src[0]);
-                            newitem->src[1] = g_ascii_tolower(newitem->src[1]);
-                            newitem->src[2] = g_ascii_tolower(newitem->src[2]);
-                            newitem->src[3] = g_ascii_tolower(newitem->src[3]);
+                        parser_item->playlist = TRUE;
+                        if (!global_detect_only) {
+                            newitem = g_new0(ListItem, 1);
+                            value = g_strdup(attribute_values[i]);
+                            unreplace_amp(value);
+                            g_strlcpy(newitem->src, value, 1024);
+                            g_free(value);
+                            newitem->streaming = streaming(newitem->src);
+                            // crappy hack, mplayer needs the protocol in lower case, some sites don't
+                            if (newitem->streaming) {
+                                newitem->src[0] = g_ascii_tolower(newitem->src[0]);
+                                newitem->src[1] = g_ascii_tolower(newitem->src[1]);
+                                newitem->src[2] = g_ascii_tolower(newitem->src[2]);
+                                newitem->src[3] = g_ascii_tolower(newitem->src[3]);
+                            }
+                            newitem->play = TRUE;
+                            if (entry_id != 0) {
+                                newitem->id = entry_id;
+                            } else {
+                                newitem->id = parser_item->id;
+                                parser_item->id = -1;
+                            }
+                            newitem->controlid = parser_item->controlid;
+                            if (asx_loop != 0) {
+                                newitem->loop = TRUE;
+                                newitem->loopcount = asx_loop;
+                            }
+                            g_strlcpy(newitem->path, parser_item->path, 1024);
+                            parser_list = g_list_append(parser_list, newitem);
                         }
-                        newitem->play = TRUE;
-                        if (entry_id != 0) {
-                            newitem->id = entry_id;
-                        } else {
-                            newitem->id = parser_item->id;
-                            parser_item->id = -1;
-                        }
-                        newitem->controlid = parser_item->controlid;
-                        if (asx_loop != 0) {
-                            newitem->loop = TRUE;
-                            newitem->loopcount = asx_loop;
-                        }
-                        g_strlcpy(newitem->path, parser_item->path, 1024);
-                        parser_list = g_list_append(parser_list, newitem);
                     }
                 }
             }
@@ -731,7 +813,7 @@ qml_start_element(GMarkupParseContext * context,
     }
 }
 
-GList *list_parse_ram(GList * list, ListItem * item)
+GList *list_parse_ram(GList * list, ListItem * item, gboolean detect_only)
 {
     gchar *data;
     gsize datalen;
@@ -765,35 +847,38 @@ GList *list_parse_ram(GList * list, ListItem * item)
                         if (list_find(parser_list, (gchar *) output[i])
                             == NULL) {
                             parser_item->play = FALSE;
-                            newitem = g_new0(ListItem, 1);
-                            value = g_strdup(output[i]);
-                            unreplace_amp(value);
-                            ptr = g_strrstr(value, "/");
-                            if (ptr == NULL) {
-                                g_strlcpy(url, parser_item->src, 1024);
-                                ptr = g_strrstr(url, "/");
-                                if (ptr != NULL) {
-                                    ptr[1] = (char) NULL;
-                                    g_strlcpy(newitem->src, url, 1024);
-                                    g_strlcat(newitem->src, value, 1024);
+                            parser_item->playlist = TRUE;
+                            if (!detect_only) {
+                                newitem = g_new0(ListItem, 1);
+                                value = g_strdup(output[i]);
+                                unreplace_amp(value);
+                                ptr = g_strrstr(value, "/");
+                                if (ptr == NULL) {
+                                    g_strlcpy(url, parser_item->src, 1024);
+                                    ptr = g_strrstr(url, "/");
+                                    if (ptr != NULL) {
+                                        ptr[1] = (char) NULL;
+                                        g_strlcpy(newitem->src, url, 1024);
+                                        g_strlcat(newitem->src, value, 1024);
+                                    }
+                                } else {
+                                    g_strlcpy(newitem->src, value, 1024);
                                 }
-                            } else {
-                                g_strlcpy(newitem->src, value, 1024);
+                                g_free(value);
+                                newitem->streaming = streaming(newitem->src);
+                                // crappy hack, mplayer needs the protocol in lower case, some sites don't
+                                if (newitem->streaming) {
+                                    newitem->src[0] = g_ascii_tolower(newitem->src[0]);
+                                    newitem->src[1] = g_ascii_tolower(newitem->src[1]);
+                                    newitem->src[2] = g_ascii_tolower(newitem->src[2]);
+                                    newitem->src[3] = g_ascii_tolower(newitem->src[3]);
+                                }
+                                newitem->play = TRUE;
+                                newitem->id = ++entry_id;
+                                newitem->controlid = parser_item->controlid;
+                                g_strlcpy(newitem->path, parser_item->path, 1024);
+                                parser_list = g_list_append(parser_list, newitem);
                             }
-                            g_free(value);
-                            newitem->streaming = streaming(newitem->src);
-                            // crappy hack, mplayer needs the protocol in lower case, some sites don't
-                            if (newitem->streaming) {
-                                newitem->src[0] = g_ascii_tolower(newitem->src[0]);
-                                newitem->src[1] = g_ascii_tolower(newitem->src[1]);
-                                newitem->src[2] = g_ascii_tolower(newitem->src[2]);
-                                newitem->src[3] = g_ascii_tolower(newitem->src[3]);
-                            }
-                            newitem->play = TRUE;
-                            newitem->id = ++entry_id;
-                            newitem->controlid = parser_item->controlid;
-                            g_strlcpy(newitem->path, parser_item->path, 1024);
-                            parser_list = g_list_append(parser_list, newitem);
                         }
                     }
                     i++;

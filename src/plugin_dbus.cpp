@@ -50,6 +50,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
     gchar *path;
     CPlugin *instance;
     ListItem *item = NULL;
+    ListItem *fetch_item = NULL;
     gchar *arg[10];
     gint i;
     GRand *rand;
@@ -144,6 +145,8 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                             if (item->streaming) {
                                 send_signal_with_string(instance, item, "Open", item->src);
                             } else {
+                                item->requested = TRUE;
+                                item->queuedtoplay = TRUE;
                                 instance->GetURLNotify(instance->mInstance, item->src, NULL, item);
                             }
                         } else {
@@ -182,6 +185,8 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                             g_free(app_name);
                             gm_log(instance->debug_level, G_LOG_LEVEL_INFO, "requesting %s \n",
                                    item->src);
+                            item->requested = TRUE;
+                            item->queuedtoplay = TRUE;
                             instance->GetURLNotify(instance->mInstance, item->src, NULL, item);
                         }
                         instance->lastopened->played = TRUE;
@@ -222,9 +227,14 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                     }
                 }
 
-                //printf("next item src = %s\n", item->src);
-                //printf("next item local = %s\n", item->local);
-                //printf("next item streaming = %i\n", item->streaming);
+                if (item != NULL) {
+                    printf("next item src = %s\n", item->src);
+                    printf("next item local = %s\n", item->local);
+                    printf("next item streaming = %i\n", item->streaming);
+                } else {
+                    printf("do not know what the next item is\n");
+                    list_dump(instance->playlist);
+                }
 
                 if (item != NULL) {
                     /*
@@ -253,11 +263,35 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                         item->cancelled = FALSE;
                         if (item->retrieved) {
                             open_location(instance, item, TRUE);
+                            fetch_item =
+                                list_find_next_playable_after_listitem(instance->playlist, item);
+                            if (fetch_item != NULL) {
+                                if (!fetch_item->streaming) {
+                                    gm_log(instance->debug_level, G_LOG_LEVEL_INFO,
+                                           "Getting URL '%s'", fetch_item->src);
+                                    fetch_item->requested = TRUE;
+                                    instance->GetURLNotify(instance->mInstance, fetch_item->src,
+                                                           NULL, fetch_item);
+                                }
+                            }
                         } else {
+                            item->requested = TRUE;
+                            item->queuedtoplay = TRUE;
                             instance->GetURLNotify(instance->mInstance, item->src, NULL, item);
                         }
                     } else {
                         open_location(instance, item, FALSE);
+                        fetch_item =
+                            list_find_next_playable_after_listitem(instance->playlist, item);
+                        if (fetch_item != NULL) {
+                            if (!fetch_item->streaming) {
+                                gm_log(instance->debug_level, G_LOG_LEVEL_INFO, "Getting URL '%s'",
+                                       fetch_item->src);
+                                fetch_item->requested = TRUE;
+                                instance->GetURLNotify(instance->mInstance, fetch_item->src, NULL,
+                                                       fetch_item);
+                            }
+                        }
                     }
                 }
                 return DBUS_HANDLER_RESULT_HANDLED;
@@ -275,21 +309,25 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                             NPN_GetURL(instance->mInstance, instance->event_mediacomplete, NULL);
                         }
                         postPlayStateChange(instance->mInstance, STATE_MEDIAENDED);
+                        return DBUS_HANDLER_RESULT_HANDLED;
                     }
                     if (g_ascii_strcasecmp(s, "MouseClicked") == 0) {
                         if (instance->event_mouseclicked != NULL) {
                             NPN_GetURL(instance->mInstance, instance->event_mouseclicked, NULL);
                         }
+                        return DBUS_HANDLER_RESULT_HANDLED;
                     }
                     if (g_ascii_strcasecmp(s, "EnterWindow") == 0) {
                         if (instance->event_enterwindow != NULL) {
                             NPN_GetURL(instance->mInstance, instance->event_enterwindow, NULL);
                         }
+                        return DBUS_HANDLER_RESULT_HANDLED;
                     }
                     if (g_ascii_strcasecmp(s, "LeaveWindow") == 0) {
                         if (instance->event_leavewindow != NULL) {
                             NPN_GetURL(instance->mInstance, instance->event_leavewindow, NULL);
                         }
+                        return DBUS_HANDLER_RESULT_HANDLED;
                     }
                     if (g_ascii_strcasecmp(s, "MouseDown") == 0) {
                         if (instance->event_mousedown != NULL) {
@@ -297,6 +335,7 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                             NPN_GetURL(instance->mInstance, tmp, NULL);
                             g_free(tmp);
                         }
+                        return DBUS_HANDLER_RESULT_HANDLED;
                     }
                     if (g_ascii_strcasecmp(s, "MouseUp") == 0) {
                         if (instance->event_mouseup != NULL) {
@@ -304,36 +343,43 @@ static DBusHandlerResult filter_func(DBusConnection * connection,
                             NPN_GetURL(instance->mInstance, tmp, NULL);
                             g_free(tmp);
                         }
+                        return DBUS_HANDLER_RESULT_HANDLED;
                     }
                     if (g_ascii_strcasecmp(s, "TimeChanged") == 0) {
                         if (instance->post_dom_events && instance->id != NULL) {
                             postDOMEvent(instance->mInstance, instance->id, "qt_timechanged");
                         }
+                        return DBUS_HANDLER_RESULT_HANDLED;
                     }
                     if (g_ascii_strcasecmp(s, "Ended") == 0) {
                         if (instance->post_dom_events && instance->id != NULL) {
                             postDOMEvent(instance->mInstance, instance->id, "qt_ended");
                         }
+                        return DBUS_HANDLER_RESULT_HANDLED;
                     }
                     if (g_ascii_strcasecmp(s, "MediaStopped") == 0) {
                         if (instance->post_dom_events && instance->id != NULL) {
                             postDOMEvent(instance->mInstance, instance->id, "qt_ended");
                         }
                         postPlayStateChange(instance->mInstance, STATE_STOPPED);
+                        return DBUS_HANDLER_RESULT_HANDLED;
                     }
                     if (g_ascii_strcasecmp(s, "MediaPlaying") == 0) {
                         if (instance->post_dom_events && instance->id != NULL) {
                             postDOMEvent(instance->mInstance, instance->id, "qt_play");
                         }
                         postPlayStateChange(instance->mInstance, STATE_PLAYING);
+                        return DBUS_HANDLER_RESULT_HANDLED;
                     }
                     if (g_ascii_strcasecmp(s, "MediaPaused") == 0) {
                         if (instance->post_dom_events && instance->id != NULL) {
                             postDOMEvent(instance->mInstance, instance->id, "qt_pause");
                         }
                         postPlayStateChange(instance->mInstance, STATE_PAUSED);
+                        return DBUS_HANDLER_RESULT_HANDLED;
                     }
                 }
+                return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
             }
         }
     } else {
@@ -400,6 +446,10 @@ void open_location(CPlugin * instance, ListItem * item, gboolean uselocal)
             } else {
                 file = g_strdup(item->src);
             }
+
+            gm_log(instance->debug_level, G_LOG_LEVEL_INFO,
+                   "Opening %s with launch\nitem->hrefid = %i item->src = %s", file, item->hrefid,
+                   item->src);
 
             //printf("launching gnome-mplayer from Open with id = %i\n",instance->controlid);
             app_name = NULL;
@@ -493,7 +543,8 @@ void open_location(CPlugin * instance, ListItem * item, gboolean uselocal)
         item->opened = TRUE;
         instance->lastopened = item;
     } else {
-        gm_log(instance->debug_level, G_LOG_LEVEL_INFO, "Item already opened before\n");
+        gm_log(instance->debug_level, G_LOG_LEVEL_INFO, "Item '%s' already opened before",
+               item->src);
     }
 }
 
@@ -596,8 +647,8 @@ void send_signal_with_string(CPlugin * instance, ListItem * item, const gchar * 
 
     if (instance == NULL)
         return;
-    gm_log(instance->debug_level, G_LOG_LEVEL_INFO, "Sending %s to connection %p\n", signal,
-           instance->connection);
+//    gm_log(instance->debug_level, G_LOG_LEVEL_INFO, "Sending %s to connection %p\n", signal,
+//           instance->connection);
 
     if (instance->console != NULL) {
         path = g_strdup_printf("/console/%s", instance->console);
@@ -630,8 +681,8 @@ void send_signal_with_double(CPlugin * instance, ListItem * item, const gchar * 
     if (instance == NULL)
         return;
 
-    gm_log(instance->debug_level, G_LOG_LEVEL_INFO, "Sending %s to connection %p\n", signal,
-           instance->connection);
+//    gm_log(instance->debug_level, G_LOG_LEVEL_INFO, "Sending %s to connection %p\n", signal,
+//           instance->connection);
 
     if (instance->console != NULL) {
         path = g_strdup_printf("/console/%s", instance->console);

@@ -57,9 +57,12 @@ typedef struct _ListItem {
     gboolean streaming;
     gboolean requested;
     gboolean retrieved;
+    gboolean oktoplay;
+    gboolean queuedtoplay;
     gboolean play;
     gboolean played;
     gboolean opened;
+    gboolean playlist;
     guint mediasize;
     gint localsize;
     gint lastsize;
@@ -114,13 +117,16 @@ void list_mark_controlid_ready(GList * list, gint id);
 void list_mark_controlid_cancelled(GList * list, gint id, gboolean cancelled);
 void list_mark_id_played(GList * list, gint id);
 ListItem *list_find_next_playable(GList * list);
+ListItem *list_find_next_playable_after_listitem(GList * list, ListItem * find);
+ListItem *list_find_first_playable(GList * list);
 void list_qualify_url(GList * list, gchar * page_url);
 GList *list_clear(GList * list);
 void list_dump(GList * list);
-GList *list_parse_qt(GList * list, ListItem * item);
-GList *list_parse_qt2(GList * list, ListItem * item);
-GList *list_parse_asx(GList * list, ListItem * item);
-GList *list_parse_qml(GList * list, ListItem * item);   // Quick Time Media Link
-GList *list_parse_ram(GList * list, ListItem * item);   // Real Audio Playlist
+GList *list_parse_qt(GList * list, ListItem * item, gboolean detect_only);
+GList *list_parse_qt2(GList * list, ListItem * item, gboolean detect_only);
+GList *list_parse_asx(GList * list, ListItem * item, gboolean detect_only);
+GList *list_parse_qml(GList * list, ListItem * item, gboolean detect_only);     // Quick Time Media Link
+GList *list_parse_ram(GList * list, ListItem * item, gboolean detect_only);     // Real Audio Playlist
+gboolean list_item_opened(GList * list);
 
 #endif                          // _PLUGIN_LIST_H

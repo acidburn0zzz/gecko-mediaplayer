@@ -182,6 +182,84 @@ void postPlayStateChange(NPP mInstance, const gint state)
     g_free(jscript);
 }
 
+const gchar *NPReasonToString(NPReason reason)
+{
+
+    switch (reason) {
+    case NPRES_DONE:
+        return "Done";
+        break;
+    case NPRES_NETWORK_ERR:
+        return "Network Error";
+        break;
+    case NPRES_USER_BREAK:
+        return "User Break";
+        break;
+    default:
+        return "Unknown Reason";
+    }
+
+}
+
+
+const gchar *NPErrorToString(NPError error)
+{
+
+    switch (error) {
+    case NPERR_NO_ERROR:
+        return "No Error";
+        break;
+    case NPERR_GENERIC_ERROR:
+        return "Generic Error";
+        break;
+    case NPERR_INVALID_INSTANCE_ERROR:
+        return "Invalid Instance Error";
+        break;
+    case NPERR_INVALID_FUNCTABLE_ERROR:
+        return "Invalid Functable Error";
+        break;
+    case NPERR_MODULE_LOAD_FAILED_ERROR:
+        return "Module Load Failed Error";
+        break;
+    case NPERR_OUT_OF_MEMORY_ERROR:
+        return "Out Of Memory Error";
+        break;
+    case NPERR_INVALID_PLUGIN_ERROR:
+        return "Invalid Plugin Error";
+        break;
+    case NPERR_INVALID_PLUGIN_DIR_ERROR:
+        return "Invalid Plugin Dir Error";
+        break;
+    case NPERR_INCOMPATIBLE_VERSION_ERROR:
+        return "Incompatible Version Error";
+        break;
+    case NPERR_INVALID_PARAM:
+        return "Invalid Param";
+        break;
+    case NPERR_INVALID_URL:
+        return "Invalid URL";
+        break;
+    case NPERR_FILE_NOT_FOUND:
+        return "File Not Found";
+        break;
+    case NPERR_NO_DATA:
+        return "No Data";
+        break;
+    case NPERR_STREAM_NOT_SEEKABLE:
+        return "Stream Not Seekable";
+        break;
+    case NPERR_TIME_RANGE_NOT_SUPPORTED:
+        return "Time Range Not Supported";
+        break;
+    case NPERR_MALFORMED_SITE:
+        return "Malformed Site";
+        break;
+    default:
+        return "Unknown NPError Code";
+        break;
+    }
+}
+
 ////////////////////////////////////////
 //
 // CPlugin class implementation
@@ -353,7 +431,7 @@ tv_driver(NULL), tv_device(NULL), tv_input(NULL), tv_width(0), tv_height(0)
         gm_log(debug_level, G_LOG_LEVEL_INFO, "debug_level = %i", debug_level);
         player_backend = gm_pref_store_get_string(store, PLAYER_BACKEND);
         gm_log(debug_level, G_LOG_LEVEL_INFO, "Using player backend of '%s'\n",
-               (player_backend == NULL) ? "gnome-mplayer" : player_backend);
+               (player_backend == NULL || strlen(player_backend) == 0 ) ? "gnome-mplayer" : player_backend);
         gm_pref_store_free(store);
     } else {
         gm_log(TRUE, G_LOG_LEVEL_INFO, "Unable to find preference store, setting debug_level to 1");
@@ -604,22 +682,20 @@ NPError CPlugin::NewStream(NPMIMEType type, NPStream * stream, NPBool seekable, 
 NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
 {
     ListItem *item;
-    gint id;
-    gchar *path;
+    ListItem *fetch_item;
     gchar *text;
-    gboolean ready;
-    gboolean newwindow;
+    gboolean fetch_next = TRUE;
 
     if (g_strrstr(stream->url, "javascript") == NULL)
-        gm_log(debug_level, G_LOG_LEVEL_DEBUG, "Entering destroy stream reason = %i for %s\n",
-               reason, stream->url);
+        gm_log(debug_level, G_LOG_LEVEL_MESSAGE, "Entering destroy stream reason = %i - %s for %s",
+               reason, NPErrorToString(reason), stream->url);
 
     if (reason == NPERR_NO_ERROR) {
         item = (ListItem *) stream->notifyData;
         // item = list_find(playlist, (gchar*)stream->url);
 
         if (item == NULL) {
-            gm_log(debug_level, G_LOG_LEVEL_DEBUG, "Leaving destroy stream - item not found\n");
+            gm_log(debug_level, G_LOG_LEVEL_DEBUG, "Leaving destroy stream - item not found");
             return NPERR_NO_ERROR;
         }
 
@@ -633,58 +709,65 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
             g_free(text);
         }
 
+
         if (!item->opened && item->play) {
-            id = item->controlid;
-            path = g_strdup(item->path);
-            ready = item->playerready;
-            newwindow = item->newwindow;
+            gm_log(debug_level, G_LOG_LEVEL_MESSAGE, "item '%s' is not opened and is playable",
+                   item->src);
             if (!item->streaming)
                 item->streaming = streaming(item->src);
             if (!item->streaming) {
-                gm_log(debug_level, G_LOG_LEVEL_DEBUG, "in Destroy Stream\n");
-                playlist = list_parse_qt(playlist, item);
-                playlist = list_parse_qt2(playlist, item);
-                playlist = list_parse_asx(playlist, item);
-                playlist = list_parse_qml(playlist, item);
-                playlist = list_parse_ram(playlist, item);
+                gm_log(debug_level, G_LOG_LEVEL_DEBUG, "in Destroy Stream");
+                playlist = list_parse_qt(playlist, item, FALSE);
+                playlist = list_parse_qt2(playlist, item, FALSE);
+                playlist = list_parse_asx(playlist, item, FALSE);
+                playlist = list_parse_qml(playlist, item, FALSE);
+                playlist = list_parse_ram(playlist, item, FALSE);
             }
-            // printf("item->play = %i\n",item->play);
-            // printf("item->src = %s\n", item->src);
-            // printf("item->streaming = %i\n", item->streaming);
-            // printf("calling open_location from DestroyStream\n");
-            if (item->play) {
-                item->requested = TRUE;
-                open_location(this, item, TRUE);
-                if (post_dom_events && this->id != NULL) {
-                    postDOMEvent(mInstance, this->id, "qt_play");
+
+            if (item->playlist == FALSE) {
+                if (item != NULL && item->queuedtoplay == FALSE) {
+                    if (!list_item_opened(playlist)) {
+                        item = list_find_first_playable(playlist);
+                    }
                 }
-            } else {
-                item = list_find_next_playable(playlist);
                 if (item != NULL) {
-                    // printf("item->play = %i\n",item->play);
-                    // printf("item->src = %s\n", item->src);
-                    // printf("item->streaming = %i\n", item->streaming);
-                    if (!item->streaming) {
-                        item->controlid = id;
-                        g_strlcpy(item->path, path, 1024);
-                        item->playerready = ready;
-                        item->newwindow = newwindow;
-                        item->cancelled = FALSE;
-                        item->requested = TRUE;
-                        if (item != NULL)
-                            this->GetURLNotify(mInstance, item->src, NULL, item);
-                    } else {
-                        open_location(this, item, FALSE);
-                        item->requested = TRUE;
+                    if (item->play == TRUE && item->opened == FALSE) {
+
+                        open_location(this, item, TRUE);
                         if (post_dom_events && this->id != NULL) {
                             postDOMEvent(mInstance, this->id, "qt_play");
                         }
                     }
                 }
+            } else {
+                item = list_find_first_playable(playlist);
+                if (item != NULL) {
+                    if (!item->streaming) {
+                        if (item->requested == FALSE) {
+                            gm_log(debug_level, G_LOG_LEVEL_INFO, "Getting URL '%s'", item->src);
+                            item->requested = TRUE;
+                            this->GetURLNotify(mInstance, item->src, NULL, item);
+                            fetch_next = FALSE;
+                        }
+                    } else {
+                        if (!list_item_opened(playlist))
+                            open_location(this, item, FALSE);
+                    }
+                }
             }
-            g_free(path);
+
+            // fetch the next item on the playlist
+            if (fetch_next) {
+                fetch_item = list_find_next_playable_after_listitem(playlist, item);
+                if (fetch_item != NULL) {
+                    if (!fetch_item->streaming) {
+                        gm_log(debug_level, G_LOG_LEVEL_INFO, "Prefetching URL '%s'", fetch_item->src);
+                        fetch_item->requested = TRUE;
+                        this->GetURLNotify(mInstance, fetch_item->src, NULL, fetch_item);
+                    }
+                }
+            }
         }
-        //printf("Leaving destroy stream src = %s\n", item->src);
 
     } else if (reason == NPERR_INVALID_URL) {
         item = (ListItem *) stream->notifyData;
@@ -719,72 +802,26 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
         }
     }
 
-    // list_dump(playlist);
+    gm_log(debug_level, G_LOG_LEVEL_INFO,
+           "Leaving DestroyStream for %s and the playlist looks like this", stream->url);
+    list_dump(playlist);
     return NPERR_NO_ERROR;
 }
 
 void CPlugin::URLNotify(const char *url, NPReason reason, void *notifyData)
 {
     ListItem *item = (ListItem *) notifyData;
-    //DBusMessage *message;
-    //const char *file;
 
-    gm_log(debug_level, G_LOG_LEVEL_DEBUG, "URL Notify url = '%s'\nreason = %i\n%s\n%s\n%s\n", url,
-           reason, item->src, item->local, path);
+    gm_log(debug_level, G_LOG_LEVEL_MESSAGE, "URL Notify url = '%s'\nreason = %i - %s\n%s\n%s\n%s",
+           url, reason, NPReasonToString(reason), item->src, item->local, path);
     if (reason == NPRES_DONE) {
-
-        if (!item->opened) {
-            // open_location(this,item, TRUE);
-
-            /*
-               file = g_strdup(item->local);
-               while (!playerready) {
-               // printf("waiting for player\n");
-               g_main_context_iteration(NULL,FALSE);   
-               }
-               message = dbus_message_new_signal(path,"com.gnome.mplayer","Open");
-               dbus_message_append_args(message, DBUS_TYPE_STRING, &file, DBUS_TYPE_INVALID);
-               dbus_connection_send(connection,message,NULL);
-               dbus_message_unref(message);
-             */
-        }
-
-        if (item) {
-            item->played = TRUE;
-            if (!item->streaming) {
-                item = list_find_next_playable(playlist);
-                if (item) {
-                    if (item->retrieved || item->streaming) {
-                        open_location(this, item, TRUE);
-                        item->requested = TRUE;
-                    } else {
-                        this->GetURLNotify(mInstance, item->src, NULL, item);
-                        item->requested = TRUE;
-                    }
-                }
-            }
-        } else {
-            item = list_find_next_playable(playlist);
-            if (item) {
-                if (item->retrieved || item->streaming) {
-                    open_location(this, item, TRUE);
-                    item->requested = TRUE;
-                } else {
-                    this->GetURLNotify(mInstance, item->src, NULL, item);
-                    item->requested = TRUE;
-                }
-            }
-        }
-
-
-
+        // done
     } else if (reason == NPRES_NETWORK_ERR) {
-        gm_log(debug_level, G_LOG_LEVEL_INFO, "URL Notify result is Network Error\n");
+        // error
     } else if (reason == NPRES_USER_BREAK) {
-        gm_log(debug_level, G_LOG_LEVEL_INFO, "URL Notify result is User Break\n");
+        // user cancelled
     } else {
-        gm_log(debug_level, G_LOG_LEVEL_INFO, "%i is an invalid reason code in URLNotify\n",
-               reason);
+        // something else
     }
 }
 
@@ -807,17 +844,6 @@ int32 CPlugin::WriteReady(NPStream * stream)
     if (item == NULL) {
 
         if (mode == NP_FULL) {
-            // printf("adding new item %s\n",stream->url);
-            /*
-               item = g_new0(ListItem, 1);
-               g_strlcpy(item->src, stream->url, 1024);
-               item->requested = TRUE;
-               item->play = TRUE;
-               if (!item->streaming)
-               item->streaming = streaming(item->src);
-               playlist = g_list_append(playlist, item);
-               stream->notifyData = item;
-             */
             return -1;
         } else {
             gm_log(debug_level, G_LOG_LEVEL_INFO, "item is null\nstream url %s\n", stream->url);
@@ -880,11 +906,6 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
     gchar *text;
     gdouble percent = 0.0;
     gdouble rate = 0.0;
-    gint id;
-    gchar *path;
-    gboolean ready;
-    gboolean newwindow;
-    gboolean ok_to_play = FALSE;
     gchar *upper = NULL;
 
     gm_log(debug_level, G_LOG_LEVEL_DEBUG, "Write Called\n");
@@ -913,17 +934,7 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
     if (strstr((char *) buffer, "ICY 200 OK") != NULL
         || strstr((char *) buffer, "Content-length:") != NULL
         || (upper != NULL && strstr(upper, "<HTML>") != NULL) || item->streaming == TRUE
-        || strstr(item->src, "file://") != NULL
-        || (upper != NULL && strstr(upper, "#EXTM3U") != NULL)
-        || (upper != NULL && strstr(upper, "<ASX") != NULL)) {
-        // If item is a block of jpeg images, just stream it
-        //   || stream->lastmodified == 0) {    this is not valid for many sites
-
-        // printf("BUFFER='%s'\n", buffer);
-
-        // printf("item->streaming = %i\n", item->streaming);
-        // printf("stream->lastmodified = %i\n", stream->lastmodified);
-        // printf("stream->end = %i\n", stream->end);
+        || strstr(item->src, "file://") != NULL) {
 
         item->streaming = TRUE;
         open_location(this, item, FALSE);
@@ -951,7 +962,7 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
 
     if (item->localfp == NULL) {
         gm_log(debug_level, G_LOG_LEVEL_INFO, "Local cache file is not open, cannot write data\n");
-        NPN_DestroyStream(mInstance, stream, NPERR_NO_ERROR);
+        NPN_DestroyStream(mInstance, stream, NPERR_GENERIC_ERROR);
         return -1;
     }
     fseek(item->localfp, offset, SEEK_SET);
@@ -997,15 +1008,15 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
             if ((item->localsize >= (cache_size * 1024)) && (percent >= 0.2)) {
                 gm_log(debug_level, G_LOG_LEVEL_DEBUG, "Setting to play because %i > %i\n",
                        item->localsize, cache_size * 1024);
-                ok_to_play = TRUE;
+                item->oktoplay = TRUE;
             }
-            if (ok_to_play == FALSE && (item->localsize > (cache_size * 2 * 1024))
+            if (item->oktoplay == FALSE && (item->localsize > (cache_size * 2 * 1024))
                 && (cache_size >= 512)) {
                 // printf("Setting to play because %i > %i (double cache)\n", item->localsize,
                 //        cache_size * 2 * 1024);
-                ok_to_play = TRUE;
+                item->oktoplay = TRUE;
             }
-            if (ok_to_play == FALSE) {
+            if (item->oktoplay == FALSE) {
                 if (item->bitrate == 0 && item->bitrate_requests < 5
                     && ((gint) (percent * 100) > item->bitrate_requests)) {
                     item->bitrate = request_bitrate(this, item, item->local);
@@ -1015,7 +1026,7 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
                     if (item->localsize / item->bitrate >= 10 && (percent >= 0.2)) {
                         // printf("Setting to play because %i >= 10\n",
                         //        item->localsize / item->bitrate);
-                        ok_to_play = TRUE;
+                        item->oktoplay = TRUE;
                         if (post_dom_events && this->id != NULL) {
                             postDOMEvent(mInstance, this->id, "qt_canplay");
                         }
@@ -1024,52 +1035,50 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
             }
 
         }
-        // if not opened, over cache level and not an href target then try and open it
-        if ((!item->opened) && ok_to_play == TRUE) {
-            id = item->controlid;
-            path = g_strdup(item->path);
-            ready = item->playerready;
-            newwindow = item->newwindow;
+
+        // item->playlist may have been set on an earlier pass, so do not bother
+        // checking for playlist again, if it is true.
+        
+        if (!item->opened && item->play && item->oktoplay && !item->playlist) {
+            gm_log(debug_level, G_LOG_LEVEL_MESSAGE, "item '%s' is not opened and is playable",
+                   item->src);
             if (!item->streaming)
                 item->streaming = streaming(item->src);
             if (!item->streaming) {
-                playlist = list_parse_qt(playlist, item);
-                playlist = list_parse_asx(playlist, item);
-                playlist = list_parse_qml(playlist, item);
-                playlist = list_parse_ram(playlist, item);
+                gm_log(debug_level, G_LOG_LEVEL_DEBUG, "in Write");
+                // we want to detect a playlist, but not add any items to the actual playlist 
+                // if we find them
+                playlist = list_parse_qt(playlist, item, TRUE);
+                playlist = list_parse_qt2(playlist, item, TRUE);
+                playlist = list_parse_asx(playlist, item, TRUE);
+                playlist = list_parse_qml(playlist, item, TRUE);
+                playlist = list_parse_ram(playlist, item, TRUE);
             }
-            // printf("item->play = %i\n",item->play);
-            // printf("item->src = %i\n", item->src);
-            // printf("calling open_location from Write\n"); 
-            if (item->play) {
-                send_signal_with_integer(this, item, "SetGUIState", PLAYING);
-                open_location(this, item, TRUE);
-                item->requested = TRUE;
-                if (post_dom_events && this->id != NULL) {
-                    postDOMEvent(mInstance, this->id, "qt_loadedfirstframe");
-                    postDOMEvent(mInstance, this->id, "qt_canplay");
-                    postDOMEvent(mInstance, this->id, "qt_play");
-                }
-            } else {
-                item = list_find_next_playable(playlist);
-                if (item != NULL) {
-                    item->controlid = id;
-                    g_strlcpy(item->path, path, 1024);
-                    item->playerready = ready;
-                    item->newwindow = newwindow;
-                    item->cancelled = FALSE;
-                    gm_log(debug_level, G_LOG_LEVEL_DEBUG,
-                           "opening next playable items on the playlist\n");
-                    if (item->streaming) {
-                        open_location(this, item, FALSE);
-                        item->requested = TRUE;
-                    } else {
-                        this->GetURLNotify(mInstance, item->src, NULL, item);
-                        item->requested = TRUE;
+
+            gm_log(debug_level, G_LOG_LEVEL_MESSAGE, "Write item (%s) playlist = %i", item->src, item->playlist);
+            
+            if (item->playlist == FALSE) {
+
+                // queuedtoplay is only true on a item when the player has requested the
+                // next item to play. So the rule is this
+                /*
+                    1. Automatically play only the first playable item on the playlist  
+                    2. Play queuedtoplay items when they are playable and not opened
+
+                */
+                if (item->queuedtoplay == FALSE) {
+                    if (!list_item_opened(playlist)) {
+                        item = list_find_first_playable(playlist);
+                    }
+                    if (item->play == TRUE && item->opened == FALSE) {
+
+                        open_location(this, item, TRUE);
+                        if (post_dom_events && this->id != NULL) {
+                            postDOMEvent(mInstance, this->id, "qt_play");
+                        }
                     }
                 }
             }
-            g_free(path);
         }
 
     }
@@ -1415,97 +1424,6 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
                 item->lastsize = item->localsize;
             }
         }
-        // Disable playing of partially cached apple.com files, mplayer seems to crash on these files
-        /*
-           if (!item->opened) {
-           if ((item->localsize >= (plugin->cache_size * 1024)) && (percent >= 0.2)) {
-           //printf("Setting to play because %i > %i\n", item->localsize,
-           //       plugin->cache_size * 1024);
-           ok_to_play = TRUE;
-           }
-           if (ok_to_play == FALSE && (item->localsize > (plugin->cache_size * 2 * 1024))
-           && (plugin->cache_size >= 512)) {
-           //printf("Setting to play because %i > %i (double cache)\n", item->localsize,
-           //       plugin->cache_size * 2 * 1024);
-           ok_to_play = TRUE;
-           }
-           if (ok_to_play == FALSE) {
-           if (item->bitrate == 0 && item->bitrate_requests < 5
-           && ((gint) (percent * 100) > item->bitrate_requests)) {
-           //item->bitrate = request_bitrate(plugin, item, item->local);
-           item->bitrate_requests++;
-           }
-           if (item->bitrate > 0) {
-           if (item->localsize / item->bitrate >= 10 && (percent >= 0.2)) {
-           printf("Setting to play becuase %i >= 10\n",
-           item->localsize / item->bitrate);
-           ok_to_play = TRUE;
-           if (plugin->post_dom_events && plugin->id != NULL) {
-           postDOMEvent(plugin->mInstance, plugin->id, "qt_canplay");
-           }
-           }
-           }
-           }
-
-           }
-         */
-
-        // try downloading entire file
-        ok_to_play = FALSE;
-
-        // if not opened, over cache level and not an href target then try and open it
-        if ((!item->opened) && ok_to_play == TRUE) {
-            id = item->controlid;
-            path = g_strdup(item->path);
-            ready = item->playerready;
-            newwindow = item->newwindow;
-            if (!item->streaming)
-                item->streaming = streaming(item->src);
-            if (!item->streaming) {
-                gm_log(plugin->debug_level, G_LOG_LEVEL_INFO, "in progress_callback\n");
-                plugin->playlist = list_parse_qt(plugin->playlist, item);
-                plugin->playlist = list_parse_qt2(plugin->playlist, item);
-                plugin->playlist = list_parse_asx(plugin->playlist, item);
-                plugin->playlist = list_parse_qml(plugin->playlist, item);
-                plugin->playlist = list_parse_ram(plugin->playlist, item);
-            }
-            gm_log(plugin->debug_level, G_LOG_LEVEL_INFO, "item->play = %i\n", item->play);
-            gm_log(plugin->debug_level, G_LOG_LEVEL_INFO, "item->src = %s\n", item->src);
-            gm_log(plugin->debug_level, G_LOG_LEVEL_INFO,
-                   "calling open_location from progress_callback\n");
-            if (item->play) {
-                send_signal_with_integer(plugin, item, "SetGUIState", PLAYING);
-                open_location(plugin, item, TRUE);
-                item->requested = TRUE;
-                if (plugin->post_dom_events && plugin->id != NULL) {
-                    postDOMEvent(plugin->mInstance, plugin->id, "qt_loadedfirstframe");
-                    postDOMEvent(plugin->mInstance, plugin->id, "qt_canplay");
-                    postDOMEvent(plugin->mInstance, plugin->id, "qt_play");
-                }
-            } else {
-                item = list_find_next_playable(plugin->playlist);
-                if (item != NULL) {
-                    item->controlid = id;
-                    g_strlcpy(item->path, path, 1024);
-                    item->playerready = ready;
-                    item->newwindow = newwindow;
-                    item->cancelled = FALSE;
-                    // printf("opening next playable items on the playlist\n");
-                    if (item->streaming) {
-                        open_location(plugin, item, FALSE);
-                        item->requested = TRUE;
-                    } else {
-                        if (!item->requested) {
-                            plugin->GetURLNotify(plugin->mInstance, item->src, NULL, item);
-                            item->requested = TRUE;
-                        }
-                    }
-                }
-            }
-            g_free(path);
-        }
-
-
     }
 
     return 0;
@@ -1514,13 +1432,10 @@ int progress_callback(void *clientp, double dltotal, double dlnow, double ultota
 gpointer CURLGetURLNotify(gpointer data)
 {
     ListItem *item = (ListItem *) data;
+    ListItem *fetch_item = NULL;
     CPlugin *plugin = (CPlugin *) item->plugin;
-    gchar *path;
     FILE *local;
     CURL *curl;
-    gint id;
-    gboolean ready;
-    gboolean newwindow;
 
     if (item) {
         local = fopen(item->local, "wb");
@@ -1549,55 +1464,65 @@ gpointer CURLGetURLNotify(gpointer data)
             item->retrieved = TRUE;
         }
 
-
         if (!item->opened) {
-            id = item->controlid;
-            path = g_strdup(item->path);
-            ready = item->playerready;
-            newwindow = item->newwindow;
             if (!item->streaming)
                 item->streaming = streaming(item->src);
             if (!item->streaming) {
                 gm_log(plugin->debug_level, G_LOG_LEVEL_DEBUG, "in CURLGetURLNotify\n");
-                plugin->playlist = list_parse_qt(plugin->playlist, item);
-                plugin->playlist = list_parse_qt2(plugin->playlist, item);
-                plugin->playlist = list_parse_asx(plugin->playlist, item);
-                plugin->playlist = list_parse_qml(plugin->playlist, item);
-                plugin->playlist = list_parse_ram(plugin->playlist, item);
+                plugin->playlist = list_parse_qt(plugin->playlist, item, FALSE);
+                plugin->playlist = list_parse_qt2(plugin->playlist, item, FALSE);
+                plugin->playlist = list_parse_asx(plugin->playlist, item, FALSE);
+                plugin->playlist = list_parse_qml(plugin->playlist, item, FALSE);
+                plugin->playlist = list_parse_ram(plugin->playlist, item, FALSE);
             }
             // printf("item->play = %i\n", item->play);
             // printf("item->src = %i\n", item->src);
             // printf("calling open_location from CURLGetURLNotify\n");
-            if (item->play) {
-                send_signal_with_integer(plugin, item, "SetGUIState", PLAYING);
-                open_location(plugin, item, TRUE);
-                item->requested = TRUE;
-                if (plugin->post_dom_events && plugin->id != NULL) {
-                    postDOMEvent(plugin->mInstance, plugin->id, "qt_loadedfirstframe");
-                    postDOMEvent(plugin->mInstance, plugin->id, "qt_canplay");
-                    postDOMEvent(plugin->mInstance, plugin->id, "qt_play");
+
+            if (item->playlist == FALSE) {
+                if (item != NULL && item->queuedtoplay == FALSE) {
+                    if (!list_item_opened(plugin->playlist)) {
+                        item = list_find_first_playable(plugin->playlist);
+                    }
                 }
-            } else {
-                item = list_find_next_playable(plugin->playlist);
                 if (item != NULL) {
-                    item->controlid = id;
-                    g_strlcpy(item->path, path, 1024);
-                    item->playerready = ready;
-                    item->newwindow = newwindow;
-                    item->cancelled = FALSE;
-                    // printf("opening next playable items on the playlist\n");
-                    if (item->streaming) {
-                        open_location(plugin, item, FALSE);
-                        item->requested = TRUE;
-                    } else {
-                        if (!item->requested) {
-                            plugin->GetURLNotify(plugin->mInstance, item->src, NULL, item);
-                            item->requested = TRUE;
+                    if (item->play == TRUE && item->opened == FALSE) {
+
+                        open_location(plugin, item, TRUE);
+                        if (plugin->post_dom_events && plugin->id != NULL) {
+                            postDOMEvent(plugin->mInstance, plugin->id, "qt_loadedfirstframe");
+                            postDOMEvent(plugin->mInstance, plugin->id, "qt_canplay");
+                            postDOMEvent(plugin->mInstance, plugin->id, "qt_play");
                         }
                     }
                 }
+            } else {
+                item = list_find_first_playable(plugin->playlist);
+                if (item != NULL) {
+                    if (!item->streaming) {
+                        if (item->requested == FALSE) {
+                            gm_log(plugin->debug_level, G_LOG_LEVEL_INFO, "Getting URL '%s'",
+                                   item->src);
+                            item->requested = TRUE;
+                            plugin->GetURLNotify(plugin->mInstance, item->src, NULL, item);
+                        }
+                    } else {
+                        if (!list_item_opened(plugin->playlist))
+                            open_location(plugin, item, FALSE);
+                    }
+                }
             }
-            g_free(path);
+
+            // fetch the next item on the playlist
+            fetch_item = list_find_next_playable_after_listitem(plugin->playlist, item);
+            if (fetch_item != NULL) {
+                if (!fetch_item->streaming) {
+                    gm_log(plugin->debug_level, G_LOG_LEVEL_INFO, "Getting URL '%s'",
+                           fetch_item->src);
+                    fetch_item->requested = TRUE;
+                    CURLGetURLNotify(fetch_item);
+                }
+            }
 
         }
     }

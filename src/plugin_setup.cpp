@@ -75,7 +75,7 @@ void new_instance(CPlugin * instance, int16_t argc, char *argn[], char *argv[])
 
         for (i = 0; i < argc; i++) {
 
-            gm_log(instance->debug_level, G_LOG_LEVEL_INFO, "ARG[%i]: %s = %s\n", i, argn[i],
+            gm_log(instance->debug_level, G_LOG_LEVEL_INFO, "ARG[%i]: %s = %s", i, argn[i],
                    argv[i]);
 
             if (argn[i] == NULL)
