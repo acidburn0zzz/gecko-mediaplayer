@@ -1,4 +1,6 @@
 Development
+1.0.7a1
+    Version bump to 1.0.7a1
 	Very Large Change
 		rework the processing of playlists so that items are downloaded 
 			one at a time and only as needed
