@@ -1,4 +1,9 @@
 Development
+	Very Large Change
+		rework the processing of playlists so that items are downloaded 
+			one at a time and only as needed
+		Convert NPRES and NPERR codes to text in messages
+		ASX and M3U files should be properly parsed and not streamed in all cases
     Add ASX to the list of types that should be streamed, and fix the code so that it is case insensitive
     Switch plugin to streaming mode with #EXTM3U is found in the file
     Clean up some depreciated symbol warnings
