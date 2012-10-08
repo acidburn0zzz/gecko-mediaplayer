@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gecko-mediaplayer 0.9.9.2-1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-21 21:31-0600\n"
+"POT-Creation-Date: 2012-10-08 07:19-0600\n"
 "PO-Revision-Date: 2010-03-25 18:47+GMT\n"
 "Last-Translator: Chris Leick <c.leick@vollbio.de>\n"
 "Language-Team: German <debian-l10n-german@lists.debian.org>\n"
@@ -17,48 +17,47 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/plugin.cpp:347
+#: src/plugin.cpp:427
 #, c-format
 msgid "gecko mediaplayer v%s\n"
 msgstr ""
 
-#: src/plugin.cpp:622
+#: src/plugin.cpp:709
 #, c-format
 msgid "Cache fill: %2.2f%%"
 msgstr "Zwischenspeicher-Füllstand: %2.2f%%"
 
-#: src/plugin.cpp:887
-#, c-format
+#: src/plugin.cpp:924
 msgid "Write unable to write because item is NULL\n"
 msgstr "Es kann nicht geschrieben werden, da das Element NULL ist\n"
 
-#: src/plugin.cpp:956 src/plugin.cpp:1371
+#: src/plugin.cpp:990 src/plugin.cpp:1407
 #, c-format
 msgid "Caching %iK (%0.1f K/s)"
 msgstr "%i KB (%0.1f KB/s) werden zwischengespeichert"
 
-#: src/plugin.cpp:959 src/plugin.cpp:1374
+#: src/plugin.cpp:993 src/plugin.cpp:1410
 #, c-format
 msgid "Cache fill: %2.2f%% (%0.1f K/s)"
 msgstr "Zwischenspeicher-Füllstand: %2.2f%% (%0.1f KB/s)"
 
-#: src/plugin.cpp:2647
+#: src/plugin.cpp:2618
 msgid "Playing"
 msgstr ""
 
-#: src/plugin.cpp:2650
+#: src/plugin.cpp:2621
 msgid "Paused"
 msgstr ""
 
-#: src/plugin.cpp:2653
+#: src/plugin.cpp:2624
 msgid "Stopped"
 msgstr ""
 
-#: src/plugin.cpp:2657
+#: src/plugin.cpp:2628
 #, c-format
 msgid "Buffering %2.1lf%%"
 msgstr ""
 
-#: src/plugin.cpp:2662
+#: src/plugin.cpp:2633
 msgid "Unknown Status"
 msgstr ""
