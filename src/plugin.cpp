@@ -250,12 +250,16 @@ const gchar *NPErrorToString(NPError error)
     case NPERR_STREAM_NOT_SEEKABLE:
         return "Stream Not Seekable";
         break;
+#ifdef NPERR_TIME_RANGE_NOT_SUPPORTED    
     case NPERR_TIME_RANGE_NOT_SUPPORTED:
         return "Time Range Not Supported";
         break;
+#endif
+#ifdef NPERR_MALFORMED_SITE       
     case NPERR_MALFORMED_SITE:
         return "Malformed Site";
         break;
+#endif            
     default:
         return "Unknown NPError Code";
         break;
