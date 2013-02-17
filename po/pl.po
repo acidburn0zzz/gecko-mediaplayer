@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gecko-mediaplayer 0.5.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-08 07:19-0600\n"
+"POT-Creation-Date: 2013-02-17 07:39-0700\n"
 "PO-Revision-Date: 2011-06-15 21:50+0200\n"
 "Last-Translator: Julian Sikorski <belegdol@gmail.com>\n"
 "Language-Team: Polish <gnomepl@pandora.info.bielsko.pl>\n"
@@ -21,47 +21,47 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
 
-#: src/plugin.cpp:427
+#: src/plugin.cpp:431
 #, c-format
 msgid "gecko mediaplayer v%s\n"
 msgstr "gecko mediaplayer w%s\n"
 
-#: src/plugin.cpp:709
+#: src/plugin.cpp:713
 #, c-format
 msgid "Cache fill: %2.2f%%"
 msgstr "Zapełnienie bufora: %2.2f%%"
 
-#: src/plugin.cpp:924
+#: src/plugin.cpp:928
 msgid "Write unable to write because item is NULL\n"
 msgstr "Zapis niemożliwy ponieważ element jest NULL\n"
 
-#: src/plugin.cpp:990 src/plugin.cpp:1407
+#: src/plugin.cpp:994 src/plugin.cpp:1411
 #, c-format
 msgid "Caching %iK (%0.1f K/s)"
 msgstr "Buforowanie: %iK (%0.1f K/s)"
 
-#: src/plugin.cpp:993 src/plugin.cpp:1410
+#: src/plugin.cpp:997 src/plugin.cpp:1414
 #, c-format
 msgid "Cache fill: %2.2f%% (%0.1f K/s)"
 msgstr "Zapełnienie bufora: %2.2f%% (%0.1f K/s)"
 
-#: src/plugin.cpp:2618
+#: src/plugin.cpp:2622
 msgid "Playing"
 msgstr "Odtwarzanie "
 
-#: src/plugin.cpp:2621
+#: src/plugin.cpp:2625
 msgid "Paused"
 msgstr "Wstrzymano"
 
-#: src/plugin.cpp:2624
+#: src/plugin.cpp:2628
 msgid "Stopped"
 msgstr "Zatrzymano"
 
-#: src/plugin.cpp:2628
+#: src/plugin.cpp:2632
 #, c-format
 msgid "Buffering %2.1lf%%"
 msgstr "Buforowanie %2.1lf%%"
 
-#: src/plugin.cpp:2633
+#: src/plugin.cpp:2637
 msgid "Unknown Status"
 msgstr "Stan nieznany"
