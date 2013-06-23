@@ -52,6 +52,9 @@
 #endif
 
 NPNetscapeFuncs NPNFuncs;
+#ifdef XP_UNIX
+#include <stddef.h>
+#endif
 
 #ifdef XP_WIN
 
@@ -117,7 +120,10 @@ NPError OSCALL NP_Initialize(NPNetscapeFuncs * pFuncs
     if (HIBYTE(pFuncs->version) > NP_VERSION_MAJOR)
         return NPERR_INCOMPATIBLE_VERSION_ERROR;
 
-    if (pFuncs->size < sizeof(NPNetscapeFuncs))
+    // if (pFuncs->size < sizeof(NPNetscapeFuncs))
+    // Updated from Issue #184
+    // using model from http://sources.debian.net/src/iceweasel/21.0-1/dom/plugins/test/testplugin/nptest.cpp#L672
+    if (pFuncs->size < (offsetof(NPNetscapeFuncs, setexception) + sizeof(void*)))
         return NPERR_INVALID_FUNCTABLE_ERROR;
 
     NPNFuncs.size = pFuncs->size;
