@@ -52,9 +52,7 @@
 #endif
 
 NPNetscapeFuncs NPNFuncs;
-#ifdef XP_UNIX
 #include <stddef.h>
-#endif
 
 #ifdef XP_WIN
 
@@ -123,8 +121,19 @@ NPError OSCALL NP_Initialize(NPNetscapeFuncs * pFuncs
     // if (pFuncs->size < sizeof(NPNetscapeFuncs))
     // Updated from Issue #184
     // using model from http://sources.debian.net/src/iceweasel/21.0-1/dom/plugins/test/testplugin/nptest.cpp#L672
-    if (pFuncs->size < (offsetof(NPNetscapeFuncs, setexception) + sizeof(void*)))
+    if (pFuncs->size < (offsetof(NPNetscapeFuncs, setexception) + sizeof(void *)))
         return NPERR_INVALID_FUNCTABLE_ERROR;
+
+#ifdef XP_UNIX
+#ifdef OIJ
+    if (pFuncs->size < (offsetof(NPPluginFuncs, javaClass) + sizeof(void *)))
+        return NPERR_INVALID_FUNCTABLE_ERROR;
+#else
+    if (pFuncs->size < (offsetof(NPPluginFuncs, getvalue) + sizeof(void *)))
+        return NPERR_INVALID_FUNCTABLE_ERROR;
+#endif
+#endif
+
 
     NPNFuncs.size = pFuncs->size;
     NPNFuncs.version = pFuncs->version;
