@@ -250,16 +250,16 @@ const gchar *NPErrorToString(NPError error)
     case NPERR_STREAM_NOT_SEEKABLE:
         return "Stream Not Seekable";
         break;
-#ifdef NPERR_TIME_RANGE_NOT_SUPPORTED    
+#ifdef NPERR_TIME_RANGE_NOT_SUPPORTED
     case NPERR_TIME_RANGE_NOT_SUPPORTED:
         return "Time Range Not Supported";
         break;
 #endif
-#ifdef NPERR_MALFORMED_SITE       
+#ifdef NPERR_MALFORMED_SITE
     case NPERR_MALFORMED_SITE:
         return "Malformed Site";
         break;
-#endif            
+#endif
     default:
         return "Unknown NPError Code";
         break;
@@ -437,7 +437,8 @@ tv_driver(NULL), tv_device(NULL), tv_input(NULL), tv_width(0), tv_height(0)
         gm_log(debug_level, G_LOG_LEVEL_INFO, "debug_level = %i", debug_level);
         player_backend = gm_pref_store_get_string(store, PLAYER_BACKEND);
         gm_log(debug_level, G_LOG_LEVEL_INFO, "Using player backend of '%s'\n",
-               (player_backend == NULL || strlen(player_backend) == 0 ) ? "gnome-mplayer" : player_backend);
+               (player_backend == NULL
+                || strlen(player_backend) == 0) ? "gnome-mplayer" : player_backend);
         gm_pref_store_free(store);
     } else {
         gm_log(TRUE, G_LOG_LEVEL_INFO, "Unable to find preference store, setting debug_level to 1");
@@ -767,7 +768,8 @@ NPError CPlugin::DestroyStream(NPStream * stream, NPError reason)
                 fetch_item = list_find_next_playable_after_listitem(playlist, item);
                 if (fetch_item != NULL) {
                     if (!fetch_item->streaming) {
-                        gm_log(debug_level, G_LOG_LEVEL_INFO, "Prefetching URL '%s'", fetch_item->src);
+                        gm_log(debug_level, G_LOG_LEVEL_INFO, "Prefetching URL '%s'",
+                               fetch_item->src);
                         fetch_item->requested = TRUE;
                         this->GetURLNotify(mInstance, fetch_item->src, NULL, fetch_item);
                     }
@@ -1041,10 +1043,9 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
             }
 
         }
-
         // item->playlist may have been set on an earlier pass, so do not bother
         // checking for playlist again, if it is true.
-        
+
         if (!item->opened && item->play && item->oktoplay && !item->playlist) {
             gm_log(debug_level, G_LOG_LEVEL_MESSAGE, "item '%s' is not opened and is playable",
                    item->src);
@@ -1061,17 +1062,18 @@ int32 CPlugin::Write(NPStream * stream, int32 offset, int32 len, void *buffer)
                 playlist = list_parse_ram(playlist, item, TRUE);
             }
 
-            gm_log(debug_level, G_LOG_LEVEL_MESSAGE, "Write item (%s) playlist = %i", item->src, item->playlist);
-            
+            gm_log(debug_level, G_LOG_LEVEL_MESSAGE, "Write item (%s) playlist = %i", item->src,
+                   item->playlist);
+
             if (item->playlist == FALSE) {
 
                 // queuedtoplay is only true on a item when the player has requested the
                 // next item to play. So the rule is this
                 /*
-                    1. Automatically play only the first playable item on the playlist  
-                    2. Play queuedtoplay items when they are playable and not opened
+                   1. Automatically play only the first playable item on the playlist  
+                   2. Play queuedtoplay items when they are playable and not opened
 
-                */
+                 */
                 if (item->queuedtoplay == FALSE) {
                     if (!list_item_opened(playlist)) {
                         item = list_find_first_playable(playlist);
