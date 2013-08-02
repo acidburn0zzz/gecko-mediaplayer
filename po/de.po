@@ -2,14 +2,14 @@
 # Copyright (C) 2006-2009 Kevin DeKorte.
 # This file is distributed under the same license as the
 # gecko-mediaplayer package.
-# Chris Leick <c.leick@vollbio.de>, 2010.
+# Chris Leick <c.leick@vollbio.de>, 2010-2013.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gecko-mediaplayer 0.9.9.2-1\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: gecko-mediaplayer 1.0.8-4\n"
+"Report-Msgid-Bugs-To: gecko-mediaplayer@packages.debian.org\n"
 "POT-Creation-Date: 2013-02-17 07:39-0700\n"
-"PO-Revision-Date: 2010-03-25 18:47+GMT\n"
+"PO-Revision-Date: 2013-07-22 19:20+0100\n"
 "Last-Translator: Chris Leick <c.leick@vollbio.de>\n"
 "Language-Team: German <debian-l10n-german@lists.debian.org>\n"
 "Language: de\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: src/plugin.cpp:431
 #, c-format
 msgid "gecko mediaplayer v%s\n"
-msgstr ""
+msgstr "Gecko Media Player v%s\n"
 
 #: src/plugin.cpp:713
 #, c-format
@@ -43,21 +43,21 @@ msgstr "Zwischenspeicher-Füllstand: %2.2f%% (%0.1f KB/s)"
 
 #: src/plugin.cpp:2622
 msgid "Playing"
-msgstr ""
+msgstr "Wiedergabe"
 
 #: src/plugin.cpp:2625
 msgid "Paused"
-msgstr ""
+msgstr "pausiert"
 
 #: src/plugin.cpp:2628
 msgid "Stopped"
-msgstr ""
+msgstr "gestoppt"
 
 #: src/plugin.cpp:2632
 #, c-format
 msgid "Buffering %2.1lf%%"
-msgstr ""
+msgstr "Pufferung %2.1lf%%"
 
 #: src/plugin.cpp:2637
 msgid "Unknown Status"
-msgstr ""
+msgstr "unbekannter Status"
