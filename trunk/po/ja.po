@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gecko-mediaplayer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-17 07:39-0700\n"
+"POT-Creation-Date: 2013-09-16 12:46-0600\n"
 "PO-Revision-Date: 2013-02-20 02:52+0900\n"
 "Last-Translator: Munehiro Yamamoto <munepixyz@gmail.com>\n"
 "Language-Team: munepi <munepixyz@gmail.com>\n"
@@ -22,42 +22,42 @@ msgstr ""
 msgid "gecko mediaplayer v%s\n"
 msgstr "gecko mediaplayer v%s\n"
 
-#: src/plugin.cpp:713
+#: src/plugin.cpp:714
 #, c-format
 msgid "Cache fill: %2.2f%%"
 msgstr "キャッシュ中: %2.2f%%"
 
-#: src/plugin.cpp:928
+#: src/plugin.cpp:930
 msgid "Write unable to write because item is NULL\n"
 msgstr "オブジェクトが NULL なので書き込むことができません\n"
 
-#: src/plugin.cpp:994 src/plugin.cpp:1411
+#: src/plugin.cpp:996 src/plugin.cpp:1413
 #, c-format
 msgid "Caching %iK (%0.1f K/s)"
 msgstr "キャッシュ中: %iK (%0.1f K/s)"
 
-#: src/plugin.cpp:997 src/plugin.cpp:1414
+#: src/plugin.cpp:999 src/plugin.cpp:1416
 #, c-format
 msgid "Cache fill: %2.2f%% (%0.1f K/s)"
 msgstr "キャッシュ中: %2.2f%% (%0.1f K/s)"
 
-#: src/plugin.cpp:2622
+#: src/plugin.cpp:2624
 msgid "Playing"
 msgstr "再生"
 
-#: src/plugin.cpp:2625
+#: src/plugin.cpp:2627
 msgid "Paused"
 msgstr "一時停止"
 
-#: src/plugin.cpp:2628
+#: src/plugin.cpp:2630
 msgid "Stopped"
 msgstr "停止"
 
-#: src/plugin.cpp:2632
+#: src/plugin.cpp:2634
 #, c-format
 msgid "Buffering %2.1lf%%"
 msgstr "バッファ中 %2.1lf%%"
 
-#: src/plugin.cpp:2637
+#: src/plugin.cpp:2639
 msgid "Unknown Status"
 msgstr "不明なステータス"
