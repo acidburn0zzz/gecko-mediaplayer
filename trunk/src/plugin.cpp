@@ -61,7 +61,7 @@ static NPObject *sWindowObj;
 
 #define MIME_TYPES_HANDLED  "application/scriptable-plugin"
 #define PLUGIN_NAME         "Scriptable Example Plugin for Mozilla"
-#define MIME_TYPES_DESCRIPTION  MIME_TYPES_HANDLED":scr:"PLUGIN_NAME
+#define MIME_TYPES_DESCRIPTION  MIME_TYPES_HANDLED ":scr:" PLUGIN_NAME
 #define PLUGIN_DESCRIPTION  PLUGIN_NAME " (Plug-ins SDK sample)"
 
 int32 STREAMBUFSIZE = 0X0FFFFFFF;
