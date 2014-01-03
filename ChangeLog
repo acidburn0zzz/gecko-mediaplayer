@@ -1,4 +1,5 @@
 Development
+    Work around pkg-config issue for xulrunner 26 (missing compiler flag)
 1.0.9a
     Updated German translation
     Add in code from Issue #184 to see if this helps the Debian folks with running the plugin on older versions
