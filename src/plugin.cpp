@@ -56,14 +56,6 @@
 
 static NPObject *sWindowObj;
 
-//#include "nsIServiceManager.h"
-//#include "nsISupportsUtils.h"   // some usefule macros are defined here
-
-#define MIME_TYPES_HANDLED  "application/scriptable-plugin"
-#define PLUGIN_NAME         "Scriptable Example Plugin for Mozilla"
-#define MIME_TYPES_DESCRIPTION  MIME_TYPES_HANDLED ":scr:" PLUGIN_NAME
-#define PLUGIN_DESCRIPTION  PLUGIN_NAME " (Plug-ins SDK sample)"
-
 int32 STREAMBUFSIZE = 0X0FFFFFFF;
 
 // methods
