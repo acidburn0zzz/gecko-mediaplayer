@@ -1,4 +1,5 @@
 Development
+    Work around pkg-config issue for xulrunner 25, 2.23 and seamonkey 2.23 and higher (missing compiler flag)
     Work around pkg-config issue for xulrunner 26 (missing compiler flag)
 1.0.9a
     Updated German translation
