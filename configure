@@ -7479,12 +7479,12 @@ if test -n "$GECKO_CFLAGS"; then
     pkg_cv_GECKO_CFLAGS="$GECKO_CFLAGS"
  elif test -n "$PKG_CONFIG"; then
     if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libxul >= 26\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "libxul >= 26") 2>&5
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libxul >= 25\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "libxul >= 25") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  pkg_cv_GECKO_CFLAGS=`$PKG_CONFIG --cflags "libxul >= 26" 2>/dev/null`
+  pkg_cv_GECKO_CFLAGS=`$PKG_CONFIG --cflags "libxul >= 25" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes
 else
   pkg_failed=yes
@@ -7496,12 +7496,12 @@ if test -n "$GECKO_LIBS"; then
     pkg_cv_GECKO_LIBS="$GECKO_LIBS"
  elif test -n "$PKG_CONFIG"; then
     if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libxul >= 26\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "libxul >= 26") 2>&5
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libxul >= 25\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "libxul >= 25") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  pkg_cv_GECKO_LIBS=`$PKG_CONFIG --libs "libxul >= 26" 2>/dev/null`
+  pkg_cv_GECKO_LIBS=`$PKG_CONFIG --libs "libxul >= 25" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes
 else
   pkg_failed=yes
@@ -7522,28 +7522,107 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        GECKO_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "libxul >= 26" 2>&1`
+	        GECKO_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "libxul >= 25" 2>&1`
         else
-	        GECKO_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "libxul >= 26" 2>&1`
+	        GECKO_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "libxul >= 25" 2>&1`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$GECKO_PKG_ERRORS" >&5
 
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: libxul >= 26 not found, trying another" >&5
-$as_echo "$as_me: libxul >= 26 not found, trying another" >&6;}
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: libxul >= 25 not found, trying another" >&5
+$as_echo "$as_me: libxul >= 25 not found, trying another" >&6;}
 elif test $pkg_failed = untried; then
      	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: libxul >= 26 not found, trying another" >&5
-$as_echo "$as_me: libxul >= 26 not found, trying another" >&6;}
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: libxul >= 25 not found, trying another" >&5
+$as_echo "$as_me: libxul >= 25 not found, trying another" >&6;}
 else
 	GECKO_CFLAGS=$pkg_cv_GECKO_CFLAGS
 	GECKO_LIBS=$pkg_cv_GECKO_LIBS
         { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
 	GECKO_CFLAGS="$GECKO_CFLAGS -DMOZ_NO_MOZALLOC -std=c++11"
-        { $as_echo "$as_me:${as_lineno-$LINENO}: Using libxul >= 26.0 " >&5
-$as_echo "$as_me: Using libxul >= 26.0 " >&6;}
+        { $as_echo "$as_me:${as_lineno-$LINENO}: Using libxul >= 25 " >&5
+$as_echo "$as_me: Using libxul >= 25 " >&6;}
+
+fi
+fi
+
+if test "$GECKO_CFLAGS" = ""; then
+
+pkg_failed=no
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for GECKO" >&5
+$as_echo_n "checking for GECKO... " >&6; }
+
+if test -n "$GECKO_CFLAGS"; then
+    pkg_cv_GECKO_CFLAGS="$GECKO_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libxul >= 2.23\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "libxul >= 2.23") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_GECKO_CFLAGS=`$PKG_CONFIG --cflags "libxul >= 2.23" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$GECKO_LIBS"; then
+    pkg_cv_GECKO_LIBS="$GECKO_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libxul >= 2.23\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "libxul >= 2.23") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_GECKO_LIBS=`$PKG_CONFIG --libs "libxul >= 2.23" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+   	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        GECKO_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "libxul >= 2.23" 2>&1`
+        else
+	        GECKO_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "libxul >= 2.23" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$GECKO_PKG_ERRORS" >&5
+
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: libxul >= 2.23 not found, trying another" >&5
+$as_echo "$as_me: libxul >= 2.23 not found, trying another" >&6;}
+elif test $pkg_failed = untried; then
+     	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: libxul >= 2.23 not found, trying another" >&5
+$as_echo "$as_me: libxul >= 2.23 not found, trying another" >&6;}
+else
+	GECKO_CFLAGS=$pkg_cv_GECKO_CFLAGS
+	GECKO_LIBS=$pkg_cv_GECKO_LIBS
+        { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+	GECKO_CFLAGS="$GECKO_CFLAGS -DMOZ_NO_MOZALLOC -std=c++11"
+        { $as_echo "$as_me:${as_lineno-$LINENO}: Using libxul >= 2.23 " >&5
+$as_echo "$as_me: Using libxul >= 2.23 " >&6;}
 
 fi
 fi
@@ -8013,6 +8092,85 @@ else
 $as_echo "yes" >&6; }
 	 { $as_echo "$as_me:${as_lineno-$LINENO}: Using firefox" >&5
 $as_echo "$as_me: Using firefox" >&6;}
+
+fi
+fi
+
+if test "$GECKO_CFLAGS" = ""; then
+
+pkg_failed=no
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for GECKO" >&5
+$as_echo_n "checking for GECKO... " >&6; }
+
+if test -n "$GECKO_CFLAGS"; then
+    pkg_cv_GECKO_CFLAGS="$GECKO_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"seamonkey-plugin >= 2.23 seamonkey-xpcom\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "seamonkey-plugin >= 2.23 seamonkey-xpcom") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_GECKO_CFLAGS=`$PKG_CONFIG --cflags "seamonkey-plugin >= 2.23 seamonkey-xpcom" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$GECKO_LIBS"; then
+    pkg_cv_GECKO_LIBS="$GECKO_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"seamonkey-plugin >= 2.23 seamonkey-xpcom\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "seamonkey-plugin >= 2.23 seamonkey-xpcom") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_GECKO_LIBS=`$PKG_CONFIG --libs "seamonkey-plugin >= 2.23 seamonkey-xpcom" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+   	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        GECKO_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "seamonkey-plugin >= 2.23 seamonkey-xpcom" 2>&1`
+        else
+	        GECKO_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "seamonkey-plugin >= 2.23 seamonkey-xpcom" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$GECKO_PKG_ERRORS" >&5
+
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: seamonkey-plugin >= 2.23 not found, trying another" >&5
+$as_echo "$as_me: seamonkey-plugin >= 2.23 not found, trying another" >&6;}
+elif test $pkg_failed = untried; then
+     	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: seamonkey-plugin >= 2.23 not found, trying another" >&5
+$as_echo "$as_me: seamonkey-plugin >= 2.23 not found, trying another" >&6;}
+else
+	GECKO_CFLAGS=$pkg_cv_GECKO_CFLAGS
+	GECKO_LIBS=$pkg_cv_GECKO_LIBS
+        { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+	GECKO_CFLAGS="$GECKO_CFLAGS -DMOZ_NO_MOZALLOC -std=c++11"
+        { $as_echo "$as_me:${as_lineno-$LINENO}: Using seamonkey-plugin >= 2.23 " >&5
+$as_echo "$as_me: Using seamonkey-plugin >= 2.23 " >&6;}
 
 fi
 fi
