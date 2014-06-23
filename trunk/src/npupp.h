@@ -63,6 +63,9 @@
 
 #include "npruntime.h"
 
+#ifndef NP_LOADDS
+#define NP_LOADDS
+#endif
 
 /******************************************************************************************
    plug-in function table macros
